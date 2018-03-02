@@ -29,7 +29,7 @@ module.exports = function (app) {
         const id = req.body.id;
         const pw = req.body.password;
 
-        var sql = 'SELECT * FROM user WHERE id=?';
+        var sql = 'SELECT * FROM user WHERE studentID=?';
         conn.query(sql, [id], function (err, results, fields) {
             if (err) {
                 console.log(err);
