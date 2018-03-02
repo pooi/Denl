@@ -74,3 +74,4 @@ package-lock.json
 uploads/
 config/*.json
 config/db.js
+config/session.js
