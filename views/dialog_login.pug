@@ -1,0 +1,248 @@
+v-dialog(v-model='loginData.dialog', :persistent='loginData.isProgress', max-width='500px')
+    v-card(ref="form")
+        v-card-title(style='background-color: rgb(194,0,47);')
+            img(src='/images/logo/sejong_white.svg', style='width: 50%;')
+            //span.headline Login
+        v-divider.py-0.my-0
+        //v-progress-linear.my-0(:indeterminate="true", height="2", color='deep-orange darken-3', v-if='loginData.isProgress')
+        v-card-text
+            v-container(grid-list-md='')
+                v-layout(wrap='')
+                    v-flex(xs12='')
+                        v-text-field(label='Student ID', id='loginId', required, :disabled='loginData.isProgress', v-model="loginData.id", ref="loginData.id", :rules="[() => !!loginData.id || 'This field is required']")
+                    v-flex(xs12='')
+                        v-text-field(label='Password', id='loginPw', type='password', required, :disabled='loginData.isProgress', :append-icon="loginData.isHidePw ? 'visibility' : 'visibility_off'", :append-icon-cb="() => (loginData.isHidePw = !loginData.isHidePw)", :type="loginData.isHidePw ? 'password' : 'text'", v-model="loginData.pw", ref="loginData.pw", :rules="[() => !!loginData.pw || 'This field is required']")
+            v-flex(xs12='')
+                small * indicates required field
+            v-flex(xs12='')
+                small Login with portal.sejong.ac.kr
+            v-flex(xs12='')
+                small 최초 로그인 시 비밀번호를 제외한 사용자 정보가 서버에 저장됩니다.
+
+            v-expansion-panel.elevation-0.mt-2(popout)
+                v-expansion-panel-content
+                    small(slot='header') How we handle login
+                    v-card
+                        v-card-text
+                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+
+        v-progress-linear.my-0(:indeterminate="true", height="3", color='deep-orange darken-3', v-if='loginData.isProgress')
+        v-btn.my-0.white--text(color='deep-orange darken-3', block, type='submit', onclick='loginSejong()', :disabled='loginData.isProgress') Login
+        //v-card-actions
+        //    v-spacer
+        //    v-btn(color='blue darken-1', flat, @click.native='loginData.dialog = false', :disabled='loginData.isProgress') Close
+        //    v-btn(color='blue darken-1', flat, type='submit', onclick='loginSejong()', :disabled='loginData.isProgress') Login
+
+
+v-snackbar.hidden-xs-only(:timeout='4000', :color='loginData.snackColor', v-model='loginData.snackbar', top, right)
+    | {{ loginData.snackMsg }}
+    v-btn(dark='', flat='', @click.native='loginData.snackbar = false') Close
+
+v-snackbar.hidden-sm-and-up(:timeout='4000', :color='loginData.snackColor', v-model='loginData.snackbar', bottom)
+    | {{ loginData.snackMsg }}
+    v-btn(dark='', flat='', @click.native='loginData.snackbar = false') Close
+
+v-dialog(v-model='loginData.infoDialog', fullscreen='', transition='dialog-bottom-transition', :overlay='true')
+    v-card.brown.lighten-5.elevation-10
+        v-toolbar(dark='', color='deep-orange darken-3',  dense)
+            v-btn(icon='', @click.native='loginData.infoDialog = false', dark='', style='height: auto;')
+                v-icon close
+            v-toolbar-title Information
+            v-spacer
+            //v-toolbar-items
+            //    v-btn(dark='', flat='', @click.native='dialog = false') Save
+        v-list.my-4.mb-5(two-line='', subheader='', v-if='loginData.user !== null')
+            v-subheader.py-0.pb-1.my-0.brown.lighten-5(style='height: auto;') User Information
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.name !== null')
+                v-list-tile-content
+                    v-list-tile-sub-title Name
+                    v-list-tile-title {{ loginData.user.name }}
+
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.id !== null')
+                v-list-tile-content
+                    v-list-tile-sub-title Student ID
+                    v-list-tile-title {{ loginData.user.id }}
+
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.major !== null')
+                v-list-tile-content
+                    v-list-tile-sub-title Major
+                    v-list-tile-title {{ loginData.user.major }}
+
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.type !== null')
+                v-list-tile-content
+                    v-list-tile-sub-title Type
+                    v-list-tile-title {{ loginData.user.type }}
+
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.email !== null')
+                v-list-tile-content
+                    v-list-tile-sub-title E-mail
+                    v-list-tile-title {{ loginData.user.email }}
+
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.contact !== null')
+                v-list-tile-content
+                    v-list-tile-sub-title Contact
+                    v-list-tile-title {{ loginData.user.contact }}
+
+        //v-divider(v-if='loginData.user !== null')
+        v-list.mb-5(one-line='', subheader='', v-if='loginData.user !== null')
+            v-list-tile-action.pt-2.pl-3
+                v-btn(color='red', flat, onClick='logout()') Logout
+
+        //v-divider( v-if='loginData.user !== null')
+        v-list.mb-5(three-line='', subheader='')
+            v-subheader.py-0.pb-1.my-0.brown.lighten-5(style='height: auto;') General
+            v-list-tile(avatar='')
+                v-list-tile-action
+                    v-checkbox(v-model='notifications')
+                v-list-tile-content
+                    v-list-tile-title Notifications
+                    v-list-tile-sub-title Notify me about updates to apps or games that I downloaded
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile(avatar='')
+                v-list-tile-action
+                    v-checkbox(v-model='sound')
+                v-list-tile-content
+                    v-list-tile-title Sound
+                    v-list-tile-sub-title Auto-update apps at any time. Data charges may apply
+            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+            v-list-tile(avatar='')
+                v-list-tile-action
+                    v-checkbox(v-model='widgets')
+                v-list-tile-content
+                    v-list-tile-title Auto-add widgets
+                    v-list-tile-sub-title Automatically add home screen widgets
+
+        v-list.mb-4.brown.lighten-5(three-line='', subheader='')
+
+
+
+
+script.
+
+    $(document).ready(function () {
+        setLoginData(true);
+    });
+
+    function setLoginData(check) {
+        console.log('set login data');
+
+        var userData = null;
+        if (check) {
+            try {
+                var tagsJSON = '!{userData}';
+                console.log(tagsJSON);
+                tagsJSON = tagsJSON.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+                userData = JSON.parse(tagsJSON);
+            } catch (err) {
+                console.log('There is no user data.');
+            }
+        }
+
+        var data = {
+            dialog: false,
+            infoDialog: false,
+            snackbar: false,
+            snackColor: 'error',
+            snackMsg: null,
+            isProgress: false,
+            id: null,
+            pw: null,
+            isHidePw: true,
+            user: userData
+        };
+
+        vue.$set(vue.$data, 'loginData', data);
+        console.log(vue.loginData);
+
+        vue.loginData.isProgress = false;
+
+    }
+
+    function logout() {
+        axios.get('/auth/logout')
+            .then(function (response) {
+                console.log(response);
+                setLoginData(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    function loginSejong() {
+
+        var loginId = vue.$refs['loginData.id'];
+        var loginPw = vue.$refs['loginData.pw'];
+
+        if (!loginId.valid && !loginPw.valid) {
+            console.log("Empty ID, PW");
+            vue.$refs['loginData.id'].validate(true);
+            vue.$refs['loginData.pw'].validate(true);
+            return;
+        } else if (!loginId.valid) {
+            console.log("Empty ID");
+            vue.$refs['loginData.id'].validate(true);
+            return;
+        } else if (!loginPw.valid) {
+            console.log("Empty PW");
+            vue.$refs['loginData.pw'].validate(true);
+            return;
+        }
+
+        vue.loginData.isProgress = true;
+        vue.scrollData.isShowFabTop = false;
+
+        console.log('login start');
+
+        var data = {
+            id: vue.loginData.id === null ? '' : vue.loginData.id,
+            password: vue.loginData.pw === null ? '' : vue.loginData.pw
+        };
+
+        axios.post(
+            '/auth/sejong',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            console.log(data);
+            if (data.status === 'success') {
+                // alert(data);
+                vue.loginData.dialog = false;
+                vue.loginData.user = data;
+                vue.loginData.id = null;
+                vue.loginData.pw = null;
+
+                vue.loginData.snackbar = true;
+                vue.loginData.snackColor = 'success';
+                vue.loginData.snackMsg = 'Hello, ' + data.name + "!";
+                // id.value = "";
+                // id.placeholder = "Student ID";
+                // pw.value = "";
+                // pw.placeholder = "Password";
+            } else {
+                // alert(data.err);
+                vue.loginData.snackbar = true;
+                vue.loginData.snackColor = 'error';
+                vue.loginData.snackMsg = data.err;
+            }
+            vue.loginData.isProgress = false;
+        })
+            .catch(function (error) {
+                // alert(error);
+                vue.loginData.isProgress = false;
+                vue.loginData.user = null;
+                vue.loginData.id = null;
+                vue.loginData.pw = null;
+
+                vue.loginData.snackbar = true;
+                vue.loginData.snackColor = 'error';
+                vue.loginData.snackMsg = error;
+            });
+
+
+    }

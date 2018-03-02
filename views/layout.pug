@@ -1,7 +1,43 @@
 doctype html
-html
+html(lang='en')
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title Discovery and Lost
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(href='https://fonts.googleapis.com/css?family=Lato', rel='stylesheet', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Montserrat', rel='stylesheet', type='text/css')
+
+    script(src='/scripts/jquery.min.js')
+    //script(src='/bootstrap/dist/js/bootstrap.min.js')
+    //link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
+
+    script(src='/scripts/axios.min.js')
+
+    script(src='/scripts/vue.js')
+    link(href='/styles/vuetify.min.css', rel='stylesheet')
+    script(src='/scripts/vuetify.min.js')
+    //link(href='https://unpkg.com/vuetify/dist/vuetify.min.css', rel='stylesheet')
+    //script(src='https://unpkg.com/vuetify/dist/vuetify.js')
+    link(href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons', rel='stylesheet')
+
+    script(src='//developers.kakao.com/sdk/js/kakao.min.js')
+
+    script(type='text/javascript').
+        //<![CDATA[
+        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
+        //]]>
+
+
   body
-    block content
+    #app
+
+      v-app(light)
+
+        v-container#scroll-target.scroll-y.pa-0(fluid, style='overflow-x: hidden;')
+
+          v-layout(column)
+
+            //include vue_toolbar
+
+            block content

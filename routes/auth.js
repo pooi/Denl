@@ -7,19 +7,10 @@ module.exports = function (app) {
     var MySQLStore = require('express-mysql-session')(session);
     var router = express.Router();
     var conn = require('../config/db')();
+    var sessionData = require('../config/session')();
 
-    app.use(session({
-        secret: '123IH2@OH%K2k32j4@#LBK2b5k24n',
-        resave: false,
-        saveUninitialized: true,
-        store: new MySQLStore({
-            host: 'localhost',
-            port: 3306,
-            user: 'user',
-            password: '123456',
-            database: 'o2'
-        })
-    }));
+    app.use(session(sessionData));
+
 
     router.post('/sejong', function (req, res, next) {
 

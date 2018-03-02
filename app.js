@@ -10,6 +10,8 @@ var users = require('./routes/users');
 
 var app = express();
 
+app.locals.pretty = true;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -18,9 +20,15 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
+app.use('/scripts', express.static(__dirname + '/node_modules/vue/dist'));
+app.use('/scripts', express.static(__dirname + '/node_modules/vuetify/dist'));
+app.use('/styles', express.static(__dirname + '/node_modules/vuetify/dist'));
+app.use('/scripts', express.static(__dirname + '/node_modules/axios/dist'));
+app.use('/scripts', express.static(__dirname + '/node_modules/jquery/dist'));
 
 app.use('/', index);
 app.use('/users', users);

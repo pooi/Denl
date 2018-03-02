@@ -1,6 +1,70 @@
 extends layout
-
 block content
-  h1= title
-  p Welcome to #{title}
-  p Discovery and Lost beta page.
+
+    include toolbar
+
+    div(style='margin-top:48px')
+
+
+    //include menu_fab
+
+    include footer
+
+    script.
+        const vue = new Vue({
+            el: '#app',
+            data: {
+                title: 'D&L',
+                scrollData: {
+                    fab: false,
+                    offsetTop: 0,
+                    scrollT: 0,
+                    delta: 200,
+                    isShowFabTop: true,
+                    transition: 'slide-y-reverse-transition'
+                },
+                loginData:{
+
+                }
+
+            },
+            method:{
+                loginSejong: function(){
+                    var id = document.getElementsByName('loginId');
+                    var pw = document.getElementsByName('loginPw');
+                    loginSejong(id, pw);
+                }
+            },
+            mounted:[
+                // function(){
+                //     $(window).scroll(
+                //         function (event) {
+                //
+                //             var scroll = $(window).scrollTop();
+                //
+                //             vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
+                //
+                //             if(vue.scrollData.scrollT > vue.scrollData.delta){
+                //                 vue.scrollData.isShowFabTop = true;
+                //                 vue.scrollData.scrollT = 0;
+                //             }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
+                //                 vue.scrollData.isShowFabTop = false;
+                //                 vue.scrollData.scrollT = 0;
+                //             }
+                //
+                //             vue.scrollData.offsetTop = scroll;
+                //
+                //             if(scroll === 0){
+                //                 vue.scrollData.isShowFabTop = false;
+                //                 vue.scrollData.scrollT = 0;
+                //                 vue.scrollData.offsetTop = 0;
+                //             }
+                //
+                //         }
+                //     );
+                // }
+            ]
+        })
+
+
+
