@@ -1,13 +1,25 @@
 
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
+
 module.exports = function (app) {
 
     var express = require('express');
     var exec = require('child_process').exec;
     var session = require('express-session');
-    var MySQLStore = require('express-mysql-session')(session);
+
     var router = express.Router();
     var conn = require('../config/db')();
-    var sessionData = require('../config/session')();
+    var sessionData = require('../config/session')(session);
 
     app.use(session(sessionData));
 
@@ -24,7 +36,7 @@ module.exports = function (app) {
                 res.status(500).send("Internal Server Error");
             }
             if(results.length > 0){
-                var COMMAND = 'python3 "{0}/loginSejong.py" --id={1} --pw={2} --only=1';
+                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2} --only=1';
                 var command = COMMAND.format(__dirname, id, pw);
                 exec(command, function(err, stdout, stderr) {
 
@@ -57,7 +69,7 @@ module.exports = function (app) {
                 });
 
             }else{
-                var COMMAND = 'python3 "{0}/loginSejong.py" --id={1} --pw={2}';
+                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2}';
                 var command = COMMAND.format(__dirname, id, pw);
 
                 exec(command, function(err, stdout, stderr) {
@@ -75,6 +87,7 @@ module.exports = function (app) {
                             res.send(data);
                         }else {
                             delete data.status;
+                            data.location_code = "sju";
 
                             var insertSql = 'INSERT INTO user SET ?';
                             conn.query(insertSql, data, function(err, results) {

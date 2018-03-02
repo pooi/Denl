@@ -45,7 +45,7 @@ v-snackbar.hidden-sm-and-up(:timeout='4000', :color='loginData.snackColor', v-mo
 v-dialog(v-model='loginData.infoDialog', fullscreen='', transition='dialog-bottom-transition', :overlay='true')
     v-card.brown.lighten-5.elevation-10
         v-toolbar(dark='', color='deep-orange darken-3',  dense)
-            v-btn(icon='', @click.native='loginData.infoDialog = false', dark='', style='height: auto;')
+            v-btn(icon='', @click.native='loginData.infoDialog = false', dark)
                 v-icon close
             v-toolbar-title Information
             v-spacer
@@ -59,10 +59,10 @@ v-dialog(v-model='loginData.infoDialog', fullscreen='', transition='dialog-botto
                     v-list-tile-title {{ loginData.user.name }}
 
             //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
-            v-list-tile.pl-2(avatar='', v-if='loginData.user.id !== null')
+            v-list-tile.pl-2(avatar='', v-if='loginData.user.studentID !== null')
                 v-list-tile-content
                     v-list-tile-sub-title Student ID
-                    v-list-tile-title {{ loginData.user.id }}
+                    v-list-tile-title {{ loginData.user.studentID }}
 
             //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
             v-list-tile.pl-2(avatar='', v-if='loginData.user.major !== null')

@@ -6,16 +6,12 @@ block content
     div(style='margin-top:48px')
 
         section
-            v-parallax.px-0(src='https://vuetifyjs.com/static/doc-images/carousel/planet.jpg', height='600', jumbotron)
-                v-layout(column='', align-center='', justify-center='')
-                    img(src='images/logo/logo_color.svg', height='150')
-                    h1.mt-4.mb-2.display-1.text-xs-center Discovery and Lost
-                    .subheading.mb-3.text-xs-center Powered by _beat
+            v-layout(column='', align-center='', justify-center='', style="height: 500px")
+                v-flex(xs12)
+                    | 404 Not Found
+                    br
+                    = url
 
-
-        section
-            v-layout(column='', align-center='', justify-center='')
-                | index
 
     //include menu_fab
 
@@ -36,21 +32,7 @@ block content
                 },
                 loginData:{
 
-                },
-                carousels: [
-                    {
-                        src: 'https://vuetifyjs.com/static/doc-images/carousel/squirrel.jpg'
-                    },
-                    {
-                        src: 'https://vuetifyjs.com/static/doc-images/carousel/sky.jpg'
-                    },
-                    {
-                        src: 'https://vuetifyjs.com/static/doc-images/carousel/bird.jpg'
-                    },
-                    {
-                        src: 'https://vuetifyjs.com/static/doc-images/carousel/planet.jpg'
-                    }
-                ]
+                }
 
             },
             method:{
