@@ -1,0 +1,22 @@
+script.
+    function toTop(){
+
+        $('body,html').animate({
+            scrollTop: 0
+        }, 400);
+        return false;
+
+    }
+v-fab-transition
+    v-speed-dial(fixed, v-model='scrollData.fab', right, bottom, :direction='top', :open-on-hover='false', :transition='slide-y-reverse-transition', v-show='scrollData.isShowFabTop', style='z-index: 9999;')
+        v-btn.ma-0.mt-2.elevation-8(slot='activator', color='deep-orange darken-3', dark, fab,  v-model='scrollData.fab')
+            v-icon list
+            v-icon close
+        v-btn(fab, dark, small, color='green', href='/find')
+            v-icon(style='height: auto; width: auto;') find_in_page
+        v-btn(fab, dark, small, color='green', href='/lost')
+            v-icon(style='height: auto; width: auto;') backup
+        v-btn(fab, dark, small, color='green', href='/manage')
+            v-icon(style='height: auto; width: auto;') build
+        v-btn(fab, dark, small, color='green', onclick='toTop();')
+            v-icon(style='height: auto; width: auto;') keyboard_arrow_up
