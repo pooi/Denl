@@ -10,6 +10,7 @@ app.locals.pretty = true;
 
 var index = require('./routes/index');
 var auth = require('./routes/auth')(app);
+var lost = require('./routes/lost');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'uploads_temp')));
 app.use('/scripts', express.static(__dirname + '/node_modules/vue/dist'));
 app.use('/scripts', express.static(__dirname + '/node_modules/vuetify/dist'));
 app.use('/styles', express.static(__dirname + '/node_modules/vuetify/dist'));
@@ -31,6 +33,7 @@ app.use('/scripts', express.static(__dirname + '/node_modules/jquery/dist'));
 
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/lost', lost);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
