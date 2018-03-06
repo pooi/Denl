@@ -115,7 +115,7 @@ router.post('/', upload.single('file'), function (req, res) {
             }
         }
 
-        res.render('lost', {userData: JSON.stringify(req.session.userData), image: req.file.filename, labels: labels, texts: texts, logos: logos, colors: colors});
+        res.render('lost', {userData: JSON.stringify(req.session.userData), image: req.file.filename, labels: labels, texts: texts, logos: logos, colors: JSON.stringify(colors)});
 
     });
 

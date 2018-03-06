@@ -54,7 +54,9 @@ block content
 
                                         v-flex.hidden-xs-only(sm2)
                                             v-subheader Category:
-                                        v-flex(sm10, xs12)
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Category:
+                                        v-flex.pb-4(sm10, xs12)
 
                                             v-breadcrumbs(v-if="category != null")
                                                 v-icon(slot='divider') chevron_right
@@ -85,7 +87,9 @@ block content
 
                                         v-flex.hidden-xs-only(sm2)
                                             v-subheader Brands:
-                                        v-flex(sm10, xs12)
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Brands:
+                                        v-flex.pb-4(sm10, xs12)
                                             v-select(color="orange darken-2", label='Input brand name', chips='', tags='', clearable='', v-model='logos')
                                                 template(slot='selection', slot-scope='data')
                                                     v-chip.elevation-2( close='', @input='removeLogo(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
@@ -95,7 +99,9 @@ block content
 
                                         v-flex.hidden-xs-only(sm2)
                                             v-subheader Hash Tag:
-                                        v-flex(sm10, xs12)
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Hash Tag:
+                                        v-flex.pb-4(sm10, xs12)
                                             v-select(color="orange darken-2", label='Input hash tag', chips='', tags='', clearable='', v-model='hashtags' )
                                                 template(slot='selection', slot-scope='data')
                                                     v-chip.elevation-2(close='', @input='removeHashtag(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
@@ -104,24 +110,47 @@ block content
 
 
                                         v-flex.hidden-xs-only(sm2)
+                                            v-subheader Suggest Tag:
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Suggest Tag:
+                                        v-flex.pb-4(sm10, xs12)
+                                            v-chip(v-for='tag in suggestTag', :class="selectedSuggestTag.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='selectedSuggestTag.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='changeSuggestTag(tag)')
+                                                strong.title.mr-1 #
+                                                strong {{ tag }}
+                                            v-flex(d-flex-inline)
+                                                v-btn(flat, color='error', @click='selectedSuggestTag = []') Reset
+                                                v-btn(flat, color='orange darken-2', @click='selectedSuggestTag = suggestTag.slice(0)') Select All
+                                            .caption.grey--text.mt-2 클릭해서 활성화
+
+
+                                        v-flex.hidden-xs-only(sm2)
                                             v-subheader Description:
-                                        v-flex(sm10, xs12)
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Description:
+                                        v-flex.pb-4(sm10, xs12)
                                             v-text-field(color="orange darken-2", label='Input description', v-model='description', name='description', multi-line)
 
 
                                         v-flex.hidden-xs-only(sm2)
                                             v-subheader Colors:
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Colors:
                                         v-flex.pb-4(sm10, xs12)
-                                            //v-container.px-0.pb-4.pt-2
-                                            div(v-for='color in colors')
-                                                v-card.mr-2.elevation-2(width="100", height="30", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
-                                                    //v-card-text()
+                                            //v-container
+                                            //    v-layout
+                                            //v-chip(v-for='color in colors', color="red")
+                                            //    strong {{color.red}}
+                                            v-flex(v-for='color in colors', d-inline-flex)
+                                                v-card.mb-3.mr-3.elevation-4.dal-small-card(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
+
 
 
 
 
                                         v-flex.hidden-xs-only(sm2)
                                             v-subheader 습득일:
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 습득일:
                                         v-flex(sm10, xs12)
                                             v-date-picker.elevation-10.mb-3.hidden-xs-only(v-model='date', :landscape='true', color="brown darken-1", name='date')
                                                 //v-date-picker.mt-3(full-width landscape v-model='picker', color="green lighten-1")
@@ -135,6 +164,8 @@ block content
 
                                         v-flex.hidden-xs-only(sm2)
                                             v-subheader Location:
+                                        v-flex.hidden-sm-and-up(xs12)
+                                            v-subheader.pa-0 Location:
                                         v-flex(sm10, xs12)
                                             v-layout( wrap)
                                                 v-flex(xs5, md3)

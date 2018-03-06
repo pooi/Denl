@@ -54,6 +54,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
             //
             // ],
             hashtags: [],
+            suggestTag: [],
+            selectedSuggestTag: [],
             description: null,
             labels: [],
             texts: [],
@@ -279,6 +281,14 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                 // }
 
             },
+            changeSuggestTag: function(tag){
+                if(this.selectedSuggestTag.includes(tag) > 0){
+                    this.selectedSuggestTag.splice(this.selectedSuggestTag.indexOf(tag), 1);
+                }else{
+                    this.selectedSuggestTag.push(tag);
+                }
+                console.log(this.selectedSuggestTag);
+            },
             submitWithAxios: function () {
 
                 var image = init_image;
@@ -387,7 +397,10 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                 if (list.length > 0 && (list[0] === '' || list[0] === ' ')) {
                     list.pop()
                 }
-                this.labels = list
+                // this.labels = list
+                for(var i=0; i<list.length; i++){
+                    this.suggestTag.push(list[i]);
+                }
             },
             function () {
                 var text = init_texts;
@@ -395,7 +408,10 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                 if (list.length > 0 && (list[0] === '' || list[0] === ' ')) {
                     list.pop()
                 }
-                this.texts = list
+                // this.texts = list
+                for(var i=0; i<list.length; i++){
+                    this.suggestTag.push(list[i]);
+                }
             },
             function () {
                 var text = init_logos;
