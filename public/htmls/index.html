@@ -27,39 +27,167 @@
         Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
         //]]>
     </script>
+
+    <style>
+        #select_menu #find, #register, #manage { height: 270px !important; /*line-height: 200px !important;*/
+            cursor: pointer;
+            border-radius: 20px !important;
+            -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
+            box-shadow: 0 2px 10px -4px rgba(0,0,0,.19) !important; }
+
+        #select_menu #find:hover, #register:hover, #manage:hover {
+            -webkit-box-shadow: 0 2px 10px -4px rgba(0,0,0,.59) !important;
+            box-shadow: 0 2px 40px -4px rgba(0,0,0,.79) !important; }
+
+    </style>
 </head>
 <body>
+
+<!--스크롤 시 툴바 생성 & 로고 변화-->
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
+            document.getElementById("toolbar").style.opacity = "1.0";
+            document.getElementById("main_logo").style.display = "none";
+        } else {
+            document.getElementById("toolbar").style.opacity = "0.0";
+            document.getElementById("main_logo").style.display = "block";
+        }
+    }
+</script>
+
+
 <div id="app">
     <v-app light>
         <v-container id="scroll-target" fluid style="overflow-x: hidden;" class="scroll-y pa-0">
             <v-layout column>
 
-
                 <!-- ####################### Toolbar ####################### -->
-                <v-toolbar fixed="fixed" dark="dark" dense="dense" color="deep-orange darken-3">
-                    <!--v-toolbar-side-icon-->
-                    <!--v-toolbar-title(v-text='title', onclick="window.location.href='/'")-->
-                    <img src="https://beta.denl.xyz/images/logo/logo_white.svg" height="20px" onclick="window.location.href='/'"/>
-                    <v-toolbar-title v-text="title" onclick="window.location.href='/'" class="ml-2"></v-toolbar-title>
-                    <v-spacer></v-spacer>
-                </v-toolbar>
+
+                <!--<v-slide-y-transition>-->
+                    <v-toolbar id="toolbar" fixed="fixed" dark="dark" color="white" style="opacity:0.0;">
+                        <!--v-toolbar-side-icon-->
+                        <!--v-toolbar-title(v-text='title', onclick="window.location.href='/'")-->
+                        <img src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40px" class="ml-4" onclick="window.location.href='https://denl.xyz/'"
+                             style="cursor: pointer;"/>
+                        <!--<v-toolbar-title v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4" style="cursor: pointer; color: #0f0f0f"></v-toolbar-title>-->
+                        <v-spacer></v-spacer>
+
+                        <!--로그인 클릭 시 로그인 창 생성-->
+                        <v-dialog v-model="dialog" persistent max-width="500px">
+                            <v-toolbar-title v-text="title_login" class="mr-2 subheading" slot="activator" style="cursor: pointer; color: #0f0f0f;"></v-toolbar-title>
+                            <v-card>
+                                <v-toolbar color="indigo" dark>
+                                    <v-toolbar-title>SEJONG UNIVERSITY</v-toolbar-title>
+                                </v-toolbar>
+
+                                <v-card-text>
+                                    <v-container grid-list-md>
+                                        <v-layout wrap>
+                                            <v-flex xs12>
+                                                <v-text-field label="Student ID" required></v-text-field>
+                                            </v-flex>
+                                            <v-flex xs12>
+                                                <v-text-field label="Password" type="password" required></v-text-field>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                    <small>Login with portal.sejong.ac.kr</small><br>
+                                    <small>* indicates required field</small>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
+                                    <v-btn color="blue darken-1" flat @click.native="dialog = false">Save</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-toolbar>
+                <!--</v-slide-y-transition>-->
+
+
+
+
+
                 <!-- ####################################################### -->
 
 
                 <!-- ####################### Main Section ####################### -->
                 <!-- Change this part -->
-                <div style="margin-top:48px">
+                <div> <!--style="margin-top:48px;"-->
                     <section>
-                        <v-parallax src="https://vuetifyjs.com/static/doc-images/carousel/planet.jpg" height="600" jumbotron="jumbotron" class="px-0">
-                            <v-layout column="" align-center="" justify-center=""><img src="https://beta.denl.xyz/images/logo/logo_color.svg" height="150"/>
-                                <h1 class="mt-4 mb-2 display-1 text-xs-center">Discovery and Lost</h1>
-                                <div class="subheading mb-3 text-xs-center">Powered by _beat</div>
+                        <v-parallax src="../images/picture/main.jpg" height="600" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
+                            <v-layout column="" align-center="" justify-center="">
+                                <img id="main_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="90" style="margin-top: 25px;"/>
+                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                            </v-layout>
+
+                            <!--찾기,등록,관리 메뉴 선택 카드-->
+                            <v-layout id="select_menu" row wrap align-center>
+                                <v-flex xs12 md4>
+                                    <v-card id="find" class="elevation-0 transparent">
+                                        <v-card-text class="text-xs-center">
+                                            <a href="#"><img src="../images/picture/find.png" style="height: 117px; margin-top: 14px;"></a>
+                                        </v-card-text>
+                                        <v-card-title primary-title class="layout justify-center white--text pt-4">
+                                            <div class="headline text-xs-center">찾기</div>
+                                        </v-card-title>
+                                        <v-card-text class="white--text">
+                                            <!--###-->
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs12 md4 style=";">
+                                    <v-card id="register" class="elevation-0 transparent" onclick="window.location.href='https://denl.xyz/lost'">
+                                        <!--<v-card-text class="text-xs-center">
+                                            <v-icon class="white&#45;&#45;text darken-3&#45;&#45;text right" style="font-size: 2em; margin-top: -15px;">more</v-icon>
+                                        </v-card-text>-->
+                                        <v-card-text class="text-xs-center">
+                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 9em;">camera_alt</v-icon>
+                                        </v-card-text>
+                                        <v-card-title primary-title class="layout justify-center white--text pt-2">
+                                            <div class="headline">등록</div>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <!--###-->
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs12 md4>
+                                    <v-card id="manage" class="elevation-0 transparent" onclick="window.location.href='https://denl.xyz/manage'">
+                                        <v-card-text class="text-xs-center">
+                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 9em;">event_note</v-icon>
+                                        </v-card-text>
+                                        <v-card-title primary-title class="layout justify-center white--text pt-0">
+                                            <div class="headline text-xs-center pt-2">관리</div>
+                                        </v-card-title>
+                                        <v-card-text>
+
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+                            </v-layout>
+
+                        </v-parallax>
+                    </section>
+
+                    <section>
+                        <v-layout column="" align-center="" justify-center="" style="height: 600px;">index</v-layout>
+                    </section>
+
+                    <section>
+                        <v-parallax src="../images/picture/main.jpg" height="400" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
+                            <v-layout column="" align-center="" justify-center="">
+                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
                             </v-layout>
                         </v-parallax>
                     </section>
-                    <section>
-                        <v-layout column="" align-center="" justify-center="">index</v-layout>
-                    </section>
+
+
                 </div>
 
 
@@ -98,20 +226,23 @@
 </div>
 
 
-
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 
 <script>
     const vue = new Vue({
         el: '#app',
         data: {
-            title: 'D&L',
+            title: 'D&L', title_login: 'Login',
+            dialog: false,
             scrollData: {
                 fab: false,
                 offsetTop: 0,
                 scrollT: 0,
                 delta: 200,
                 isShowFabTop: true,
-                transition: 'slide-y-reverse-transition'
+                transition: 'slide-y-reverse-transition',
+                gradient: 'to top right, rgba(63,81,181, .7), rgba(25,32,72, .7)'
             },
             loginData:{
 
