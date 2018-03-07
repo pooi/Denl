@@ -28,16 +28,11 @@
         //]]>
     </script>
 
-    <style>
-        #select_menu #find, #register, #manage { height: 270px !important; /*line-height: 200px !important;*/
-            cursor: pointer;
-            border-radius: 20px !important;
-            -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
-            box-shadow: 0 2px 10px -4px rgba(0,0,0,.19) !important; }
 
-        #select_menu #find:hover, #register:hover, #manage:hover {
-            -webkit-box-shadow: 0 2px 10px -4px rgba(0,0,0,.59) !important;
-            box-shadow: 0 2px 40px -4px rgba(0,0,0,.79) !important; }
+    <link href="../stylesheets/card_shadow.css" rel="stylesheet"> <!--마우스 커서시 그림자 효과-->
+    <link href="../stylesheets/visible_transition.css" rel="stylesheet"> <!--**초 뒤에 화면에 나타나는 효과-->
+
+    <style>
 
     </style>
 </head>
@@ -49,11 +44,16 @@
 
     function scrollFunction() {
         if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
-            document.getElementById("toolbar").style.opacity = "1.0";
-            document.getElementById("main_logo").style.display = "none";
+            document.getElementById("toolbar").style.backgroundColor = "white";
+
+            document.getElementById("main_top_logo").style.display = "none";
+            document.getElementById("toolbar_logo").style.display = "block";
+            document.getElementById("toolbar_title").style.display = "none";
         } else {
-            document.getElementById("toolbar").style.opacity = "0.0";
-            document.getElementById("main_logo").style.display = "block";
+            document.getElementById("toolbar").style.backgroundColor = "transparent";
+            document.getElementById("main_top_logo").style.display = "block";
+            document.getElementById("toolbar_logo").style.display = "none";
+            document.getElementById("toolbar_title").style.display = "block";
         }
     }
 </script>
@@ -67,17 +67,19 @@
                 <!-- ####################### Toolbar ####################### -->
 
                 <!--<v-slide-y-transition>-->
-                    <v-toolbar id="toolbar" fixed="fixed" dark="dark" color="white" style="opacity:0.0;">
+                    <v-toolbar id="toolbar" fixed="fixed" dark="dark" style="background-color: transparent;">
                         <!--v-toolbar-side-icon-->
                         <!--v-toolbar-title(v-text='title', onclick="window.location.href='/'")-->
-                        <img src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40px" class="ml-4" onclick="window.location.href='https://denl.xyz/'"
-                             style="cursor: pointer;"/>
-                        <!--<v-toolbar-title v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4" style="cursor: pointer; color: #0f0f0f"></v-toolbar-title>-->
+                        <img id="toolbar_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40px" class="ml-4"
+                             onclick="window.location.href='https://denl.xyz/'" style="cursor: pointer; display: none;"/>
+                        <v-toolbar-title id="toolbar_title" v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4"
+                                         style="cursor: pointer; color: #0f0f0f; font-size: 1.8em;"></v-toolbar-title>
                         <v-spacer></v-spacer>
 
                         <!--로그인 클릭 시 로그인 창 생성-->
                         <v-dialog v-model="dialog" persistent max-width="500px">
-                            <v-toolbar-title v-text="title_login" class="mr-2 subheading" slot="activator" style="cursor: pointer; color: #0f0f0f;"></v-toolbar-title>
+                            <v-toolbar-title v-text="title_login" class="mr-2 subheading" slot="activator"
+                                             style="cursor: pointer; color: #0f0f0f;"></v-toolbar-title>
                             <v-card>
                                 <v-toolbar color="indigo" dark>
                                     <v-toolbar-title>SEJONG UNIVERSITY</v-toolbar-title>
@@ -119,8 +121,8 @@
                 <div> <!--style="margin-top:48px;"-->
                     <section>
                         <v-parallax src="../images/picture/main.jpg" height="600" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
-                            <v-layout column="" align-center="" justify-center="">
-                                <img id="main_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="90" style="margin-top: 25px;"/>
+                            <v-layout id="main_top" column="" align-center="" justify-center="">
+                                <img id="main_top_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 70px;"/>
                                 <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
                                 <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
                             </v-layout>
@@ -130,7 +132,7 @@
                                 <v-flex xs12 md4>
                                     <v-card id="find" class="elevation-0 transparent">
                                         <v-card-text class="text-xs-center">
-                                            <a href="#"><img src="../images/picture/find.png" style="height: 117px; margin-top: 14px;"></a>
+                                            <a href="#"><img src="../images/picture/find.png" style="height: 95px; margin-top: 14px;"></a>
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-4">
                                             <div class="headline text-xs-center">찾기</div>
@@ -146,7 +148,7 @@
                                             <v-icon class="white&#45;&#45;text darken-3&#45;&#45;text right" style="font-size: 2em; margin-top: -15px;">more</v-icon>
                                         </v-card-text>-->
                                         <v-card-text class="text-xs-center">
-                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 9em;">camera_alt</v-icon>
+                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 7em;">camera_alt</v-icon>
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-2">
                                             <div class="headline">등록</div>
@@ -159,7 +161,7 @@
                                 <v-flex xs12 md4>
                                     <v-card id="manage" class="elevation-0 transparent" onclick="window.location.href='https://denl.xyz/manage'">
                                         <v-card-text class="text-xs-center">
-                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 9em;">event_note</v-icon>
+                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 7em;">event_note</v-icon>
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-0">
                                             <div class="headline text-xs-center pt-2">관리</div>
@@ -186,10 +188,18 @@
                             </v-layout>
                         </v-parallax>
                     </section>
-
-
                 </div>
 
+                <script>
+                    var myTimer = setTimeout(function() {
+                        document.getElementById('main_top').style.visibility = "visible";
+                        document.getElementById('main_top').style.opacity = "1";
+                        document.getElementById('select_menu').style.visibility = "visible";
+                        document.getElementById('select_menu').style.opacity = "1";
+                    }, 150);
+
+                    /*clearTimeout(myTimer);*/
+                </script>
 
 
                 <!-- ####################################################### -->
