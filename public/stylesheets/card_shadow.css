@@ -1,5 +1,6 @@
 /* 커서 시 카테고리 그림자 효과 파트 */
-#select_menu #find, #register, #manage { height: 270px !important; /*line-height: 200px !important;*/
+#select_menu #find, #register, #manage {
+    height: 250px !important; /*line-height: 200px !important;*/
     cursor: pointer;
     border-radius: 20px !important;
     -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;

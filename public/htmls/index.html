@@ -33,10 +33,27 @@
     <link href="../stylesheets/visible_transition.css" rel="stylesheet"> <!--**초 뒤에 화면에 나타나는 효과-->
 
     <style>
+        @media only screen and (max-width: 770px) {
+            #main_top, #toolbar_title { display: none;}
+
+        }
+
 
     </style>
 </head>
 <body>
+<!--<script>
+    var mql = window.matchMedia("screen and (max-width: 768px)");
+
+    mql.addListener(function scrollFunction() {
+        if(e.matches) {
+            console.log('모바일 화면 입니다.');
+        } else {
+            console.log('데스크탑 화면 입니다.');
+        }
+    });
+</script>-->
+
 
 <!--스크롤 시 툴바 생성 & 로고 변화-->
 <script>
@@ -132,9 +149,9 @@
                                 <v-flex xs12 md4>
                                     <v-card id="find" class="elevation-0 transparent">
                                         <v-card-text class="text-xs-center">
-                                            <a href="#"><img src="../images/picture/find.png" style="height: 95px; margin-top: 14px;"></a>
+                                            <a href="#"><img src="../images/picture/find.png" style="height: 109px; margin-top: 14px;"></a>
                                         </v-card-text>
-                                        <v-card-title primary-title class="layout justify-center white--text pt-4">
+                                        <v-card-title primary-title class="layout justify-center white--text pt-2">
                                             <div class="headline text-xs-center">찾기</div>
                                         </v-card-title>
                                         <v-card-text class="white--text">
@@ -142,13 +159,14 @@
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
-                                <v-flex xs12 md4 style=";">
+                                <v-flex xs12 md4>
                                     <v-card id="register" class="elevation-0 transparent" onclick="window.location.href='https://denl.xyz/lost'">
                                         <!--<v-card-text class="text-xs-center">
                                             <v-icon class="white&#45;&#45;text darken-3&#45;&#45;text right" style="font-size: 2em; margin-top: -15px;">more</v-icon>
                                         </v-card-text>-->
                                         <v-card-text class="text-xs-center">
-                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 7em;">camera_alt</v-icon>
+                                            <a href="#"><img src="../images/picture/register.png" style="height: 110px; margin-top: 14px;"></a>
+                                            <!--<v-icon class="white&#45;&#45;text darken-3&#45;&#45;text mt-4" style="font-size: 7em;">camera_alt</v-icon>-->
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-2">
                                             <div class="headline">등록</div>
@@ -161,7 +179,7 @@
                                 <v-flex xs12 md4>
                                     <v-card id="manage" class="elevation-0 transparent" onclick="window.location.href='https://denl.xyz/manage'">
                                         <v-card-text class="text-xs-center">
-                                            <v-icon class="white--text darken-3--text mt-4" style="font-size: 7em;">event_note</v-icon>
+                                            <a href="#"><img src="../images/picture/manage.png" style="height: 103px; margin-top: 21px;"></a>
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-0">
                                             <div class="headline text-xs-center pt-2">관리</div>
