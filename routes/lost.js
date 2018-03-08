@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var exec = require('child_process').exec;
 var multer = require('multer');
 var _storage = multer.diskStorage({
@@ -118,6 +119,37 @@ router.post('/', upload.single('file'), function (req, res) {
         res.render('lost', {userData: JSON.stringify(req.session.userData), image: req.file.filename, labels: labels, texts: texts, logos: logos, colors: JSON.stringify(colors)});
 
     });
+
+});
+router.post('/submit', function (req, res) {
+
+    if(req.body){
+        var imgPath = req.body.photos;
+        var oldPath = __dirname + "/../uploads_temp" + imgPath;
+        var newPath = __dirname + "/../uploads" + imgPath;
+        fs.rename(oldPath, newPath, function(err){
+            if(err){
+                if (!fs.existsSync(newPath)) {
+                    req.body.photos = "/images/logo/logo_color.svg";
+                }
+            }
+            // console.log(req.body);
+            var sql = 'INSERT INTO lost SET ?';
+            conn.query(sql, req.body, function(err, results) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send("Internal Server Error");
+                } else {
+                    res.send(results);
+                }
+            });
+
+        });
+    }else{
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+
 
 });
 

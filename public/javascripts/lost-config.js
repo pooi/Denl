@@ -81,7 +81,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
             resSuccessMsg: "This is temporary message.",
             resSuccessCode: "1",
             responseErrorDialog: false,
-            categoryDialog: false
+            categoryDialog: false,
+            loginErrorDialog: false
         },
         methods: {
             browseClick: function () {
@@ -191,39 +192,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                     alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
                 }
             },
-            dateToMs: function (date) {
-                var temp = date.split('-');
-                var year = parseInt(temp[0]);
-                var month = parseInt(temp[1]);
-                var day = parseInt(temp[2]);
-                var k = Date.parse(date);
-                return k;
-            },
-            msToDate: function (ms) {
-                var date = new Date(ms);
-                var dd = date.getDate();
-                var mm = date.getMonth() + 1; //January is 0!
-
-                var yyyy = date.getFullYear();
-                if (dd < 10) {
-                    dd = '0' + dd;
-                }
-                if (mm < 10) {
-                    mm = '0' + mm;
-                }
-                var dateString = yyyy + "-" + mm + "-" + dd;
-                return dateString
-            },
-            listToString: function (arr) {
-                var result = "";
-                for (var i = 0; i < arr.length; i++) {
-                    result += arr[i];
-                    if (i + 1 < arr.length) {
-                        result += ";";
-                    }
-                }
-                return result;
-            },
             changeSubCategories: function () {
 
                 console.log('changeSubCategories');
@@ -242,12 +210,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                     }, 500);
                 }
 
-                // alert(vue.tempCategory);
-                // if(vue.categoryData.hasOwnProperty(vue.tempCategory)){
-                //     var list = vue.categoryData[vue.tempCategory];
-                //     vue.subcategories = list;
-                // }
-
             },
             changeSubCategories2: function (item) {
 
@@ -257,28 +219,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                     var list = vue.categoryData[item];
                     vue.subcategories = list;
                 }
-
-                // console.log('changeSubCategories');
-                // if(!vue.loadingSubCategory) {
-                //     vue.subcategory = null;
-                //     vue.loadingSubCategory = true;
-                //
-                //     setTimeout(function () {
-                //         console.log('timeout');
-                //         if (vue.categoryData.hasOwnProperty(vue.tempCategory)) {
-                //             var list = vue.categoryData[vue.tempCategory];
-                //             vue.subcategories = list;
-                //         }
-                //         vue.loadingSubCategory = false;
-                //         clearTimeout();
-                //     }, 500);
-                // }
-
-                // alert(vue.tempCategory);
-                // if(vue.categoryData.hasOwnProperty(vue.tempCategory)){
-                //     var list = vue.categoryData[vue.tempCategory];
-                //     vue.subcategories = list;
-                // }
 
             },
             changeSuggestTag: function(tag){
@@ -291,26 +231,40 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
             },
             submitWithAxios: function () {
 
+                if(this.loginData.user === null){
+                    this.loginErrorDialog = true;
+                    return;
+                }
+
                 var image = init_image;
                 image = image.startsWith('/') ? image : '/' + image;
 
                 var data = {
                     photos: image,
-                    discovery_date: this.dateToMs(this.date),
-                    tags: this.listToString(this.labels),
-                    description: this.listToString(this.texts),
-                    brand: this.listToString(this.logos),
-                    category: this.category
+                    category: this.category === null ? "" : this.category,
+                    subcategory: this.subcategory === null ? "" : this.subcategory,
+                    brand: this.logos.length > 0 ? JSON.stringify(this.logos) : "",
+                    building: this.selectedBuilding === null ? "" : this.selectedBuilding,
+                    room: this.selectedRoom === null ? "" : this.selectedRoom,
+                    tags: this.hashtags.length > 0 ? JSON.stringify(this.hashtags) : "",
+                    recognition_tags: this.selectedSuggestTag.length > 0 ? JSON.stringify(this.selectedSuggestTag) : "",
+                    description: this.description === null ? "" : this.description,
+                    color: this.colors.length > 0 ? JSON.stringify(this.colors) : "",
+                    status: "WFA",
+                    dcv_date: dateToMs(this.date),
+                    rgt_date: getTodayMs(),
+                    rgt_user: this.loginData.user.id,
+                    location_code: "sju"
                 };
 
                 axios.post(
-                    '/lost',
+                    '/lost/submit',
                     data
                 ).then(function (response) {
                     var data = response.data;
                     var insertId = data.insertId;
                     if (insertId != null) {
-                        vue.resSuccessMsg = "The item was successfully registered. The registration number is ";
+                        vue.resSuccessMsg = "성공적으로 등록하였습니다. 등록 번호 : ";
                         vue.resSuccessCode = insertId;
                         vue.responseDialog = true;
                     } else {
@@ -358,39 +312,39 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
             //         }
             //     );
             // },
-            // function () {
-            //
-            //     if(init_image === null || init_image === ''){
-            //         return;
-            //     }
-            //
-            //     var data = {
-            //         image: init_image
-            //     };
-            //
-            //     axios.post(
-            //         '/lost/recognition',
-            //         data
-            //     ).then(function (response) {
-            //         var data = response.data;
-            //         console.log(data);
-            //         vue.isRecognitionProgress = false;
-            //         vue.recognitionData = data;
-            //         vue.category = data[0].title;
-            //         // var insertId = data.insertId;
-            //         // if (insertId != null) {
-            //         //     vue.resSuccessMsg = "The item was successfully registered. The registration number is ";
-            //         //     vue.resSuccessCode = insertId;
-            //         //     vue.responseDialog = true;
-            //         // } else {
-            //         //     vue.responseErrorDialog = true;
-            //         // }
-            //         // console.log(response);
-            //     })
-            //         .catch(function (error) {
-            //             alert(error);
-            //         });
-            // },
+            function () {
+
+                if(init_image === null || init_image === ''){
+                    return;
+                }
+
+                // var data = {
+                //     image: init_image
+                // };
+
+                // axios.post(
+                //     '/lost/recognition',
+                //     data
+                // ).then(function (response) {
+                //     var data = response.data;
+                //     console.log(data);
+                //     vue.isRecognitionProgress = false;
+                //     vue.recognitionData = data;
+                //     vue.category = data[0].title;
+                //     // var insertId = data.insertId;
+                //     // if (insertId != null) {
+                //     //     vue.resSuccessMsg = "The item was successfully registered. The registration number is ";
+                //     //     vue.resSuccessCode = insertId;
+                //     //     vue.responseDialog = true;
+                //     // } else {
+                //     //     vue.responseErrorDialog = true;
+                //     // }
+                //     // console.log(response);
+                // })
+                //     .catch(function (error) {
+                //         alert(error);
+                //     });
+            },
             function () {
                 var text = init_labels;
                 var list = text.split(',');

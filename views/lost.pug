@@ -194,7 +194,7 @@ block content
                                         v-flex(sm12, xs12)
                                             v-card-actions.right
                                                 v-btn(color='error', type='button', onclick="window.location.href='/lost'") Back
-                                                v-btn(color='info', @click="submitWithAxios") Submit
+                                                v-btn(color='info', @click="submitWithAxios()") Submit
                                         //p(class='right')
                                         //div(class=right)
                                             //v-btn(color='info', @click.native="responseDialog = true") Dialog(temp)
@@ -242,6 +242,47 @@ block content
             v-card-actions
                 v-spacer
                 v-btn(color='error', flat='flat', @click.native="categoryDialog = false") Ok
+
+    v-dialog.md6(v-model='responseDialog', persistent, scrollable, max-width='500px')
+        //v-layout( wrap, align-center='')
+        //v-flex(xs12='', md6='')
+        v-card
+            v-card-title.headline(icon)
+                v-icon.mr-2(color='success') check_circle
+                | Successfully Registered
+            v-divider.py-0.my-0
+            v-card-media(src= image, height='250px')
+            v-card-text
+                | {{ resSuccessMsg}}
+                code.title {{resSuccessCode}}
+                //| Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+            v-divider.py-0.my-0
+            v-card-actions
+                v-spacer
+                v-btn(color='green darken-1', flat='flat', href='/lost') Ok
+                //v-btn(color='success', flat, @click.native="responseDialog = false") Ok
+
+    v-dialog(v-model='responseErrorDialog', max-width='500px')
+        v-card
+            v-card-title.headline
+                v-icon.mr-2(color='error') error
+                | Registration Failure
+            v-card-text
+                | If you continue to fail, contact the administrator.
+            v-card-actions
+                v-spacer
+                v-btn(color='error', flat='flat', @click.native="responseErrorDialog = false") Ok
+
+    v-dialog(v-model='loginErrorDialog', max-width='500px')
+        v-card
+            v-card-title.headline
+                v-icon.mr-2(color='error') error
+                | 로그인 필요
+            v-card-text
+                | 유실물 등록을 위해 로그인이 필요합니다.
+            v-card-actions
+                v-spacer
+                v-btn(color='error', flat='flat', @click.native="loginErrorDialog = false; loginData.dialog = true") Ok
 
     script.
         function initMap() {
