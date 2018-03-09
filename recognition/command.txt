@@ -1,0 +1,1 @@
+python3 label_image.py --input_layer=Mul --output_layer=final_result --labels=retrained_labels.txt --graph=retrained_graph.pb --image=test.jpg

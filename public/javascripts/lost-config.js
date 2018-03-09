@@ -1,6 +1,6 @@
 
 
-function init(init_image, init_labels, init_texts, init_logos, init_colors) {
+function init(init_image, init_labels, init_texts, init_logos, init_colors, init_category) {
     var vue = new Vue({
         el: '#app',
         data: {
@@ -22,6 +22,17 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
             locationProgress: false,
             isRecognitionProgress: true,
             recognitionData: null,
+            recognitionDataHeaders: [
+                {
+                    text: 'Category',
+                    value: 'title'
+                },
+                {
+                    text: 'Accuracy (%)',
+                    align: 'right',
+                    value: 'accuracy'
+                }
+            ],
             category: null,
             tempCategory: null,
             subcategory: null,
@@ -30,13 +41,16 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                 '가방', '귀금속'
             ],
             subcategories: [],
-            categoryData:{
-                '가방': [
-                    '여성용가방', '남성용가방', '기타가방'
-                ],
-                '귀금속': [
-                    '반지', '목걸이', '시계', '귀걸이'
-                ]
+            // categoryData:{
+            //     '가방': [
+            //         '여성용가방', '남성용가방', '기타가방'
+            //     ],
+            //     '귀금속': [
+            //         '반지', '목걸이', '시계', '귀걸이'
+            //     ]
+            // },
+            categoryData: {
+
             },
             // categoryData: [
             //     {
@@ -192,34 +206,66 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                     alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
                 }
             },
-            changeSubCategories: function () {
+            changeSubCategories: function (key) {
 
-                console.log('changeSubCategories');
-                if(!vue.loadingSubCategory) {
+                if (vue.categoryData.hasOwnProperty(key)) {
+                    vue.category = vue.categoryData[key];
                     vue.subcategory = null;
-                    vue.loadingSubCategory = true;
-
-                    setTimeout(function () {
-                        console.log('timeout');
-                        if (vue.categoryData.hasOwnProperty(vue.tempCategory)) {
-                            var list = vue.categoryData[vue.tempCategory];
-                            vue.subcategories = list;
-                        }
-                        vue.loadingSubCategory = false;
-                        clearTimeout();
-                    }, 500);
+                    vue.subcategories = vue.category.subcategory;
                 }
 
             },
-            changeSubCategories2: function (item) {
-
-                if (vue.categoryData.hasOwnProperty(item)) {
-                    vue.category = item;
-                    vue.subcategory = null;
-                    var list = vue.categoryData[item];
-                    vue.subcategories = list;
+            getCategoryBreadcrumbs : function () {
+                var list = [];
+                if(this.category !== null){
+                    list.push(this.category.ko);
                 }
-
+                if(this.subcategory !== null){
+                    list.push(this.subcategory.ko);
+                }
+                return list;
+            },
+            isSameCategoryData : function (c1, c2) {
+                if(c1 === null ||c2 === null)
+                    return false;
+                return c1.name == c2.name
+            },
+            changedCateogryFromResult: function(item){
+                var title = item.title;
+                title = title.replace(" ", "_");
+                var keys = Object.keys(this.categoryData);
+                for(var i=0; i<keys.length; i++){
+                    var key = keys[i];
+                    var subcategories = this.categoryData[key]['subcategory'];
+                    for(var j=0; j<subcategories.length; j++){
+                        var subcategory = subcategories[j];
+                        if(subcategory.name === title){
+                            this.subcategory = subcategory;
+                            this.subcategories = subcategories;
+                            this.category = this.categoryData[key];
+                            return;
+                        }
+                    }
+                }
+            },
+            getCategoryStringFromResult: function (title) {
+                title = title.replace(" ", "_");
+                var keys = Object.keys(this.categoryData);
+                for(var i=0; i<keys.length; i++){
+                    var key = keys[i];
+                    var subcategories = this.categoryData[key]['subcategory'];
+                    for(var j=0; j<subcategories.length; j++){
+                        var subcategory = subcategories[j];
+                        if(subcategory.name === title){
+                            return this.categoryData[key].ko + " > " + subcategory.ko;
+                            // this.subcategory = subcategory;
+                            // this.subcategories = subcategories;
+                            // this.category = this.categoryData[key];
+                            // return;
+                        }
+                    }
+                }
+                return title;
             },
             changeSuggestTag: function(tag){
                 if(this.selectedSuggestTag.includes(tag) > 0){
@@ -241,8 +287,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
 
                 var data = {
                     photos: image,
-                    category: this.category === null ? "" : this.category,
-                    subcategory: this.subcategory === null ? "" : this.subcategory,
+                    category: this.category === null ? "" : this.category.name,
+                    subcategory: this.subcategory === null ? "" : this.subcategory.name,
                     brand: this.logos.length > 0 ? JSON.stringify(this.logos) : "",
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
@@ -250,6 +296,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                     recognition_tags: this.selectedSuggestTag.length > 0 ? JSON.stringify(this.selectedSuggestTag) : "",
                     description: this.description === null ? "" : this.description,
                     color: this.colors.length > 0 ? JSON.stringify(this.colors) : "",
+                    recognition_result: this.recognitionData === null ? "" : JSON.stringify(this.recognitionData),
                     status: "WFA",
                     dcv_date: dateToMs(this.date),
                     rgt_date: getTodayMs(),
@@ -318,32 +365,24 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
                     return;
                 }
 
-                // var data = {
-                //     image: init_image
-                // };
+                var data = {
+                    image: init_image
+                };
 
-                // axios.post(
-                //     '/lost/recognition',
-                //     data
-                // ).then(function (response) {
-                //     var data = response.data;
-                //     console.log(data);
-                //     vue.isRecognitionProgress = false;
-                //     vue.recognitionData = data;
-                //     vue.category = data[0].title;
-                //     // var insertId = data.insertId;
-                //     // if (insertId != null) {
-                //     //     vue.resSuccessMsg = "The item was successfully registered. The registration number is ";
-                //     //     vue.resSuccessCode = insertId;
-                //     //     vue.responseDialog = true;
-                //     // } else {
-                //     //     vue.responseErrorDialog = true;
-                //     // }
-                //     // console.log(response);
-                // })
-                //     .catch(function (error) {
-                //         alert(error);
-                //     });
+                axios.post(
+                    '/lost/recognition',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    vue.isRecognitionProgress = false;
+                    vue.recognitionData = data;
+                    vue.changedCateogryFromResult(data[0]);
+                    // console.log("recognitionData: ", vue.recognitionData);
+                })
+                    .catch(function (error) {
+                        vue.isRecognitionProgress = false;
+                        alert(error);
+                    });
             },
             function () {
                 var text = init_labels;
@@ -378,6 +417,10 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors) {
             function (){
                 var color = init_colors;
                 this.colors = JSON.parse(color);
+            },
+            function () {
+                this.categoryData = JSON.parse(init_category);
+                console.log(this.categoryData);
             },
             function () {
                 var today = new Date();

@@ -116,7 +116,40 @@ router.post('/', upload.single('file'), function (req, res) {
             }
         }
 
-        res.render('lost', {userData: JSON.stringify(req.session.userData), image: req.file.filename, labels: labels, texts: texts, logos: logos, colors: JSON.stringify(colors)});
+        var sql = 'SELECT * FROM category';
+        conn.query(sql, [], function (err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            }
+            var category = {}
+            for (var i = 0; i < results.length; i++) {
+                var result = results[i];
+                if(! category.hasOwnProperty(result.category_name)){
+                    category[result.category_name] = {
+                        subcategory: [],
+                        name: result.category_name,
+                        ko: result.category_name_ko,
+                        en: result.category_name_en
+                    }
+                }
+                category[result.category_name].subcategory.push({
+                    name: result.name,
+                    ko: result.ko,
+                    en: result.en
+                })
+            }
+            // console.log(category);
+            res.render('lost', {
+                userData: JSON.stringify(req.session.userData),
+                image: req.file.filename,
+                labels: labels,
+                texts: texts,
+                logos: logos,
+                colors: JSON.stringify(colors),
+                category: JSON.stringify(category)
+            });
+        });
 
     });
 
@@ -153,112 +186,64 @@ router.post('/submit', function (req, res) {
 
 });
 
+router.post('/recognition', function (req, res) {
 
-// router.get('/recognition', function (req, res) {
-//
-//     var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image.py"';
-//     var path_labels = '"' + __dirname + '/../recognition/retrained_labels.txt"';
-//     var path_graph = '"' + __dirname + '/../recognition/retrained_graph.pb"';
-//     var path_image = '"' + __dirname + '/../recognition/test.jpg"';
-//
-//     var COMMAND = "{0} --input_layer=Mul --output_layer=final_result --labels={1} --graph={2} --image={3} ";
-//     var command = COMMAND.format(path_labelImage, path_labels, path_graph, path_image);
-//
-//     exec(command, function(err, stdout, stderr) {
-//
-//         if(err){
-//             console.log(err);
-//             res.status(500).send("Internal Server Error");
-//         }else{
-//
-//             var result = [];
-//
-//             try{
-//                 var list = stdout.split('\n');
-//                 for(var i=0; i<list.length; i++){
-//                     var re = list[i];
-//                     if(re.length <= 0){
-//                         continue;
-//                     }
-//                     console.log(re);
-//                     var tempList = re.split(' ');
-//                     if(tempList.length < 2){
-//                         continue;
-//                     }
-//                     var data = {};
-//                     data.title = tempList[0];
-//                     data.accuracy = parseFloat(tempList[1] * 100.0).toFixed(5);
-//                     result.push(data);
-//                 }
-//             }catch (err){
-//                 console.log(err);
-//                 res.status(500).send("Internal Server Error");
-//             }
-//
-//             res.send(result);
-//
-//         }
-//
-//     });
-// });
-// router.post('/recognition', function (req, res) {
-//
-//     var imagePath = req.body.image;
-//     if(!imagePath.startsWith('/')){
-//         imagePath = '/' + imagePath;
-//     }
-//
-//     var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image.py"';
-//     var path_labels = '"' + __dirname + '/../recognition/retrained_labels.txt"';
-//     var path_graph = '"' + __dirname + '/../recognition/retrained_graph.pb"';
-//     var path_image = '"' + __dirname + '/../uploads' + imagePath + '"';
-//
-//     var COMMAND = "{0} --input_layer=Mul --output_layer=final_result --labels={1} --graph={2} --image={3} ";
-//     var command = COMMAND.format(path_labelImage, path_labels, path_graph, path_image);
-//
-//     exec(command, function(err, stdout, stderr) {
-//
-//         if(err){
-//             console.log(err);
-//             res.status(500).send("Internal Server Error");
-//         }else{
-//
-//             var result = [];
-//
-//             try{
-//                 var list = stdout.split('\n');
-//                 for(var i=0; i<list.length; i++){
-//                     var re = list[i];
-//                     if(re.length <= 0){
-//                         continue;
-//                     }
-//                     // console.log(re);
-//                     var tempList = re.split(' ');
-//                     if(tempList.length < 2){
-//                         continue;
-//                     }
-//                     var data = {};
-//                     data.title = "";
-//                     for(var j=0; j<tempList.length-1; j++){
-//                         data.title += tempList[j];
-//                         if(j < tempList.length-2){
-//                             data.title += " ";
-//                         }
-//                     }
-//                     data.accuracy = parseFloat(tempList[tempList.length-1] * 100.0).toFixed(5);
-//                     result.push(data);
-//                 }
-//             }catch (err){
-//                 console.log(err);
-//                 res.status(500).send("Internal Server Error");
-//             }
-//
-//             res.send(result);
-//
-//         }
-//
-//     });
-// });
+    var imagePath = req.body.image;
+    if(!imagePath.startsWith('/')){
+        imagePath = '/' + imagePath;
+    }
+
+    var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image.py"';
+    var path_labels = '"' + __dirname + '/../recognition/retrained_labels.txt"';
+    var path_graph = '"' + __dirname + '/../recognition/retrained_graph.pb"';
+    var path_image = '"' + __dirname + '/../uploads_temp' + imagePath + '"';
+
+    var COMMAND = "{0} --input_layer=Mul --output_layer=final_result --labels={1} --graph={2} --image={3} ";
+    var command = COMMAND.format(path_labelImage, path_labels, path_graph, path_image);
+
+    exec(command, function(err, stdout, stderr) {
+
+        if(err){
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }else{
+
+            var result = [];
+
+            try{
+                var list = stdout.split('\n');
+                for(var i=0; i<list.length; i++){
+                    var re = list[i];
+                    if(re.length <= 0){
+                        continue;
+                    }
+                    // console.log(re);
+                    var tempList = re.split(' ');
+                    if(tempList.length < 2){
+                        continue;
+                    }
+                    var data = {};
+                    data.title = "";
+                    for(var j=0; j<tempList.length-1; j++){
+                        data.title += tempList[j];
+                        if(j < tempList.length-2){
+                            data.title += " ";
+                        }
+                    }
+                    data.accuracy = parseFloat(tempList[tempList.length-1] * 100.0).toFixed(5);
+                    result.push(data);
+                }
+            }catch (err){
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            }
+
+            res.send(result);
+
+        }
+
+    });
+});
 
 router.get('/test', function (req, res){
     var filename = testImage;
@@ -304,9 +289,43 @@ router.get('/test', function (req, res){
             colors[i] = dominantColors[i].color;
         }
     }
-    console.log(JSON.stringify(colors));
 
-    res.render('lost_test', {userData: JSON.stringify(req.session.userData), image: filename, labels: labels, texts: texts, logos: logos, colors: JSON.stringify(colors)});
+    var sql = 'SELECT * FROM category';
+    conn.query(sql, [], function (err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }
+        var category = {}
+        for (var i = 0; i < results.length; i++) {
+            var result = results[i];
+            if(! category.hasOwnProperty(result.category_name)){
+                category[result.category_name] = {
+                    subcategory: [],
+                    name: result.category_name,
+                    ko: result.category_name_ko,
+                    en: result.category_name_en
+                }
+            }
+            category[result.category_name].subcategory.push({
+                name: result.name,
+                ko: result.ko,
+                en: result.en
+            })
+        }
+        // console.log(category);
+        res.render('lost_test', {
+            userData: JSON.stringify(req.session.userData),
+            image: filename,
+            labels: labels,
+            texts: texts,
+            logos: logos,
+            colors: JSON.stringify(colors),
+            category: JSON.stringify(category)
+        });
+    });
+
+
 
 });
 
