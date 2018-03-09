@@ -84,6 +84,7 @@
                 <!--<v-slide-y-transition>-->
                     <v-toolbar id="toolbar" fixed="fixed" dark="dark" style="background-color: transparent;"
                            :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-5'">
+                    <v-toolbar id="toolbar" fixed="fixed" flat dark="dark" style="background-color: transparent;">
                         <!--v-toolbar-side-icon-->
                         <img id="toolbar_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40"
                              onclick="window.location.href='https://denl.xyz/'" style="cursor: pointer; display: none;"/>
@@ -94,6 +95,8 @@
                         <!--########로그인 클릭 시 로그인 창 생성########-->
                         <v-dialog v-model="dialog" persistent max-width="500px">
                             <v-toolbar-title id="toolbar_login" v-text="title_login" class="mr-2 subheading" slot="activator"
+                                             style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
+                            <v-toolbar-title v-text="title_login" class="mr-2 subheading" slot="activator"
                                              style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
                             <v-card>
                                 <v-toolbar color="indigo" dark>
@@ -166,6 +169,7 @@
                                         </v-card-text>-->
                                         <v-card-text class="text-xs-center">
                                             <a href="#"><img src="../images/picture/register.png" style="height: 110px; margin-top: 14px;"></a>
+                                            <!--<v-icon class="white&#45;&#45;text darken-3&#45;&#45;text mt-4" style="font-size: 7em;">camera_alt</v-icon>-->
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-2">
                                             <div class="headline">등록</div>
@@ -189,6 +193,7 @@
                                     </v-card>
                                 </v-flex>
                             </v-layout>
+
                         </v-parallax>
                     </section>
 
@@ -212,6 +217,49 @@
                                 <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
                             </v-layout>
                         </v-parallax>
+                    <section style="margin: 20px 20px">
+                        <v-layout column>
+                            <v-flex xs12 sm12>
+
+                                    <v-container fluid grid-list-md>
+                                        <v-layout row wrap>
+                                            <v-flex
+                                                    v-bind="{ [`xs${card.flex}`]: true }"
+                                                    v-for="card in cards"
+                                                    :key="card.title"
+                                            >
+                                                <v-card>
+                                                    <v-card-media
+                                                            :src="card.src"
+                                                            height="200px"
+                                                    >
+                                                        <v-container fill-height fluid>
+                                                            <v-layout fill-height>
+                                                                <v-flex xs12 align-end flexbox>
+                                                                    <span class="headline white--text" v-text="card.title"/>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </v-container>
+                                                    </v-card-media>
+                                                    <v-card-actions>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn icon>
+                                                            <v-icon>favorite</v-icon>
+                                                        </v-btn>
+                                                        <v-btn icon>
+                                                            <v-icon>bookmark</v-icon>
+                                                        </v-btn>
+                                                        <v-btn icon>
+                                                            <v-icon>share</v-icon>
+                                                        </v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+
+                            </v-flex>
+                        </v-layout>
                     </section>
 
                     <!--######## 개발진 소개 ########-->
@@ -265,6 +313,10 @@
                             </v-flex>
                         </v-layout>
                     </section>
+
+
+
+
                 </div>
 
                 <!--######## **초 뒤에 나타나는 기능 ########-->
@@ -281,6 +333,7 @@
 
 
                 <!-- ####################################################### -->
+
 
 
                 <!-- ####################### Footer ####################### -->
@@ -304,6 +357,7 @@
                     </v-layout>
                 </v-footer>
                 <!-- ####################################################### -->
+
 
 
             </v-layout>
@@ -341,6 +395,15 @@
                     src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_yhyjhDIwk-x1iCIH3KxCAUuao7loSfux9lOkgbe_eyv_chH1', flex: 12 , flex_md: 3 },
             ],
 
+            cards: [
+                { title: 'Pre-fab homes', src: '/static/doc-images/cards/house.jpg', flex: 3 },
+                { title: 'Favorite road trips', src: '/static/doc-images/cards/road.jpg', flex: 3 },
+                { title: 'Best airlines', src: '/static/doc-images/cards/plane.jpg', flex: 3 },
+                { title: 'Best airlines', src: '/static/doc-images/cards/plane.jpg', flex: 3 }
+            ],
+            return: {
+                card_text: 'Lorem ipsum dolor sit amet, brute iriure accusata ne mea. Eos suavitate referrentur ad, te duo agam libris qualisque, utroque quaestio accommodare no qui. Et percipit laboramus usu, no invidunt verterem nominati mel. Dolorem ancillae an mei, ut putant invenire splendide mel, ea nec propriae adipisci. Ignota salutandi accusamus in sed, et per malis fuisset, qui id ludus appareat.'
+            },
             loginData:{
 
             }
