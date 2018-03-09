@@ -82,7 +82,6 @@
                 <!-- ####################### Toolbar ####################### -->
 
                 <!--<v-slide-y-transition>-->
-
                     <v-toolbar id="toolbar" fixed="fixed" dark="dark" style="background-color: transparent;"
                            :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-5'">
                         <!--v-toolbar-side-icon-->
@@ -92,7 +91,7 @@
                                          style="cursor: pointer; color: #E6E6E6; font-size: 1.8em;"></v-toolbar-title>
                         <v-spacer></v-spacer>
 
-                        <!--로그인 클릭 시 로그인 창 생성-->
+                        <!--########로그인 클릭 시 로그인 창 생성########-->
                         <v-dialog v-model="dialog" persistent max-width="500px">
                             <v-toolbar-title id="toolbar_login" v-text="title_login" class="mr-2 subheading" slot="activator"
                                              style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
@@ -134,7 +133,9 @@
 
                 <!-- ####################### Main Section ####################### -->
                 <!-- Change this part -->
+
                 <div> <!--style="margin-top:48px;"-->
+                    <!--######## 첫번째 Section ########-->
                     <section>
                         <v-parallax id="main_first_section" src="../images/picture/main.jpg" height="600" jumbotron="jumbotron"> <!--style="background-color: #8ebad0;"-->
                             <v-layout id="main_top" column="" align-center="" justify-center="">
@@ -143,7 +144,7 @@
                                 <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
                             </v-layout>
 
-                            <!--찾기,등록,관리 메뉴 선택 카드-->
+                            <!--######## 카드(찾기,등록,관리) ########-->
                             <v-layout id="select_cards" row wrap align-center>
                                 <v-flex xs12 md4>
                                     <v-card id="find" class="elevation-0 transparent">
@@ -188,17 +189,16 @@
                                     </v-card>
                                 </v-flex>
                             </v-layout>
-
                         </v-parallax>
                     </section>
 
-                    <!--최근 등록된 유실물-->
+                    <!--######## 최근 등록된 유실물 ########-->
                     <section>
                         <v-layout column="" align-center="" justify-center="" style="height: 350px; ">최근 등록된 유실물</v-layout>
                     </section>
                     <hr/>
 
-                    <!--유실물 통계-->
+                    <!--######## 유실물 통계 ########-->
                     <section>
                         <v-layout column="" align-center="" justify-center="" style="height: 300px;">통계</v-layout>
                     </section>
@@ -214,7 +214,7 @@
                         </v-parallax>
                     </section>
 
-                    <!--개발진 소개-->
+                    <!--######## 개발진 소개 ########-->
                     <section>
                         <v-layout id="develop_intro" column="" align-center class="text-xs-center"> <!-- align-center justify-center=""-->
                             <v-flex xs10 container px-5>
@@ -267,7 +267,7 @@
                     </section>
                 </div>
 
-                <!---->
+                <!--######## **초 뒤에 나타나는 기능 ########-->
                 <script>
                     var myTimer = setTimeout(function() {
                         document.getElementById('main_top').style.visibility = "visible";
@@ -281,7 +281,6 @@
 
 
                 <!-- ####################################################### -->
-
 
 
                 <!-- ####################### Footer ####################### -->
@@ -307,7 +306,6 @@
                 <!-- ####################################################### -->
 
 
-
             </v-layout>
         </v-container>
     </v-app>
@@ -331,6 +329,7 @@
                 isShowFabTop: true,
                 transition: 'slide-y-reverse-transition'
             },
+            /*######## 개발자 소개 해시태그 ########*/
             cards: [
                 { title_name: '유태우', title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',
                     src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex: 12, flex_md: 3 },
