@@ -39,14 +39,9 @@
             #main_first_section #main_top { display: none;}
             #main_first_section #select_cards { margin-top: 80px;}
             #main_first_section #find img, #register img, #manage img { height: 80px !important;}
-
-
-
-
             /*개발진 소개*/
             #develop_intro { display: none;}
         }
-
     </style>
 </head>
 <body>
@@ -54,12 +49,10 @@
 <!--스크롤 시 툴바 생성 & 로고 변화-->
 <script>
     window.onscroll = function() {scrollFunction()};
-
     function scrollFunction() {
         if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
             document.getElementById("toolbar").style.backgroundColor = "white";
             document.getElementById("toolbar_login").style.color = "black";
-
             document.getElementById("main_top_logo").style.display = "none";
             document.getElementById("toolbar_logo").style.display = "block";
             document.getElementById("toolbar_title").style.display = "none";
@@ -82,49 +75,46 @@
                 <!-- ####################### Toolbar ####################### -->
 
                 <!--<v-slide-y-transition>-->
-                    <v-toolbar id="toolbar" fixed="fixed" dark="dark" style="background-color: transparent;"
+                <v-toolbar id="toolbar" fixed="fixed" dark="dark" style="background-color: transparent;"
                            :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-5'">
-                    <v-toolbar id="toolbar" fixed="fixed" flat dark="dark" style="background-color: transparent;">
-                        <!--v-toolbar-side-icon-->
-                        <img id="toolbar_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40"
-                             onclick="window.location.href='https://denl.xyz/'" style="cursor: pointer; display: none;"/>
-                        <v-toolbar-title id="toolbar_title" v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4"
-                                         style="cursor: pointer; color: #E6E6E6; font-size: 1.8em;"></v-toolbar-title>
-                        <v-spacer></v-spacer>
+                    <!--v-toolbar-side-icon-->
+                    <img id="toolbar_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40"
+                         onclick="window.location.href='https://denl.xyz/'" style="cursor: pointer; display: none;"/>
+                    <v-toolbar-title id="toolbar_title" v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4"
+                                     style="cursor: pointer; color: #E6E6E6; font-size: 1.8em;"></v-toolbar-title>
+                    <v-spacer></v-spacer>
 
-                        <!--########로그인 클릭 시 로그인 창 생성########-->
-                        <v-dialog v-model="dialog" persistent max-width="500px">
-                            <v-toolbar-title id="toolbar_login" v-text="title_login" class="mr-2 subheading" slot="activator"
-                                             style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
-                            <v-toolbar-title v-text="title_login" class="mr-2 subheading" slot="activator"
-                                             style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
-                            <v-card>
-                                <v-toolbar color="indigo" dark>
-                                    <v-toolbar-title>SEJONG UNIVERSITY</v-toolbar-title>
-                                </v-toolbar>
+                    <!--########로그인 클릭 시 로그인 창 생성########-->
+                    <v-dialog v-model="dialog" persistent max-width="500px">
+                        <v-toolbar-title id="toolbar_login" v-text="title_login" class="mr-2 subheading" slot="activator"
+                                         style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
+                        <v-card>
+                            <v-toolbar color="indigo" dark>
+                                <v-toolbar-title>SEJONG UNIVERSITY</v-toolbar-title>
+                            </v-toolbar>
 
-                                <v-card-text>
-                                    <v-container grid-list-md>
-                                        <v-layout wrap>
-                                            <v-flex xs12>
-                                                <v-text-field label="Student ID" required></v-text-field>
-                                            </v-flex>
-                                            <v-flex xs12>
-                                                <v-text-field label="Password" type="password" required></v-text-field>
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
-                                    <small>Login with portal.sejong.ac.kr</small><br>
-                                    <small>* indicates required field</small>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
-                                    <v-btn color="blue darken-1" flat @click.native="dialog = false">Save</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                    </v-toolbar>
+                            <v-card-text>
+                                <v-container grid-list-md>
+                                    <v-layout wrap>
+                                        <v-flex xs12>
+                                            <v-text-field label="Student ID" required></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs12>
+                                            <v-text-field label="Password" type="password" required></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                                <small>Login with portal.sejong.ac.kr</small><br>
+                                <small>* indicates required field</small>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
+                                <v-btn color="blue darken-1" flat @click.native="dialog = false">Save</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-toolbar>
                 <!--</v-slide-y-transition>-->
 
 
@@ -169,7 +159,6 @@
                                         </v-card-text>-->
                                         <v-card-text class="text-xs-center">
                                             <a href="#"><img src="../images/picture/register.png" style="height: 110px; margin-top: 14px;"></a>
-                                            <!--<v-icon class="white&#45;&#45;text darken-3&#45;&#45;text mt-4" style="font-size: 7em;">camera_alt</v-icon>-->
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-2">
                                             <div class="headline">등록</div>
@@ -193,39 +182,21 @@
                                     </v-card>
                                 </v-flex>
                             </v-layout>
-
                         </v-parallax>
                     </section>
 
                     <!--######## 최근 등록된 유실물 ########-->
                     <section>
-                        <v-layout column="" align-center="" justify-center="" style="height: 350px; ">최근 등록된 유실물</v-layout>
-                    </section>
-                    <hr/>
+                        <v-layout column="" style="height: auto">
+                            최근 등록된 유실물
+                            <v-flex xs12 sm12 >
 
-                    <!--######## 유실물 통계 ########-->
-                    <section>
-                        <v-layout column="" align-center="" justify-center="" style="height: 300px;">통계</v-layout>
-                    </section>
-
-
-                    <!---->
-                    <section>
-                        <v-parallax src="../images/picture/main.jpg" height="400" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
-                            <v-layout column="" align-center="" justify-center="">
-                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
-                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
-                            </v-layout>
-                        </v-parallax>
-                    <section style="margin: 20px 20px">
-                        <v-layout column>
-                            <v-flex xs12 sm12>
 
                                     <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                                             <v-flex
                                                     v-bind="{ [`xs${card.flex}`]: true }"
-                                                    v-for="card in cards"
+                                                    v-for="card in item_cards"
                                                     :key="card.title"
                                             >
                                                 <v-card>
@@ -260,6 +231,23 @@
 
                             </v-flex>
                         </v-layout>
+                    </section>>
+                    <hr/>
+
+                    <!--######## 유실물 통계 ########-->
+                    <section>
+                        <v-layout column="" align-center="" justify-center="" style="height: 300px;">통계</v-layout>
+                    </section>
+
+
+                    <!---->
+                    <section>
+                        <v-parallax src="../images/picture/main.jpg" height="400" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
+                            <v-layout column="" align-center="" justify-center="">
+                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                            </v-layout>
+                        </v-parallax>
                     </section>
 
                     <!--######## 개발진 소개 ########-->
@@ -313,10 +301,6 @@
                             </v-flex>
                         </v-layout>
                     </section>
-
-
-
-
                 </div>
 
                 <!--######## **초 뒤에 나타나는 기능 ########-->
@@ -327,13 +311,11 @@
                         document.getElementById('select_menu').style.visibility = "visible";
                         document.getElementById('select_menu').style.opacity = "1";
                     }, 150);
-
                     /*clearTimeout(myTimer);*/
                 </script>
 
 
                 <!-- ####################################################### -->
-
 
 
                 <!-- ####################### Footer ####################### -->
@@ -357,7 +339,6 @@
                     </v-layout>
                 </v-footer>
                 <!-- ####################################################### -->
-
 
 
             </v-layout>
@@ -394,20 +375,15 @@
                 { title_name: '김윤욱', title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',
                     src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_yhyjhDIwk-x1iCIH3KxCAUuao7loSfux9lOkgbe_eyv_chH1', flex: 12 , flex_md: 3 },
             ],
-
-            cards: [
-                { title: 'Pre-fab homes', src: '/static/doc-images/cards/house.jpg', flex: 3 },
-                { title: 'Favorite road trips', src: '/static/doc-images/cards/road.jpg', flex: 3 },
-                { title: 'Best airlines', src: '/static/doc-images/cards/plane.jpg', flex: 3 },
-                { title: 'Best airlines', src: '/static/doc-images/cards/plane.jpg', flex: 3 }
+            item_cards: [
+                { title: 'Pre-fab homes', src: '../images/picture/test_camera.jpg', flex: 3 },
+                { title: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 3 },
+                { title: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
+                { title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { title: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
             ],
-            return: {
-                card_text: 'Lorem ipsum dolor sit amet, brute iriure accusata ne mea. Eos suavitate referrentur ad, te duo agam libris qualisque, utroque quaestio accommodare no qui. Et percipit laboramus usu, no invidunt verterem nominati mel. Dolorem ancillae an mei, ut putant invenire splendide mel, ea nec propriae adipisci. Ignota salutandi accusamus in sed, et per malis fuisset, qui id ludus appareat.'
-            },
             loginData:{
-
             }
-
         },
         method:{
             loginSejong: function(){
