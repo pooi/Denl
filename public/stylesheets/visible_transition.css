@@ -1,4 +1,4 @@
 /* 0.15초 뒤에 화면에 나타나는 파트*/
-#main_top, #select_menu {
-    visibility: hidden; visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s linear;
+#main_top, #select_cards {
+    visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s linear;
 }
