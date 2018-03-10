@@ -1,4 +1,4 @@
-v-dialog(v-model='loginData.dialog', :persistent='loginData.isProgress', max-width='500px')
+v-dialog(v-model='loginData.dialog', :persistent='loginData.isProgress', max-width='500px', style="border-radius: 20px;")
     v-card(ref="form")
         v-card-title(style='background-color: rgb(194,0,47);')
             img(src='/images/logo/sejong_white.svg', style='width: 50%;')
@@ -42,7 +42,7 @@ v-snackbar.hidden-sm-and-up(:timeout='4000', :color='loginData.snackColor', v-mo
     | {{ loginData.snackMsg }}
     v-btn(dark='', flat='', @click.native='loginData.snackbar = false') Close
 
-v-dialog(v-model='loginData.infoDialog', fullscreen='', transition='dialog-bottom-transition', :overlay='true')
+v-dialog(v-model='loginData.infoDialog', :fullscreen='$vuetify.breakpoint.xsOnly', max-width='600px', transition='dialog-bottom-transition', :overlay='true')
     v-card.brown.lighten-5.elevation-10
         v-toolbar(dark='', color='deep-orange darken-3',  dense)
             v-btn(icon='', @click.native='loginData.infoDialog = false', dark)
@@ -117,7 +117,7 @@ v-dialog(v-model='loginData.infoDialog', fullscreen='', transition='dialog-botto
                     v-list-tile-title Auto-add widgets
                     v-list-tile-sub-title Automatically add home screen widgets
 
-        v-list.mb-4.brown.lighten-5(three-line='', subheader='')
+        v-list.brown.lighten-5(three-line='', subheader='')
 
 
 
@@ -129,17 +129,17 @@ script.
     });
 
     function setLoginData(check) {
-        console.log('set login data');
+        // console.log('set login data');
 
         var userData = null;
         if (check) {
             try {
                 var tagsJSON = '!{userData}';
-                console.log(tagsJSON);
+                // console.log(tagsJSON);
                 tagsJSON = tagsJSON.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
                 userData = JSON.parse(tagsJSON);
             } catch (err) {
-                console.log('There is no user data.');
+                // console.log('There is no user data.');
             }
         }
 
@@ -157,7 +157,7 @@ script.
         };
 
         vue.$set(vue.$data, 'loginData', data);
-        console.log(vue.loginData);
+        // console.log(vue.loginData);
 
         vue.loginData.isProgress = false;
 
@@ -166,7 +166,7 @@ script.
     function logout() {
         axios.get('/auth/logout')
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
                 setLoginData(false);
             })
             .catch(function (error) {
@@ -180,16 +180,16 @@ script.
         var loginPw = vue.$refs['loginData.pw'];
 
         if (!loginId.valid && !loginPw.valid) {
-            console.log("Empty ID, PW");
+            // console.log("Empty ID, PW");
             vue.$refs['loginData.id'].validate(true);
             vue.$refs['loginData.pw'].validate(true);
             return;
         } else if (!loginId.valid) {
-            console.log("Empty ID");
+            // console.log("Empty ID");
             vue.$refs['loginData.id'].validate(true);
             return;
         } else if (!loginPw.valid) {
-            console.log("Empty PW");
+            // console.log("Empty PW");
             vue.$refs['loginData.pw'].validate(true);
             return;
         }
@@ -197,7 +197,7 @@ script.
         vue.loginData.isProgress = true;
         vue.scrollData.isShowFabTop = false;
 
-        console.log('login start');
+        // console.log('login start');
 
         var data = {
             id: vue.loginData.id === null ? '' : vue.loginData.id,
@@ -209,7 +209,7 @@ script.
             data
         ).then(function (response) {
             var data = response.data;
-            console.log(data);
+            // console.log(data);
             if (data.status === 'success') {
                 // alert(data);
                 vue.loginData.dialog = false;

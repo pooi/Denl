@@ -24,11 +24,11 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             recognitionData: null,
             recognitionDataHeaders: [
                 {
-                    text: 'Category',
+                    text: '카테고리',
                     value: 'title'
                 },
                 {
-                    text: 'Accuracy (%)',
+                    text: '정확도 (%)',
                     align: 'right',
                     value: 'accuracy'
                 }
@@ -169,7 +169,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                             zoom: 17,
                             center: uluru
                         });
-                        console.log(map);
+                        // console.log(map);
                         var marker = new google.maps.Marker({
                             position: uluru,
                             map: map
@@ -273,7 +273,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 }else{
                     this.selectedSuggestTag.push(tag);
                 }
-                console.log(this.selectedSuggestTag);
+                // console.log(this.selectedSuggestTag);
             },
             submitWithAxios: function () {
 
@@ -317,7 +317,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     } else {
                         vue.responseErrorDialog = true;
                     }
-                    console.log(response);
+                    // console.log(response);
                 })
                     .catch(function (error) {
                         alert(error);
@@ -385,26 +385,19 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     });
             },
             function () {
-                var text = init_labels;
-                var list = text.split(',');
-                if (list.length > 0 && (list[0] === '' || list[0] === ' ')) {
-                    list.pop()
+                var text = init_labels + "," + init_texts;
+                var tempList = text.split(',');
+                var list = [];
+                for(var i=0; i<tempList.length; i++){
+                    if(tempList[i] !== '' && tempList[i] !== ' '){
+                        list.push(tempList[i]);
+                    }
                 }
-                // this.labels = list
-                for(var i=0; i<list.length; i++){
-                    this.suggestTag.push(list[i]);
+                var uniqueList = removeDuplicateUsingFilter(list);
+                for(var i=0; i<uniqueList.length; i++){
+                    this.suggestTag.push(uniqueList[i]);
                 }
-            },
-            function () {
-                var text = init_texts;
-                var list = text.split(',');
-                if (list.length > 0 && (list[0] === '' || list[0] === ' ')) {
-                    list.pop()
-                }
-                // this.texts = list
-                for(var i=0; i<list.length; i++){
-                    this.suggestTag.push(list[i]);
-                }
+
             },
             function () {
                 var text = init_logos;
@@ -420,7 +413,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             function () {
                 this.categoryData = JSON.parse(init_category);
-                console.log(this.categoryData);
             },
             function () {
                 var today = new Date();

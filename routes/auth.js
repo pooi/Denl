@@ -54,9 +54,9 @@ module.exports = function (app) {
                         }else {
                             data = results[0];
                             data.status = 'success';
-                            console.log("2", data);
+                            // console.log("2", data);
                             req.session.userData = data;
-                            console.log('session: ', req.session);
+                            // console.log('session: ', req.session);
                             req.session.save(function () {
                                 res.send(req.session.userData);
                             });
@@ -82,7 +82,7 @@ module.exports = function (app) {
                         var result = stdout;
 
                         var data = JSON.parse(result);
-                        console.log(data);
+                        // console.log(data);
                         if(data.status === 'fail'){
                             res.send(data);
                         }else {
@@ -97,7 +97,7 @@ module.exports = function (app) {
                                 } else {
                                     data.status = 'success';
                                     req.session.userData = data;
-                                    console.log('session: ', req.session);
+                                    // console.log('session: ', req.session);
                                     req.session.save(function () {
                                         res.send(req.session.userData);
                                     });

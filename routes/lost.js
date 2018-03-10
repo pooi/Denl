@@ -56,7 +56,7 @@ router.get('/', function (req, res) {
     res.render('lost', {userData: JSON.stringify(req.session.userData)});
 });
 router.post('/', upload.single('file'), function (req, res) {
-    console.log(req.file); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
+    // console.log(req.file); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
     //Build the request payloads
 
     var d = requtil.createRequests().addRequest(
@@ -72,7 +72,7 @@ router.post('/', upload.single('file'), function (req, res) {
     vision.query(d, function (e, r, d) {
 
         if (e) console.log('ERROR:', e);
-        console.log(JSON.stringify(d));
+        // console.log(JSON.stringify(d));
 
         var json = JSON.stringify(d);
         var obj = JSON.parse(json);

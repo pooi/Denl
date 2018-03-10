@@ -39,3 +39,10 @@ function listToString(arr) {
     }
     return result;
 }
+
+function removeDuplicateUsingFilter(arr){
+    let unique_array = arr.filter(function(elem, index, self) {
+        return index == self.indexOf(elem);
+    });
+    return unique_array
+}

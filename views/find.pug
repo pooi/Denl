@@ -1,0 +1,28 @@
+extends layout
+block content
+
+    include toolbar
+
+    div(style="margin-top: 48px;")
+        v-app
+            v-content.brown.lighten-5
+                v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
+
+                    v-flex(md12='')
+                        v-card.pa-3(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+
+                            v-card-title.headline.pa-0 유실물 찾기
+
+                            v-divider.my-3
+
+                            v-card-text
+
+
+
+
+        include footer
+
+
+    script(type="text/javascript" src='/javascripts/find-config.js')
+    script.
+        const vue = init();
