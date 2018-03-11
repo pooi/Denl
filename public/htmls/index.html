@@ -312,10 +312,13 @@
 
                     <!--######## 유실물 통계 ########-->
                     <section>
-                        <div style="padding: 20px 0px;">
-                            <span style="font-size: 150%;color: #d84315;margin-left: 60px;padding-right: 200px;">통계</span>
-                        </div>
+                        <v-layout column="" align-center="" justify-center="" style="height: 300px;">
+                            <div style="padding: 20px 0px;">
+                                <span style="font-size: 150%;color: #d84315;">통계</span>
+                            </div>
+                        </v-layout>
                     </section>
+
 
                     <!--######## 등록 설명 ########-->
 
@@ -442,7 +445,7 @@
 
                     <section>
                         <v-layout id="introduce_developer_desktop" column="" align-center class="text-xs-center" style="height: 600px;">
-                            <v-flex xs11 container fill-height px-0>
+                            <v-flex xs12 md11 container fill-height px-0>
                                 <v-container fluid grid-list-md>
                                     <v-layout row wrap>
                                         <v-flex
@@ -450,7 +453,7 @@
                                                 flat
                                                 class="elevation-0"
                                                 v-bind="{ [`md${card.flex_md}`]: true }"
-                                                v-for="card in cards"
+                                                v-for="card in cards_introduce"
                                                 :key="card.title_name"
                                         >
                                             <v-layout row>
@@ -481,7 +484,7 @@
                                     <v-carousel
                                             delimiter-icon="stop" prev-icon="mdi-arrow-left" next-icon="mdi-arrow-right">
                                         <v-carousel-item
-                                                v-for="card in cards">
+                                                v-for="card in cards_introduce">
                                             <v-layout row wrap>
                                                 <v-flex
                                                         xs12
@@ -512,19 +515,20 @@
                     </section>
 
 
+                    <!---->
+                    <section>
+                        <v-parallax src="../images/picture/main.jpg" height="300" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
+                            <v-layout column="" align-center="" justify-center="">
+                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                            </v-layout>
+                        </v-parallax>
+                    </section>
+
                 </div>
 
 
 
-                <!---->
-                <section>
-                    <v-parallax src="../images/picture/main.jpg" height="300" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
-                        <v-layout column="" align-center="" justify-center="">
-                            <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
-                            <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
-                        </v-layout>
-                    </v-parallax>
-                </section>
 
 
                 <!-- ####################################################### -->
@@ -577,7 +581,7 @@
                 transition: 'slide-y-reverse-transition'
             },
             /*######## 개발자 소개 해시태그 ########*/
-            cards: [
+            cards_introduce: [
                 { title_name: '유태우', /*title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',*/
                     title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
                     src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex: 12, flex_md: 3 },
