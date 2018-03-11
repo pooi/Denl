@@ -50,7 +50,8 @@
 
 
             /*메인 페이지_ 개발진 소개*/
-            #introduce_developer { height: auto !important;}
+            #introduce_developer_desktop { display: none !important;}
+            #introduce_developer_mobile { height: auto !important; display: block !important;}
         }
 
     </style>
@@ -96,6 +97,7 @@
                         <v-toolbar-title id="toolbar_title" v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4"
                                          style="cursor: pointer; color: #E6E6E6; font-size: 1.8em;"></v-toolbar-title>
                         <v-spacer></v-spacer>
+
 
                         <!--########로그인 클릭 시 로그인 창 생성########-->
                         <v-dialog v-model="dialog" persistent max-width="500px">
@@ -385,10 +387,10 @@
 
 
 
-                    <!--######## 개발진 소개 ver.2 ########-->
+                    <!--######## 개발진 소개 ver.2(데스크탑) ########-->
 
                     <section>
-                        <v-layout id="introduce_developer" column="" align-center class="text-xs-center" style="height: 600px;">
+                        <v-layout id="introduce_developer_desktop" column="" align-center class="text-xs-center" style="height: 600px;">
                             <v-flex xs11 container fill-height px-0>
                                 <v-container fluid grid-list-md>
                                     <v-layout row wrap>
@@ -405,7 +407,7 @@
                                                     <v-card>
                                                         <img :src="card.src" height="370px" width="100%">
                                                         <span class="subheading black--text" v-text="card.title_name"></span></br>
-                                                        <div id="introduce_skill">
+                                                        <div id="introduce_skill_desktop">
                                                             <strong>#</strong><span class="body-2" v-text="card.title_skill_1"></span></br>
                                                             <strong>#</strong><span class="body-2" v-text="card.title_skill_2"></span>
                                                         </div>
@@ -418,6 +420,46 @@
                             </v-flex>
                         </v-layout>
                     </section>
+
+                    <!--######## 개발진 소개 ver.2(모바일) ########-->
+                    <section>
+                        <v-layout id="introduce_developer_mobile" column="" align-center class="text-xs-center" style="display: none;">
+                            <v-flex xs11 container fill-height px-0>
+                                <v-container fluid grid-list-md>
+
+                                    <v-carousel
+                                            delimiter-icon="stop" prev-icon="mdi-arrow-left" next-icon="mdi-arrow-right">
+                                        <v-carousel-item
+                                                v-for="card in cards">
+                                            <v-layout row wrap>
+                                                <v-flex
+                                                        xs12
+                                                        flat
+                                                        class="elevation-0"
+                                                        v-bind="{ [`md${card.flex_md}`]: true }"
+                                                        :key="card.title_name"
+                                                >
+                                                    <v-layout row>
+                                                        <v-flex xs12 md12>
+                                                            <v-card>
+                                                                <img :src="card.src" height="370px" width="100%">
+                                                                <span class="subheading black--text" v-text="card.title_name"></span></br>
+                                                                <div id="introduce_skill_mobile">
+                                                                    <strong>#</strong><span class="body-2" v-text="card.title_skill_1"></span></br>
+                                                                    <strong>#</strong><span class="body-2" v-text="card.title_skill_2"></span>
+                                                                </div>
+                                                            </v-card>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-carousel-item>
+                                    </v-carousel>
+                                </v-container>
+                            </v-flex>
+                        </v-layout>
+                    </section>
+
 
                 </div>
 
