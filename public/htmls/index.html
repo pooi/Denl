@@ -265,27 +265,14 @@
                                                 <v-card>
                                                     <v-card-media
                                                             :src="card.src"
-                                                            height="200px"
+                                                            height="300px"
                                                     >
-                                                        <v-container fill-height fluid>
-                                                            <v-layout fill-height>
-                                                                <v-flex xs12 align-end flexbox>
-                                                                    <span class="headline white--text" v-text="card.title"/>
-                                                                </v-flex>
-                                                            </v-layout>
-                                                        </v-container>
+
                                                     </v-card-media>
+                                                    :key="card.title"
                                                     <v-card-actions>
-                                                        <v-spacer></v-spacer>
-                                                        <v-btn icon>
-                                                            <v-icon>favorite</v-icon>
-                                                        </v-btn>
-                                                        <v-btn icon>
-                                                            <v-icon>bookmark</v-icon>
-                                                        </v-btn>
-                                                        <v-btn icon>
-                                                            <v-icon>share</v-icon>
-                                                        </v-btn>
+                                                        <v-btn flat color="orange">Share</v-btn>
+                                                        <v-btn flat color="orange">Detail</v-btn>
                                                     </v-card-actions>
                                                 </v-card>
                                             </v-flex>
@@ -295,7 +282,7 @@
                             </v-flex>
                         </v-layout>
                     </section>>
-                    <hr/>
+
 
                     <!--######## 유실물 통계 ########-->
                     <section>
