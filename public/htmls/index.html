@@ -254,11 +254,12 @@
                     <section>
                         <v-layout column="" style="height: auto">
                             <div style="padding: 20px 0px;">
-                                <span style="font-size: 160%;color: #d84315;font-weight: bold;margin-left: 50px;padding-right: 200px;">최근 등록된 유실물</span>
+                                <span style="font-size: 150%;color: #d84315;margin-left: 60px;padding-right: 200px;">최근 등록된 유실물</span>
                             </div>
 
                             <v-tabs
                                     height="500px">
+                                <v-tabs-slider color="none"></v-tabs-slider>
                                     <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                                             <v-tab
@@ -281,20 +282,20 @@
                                                             <span style="padding-left: 10px" v-text="card.category"/><br>
                                                         </v-card-title>
                                                         <div>
-                                                            <span style="font-weight: bold;padding-left: 30px;font-size: 140%;color: #fb8c00">
+                                                            <span style="font-weight: bold;padding-left: 0px;font-size: 100%;color: #fb8c00">
                                                                 <span style="font-weight: bold;color: grey;padding-left: 7px;">#</span><span style="padding-left: 8px">Tags</span>
                                                             </span>
                                                             <span style="padding-left: 10px" v-text="card.date"/>
                                                         </div>
                                                         <div>
-                                                            <span style="font-weight: bold;padding-left: 30px;font-size: 140%; color: #fb8c00">
+                                                            <span style="font-weight: bold;padding-left: 0px;font-size: 100%; color: #fb8c00">
                                                                 <v-icon>schedule</v-icon><span style="padding-left: 3px">Date</span>
                                                             </span>
                                                             <span style="padding-left: 10px" v-text="card.date"/>
                                                         </div>
-                                                        <v-card-actions style="padding-left: 30%;">
+                                                        <v-card-actions style="padding-left: 20%;">
                                                             <v-btn flat color="orange">Share</v-btn>
-                                                            <v-btn flat color="orange">Detail</v-btn>
+                                                            <v-btn flat color="orange" style="padding-left: 0">Detail</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
 
@@ -311,22 +312,79 @@
 
                     <!--######## 유실물 통계 ########-->
                     <section>
-                        <v-layout column="" align-center="" justify-center="" style="height: 300px;">통계</v-layout>
+                        <div style="padding: 20px 0px;">
+                            <span style="font-size: 150%;color: #d84315;margin-left: 60px;padding-right: 200px;">통계</span>
+                        </div>
                     </section>
 
                     <!--######## 등록 설명 ########-->
                     <section>
-                        <v-layout id="register_introduce" column="" align-center="" justify-center="" style="height: 300px;">등록</v-layout>
-                    </section>
 
-                    <!---->
-                    <section>
-                        <v-parallax src="../images/picture/main.jpg" height="300" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
-                            <v-layout column="" align-center="" justify-center="">
-                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
-                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                        <div style="padding: 20px 0px;">
+                            <span id="register_introduce" style="font-size: 150%;color: #d84315;margin-left: 60px;padding-right: 200px;">등록</span>
+                        </div>
+                        <section>
+                            <v-layout
+                                    column
+                                    wrap
+                                    class="my-5"
+                                    align-center
+                            >
+                                <v-flex xs12 sm4 class="my-3">
+                                    <div class="text-xs-center">
+                                        <h2 class="headline">찍고 선택하고 등록</h2>
+                                        <span class="subheading">
+                촬영만 해주세요 무엇인지는 저희가 알아내겠습니다
+              </span>
+                                    </div>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-container grid-list-xl>
+                                        <v-layout row wrap align-center>
+                                            <v-flex xs12 md4>
+                                                <v-card class="elevation-0 transparent">
+                                                    <v-card-text class="text-xs-center">
+                                                        <v-icon x-large class="blue--text text--lighten-2">photo_camera</v-icon>
+                                                    </v-card-text>
+                                                    <v-card-title primary-title class="layout justify-center">
+                                                        <div class="headline text-xs-center">유실물 촬영</div>
+                                                    </v-card-title>
+                                                    <v-card-text>
+                                                        '누가 여기다 놓고갔네?'라는 생각이 드는 순간 [등록] 버튼을 누르고 바로 촬영해주세요. 여러분은 촬영만 했을 뿐인데 등록을 90% 완료했습니다.
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                            <v-flex xs12 md4>
+                                                <v-card class="elevation-0 transparent">
+                                                    <v-card-text class="text-xs-center">
+                                                        <span style="font-weight: bold; font-size: 250%;color:#64b5f6">#</span>
+                                                    </v-card-text>
+                                                    <v-card-title primary-title class="layout justify-center">
+                                                        <div class="headline">자동 태깅</div>
+                                                    </v-card-title>
+                                                    <v-card-text>
+                                                        언제 어디서 무엇을? 유실물을 촬영하면 정보가 자동으로 태깅됩니다. 알맞은 정보를 선택하여 추가할 수 있습니다.
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                            <v-flex xs12 md4>
+                                                <v-card class="elevation-0 transparent">
+                                                    <v-card-text class="text-xs-center">
+                                                        <v-icon x-large class="blue--text text--lighten-2">check_circle</v-icon>
+                                                    </v-card-text>
+                                                    <v-card-title primary-title class="layout justify-center">
+                                                        <div class="headline text-xs-center">등록 완료</div>
+                                                    </v-card-title>
+                                                    <v-card-text>
+                                                        따로 정보를 입력할 없이 유실물 등록이 완료되었습니다. 등록이 완료됐다면 유실물을 해당 건물 유실물 사물함에 넣어주세요.
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-flex>
                             </v-layout>
-                        </v-parallax>
+                        </section>
                     </section>
 
 
@@ -463,6 +521,16 @@
                 </div>
 
 
+
+                <!---->
+                <section>
+                    <v-parallax src="../images/picture/main.jpg" height="300" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
+                        <v-layout column="" align-center="" justify-center="">
+                            <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                            <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                        </v-layout>
+                    </v-parallax>
+                </section>
 
 
                 <!-- ####################################################### -->
