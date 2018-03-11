@@ -225,7 +225,6 @@ block content
 
 
 
-
         include footer
         //include vue_menu_fab
 
@@ -278,7 +277,8 @@ block content
             v-divider.py-0.my-0
             v-card-actions
                 v-spacer
-                v-btn(color='green darken-1', flat='flat', href='/lost') Ok
+                v-btn(color='error', flat, small, href='/lost') 닫기
+                v-btn(color='green darken-1', flat, small, :href='resSuccessRedirectHref') 확인하기
                 //v-btn(color='success', flat, @click.native="responseDialog = false") Ok
 
     v-dialog(v-model='responseErrorDialog', max-width='500px')

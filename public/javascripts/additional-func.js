@@ -26,7 +26,23 @@ function msToDate(ms) {
         mm = '0' + mm;
     }
     var dateString = yyyy + "-" + mm + "-" + dd;
-    return dateString
+    return dateString;
+}
+
+function msToDateKo(ms) {
+    var date = new Date(ms);
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    var dateString = yyyy + "년 " + mm + "월 " + dd + "일";
+    return dateString;
 }
 
 function listToString(arr) {

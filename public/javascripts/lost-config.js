@@ -94,6 +94,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             responseDialog: false,
             resSuccessMsg: "This is temporary message.",
             resSuccessCode: "1",
+            resSuccessRedirectHref: "/",
             responseErrorDialog: false,
             categoryDialog: false,
             loginErrorDialog: false
@@ -313,6 +314,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     if (insertId != null) {
                         vue.resSuccessMsg = "성공적으로 등록하였습니다. 등록 번호 : ";
                         vue.resSuccessCode = insertId;
+                        vue.resSuccessRedirectHref = "/items/" + insertId;
                         vue.responseDialog = true;
                     } else {
                         vue.responseErrorDialog = true;
