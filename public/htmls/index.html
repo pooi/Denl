@@ -32,23 +32,25 @@
     </script>
 
 
-    <link href="../stylesheets/card_shadow.css" rel="stylesheet"> <!--마우스 커서시 그림자 효과-->
+    <link href="../stylesheets/card_categories.css" rel="stylesheet"> <!--마우스 커서시 그림자 효과-->
     <link href="../stylesheets/visible_transition.css" rel="stylesheet"> <!--**초 뒤에 화면에 나타나는 효과-->
 
     <style>
         @media only screen and (max-width: 770px) {
             /*메인 페이지_ 첫 번째 섹션*/
+
             #main_first_section { height: auto !important;}
             #main_first_section #main_top { display: none;}
             #main_first_section #select_cards { margin-top: 65px;}
-            #main_first_section #find img, #register img, #manage img { height: 70px !important;}
+            #main_first_section #select_cards #find, #register, #manage { height: 200px !important; } /*######## 모바일에서 카드(찾기,등록,관리) 높이 조절 ########*/
 
+            #main_first_section #find img, #register img, #manage img { height: 55px !important;}
             #main_first_section #select_cards #find img { margin-top: 5px !important; }
             #main_first_section #select_cards #manage img { margin-top: 17px !important; }
 
 
-            /*개발진 소개*/
-            #develop_introduce { display: none;}
+            /*메인 페이지_ 개발진 소개*/
+            #introduce_developer { height: auto !important;}
         }
 
     </style>
@@ -86,7 +88,7 @@
                 <!-- ####################### Toolbar ####################### -->
 
                 <!--<v-slide-y-transition>-->
-                    <v-toolbar id="toolbar" fixed="fixed" dark="dark" style="background-color: transparent;"
+                    <v-toolbar id="toolbar" fixed="fixed" flat dark="dark" style="background-color: transparent;"
                            :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-5'">
                         <!--v-toolbar-side-icon-->
                         <img id="toolbar_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40"
@@ -141,29 +143,29 @@
                 <div> <!--style="margin-top:48px;"-->
                     <!--######## 첫번째 Section ########-->
                     <section>
-                        <v-parallax id="main_first_section" src="../images/picture/main.jpg" height="600" jumbotron="jumbotron"> <!--style="background-color: #8ebad0;"-->
+                        <v-parallax id="main_first_section" src="../images/picture/main.jpg" height="670" jumbotron="jumbotron"> <!--style="background-color: #8ebad0;"-->
                             <v-layout id="main_top" column="" align-center="" justify-center="">
-                                <img id="main_top_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 70px;"/>
+                                <img id="main_top_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 75px;"/>
                                 <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
                                 <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
                             </v-layout>
 
 
                             <!--######## 카드(찾기,등록,관리) ########-->
-                            <v-layout id="select_cards" row wrap align-center>
+                            <v-layout id="select_cards" container wrap align-center>
                                 <v-flex xs4 md4>
                                     <v-card id="find" class="elevation-0 transparent"
                                             onmouseover="document.getElementById('find_button').style.display = 'block';" onmouseout="document.getElementById('find_button').style.display = 'none';">
                                         <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
-                                            <a href="#"><img src="../images/picture/find.png" style="height: 109px; margin-top: 14px;"></a>
+                                            <a href="#"><img src="../images/picture/find.png" style="height: 80px; margin-top: 14px;"></a>
                                         </v-card-text>
                                         <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-3' : 'layout justify-center white--text pt-2'" class="pt-2">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'headline text-xs-center'">찾기</div>
+                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'">찾기</div>
                                         </v-card-title>
 
                                         <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
-                                        <v-card-title id="find_button" primary-title class="layout justify-center white--text pt-0" style="display: none;">
+                                        <v-card-title id="find_button" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
                                             <v-btn
                                                     class="layout justify-center"
                                                     style="margin: 0 auto; width: 40px; background-color: #fa6e24;"
@@ -181,17 +183,17 @@
                                     <v-card id="register"  class="elevation-0 transparent"
                                             onmouseover="document.getElementById('register_button').style.display = 'block';" onmouseout="document.getElementById('register_button').style.display = 'none';">
                                         <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/lost'">
-                                            <a href="#"><img src="../images/picture/register.png" style="height: 110px; margin-top: 14px;"></a>
+                                            <a href="#"><img src="../images/picture/register.png" style="height: 80px; margin-top: 15px;"></a>
                                         </v-card-text>
                                         <v-card-title primary-title class="layout justify-center white--text pt-2">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'headline text-xs-center'">등록</div>
+                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'">등록</div>
                                         </v-card-title>
 
                                         <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
-                                        <v-card-title id="register_button" primary-title class="layout justify-center white--text pt-0" style="display: none;">
+                                        <v-card-title id="register_button" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
                                             <v-btn
                                                     class="layout justify-center"
-                                                    style="margin: 0 auto; width: 40px; background-color: #fa6e24;"
+                                                    style="margin: 0 auto; width: 20px; background-color: #fa6e24;"
                                                     dark
                                                     small
                                                     href="#register_introduce"
@@ -206,15 +208,15 @@
                                     <v-card id="manage" class="elevation-0 transparent"
                                             onmouseover="document.getElementById('manage_button').style.display = 'block';" onmouseout="document.getElementById('manage_button').style.display = 'none';">
                                         <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
-                                            <a href="#"><img src="../images/picture/manage.png" style="height: 103px; margin-top: 21px;"></a>
+                                            <a href="#"><img src="../images/picture/manage.png" style="height: 74px; margin-top: 21px;"></a>
                                         </v-card-text>
                                         <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-1' : 'layout justify-center white--text pt-0'">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'headline text-xs-center pt-2'">관리</div>
+                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-2'">관리</div>
                                         </v-card-title>
 
                                         <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
-                                        <v-card-title id="manage_button" primary-title class="layout justify-center white--text pt-0" style="display: none;">
+                                        <v-card-title id="manage_button" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
                                             <v-btn
                                                     class="layout justify-center"
                                                     style="margin: 0 auto; width: 40px; background-color: #fa6e24;"
@@ -330,9 +332,10 @@
                     </section>
 
 
-                    <!--######## 개발진 소개 ########-->
+                    <!--######## 개발진 소개 ver.1 ########-->
+<!--
                     <section>
-                        <v-layout id="develop_introduce" column="" align-center class="text-xs-center" style="font-family: 'Hind', sans-serif;"> <!-- align-center justify-center=""-->
+                        <v-layout id="develop_introduce" column="" align-center class="text-xs-center" style="font-family: 'Hind', sans-serif;"> &lt;!&ndash; align-center justify-center=""&ndash;&gt;
                             <v-flex xs10 container px-5>
                                 <v-container fluid grid-list-md>
                                     <v-layout row wrap>
@@ -347,7 +350,7 @@
                                                     <v-flex xs12 md7>
                                                         <v-card >
                                                             <img :src="card.src" height="170px" width="100%">
-                                                            <span class="subheading black--text" v-text="card.title_name"/>
+                                                            <span class="subheading black&#45;&#45;text" v-text="card.title_name"/>
                                                         </v-card>
                                                     </v-flex>
 
@@ -357,16 +360,16 @@
                                                                 <v-card-actions >
                                                                     <v-layout column>
                                                                         <v-chip xs12 md12 v-model="chip1" color="grey">
-                                                                            <strong>#</strong><span class="body-1 black--text" v-text="card.title_intro_1"/>
+                                                                            <strong>#</strong><span class="body-1 black&#45;&#45;text" v-text="card.title_intro_1"/>
                                                                         </v-chip>
                                                                         <v-chip xs12 md12 v-model="chip1" color="">
-                                                                            <strong>#</strong><span class="body-1 black--text" v-text="card.title_intro_2"/>
+                                                                            <strong>#</strong><span class="body-1 black&#45;&#45;text" v-text="card.title_intro_2"/>
                                                                         </v-chip>
                                                                         <v-chip xs12 md12 v-model="chip1" color="grey">
-                                                                            <strong>#</strong><span class="body-1 black--text" v-text="card.title_intro_3"/>
+                                                                            <strong>#</strong><span class="body-1 black&#45;&#45;text" v-text="card.title_intro_3"/>
                                                                         </v-chip>
                                                                         <v-chip xs12 md12 v-model="chip1" color="">
-                                                                            <strong>#</strong><span class="body-1 black--text" v-text="card.title_intro_4"/>
+                                                                            <strong>#</strong><span class="body-1 black&#45;&#45;text" v-text="card.title_intro_4"/>
                                                                         </v-chip>
                                                                     </v-layout>
                                                                 </v-card-actions>
@@ -381,7 +384,46 @@
                             </v-flex>
                         </v-layout>
                     </section>
+-->
+
+
+
+                    <!--######## 개발진 소개 ver.2 ########-->
+
+                    <section>
+                        <v-layout id="introduce_developer" column="" align-center class="text-xs-center" style="height: 600px;">
+                            <v-flex xs11 container fill-height px-0>
+                                <v-container fluid grid-list-md>
+                                    <v-layout row wrap>
+                                        <v-flex
+                                                xs12
+                                                flat
+                                                class="elevation-0"
+                                                v-bind="{ [`md${card.flex_md}`]: true }"
+                                                v-for="card in cards"
+                                                :key="card.title_name"
+                                        >
+                                            <v-layout row>
+                                                <v-flex xs12 md12>
+                                                    <v-card>
+                                                        <img :src="card.src" height="370px" width="100%">
+                                                        <span class="subheading black--text" v-text="card.title_name"></span></br>
+                                                        <div id="introduce_skill">
+                                                            <strong>#</strong><span class="body-2" v-text="card.title_skill_1"></span></br>
+                                                            <strong>#</strong><span class="body-2" v-text="card.title_skill_2"></span>
+                                                        </div>
+                                                    </v-card>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-flex>
+                        </v-layout>
+                    </section>
+
                 </div>
+
 
 
 
@@ -436,14 +478,18 @@
             },
             /*######## 개발자 소개 해시태그 ########*/
             cards: [
-                { title_name: '유태우', title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',
+                { title_name: '유태우', /*title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',*/
+                    title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
                     src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex: 12, flex_md: 3 },
-                { title_name: '정하민', title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',
-                    src: 'http://img.insight.co.kr/static/2017/01/23/700/9J925O2P1HMFX7XLOU0V.jpg', flex: 12 , flex_md: 3},
-                { title_name: '유현수', title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',
-                    src: 'http://img.insight.co.kr/static/2017/01/23/700/9J925O2P1HMFX7XLOU0V.jpg', flex: 12 , flex_md: 3},
-                { title_name: '김윤욱', title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',
-                    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_yhyjhDIwk-x1iCIH3KxCAUuao7loSfux9lOkgbe_eyv_chH1', flex: 12 , flex_md: 3 },
+                { title_name: '정하민', /*title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',*/
+                    title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
+                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/keanu-reeves-500w.jpg', flex_md: 3},
+                { title_name: '유현수', /*title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',*/
+                    title_skill_1: 'FrontEnd developer', title_skill_2: 'Test UI/UX',
+                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/daniel-arsham-500w.jpg?2', flex_md: 3},
+                { title_name: '김윤욱', /*title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',*/
+                    title_skill_1: 'FrontEnd developer', title_skill_2: 'Test UI/UX',
+                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/danny-bowien-500w.jpg?2', flex_md: 3 },
             ],
             item_cards: [
                 { title: 'Pre-fab homes', src: '../images/picture/test_camera.jpg', flex: 2 },
