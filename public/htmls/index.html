@@ -253,10 +253,18 @@
                     <!--######## 최근 등록된 유실물 ########-->
                     <section>
                         <v-layout column="" style="height: auto">
-                            <div style="padding: 20px 0px;">
-                                <span style="font-size: 150%;color: #d84315;margin-left: 60px;padding-right: 200px;">최근 등록된 유실물</span>
-                            </div>
-
+                            <v-layout
+                                    column
+                                    wrap
+                                    class="my-5"
+                                    align-center
+                            >
+                            <v-flex xs12 sm4 class="my-3">
+                                <div class="text-xs-center">
+                                    <h2 class="headline" style="color: #D84315">최근 등록된 유실물</h2>
+                                </div>
+                            </v-flex>
+                            </v-layout>
                             <v-tabs
                                     height="500px">
                                 <v-tabs-slider color="none"></v-tabs-slider>
@@ -312,10 +320,18 @@
 
                     <!--######## 유실물 통계 ########-->
                     <section>
-                        <v-layout column="" align-center="" justify-center="" style="height: 300px;">
-                            <div style="padding: 20px 0px;">
-                                <span style="font-size: 150%;color: #d84315;">통계</span>
+                        <v-layout
+                                column
+                                wrap
+                                class="my-5"
+                                align-center
+                        >
+                        <v-flex xs12 sm4 class="my-3">
+                            <div class="text-xs-center">
+                                <h2 class="headline" style="color: #D84315">통계</h2>
+                                <span class="subheading">유실물들의 통계 그래프입니다</span>
                             </div>
+                        </v-flex>
                         </v-layout>
                     </section>
 
@@ -331,7 +347,7 @@
                             >
                                 <v-flex xs12 sm4 class="my-3">
                                     <div class="text-xs-center">
-                                        <h2 class="headline">찍고 선택하고 등록</h2>
+                                        <h2 class="headline" style="color: #D84315">찍고 선택하고 등록</h2>
                                         <span class="subheading">촬영만 해주세요 무엇인지는 저희가 알아내겠습니다</span>
                                     </div>
                                 </v-flex>
