@@ -249,62 +249,72 @@
                     <!--######## 최근 등록된 유실물 ########-->
                     <section>
                         <v-layout column="" style="height: auto">
-                            최근 등록된 유실물
-                            <v-flex xs12 sm12 >
+                            <div style="padding: 20px 0px;">
+                                <span style="font-size: 160%;color: #d84315;font-weight: bold;margin-left: 50px;padding-right: 200px;">최근 등록된 유실물</span>
+                            </div>
 
-
+                            <v-tabs
+                                    height="500px">
                                     <v-container fluid grid-list-md>
                                         <v-layout row wrap>
-                                            <v-flex
-                                                    v-bind="{ [`xs${card.flex}`]: true }"
-                                                    v-for="card in item_cards"
-                                                    :key="card.title"
-                                            >
-                                                <v-card>
-                                                    <v-card-media
-                                                            :src="card.src"
-                                                            height="300px"
-                                                    >
+                                            <v-tab
+                                                        v-bind="{ [`xs${card.flex}`]: true }"
+                                                        v-for="card in item_cards"
+                                                        :key="card.category"
+                                                >
 
-                                                    </v-card-media>
-                                                    :key="card.title"
-                                                    <v-card-actions>
-                                                        <v-btn flat color="orange">Share</v-btn>
-                                                        <v-btn flat color="orange">Detail</v-btn>
-                                                    </v-card-actions>
-                                                </v-card>
-                                            </v-flex>
-                                        </v-layout>
+
+                                                    <v-card style="height: auto; min-width: 200px">
+                                                        <v-card-media
+                                                                :src="card.src"
+                                                                height="300px"
+                                                        >
+
+                                                        </v-card-media>
+                                                        <v-card-title>
+                                                            <span style="font-weight: bold;padding-left: 12px;font-size: 140%;color: #d84315">
+                                                                Category
+                                                            </span>
+                                                            <span style="padding-left: 10px" v-text="card.category"/><br>
+                                                        </v-card-title>
+                                                        <div>
+                                                            <span style="font-weight: bold;padding-left: 30px;font-size: 140%;color: #fb8c00">
+                                                                <span style="font-weight: bold;color: grey;padding-left: 7px;">#</span><span style="padding-left: 8px">Tags</span>
+                                                            </span>
+                                                            <span style="padding-left: 10px" v-text="card.date"/>
+                                                        </div>
+                                                        <div>
+                                                            <span style="font-weight: bold;padding-left: 30px;font-size: 140%; color: #fb8c00">
+                                                                <v-icon>schedule</v-icon><span style="padding-left: 3px">Date</span>
+                                                            </span>
+                                                            <span style="padding-left: 10px" v-text="card.date"/>
+                                                        </div>
+                                                        <v-card-actions style="padding-left: 30%;">
+                                                            <v-btn flat color="orange">Share</v-btn>
+                                                            <v-btn flat color="orange">Detail</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+
+
+
+                                                </v-tab>
+
+                                             </v-layout>
                                     </v-container>
+                            </v-tabs>
 
-                            </v-flex>
                         </v-layout>
-                    </section>>
-
+                    </section>
 
                     <!--######## 유실물 통계 ########-->
                     <section>
                         <v-layout column="" align-center="" justify-center="" style="height: 300px;">통계</v-layout>
                     </section>
 
-
-                    <!--######## 찾기 설명 ########-->
-                    <section>
-                        <v-layout id="find_introduce" column="" align-center="" justify-center="" style="height: 300px;">찾기</v-layout>
-                    </section>
-
-
                     <!--######## 등록 설명 ########-->
                     <section>
                         <v-layout id="register_introduce" column="" align-center="" justify-center="" style="height: 300px;">등록</v-layout>
                     </section>
-
-
-                    <!--######## 관리 설명 ########-->
-                    <section>
-                        <v-layout id="manage_introduce" column="" align-center="" justify-center="" style="height: 300px;">관리</v-layout>
-                    </section>
-
 
                     <!---->
                     <section>
@@ -433,11 +443,15 @@
                     src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_yhyjhDIwk-x1iCIH3KxCAUuao7loSfux9lOkgbe_eyv_chH1', flex: 12 , flex_md: 3 },
             ],
             item_cards: [
-                { title: 'Pre-fab homes', src: '../images/picture/test_camera.jpg', flex: 2 },
-                { title: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 2 },
-                { title: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 2 },
-                { title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 2 },
-                { title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 2 }
+                { category: 'camera', date: '17.03.02', title: 'Pre-fab homes', src: '../images/picture/test_camera.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 4 },
+                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 4 },
             ],
             loginData:{
 
