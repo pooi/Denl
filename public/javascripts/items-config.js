@@ -29,7 +29,11 @@ function init(init_data, init_category) {
                 }
             ],
             categoryData: null,
-
+            shareSheet: false,
+            shares: [
+                { img: 'kakao.png', title: 'Kakao' },
+                { img: 'facebook.png', title: 'Facebook' },
+            ]
         },
         methods: {
             getHastTags: function () {
@@ -97,6 +101,49 @@ function init(init_data, init_category) {
                 }
                 return title;
             },
+            shareTo: function (title) {
+                var url = window.location.href;
+                var origin = window.location.origin;
+
+                var shareItem = this.itemData;
+                if(title === "Kakao"){
+
+                    var tags = "";
+                    var tagList = this.getHastTags();
+                    for(var i=0; i<Math.min(tagList.length, 5); i++){
+                        var tag = tagList[i];
+                        if(tag !== ""){
+                            tags += "#" + tag + " ";
+                        }
+                    }
+                    if(tagList.length > 5)
+                        tags += "...";
+
+                    Kakao.Link.sendDefault({
+                        objectType: 'feed',
+                        content: {
+                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.getCategoryStringFromResult(vue.itemData.subcategory) + ")",
+                            description: tags,
+                            imageUrl: origin + "/" + shareItem.photos,
+                            link: {
+                                mobileWebUrl: url,
+                                webUrl: url
+                            }
+                        },
+                        buttons: [
+                            {
+                                title: '확인하기',
+                                link: {
+                                    mobileWebUrl: url,
+                                    webUrl: url
+                                }
+                            }
+                        ]
+                    });
+                }
+                this.sheet = false;
+
+            }
         },
         mounted: [
             function () {
@@ -123,6 +170,20 @@ function init(init_data, init_category) {
                 this.categoryData = JSON.parse(init_category);
                 console.log("category: ", this.categoryData);
             },
+            function () {
+                var title = document.createElement('meta');
+                title.name = "og:title";
+                title.content = this.itemData.id;
+                document.getElementsByTagName('head')[0].appendChild(title);
+
+                var origin = window.location.origin;
+                var image = document.createElement('meta');
+                image.name = "og:image";
+                image.content = origin + "/" + this.itemData.photos;
+                document.getElementsByTagName('head')[0].appendChild(image);
+
+                console.log(document.getElementsByTagName('head')[0]);
+            }
         ]
     });
     return vue;
