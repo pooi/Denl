@@ -36,6 +36,9 @@ function init(init_data, init_category) {
             ]
         },
         methods: {
+            getCurrentUrl: function () {
+                return window.location.href;
+            },
             getHastTags: function () {
                 var list = [];
                 for(var i=0; i<this.itemData.tags.length; i++){
