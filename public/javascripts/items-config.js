@@ -33,7 +33,10 @@ function init(init_data, init_category) {
             shares: [
                 { img: 'kakao.png', title: 'Kakao' },
                 { img: 'facebook.png', title: 'Facebook' },
-            ]
+            ],
+            loginErrorDialog: false,
+            requestSuccessDialog: false,
+            requestErrorDialog: false
         },
         methods: {
             getCurrentUrl: function () {
@@ -146,6 +149,35 @@ function init(init_data, init_category) {
                 }
                 this.sheet = false;
 
+            },
+            sendRequest: function () {
+                if(this.loginData.user === null){
+                    this.loginErrorDialog = true;
+                    return;
+                }
+
+                var data = {
+                    lost_id: this.itemData.id,
+                    user_id: this.loginData.user.id,
+                    rgt_date: getTodayMs()
+                };
+
+                axios.post(
+                    '/items/request',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var insertId = data.insertId;
+                    if (insertId != null) {
+                        vue.requestSuccessDialog = true;
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             }
         },
         mounted: [

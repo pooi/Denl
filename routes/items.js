@@ -127,4 +127,23 @@ router.get('/:id', function (req, res) {
     });
 });
 
+router.post('/request', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var sql = 'INSERT INTO request SET ?';
+        conn.query(sql, req.body, function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+
+    }else{
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 module.exports = router;
