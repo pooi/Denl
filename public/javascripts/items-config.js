@@ -17,6 +17,7 @@ function init(init_data, init_category) {
             },
             todayDate: null,
             itemData: null,
+            requestList: [],
             recognitionDataHeaders: [
                 {
                     text: '카테고리',
@@ -170,9 +171,34 @@ function init(init_data, init_category) {
                     var insertId = data.insertId;
                     if (insertId != null) {
                         vue.requestSuccessDialog = true;
+                        vue.getRequestUser();
                     } else {
                         vue.requestErrorDialog = true;
                     }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            getRequestUser: function () {
+                var data = {
+                    lost_id: this.itemData.id
+                };
+
+                axios.post(
+                    '/items/requestList',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    console.log("requestList: ", data);
+                    vue.requestList = data;
+                    // var insertId = data.insertId;
+                    // if (insertId != null) {
+                    //     vue.requestSuccessDialog = true;
+                    // } else {
+                    //     vue.requestErrorDialog = true;
+                    // }
                     // console.log(response);
                 })
                     .catch(function (error) {
@@ -218,6 +244,9 @@ function init(init_data, init_category) {
                 document.getElementsByTagName('head')[0].appendChild(image);
 
                 console.log(document.getElementsByTagName('head')[0]);
+            },
+            function () {
+                this.getRequestUser();
             }
         ]
     });

@@ -165,16 +165,17 @@ block content
                                     v-flex(sm2, xs12)
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 요청정보:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                        v-flex(xs12, sm8, md6, v-if="itemData.rcv_user !== null")
-                                            v-card.dal-card(hover, raised)
+                                        v-flex(xs12, sm8, md6, v-if="requestList !== null && requestList.length > 0")
+                                            v-card.dal-card.mb-3(hover, raised, v-for='req in requestList', :key='req')
                                                 v-flex(d-inline-flex, xs12)
                                                     v-flex(xs5)
                                                         img.pa-3(src="/images/profile.png", width="100%")
                                                     v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                                         div(style="margin:auto;")
-                                                            .title.pa-0.black--text {{ vueMsToDateKo(itemData.rcv_date) }}
-                                                            .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
-                                                            .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
+                                                            .title.pa-0.black--text {{ vueMsToDateKo(req.rgt_date) }}
+                                                            .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
+                                                            .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
+                                                v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, color='error', style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;") 요청취소
 
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 요청자가 없습니다.
@@ -194,14 +195,13 @@ block content
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
 
+
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 수령자가 없습니다.
 
                                 v-layout(xs12)
-                                    v-flex(xs6)
-                                        v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                    v-flex(xs6)
-                                        v-btn.elevation-0.my-0(block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
+                                    v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
 
 
 
