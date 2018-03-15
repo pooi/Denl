@@ -1,0 +1,31 @@
+@media only screen and (max-width: 770px) {
+    /*메인 페이지_ 첫 번째 섹션(사용자 모드)*/
+
+    #main_first_section { height: auto !important;}
+    #main_first_section #main_top { display: none;}
+    #main_first_section #select_cards { margin-top: 65px;}
+    #main_first_section #select_cards #find, #register { height: 200px !important; } /*######## 모바일에서 카드(찾기,등록,관리) 높이 조절 ########*/
+
+    #main_first_section #find img, #register img { height: 55px !important;}
+    #main_first_section #select_cards #find img { margin-top: 5px !important; }
+
+    #main_first_section #select_cards #register #register_btn { margin: 0 auto !important; }
+    #main_first_section #select_cards #register #register_btn span { font-size: 0.8em !important;}
+
+
+
+    /*메인 페이지_ 첫 번째 섹션(관리자 모드)*/
+
+    #main_first_section_manager { height: auto !important;}
+    #main_first_section_manager #main_top_manager { display: none;}
+    #main_first_section_manager #select_cards_manager { margin-top: 65px;}
+    #main_first_section_manager #select_cards #find_manager, #register_manager, #manage_manager { height: 200px !important; } /*######## 모바일에서 카드(찾기,등록,관리) 높이 조절 ########*/
+
+    #main_first_section_manager #find_manager img, #register_manager img, #manage_manager img { height: 55px !important;}
+    #main_first_section_manager #select_cards_manager #find img { margin-top: 5px !important; }
+    #main_first_section_manager #select_cards_manager #manage_manager img { margin-top: 17px !important; }
+
+    #main_first_section_manager #select_cards_manager #register_manager #register_btn_manager { margin: 0 auto !important; }
+    #main_first_section_manager #select_cards_manager #register_manager #register_btn_manager span { font-size: 0.8em !important;}
+}
+
