@@ -175,7 +175,7 @@ block content
                                                             .title.pa-0.black--text {{ vueMsToDateKo(req.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
-                                                v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, color='error', style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;") 요청취소
+                                                v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, color='error', style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;", @click="removeRequest(req.id)") 요청취소
 
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 요청자가 없습니다.
@@ -201,7 +201,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
 
 
 

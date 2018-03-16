@@ -146,6 +146,26 @@ router.post('/request', function (req, res) {
     }
 });
 
+router.post('/removeRequest', function (req, res) {
+    if(req.body){
+        var requestID = req.body.request_id;
+        var sql = 'DELETE FROM request WHERE id=?;';
+        conn.query(sql, requestID, function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                console.log(results);
+                res.send(results);
+            }
+        });
+
+    }else{
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
 router.post('/requestList', function (req, res) {
     if(req.body){
         var lostID = req.body.lost_id;

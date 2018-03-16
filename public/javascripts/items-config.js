@@ -204,6 +204,39 @@ function init(init_data, init_category) {
                     .catch(function (error) {
                         alert(error);
                     });
+            },
+            isAlreadyRequest: function () {
+                if(this.loginData.user === null)
+                    return false;
+
+                for(var i=0; i<this.requestList.length; i++){
+                    if(this.requestList[i].user.id === this.loginData.user.id)
+                        return true;
+                }
+                return false;
+            },
+            removeRequest: function (request_id) {
+                var data = {
+                    request_id: request_id
+                };
+
+                axios.post(
+                    '/items/removeRequest',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    console.log("data: ", data);
+                    var affectedRows = data.affectedRows;
+                    if (affectedRows > 0) {
+                        // vue.requestSuccessDialog = true;
+                        vue.getRequestUser();
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             }
         },
         mounted: [
