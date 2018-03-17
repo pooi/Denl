@@ -14,8 +14,30 @@ block content
                             v-card-title.headline.pa-0 유실물 관리
 
                             v-divider.my-3
+                    v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
+                        v-subheader.headline.pa-0 수거하지 않은 물품
+                        v-layout(row="", wrap="")
+                            v-flex(md3='', v-for="wfa_ in wfa", row)
+                                v-divider.my-3
+                                v-card
+                                    v-card-text(v-text="wfa_.id")
+                                    v-card-text(v-text="wfa_.category")
+                                    v-card-text(v-text="wfa_.subcategory")
+                            //v-card.pa-3(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+                            //
+                            //    v-divider.my-3
+                            //
+                            //    v-card-text(v-text="wfa_")
+                    v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
+                        v-subheader.headline.pa-0 요청이 들어온 물품
+                        v-layout(row="", wrap="")
+                            v-flex(md3='', v-for="wfrq_ in wfrq", row)
+                                v-divider.my-3
+                                v-card
+                                    v-card-text(v-text="wfrq_.id")
+                                    v-card-text(v-text="wfrq_.category")
+                                    v-card-text(v-text="wfrq_.subcategory")
 
-                            v-card-text(v-text="results")
 
 
 
@@ -25,4 +47,4 @@ block content
 
     script(type="text/javascript" src='/javascripts/manage-config.js')
     script.
-        const vue = init('#{Data}');
+        const vue = init('!{WFA}','#{WFRQ}');

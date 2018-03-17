@@ -1,6 +1,6 @@
 
 
-function init(Data) {
+function init(WFA, WFRQ, L_WFRQ) {
     var vue = new Vue({
         el: '#app',
         data: {
@@ -16,13 +16,17 @@ function init(Data) {
             loginData:{
             },
             todayDate: null,
-            results : ""
+            wfa : "",
+            wfrq : "",
+            l_wfrq : ""
         },
         methods: {
 
         },
         created : function(){
-            this.results = Data
+            this.wfa = JSON.parse(WFA);
+            this.wfrq = JSON.parse(WFRQ.replace(/&quot;/g,'"'));
+            this.l_wfrq = L_WFRQ;
         },
         mounted: [
             function () {

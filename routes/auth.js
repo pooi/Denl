@@ -29,14 +29,23 @@ module.exports = function (app) {
         const id = req.body.id;
         const pw = req.body.password;
 
-        var sql = 'SELECT * FROM user WHERE studentID=?';
+        var sql =
+            'SELECT U.*, count(B.id) as admin \n' +
+            'FROM user as U \n' +
+            'LEFT OUTER JOIN ( \n' +
+            'SELECT * FROM admin \n' +
+            'GROUP BY id) as B on(B.user_id = U.id) \n' +
+            'WHERE U.studentID=? \n' +
+            'GROUP BY U.id;';
         conn.query(sql, [id], function (err, results, fields) {
             if (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
             }
             if(results.length > 0){
-                var COMMAND = 'python "{0}/../python/loginSejong.py" --id={1} --pw={2} --only=1';
+                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2} --only=1';
+                var isAdmin = results[0].admin;
+                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2} --only=1';
                 var command = COMMAND.format(__dirname, id, pw);
                 exec(command, function(err, stdout, stderr) {
 
@@ -54,6 +63,7 @@ module.exports = function (app) {
                         }else {
                             data = results[0];
                             data.status = 'success';
+                            data['isAdmin'] = isAdmin;
                             // console.log("2", data);
                             req.session.userData = data;
                             // console.log('session: ', req.session);
@@ -69,7 +79,7 @@ module.exports = function (app) {
                 });
 
             }else{
-                var COMMAND = 'python "{0}/../python/loginSejong.py" --id={1} --pw={2}';
+                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2}';
                 var command = COMMAND.format(__dirname, id, pw);
 
                 exec(command, function(err, stdout, stderr) {

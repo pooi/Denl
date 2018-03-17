@@ -215,6 +215,12 @@ function init(init_data, init_category) {
                 }
                 return false;
             },
+            isMyRequest: function () {
+                if(this.loginData.user === null)
+                    return false;
+
+                return this.loginData.user.id === this.itemData.rgt_user.id;
+            },
             removeRequest: function (request_id) {
                 var data = {
                     request_id: request_id

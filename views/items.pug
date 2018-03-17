@@ -201,7 +201,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
 
 
 
