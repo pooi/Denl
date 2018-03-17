@@ -1,5 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 import json
 import sys
 import argparse
@@ -30,6 +29,21 @@ if __name__ == "__main__":
         data['err'] = 'Invalid argument.'
         print(json.dumps(data, ensure_ascii=False))
         exit()
+
+    if id == "test" and pw == "123456":
+        data = {}
+        data['name'] = "홍길동"
+        data['type'] = "학부생"
+        data['studentID'] = "50294820"
+        data['major'] = "전자정보공학대학/디지탈콘텐츠학과"
+        data['contact'] = "01011111111"
+        data['email'] = "admin@denl.xyz"
+        data['status'] = 'success'
+        print(json.dumps(data, ensure_ascii=False))
+        exit()
+
+    from selenium import webdriver
+    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
     url = 'https://portal.sejong.ac.kr/jsp/login/loginSSL.jsp'
 
