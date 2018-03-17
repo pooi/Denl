@@ -19,12 +19,13 @@ v-dialog(v-model='loginData.dialog', :persistent='loginData.isProgress', max-wid
             v-flex(xs12='')
                 small 최초 로그인 시 비밀번호를 제외한 사용자 정보가 서버에 저장됩니다.
 
-            v-expansion-panel.elevation-0.mt-2(popout)
-                v-expansion-panel-content
-                    small(slot='header') How we handle login
-                    v-card
-                        v-card-text
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+            v-flex.rounded-expansion-panel(xs12='')
+                v-expansion-panel.elevation-0.mt-2(popout)
+                    v-expansion-panel-content
+                        small(slot='header') D&L 로그인 처리 방법
+                        v-card
+                            v-card-text
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
 
         v-progress-linear.my-0(:indeterminate="true", height="3", color='deep-orange darken-3', v-if='loginData.isProgress')
         v-btn.my-0.white--text(color='deep-orange darken-3', block, type='submit', onclick='loginSejong()', :disabled='loginData.isProgress') Login

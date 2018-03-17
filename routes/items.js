@@ -127,4 +127,87 @@ router.get('/:id', function (req, res) {
     });
 });
 
+router.post('/request', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var sql = 'INSERT INTO request SET ?';
+        conn.query(sql, req.body, function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+
+    }else{
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.post('/removeRequest', function (req, res) {
+    if(req.body){
+        var requestID = req.body.request_id;
+        var sql = 'DELETE FROM request WHERE id=?;';
+        conn.query(sql, requestID, function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                console.log(results);
+                res.send(results);
+            }
+        });
+
+    }else{
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+router.post('/requestList', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var sql =
+            'SELECT A.*, B.studentId, B.name \n' +
+            'FROM request as A \n' +
+            'LEFT OUTER JOIN ( \n' +
+            'SELECT * FROM user \n' +
+            'GROUP BY id) as B on(B.id = A.user_id) \n' +
+            'WHERE A.lost_id=? \n' +
+            'GROUP BY A.id;';
+        conn.query(sql, lostID, function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+
+                var userList = [];
+                for(var i=0; i<results.length; i++){
+                    var result = results[i];
+                    var user = {
+                        id: result.user_id,
+                        studentID: result.studentId,
+                        name: result.name
+                    };
+                    settingAnonymousUser(user, true);
+                    delete result['user_id'];
+                    delete result['studentID'];
+                    delete result['name'];
+                    result['user'] = user;
+                    userList.push(result);
+                }
+                res.send(userList);
+                // res.send(results);
+            }
+        });
+
+    }else{
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 module.exports = router;

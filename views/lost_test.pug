@@ -76,7 +76,7 @@ block content
                                                 v-btn(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
 
 
-                                            v-flex(sm8, xs12)
+                                            v-flex.rounded-expansion-panel(sm8, xs12)
                                                 v-expansion-panel.elevation-0(v-if='recognitionData != null', popout)
                                                     v-expansion-panel-content
                                                         div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기

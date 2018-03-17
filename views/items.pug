@@ -9,174 +9,199 @@ block content
                 v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
 
                     v-flex(md12='')
-                        v-card.pt-3(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
-
-                            code.mb-2.mx-3(v-if="convertStatus(itemData.status).length > 0") {{convertStatus(itemData.status)}}
-                            .headline.pa-0.mx-3 유실물 상세보기
-
-                            v-flex.my-3.mx-3(xs12)
-                                v-divider
-
-                            v-layout.px-3.pb-2(row, wrap)
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 이미지:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
-                                    img.dal-image-card(:src="itemData.photos", :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
-
-                                    //v-card.dal-card(:style='$vuetify.breakpoint.xsOnly ? "width : 100%;" : "width : 60%;"', hover, raised)
-                                    //    img(src= image, width="100%")
-
-
-                                //v-flex.px-4(xs12)
-                                //    v-divider.mb-4
-
-
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") ID:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-subheader.pa-0.black--text {{ itemData.id }}
-
-
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 카테고리:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-subheader.pa-0
-                                        v-breadcrumbs.pa-0.pr-2
-                                            v-icon(slot='divider') chevron_right
-                                            v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
-                                                | {{ item }}
-
-                                    v-flex(sm8, xs12)
-                                        v-expansion-panel.elevation-0(v-if='itemData.recognition_result != null', popout)
-                                            v-expansion-panel-content
-                                                div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
-                                                v-data-table(:headers="recognitionDataHeaders", :items='itemData.recognition_result', hide-actions, disable-initial-sort)
-                                                    template(slot='items', slot-scope='props')
-                                                        tr
-                                                            td {{getCategoryStringFromResult(props.item.title)}}
-                                                            td.text-xs-right {{props.item.accuracy}}%
 
 
 
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 브랜드:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    div(v-if="itemData.brand.length > 0")
-                                        v-chip.elevation-2(v-for='brand in itemData.brand', color='orange darken-2', text-color='white')
-                                            strong.title.mr-1 #
-                                            strong {{ brand }}
-                                    v-subheader.pa-0(v-else)
-                                        .caption.grey--text 입력된 브랜드가 없습니다.
+                        if data == null
+
+                            v-card.dal-card.pa-3(hover, raised, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mb-4 pt-4 ma-3' : 'my-4'")
+                                //v-flex.xs12(align-center)
+                                //    .display-4.pa-0.mx-3 Oooops!
+                                v-card-title
+                                    .display-3(style="margin: auto;") Oooops!
+                                v-card-title
+                                    .headline(style="margin: auto;") 페이지가 존재하지 않습니다.
+                                v-card-text.text-xs-center
+                                    //v-layout.text-xs-center(xs12, justify-center)
+                                    v-btn(flat, color="orange darken-1", href="/") Home
+                                    v-btn(flat, color="orange darken-1", href="/find") 찾기
+                                    v-btn(flat, color="orange darken-1", href="/lost") 등록
+                                        //v-btn.grey--text(icon, href="https://instagram.com")
+                                        //    v-icon(size="30px") fa-instagram
+                                        //v-btn.grey--text(icon, href="https://github.com/pooi/DiscoveryAndLost_Web")
+                                        //    v-icon(size="30px") fa-github
+
+
+                        else
+
+                            v-card.pt-3(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+
+                                code.mb-2.mx-3(v-if="convertStatus(itemData.status).length > 0") {{convertStatus(itemData.status)}}
+                                .headline.pa-0.mx-3 유실물 상세보기
+
+                                v-flex.my-3.mx-3(xs12)
+                                    v-divider
+
+                                v-layout.px-3.pb-2(row, wrap)
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 이미지:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
+                                        img.dal-image-card(:src="itemData.photos", :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
+
+                                        //v-card.dal-card(:style='$vuetify.breakpoint.xsOnly ? "width : 100%;" : "width : 60%;"', hover, raised)
+                                        //    img(src= image, width="100%")
+
+
+                                    //v-flex.px-4(xs12)
+                                    //    v-divider.mb-4
+
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") ID:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-subheader.pa-0.black--text {{ itemData.id }}
+
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 카테고리:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-subheader.pa-0
+                                            v-breadcrumbs.pa-0.pr-2
+                                                v-icon(slot='divider') chevron_right
+                                                v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
+                                                    | {{ item }}
+
+                                        v-flex.rounded-expansion-panel(sm8, xs12)
+                                            v-expansion-panel.elevation-0(v-if='itemData.recognition_result != null', popout)
+                                                v-expansion-panel-content
+                                                    div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
+                                                    v-data-table(:headers="recognitionDataHeaders", :items='itemData.recognition_result', hide-actions, disable-initial-sort)
+                                                        template(slot='items', slot-scope='props')
+                                                            tr
+                                                                td {{getCategoryStringFromResult(props.item.title)}}
+                                                                td.text-xs-right {{props.item.accuracy}}%
 
 
 
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 해시 태그:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    div(v-if="getHastTags().length > 0")
-                                        v-chip.elevation-2(v-for='tag in getHastTags()', color='orange darken-2', text-color='white')
-                                            strong.title.mr-1 #
-                                            strong {{ tag }}
-                                    v-subheader.pa-0(v-else)
-                                        .caption.grey--text 입력된 태그가 없습니다.
-
-
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 상세설명:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    div(v-if="itemData.description.length > 0")
-                                        v-subheader.pa-0.black--text {{ itemData.description }}
-                                    v-subheader.pa-0(v-else)
-                                        .caption.grey--text 입력된 정보가 없습니다.
-
-
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 색상:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-flex.mt-2(v-for='color in itemData.color', d-inline-flex)
-                                        v-card.mb-3.mr-3.elevation-4.dal-small-card(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
-
-
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 습득장소:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-subheader.pa-0
-                                        v-breadcrumbs.pa-0.pr-2
-                                            v-icon(slot='divider') chevron_right
-                                            v-breadcrumbs-item(v-for='item in [itemData.building, itemData.room]', :key='item')
-                                                | {{ item }}
-
-
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 습득일:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    //v-date-picker.elevation-2.mb-3.mt-2.hidden-xs-only(:value='vueMsToDate(itemData.dcv_date)', :landscape='true', color="brown darken-1", name='date', readonly, show-current="false")
-                                    //.body-1(:class="$vuetify.breakpoint.xsOnly ? '' : 'mt-3' ") {{ vueMsToDateKo(itemData.dcv_date) }}
-                                    v-subheader.pa-0.black--text {{ vueMsToDateKo(itemData.dcv_date) }}
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 브랜드:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        div(v-if="itemData.brand.length > 0")
+                                            v-chip.elevation-2(v-for='brand in itemData.brand', color='orange darken-2', text-color='white')
+                                                strong.title.mr-1 #
+                                                strong {{ brand }}
+                                        v-subheader.pa-0(v-else)
+                                            .caption.grey--text 입력된 브랜드가 없습니다.
 
 
 
-                                v-flex(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4'")
-                                    v-divider.mb-4
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 해시 태그:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        div(v-if="getHastTags().length > 0")
+                                            v-chip.elevation-2(v-for='tag in getHastTags()', color='orange darken-2', text-color='white')
+                                                strong.title.mr-1 #
+                                                strong {{ tag }}
+                                        v-subheader.pa-0(v-else)
+                                            .caption.grey--text 입력된 태그가 없습니다.
 
 
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 등록정보:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-flex(xs12, sm8, md6)
-                                        v-card.dal-card(hover, raised)
-                                            v-flex(d-inline-flex, xs12)
-                                                v-flex(xs5)
-                                                    img.pa-3(src="/images/profile.png", width="100%")
-                                                v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
-                                                    div(style="margin:auto;")
-                                                        .title.pa-0.black--text {{ vueMsToDateKo(itemData.rgt_date) }}
-                                                        .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
-                                                        .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 상세설명:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        div(v-if="itemData.description.length > 0")
+                                            v-subheader.pa-0.black--text {{ itemData.description }}
+                                        v-subheader.pa-0(v-else)
+                                            .caption.grey--text 입력된 정보가 없습니다.
+
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 색상:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-flex.mt-2(v-for='color in itemData.color', d-inline-flex)
+                                            v-card.mb-3.mr-3.elevation-4.dal-small-card(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
+
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 습득장소:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-subheader.pa-0
+                                            v-breadcrumbs.pa-0.pr-2
+                                                v-icon(slot='divider') chevron_right
+                                                v-breadcrumbs-item(v-for='item in [itemData.building, itemData.room]', :key='item')
+                                                    | {{ item }}
+
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 습득일:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        //v-date-picker.elevation-2.mb-3.mt-2.hidden-xs-only(:value='vueMsToDate(itemData.dcv_date)', :landscape='true', color="brown darken-1", name='date', readonly, show-current="false")
+                                        //.body-1(:class="$vuetify.breakpoint.xsOnly ? '' : 'mt-3' ") {{ vueMsToDateKo(itemData.dcv_date) }}
+                                        v-subheader.pa-0.black--text {{ vueMsToDateKo(itemData.dcv_date) }}
 
 
 
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 요청정보:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-flex(xs12, sm8, md6, v-if="itemData.rcv_user !== null")
-                                        v-card.dal-card(hover, raised)
-                                            v-flex(d-inline-flex, xs12)
-                                                v-flex(xs5)
-                                                    img.pa-3(src="/images/profile.png", width="100%")
-                                                v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
-                                                    div(style="margin:auto;")
-                                                        .title.pa-0.black--text {{ vueMsToDateKo(itemData.rcv_date) }}
-                                                        .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
-                                                        .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
-
-                                    v-subheader.pa-0(v-else)
-                                        .caption.grey--text 요청자가 없습니다.
+                                    v-flex(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4'")
+                                        v-divider.mb-4
 
 
-                                v-flex(sm2, xs12)
-                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 수령정보:
-                                v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                    v-flex(xs12, sm8, md6, v-if="itemData.rcv_user !== null")
-                                        v-card.dal-card(hover, raised)
-                                            v-flex(d-inline-flex, xs12)
-                                                v-flex(xs5)
-                                                    img.pa-3(src="/images/profile.png", width="100%")
-                                                v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
-                                                    div(style="margin:auto;")
-                                                        .title.pa-0.black--text {{ vueMsToDateKo(itemData.rcv_date) }}
-                                                        .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
-                                                        .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 등록정보:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-flex(xs12, sm8, md6)
+                                            v-card.dal-card(hover, raised)
+                                                v-flex(d-inline-flex, xs12)
+                                                    v-flex(xs5)
+                                                        img.pa-3(src="/images/profile.png", width="100%")
+                                                    v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
+                                                        div(style="margin:auto;")
+                                                            .title.pa-0.black--text {{ vueMsToDateKo(itemData.rgt_date) }}
+                                                            .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
+                                                            .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
 
-                                    v-subheader.pa-0(v-else)
-                                        .caption.grey--text 수령자가 없습니다.
 
-                            v-layout(xs12)
-                                v-flex(xs6)
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 요청정보:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-flex(xs12, sm8, md6, v-if="requestList !== null && requestList.length > 0")
+                                            v-card.dal-card.mb-3(hover, raised, v-for='req in requestList', :key='req')
+                                                v-flex(d-inline-flex, xs12)
+                                                    v-flex(xs5)
+                                                        img.pa-3(src="/images/profile.png", width="100%")
+                                                    v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
+                                                        div(style="margin:auto;")
+                                                            .title.pa-0.black--text {{ vueMsToDateKo(req.rgt_date) }}
+                                                            .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
+                                                            .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
+                                                v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, color='error', style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;", @click="removeRequest(req.id)") 요청취소
+
+                                        v-subheader.pa-0(v-else)
+                                            .caption.grey--text 요청자가 없습니다.
+
+
+                                    v-flex(sm2, xs12)
+                                        v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 수령정보:
+                                    v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
+                                        v-flex(xs12, sm8, md6, v-if="itemData.rcv_user !== null")
+                                            v-card.dal-card(hover, raised)
+                                                v-flex(d-inline-flex, xs12)
+                                                    v-flex(xs5)
+                                                        img.pa-3(src="/images/profile.png", width="100%")
+                                                    v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
+                                                        div(style="margin:auto;")
+                                                            .title.pa-0.black--text {{ vueMsToDateKo(itemData.rcv_date) }}
+                                                            .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
+                                                            .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
+
+
+                                        v-subheader.pa-0(v-else)
+                                            .caption.grey--text 수령자가 없습니다.
+
+                                v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                v-flex(xs6)
-                                    v-btn.elevation-0.my-0(block, color="orange darken-2", style="border-radius: 0px;", dark) 요청하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
 
 
 
@@ -188,6 +213,39 @@ block content
                         v-avatar(size='32px', tile='')
                             img(:src="'/images/' + tile.img")
                     v-list-tile-title {{ tile.title }}
+
+        v-dialog.md6(v-model='requestSuccessDialog', persistent, scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | Request Successful
+                v-card-text
+                    | 성공적으로 수령 요청하였습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click.native="requestSuccessDialog = false") 확인
+
+        v-dialog(v-model='requestErrorDialog', max-width='500px')
+            v-card
+                v-card-title.headline
+                    v-icon.mr-2(color='error') error
+                    | Request Failed
+                v-card-text
+                    | 계속해서 요청에 실패할 경우 관리자에게 문의해주세요.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat='flat', @click.native="requestErrorDialog = false") 확인
+
+        v-dialog(v-model='loginErrorDialog', max-width='500px')
+            v-card
+                v-card-title.headline
+                    v-icon.mr-2(color='error') error
+                    | 로그인 필요
+                v-card-text
+                    | 유실물 수령 요청을 위해 로그인이 필요합니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat='flat', @click.native="loginErrorDialog = false; loginData.dialog = true") 확인
 
 
         include footer

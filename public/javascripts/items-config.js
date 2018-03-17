@@ -17,6 +17,7 @@ function init(init_data, init_category) {
             },
             todayDate: null,
             itemData: null,
+            requestList: [],
             recognitionDataHeaders: [
                 {
                     text: '카테고리',
@@ -33,9 +34,15 @@ function init(init_data, init_category) {
             shares: [
                 { img: 'kakao.png', title: 'Kakao' },
                 { img: 'facebook.png', title: 'Facebook' },
-            ]
+            ],
+            loginErrorDialog: false,
+            requestSuccessDialog: false,
+            requestErrorDialog: false
         },
         methods: {
+            getCurrentUrl: function () {
+                return window.location.href;
+            },
             getHastTags: function () {
                 var list = [];
                 for(var i=0; i<this.itemData.tags.length; i++){
@@ -143,6 +150,93 @@ function init(init_data, init_category) {
                 }
                 this.sheet = false;
 
+            },
+            sendRequest: function () {
+                if(this.loginData.user === null){
+                    this.loginErrorDialog = true;
+                    return;
+                }
+
+                var data = {
+                    lost_id: this.itemData.id,
+                    user_id: this.loginData.user.id,
+                    rgt_date: getTodayMs()
+                };
+
+                axios.post(
+                    '/items/request',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var insertId = data.insertId;
+                    if (insertId != null) {
+                        vue.requestSuccessDialog = true;
+                        vue.getRequestUser();
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            getRequestUser: function () {
+                var data = {
+                    lost_id: this.itemData.id
+                };
+
+                axios.post(
+                    '/items/requestList',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    console.log("requestList: ", data);
+                    vue.requestList = data;
+                    // var insertId = data.insertId;
+                    // if (insertId != null) {
+                    //     vue.requestSuccessDialog = true;
+                    // } else {
+                    //     vue.requestErrorDialog = true;
+                    // }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            isAlreadyRequest: function () {
+                if(this.loginData.user === null)
+                    return false;
+
+                for(var i=0; i<this.requestList.length; i++){
+                    if(this.requestList[i].user.id === this.loginData.user.id)
+                        return true;
+                }
+                return false;
+            },
+            removeRequest: function (request_id) {
+                var data = {
+                    request_id: request_id
+                };
+
+                axios.post(
+                    '/items/removeRequest',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    console.log("data: ", data);
+                    var affectedRows = data.affectedRows;
+                    if (affectedRows > 0) {
+                        // vue.requestSuccessDialog = true;
+                        vue.getRequestUser();
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             }
         },
         mounted: [
@@ -183,6 +277,9 @@ function init(init_data, init_category) {
                 document.getElementsByTagName('head')[0].appendChild(image);
 
                 console.log(document.getElementsByTagName('head')[0]);
+            },
+            function () {
+                this.getRequestUser();
             }
         ]
     });
