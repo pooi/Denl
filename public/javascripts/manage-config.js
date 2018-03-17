@@ -1,10 +1,10 @@
 
 
-function init() {
+function init(Data) {
     var vue = new Vue({
         el: '#app',
         data: {
-            title: 'D&L',
+            title: 'D&L manage',
             scrollData: {
                 fab: false,
                 offsetTop: 0,
@@ -15,11 +15,14 @@ function init() {
             },
             loginData:{
             },
-            todayDate: null
-
+            todayDate: null,
+            results : ""
         },
         methods: {
 
+        },
+        created : function(){
+            this.results = Data
         },
         mounted: [
             function () {

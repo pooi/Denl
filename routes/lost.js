@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 var multer = require('multer');
 var _storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads_temp/')
+        cb(null, '../uploads_temp/')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + makeRandomString(10) + getExt(file));
@@ -56,6 +56,7 @@ router.get('/', function (req, res) {
     res.render('lost', {userData: JSON.stringify(req.session.userData)});
 });
 router.post('/', upload.single('file'), function (req, res) {
+    console.log(jsonfile);
     // console.log(req.file); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
     //Build the request payloads
 
@@ -193,7 +194,7 @@ router.post('/recognition', function (req, res) {
         imagePath = '/' + imagePath;
     }
 
-    var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image.py"';
+    var path_labelImage = 'python "' + __dirname + '/../recognition/label_image.py"';
     var path_labels = '"' + __dirname + '/../recognition/retrained_labels.txt"';
     var path_graph = '"' + __dirname + '/../recognition/retrained_graph.pb"';
     var path_image = '"' + __dirname + '/../uploads_temp' + imagePath + '"';

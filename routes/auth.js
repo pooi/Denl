@@ -36,7 +36,7 @@ module.exports = function (app) {
                 res.status(500).send("Internal Server Error");
             }
             if(results.length > 0){
-                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2} --only=1';
+                var COMMAND = 'python "{0}/../python/loginSejong.py" --id={1} --pw={2} --only=1';
                 var command = COMMAND.format(__dirname, id, pw);
                 exec(command, function(err, stdout, stderr) {
 
@@ -69,7 +69,7 @@ module.exports = function (app) {
                 });
 
             }else{
-                var COMMAND = 'python3 "{0}/../python/loginSejong.py" --id={1} --pw={2}';
+                var COMMAND = 'python "{0}/../python/loginSejong.py" --id={1} --pw={2}';
                 var command = COMMAND.format(__dirname, id, pw);
 
                 exec(command, function(err, stdout, stderr) {

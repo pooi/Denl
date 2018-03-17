@@ -15,7 +15,7 @@ block content
 
                             v-divider.my-3
 
-                            v-card-text
+                            v-card-text(v-text="results")
 
 
 
@@ -23,6 +23,6 @@ block content
         include footer
 
 
-    script(type="text/javascript" src='/javascripts/find-config.js')
+    script(type="text/javascript" src='/javascripts/manage-config.js')
     script.
-        const vue = init();
+        const vue = init('#{Data}');
