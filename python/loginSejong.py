@@ -30,11 +30,11 @@ if __name__ == "__main__":
         print(json.dumps(data, ensure_ascii=False))
         exit()
 
-    if id == "test" and pw == "123456":
+    if id == "12345678" and pw == "123456":
         data = {}
         data['name'] = "홍길동"
         data['type'] = "학부생"
-        data['studentID'] = "50294820"
+        data['studentID'] = "12345678"
         data['major'] = "전자정보공학대학/디지탈콘텐츠학과"
         data['contact'] = "01011111111"
         data['email'] = "admin@denl.xyz"
