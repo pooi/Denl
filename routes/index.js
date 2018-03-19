@@ -6,7 +6,7 @@ var conn = require('../config/db')();
 router.get('/', function(req, res, next) {
 
     if(req.session)
-        res.render('index', {userData: JSON.stringify(req.session.userData), category: JSON.stringify(category)});
+        res.render('index', {userData: JSON.stringify(req.session.userData)});
     else
         res.render('index', {userData: ""});
 
