@@ -42,16 +42,17 @@
         @media only screen and (max-width: 770px) {
 
             /*메인 페이지_ 등록 섹션*/
-            #introduce_register { height: auto !important;}
+            #introduce_register { height: auto !important; padding: 50px !important;}
 
             /*메인 페이지_ 개발진 소개 섹션*/
             #introduce_developer_desktop { display: none !important;}
             #introduce_developer_mobile { height: auto !important; display: block !important;}
+
         }
 
-        * { }
+        * { font-family: Georgia;}
 
-        .tabs__icon { line-height: 420px;}
+        .tabs__icon { line-height: 380px; font-size: 2.0em;}
 
     </style>
 </head>
@@ -66,7 +67,7 @@
             document.getElementById("toolbar").style.backgroundColor = "white";
             document.getElementById("toolbar_login").style.color = "black";
 
-            document.getElementById("main_top_logo").style.display = "none";
+            document.getElementById("main_top_logo").style.display = "block";
             document.getElementById("toolbar_logo").style.display = "block";
             document.getElementById("toolbar_title").style.display = "none";
         } else {
@@ -188,69 +189,74 @@
                 <!-- ####################### Main Section ####################### -->
                 <!-- Change this part -->
 
-                <div> <!--style="margin-top:48px;"-->
+                <div style="background-color: white;">
 
                     <!--######## 첫번째 Section (사용자 모드) ########-->
                     <section>
-                        <v-parallax id="main_first_section" src="../images/picture/main_test2.png" height="670" jumbotron="jumbotron"> <!--style="background-color: #8ebad0;"-->
-                            <v-layout id="main_top" column="" align-center="" justify-center="">
-                                <img id="main_top_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 75px;"/>
-                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
-                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
-                            </v-layout>
+                        <v-layout wrap id="main_first_section" style="height: 800px; display: none;"> <!--style="background-color: #8ebad0;"-->
+                            <v-card img="../images/picture/main3.png" row wrap flat  class="pa-0 ma-0" style="width:100%; min-height: 100%;">
 
 
+                                <!--######## 로고 ########-->
 
-                            <!--######## 카드(찾기,등록) ########-->
+                                <v-layout id="main_top" column align-center="" justify-center="">
+                                    <img id="main_top_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 75px;"/>
+                                    <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                    <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                                </v-layout>
 
-                            <!--찾기-->
-                            <v-layout id="select_cards" container wrap align-center>
-                                <v-flex xs12 sm2 offset-sm3>
-                                    <v-card id="find" class="elevation-0 transparent">
-                                        <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
-                                            <a href="#"><img src="../images/picture/find.png" style="height: 80px; margin-top: 12px;"></a>
-                                        </v-card-text>
-                                        <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
+
+                                <!--######## 카드(찾기,등록) ########-->
+
+                                <!--찾기-->
+                                <v-layout id="select_cards" container wrap align-center mt-5>
+                                    <v-flex id="find" xs12 sm2 offset-sm3>
+                                        <v-card class="elevation-0 transparent">
+                                            <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
+                                                <a href="#"><img src="../images/picture/find.png" style="height: 80px; margin-top: 12px;"></a>
+                                            </v-card-text>
+                                            <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'" style="margin-top: -8px;">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'">찾기</div>
-                                        </v-card-title>
-                                    </v-card>
-                                </v-flex>
+                                                <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'">찾기</div>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
 
-                                <!--등록-->
-                                <v-flex xs12 sm2 style="margin-left: 160px;" :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'py-2' : 'py-0'">
-                                    <v-card id="register"  class="elevation-0 transparent"
-                                            onmouseover="document.getElementById('register_btn').style.display = 'block';"
-                                            onmouseout="document.getElementById('register_btn').style.display = 'none';">
-                                        <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/lost'">
-                                            <a href="#"><img src="../images/picture/register.png" style="height: 80px; margin-top: 22px;"></a>
-                                        </v-card-text>
-                                        <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
+                                    <!--등록-->
+                                    <v-flex id="register" xs12 sm2 style="margin-left: 160px;" :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'py-2' : 'py-0'">
+                                        <v-card   class="elevation-0 transparent"
+                                                onmouseover="document.getElementById('register_btn').style.display = 'block';"
+                                                onmouseout="document.getElementById('register_btn').style.display = 'none';">
+                                            <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/lost'">
+                                                <a href="#"><img src="../images/picture/register.png" style="height: 80px; margin-top: 22px;"></a>
+                                            </v-card-text>
+                                            <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'" style="margin-top: -12px;">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'">등록</div>
-                                        </v-card-title>
+                                                <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'">등록</div>
+                                            </v-card-title>
 
-                                        <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
-                                        <v-card-title id="register_btn" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
-                                            <v-btn
-                                                    id="register_button"
-                                                    class="layout justify-center"
-                                                    style="margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 60px;"
-                                                    dark
-                                                    small
-                                                    flat
-                                                    outline=""
-                                                    round
-                                                    href="#introduce_register"
-                                            >
-                                                <span>MORE</span>
-                                            </v-btn>
-                                        </v-card-title>
-                                    </v-card>
-                                </v-flex>
+                                            <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
+                                            <v-card-title id="register_btn" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
+                                                <v-btn
+                                                        id="register_button"
+                                                        class="layout justify-center"
+                                                        style="margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 30px;"
+                                                        dark
+                                                        small
+                                                        flat
+                                                        outline=""
+                                                        round
+                                                        href="#introduce_register"
+                                                >
+                                                    <span>MORE</span>
+                                                </v-btn>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
 
-                            </v-layout>
-                        </v-parallax>
+                            </v-card>
+                        </v-layout>
                     </section>
 
 
@@ -258,75 +264,83 @@
 
                     <!--######## 첫번째 Section (관리자 모드) ########-->
                     <section>
-                        <v-parallax id="main_first_section_manager" src="../images/picture/main_test2.png" height="670" jumbotron="jumbotron" style="display: none;">
-                            <v-layout id="main_top_manager" column="" align-center="" justify-center="">
-                                <img id="main_top_logo_manager" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 75px;"/>
-                                <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
-                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
-                            </v-layout>
+                        <v-layout wrap id="main_first_section_manager" style="height: 750px;"> <!--style="background-color: #8ebad0;"-->
+                            <v-card img="../images/picture/main3.png" row wrap flat  class="pa-0 ma-0" style="width:100%; min-height: 100%;">
 
 
-                            <!--######## 카드(찾기,등록,관리) ########-->
-                            <!--찾기-->
-                            <v-layout id="select_cards_manager" container wrap align-center>
-                                <v-flex xs12 sm4>
-                                    <v-card id="find_manager" class="elevation-0 transparent">
-                                        <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
-                                            <a href="#"><img src="../images/picture/find.png" style="height: 80px; margin-top: 12px;"></a>
-                                        </v-card-text>
-                                        <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
+                                <!--######## 로고 ########-->
+
+                                <v-layout id="main_top_manager" column align-center="" justify-center="">
+                                    <img id="main_top_logo_manager" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 83px;"/>
+                                    <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                    <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
+                                </v-layout>
+
+
+                                <!--######## 카드(찾기,등록,관리) ########-->
+
+                                <v-layout id="select_cards_manager" container wrap align-center mt-5 pt-3>
+
+                                    <!--찾기-->
+                                    <v-flex id="find_manager" xs12 sm4>
+                                        <v-card class="elevation-0 transparent">
+                                            <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
+                                                <a href="#"><img src="../images/picture/find.png" style="height: 80px; margin-top: 12px;"></a>
+                                            </v-card-text>
+                                            <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'" style="margin-top: -8px;">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'">찾기</div>
-                                        </v-card-title>
-                                    </v-card>
-                                </v-flex>
+                                                <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'">찾기</div>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
 
-                                <!--등록-->
-                                <v-flex xs12 sm4 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'py-2' : 'py-0'">
-                                    <v-card id="register_manager"  class="elevation-0 transparent"
-                                            onmouseover="document.getElementById('register_btn_manager').style.display = 'block';" onmouseout="document.getElementById('register_btn_manager').style.display = 'none';">
-                                        <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/lost'">
-                                            <a href="#"><img src="../images/picture/register.png" style="height: 80px; margin-top: 15px;"></a>
-                                        </v-card-text>
-                                        <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
+                                    <!--등록-->
+                                    <v-flex id="register_manager" xs12 sm4 >
+                                        <v-card class="elevation-0 transparent"
+                                                onmouseover="document.getElementById('register_btn_manager').style.display = 'block';" onmouseout="document.getElementById('register_btn_manager').style.display = 'none';">
+                                            <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/lost'">
+                                                <a href="#"><img src="../images/picture/register.png" style="height: 80px; margin-top: 15px;"></a>
+                                            </v-card-text>
+                                            <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'" style="margin-top: -12px;">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'">등록</div>
-                                        </v-card-title>
+                                                <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'">등록</div>
+                                            </v-card-title>
 
-                                        <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
-                                        <v-card-title id="register_btn_manager" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
-                                            <v-btn
-                                                    id="register_button_manager"
-                                                    class="layout justify-center"
-                                                    style="margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 60px;"
-                                                    dark
-                                                    small
-                                                    flat
-                                                    outline=""
-                                                    round
-                                                    href="#introduce_register"
-                                            >
-                                                <span>MORE</span>
-                                            </v-btn>
-                                        </v-card-title>
-                                    </v-card>
-                                </v-flex>
+                                            <!--######## 마우스 hover 했을 때 상세보기 버튼 등장 ########-->
+                                            <v-card-title id="register_btn_manager" primary-title class="layout justify-center white--text pt-0 mt-3" style="display: none;">
+                                                <v-btn
+                                                        id="register_button_manager"
+                                                        class="layout justify-center"
+                                                        style="margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 30px;"
+                                                        dark
+                                                        small
+                                                        flat
+                                                        outline=""
+                                                        round
+                                                        href="#introduce_register"
+                                                >
+                                                    <span>MORE</span>
+                                                </v-btn>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
 
-                                <!--관리-->
-                                <v-flex xs12 sm4>
-                                    <v-card id="manage_manager" class="elevation-0 transparent">
-                                        <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
-                                            <a href="#"><img src="../images/picture/manage.png" style="height: 74px; margin-top: 21px;"></a>
-                                        </v-card-text>
-                                        <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
+                                    <!--관리-->
+                                    <v-flex id="manage_manager" xs12 sm4>
+                                        <v-card class="elevation-0 transparent">
+                                            <v-card-text class="text-xs-center" onclick="window.location.href='https://denl.xyz/manage'">
+                                                <a href="#"><img src="../images/picture/manage.png" style="height: 74px; margin-top: 21px;"></a>
+                                            </v-card-text>
+                                            <v-card-title primary-title :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?
                                         'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'" style="margin-top: -12px;">
-                                            <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-1'">관리</div>
-                                        </v-card-title>
-                                    </v-card>
-                                </v-flex>
+                                                <div :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-1'">관리</div>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
 
-                            </v-layout>
-                        </v-parallax>
+                                </v-layout>
+                            </v-card>
+                        </v-layout>
                     </section>
 
 
@@ -410,18 +424,18 @@
 
 
                     <!--######## 최근 등록된 유실물 ver1(카드 4개씩) ########-->
-                    <section>
-                        <v-layout id="introduce_developer_mobile" column="" align-center class="text-xs-center py-5" style="">
-                            <v-flex xs11 container fill-height px-0>
+                    <section class="grey lighten-5">
+                        <v-layout id="recent_register_items" column="" align-center class="text-xs-center py-5">
+                            <v-flex xs11 container fill-height :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'pa-5' : ''">
                                 <v-container fluid grid-list-md >
                                     <v-layout wrap >
-                                        <v-flex xs12 class="text-xs-center pb-1" justify-center align-center>
+                                        <v-flex xs12 class="text-xs-center pb-1 pt-5" justify-center align-center>
                                             <p class="headline black--text">최근 등록된 유실물</p>
                                         </v-flex>
 
-                                        <v-flex xs12 style="padding-right: 155px;">
+                                        <v-flex xs12 style="padding-right: 11.5%;">
                                             <v-btn
-                                                    id="#"
+                                                    id="recent_register_button"
                                                     class="right"
                                                     style="margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;"
                                                     dark
@@ -437,10 +451,13 @@
                                         </v-flex>
 
                                         <v-flex xs12 sm10 container class="pt-0">
-                                            <v-tabs height="450px" color="transparent" slider-color="none"
+                                            <v-tabs id="recent_register_tabs" height="400px" color="transparent" slider-color="none"
                                                     prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right">
+
+                                                <!---3.5px은 딱 떨어지는 느낌-->
                                                 <v-tab
-                                                        class="pr-1"
+                                                        style="margin: 0 -8px;"
+                                                        class="pr-0"
                                                         v-for="card in cards_item"
                                                         v-bind="{ [`sm${card.flex}`]: true }">
                                                     <v-layout wrap>
@@ -452,12 +469,15 @@
                                                         >
                                                             <v-layout row>
                                                                 <v-flex xs12 md12>
-                                                                    <v-card style="min-width: 250px;">
-                                                                        <img :src="card.src" height="290px" width="100%">
-                                                                        <span class="subheading black--text" v-text="card.category"></span></br>
+                                                                    <v-card id="recent_register_cards" style="min-width: 150px;">
+                                                                        <img :src="card.src" style="height: 250px; width: 100%;" >
+
+                                                                        <div class="mt-2">
+                                                                            <span class="subheading black--text" v-text="card.category"></span></br>
+                                                                        </div>
                                                                         <div id="test" class="mt-1">
-                                                                            <strong>#</strong><span class="body-2" v-text="card.date"></span></br>
-                                                                            <strong>#</strong><span class="body-2" v-text="card.date"></span></br>
+                                                                            <span class="body-2" v-text="card.date"></span></br>
+                                                                            <strong>#</strong><span class="body-2" v-text="card.tag"></span></br>
                                                                             <v-card-actions>
                                                                                 <v-btn flat color="orange">Share</v-btn>
                                                                                 <v-spacer></v-spacer>
@@ -478,81 +498,7 @@
                             </v-flex>
                         </v-layout>
                     </section>
-
-
-
-                    <!--######## 최근 등록된 유실물 ver2 ########-->
-<!--
-                    <section>
-                        <v-layout column="" align-center justify-center class="" style="height: auto;">
-
-                            <v-flex xs12 md4 class="my-3">
-                                <div class="text-xs-center">
-                                    <h2 class="headline" style="color: #D84315">최근 등록된 유실물</h2>
-                                </div>
-                            </v-flex>
-                            <v-flex xs12 md11 container fill-height px-0>
-                                <v-container fluid grid-list-md>
-
-                                    <v-layout row>
-                                        <v-flex sm8>
-                                            <v-tabs height="500px">
-                                                <v-tabs-slider color="none"></v-tabs-slider>
-                                                    <v-container fluid grid-list-md>
-                                                        <v-layout row wrap>
-                                                            <v-tab
-                                                                    v-bind="{ [`md${card.flex}`]: true }"
-                                                                    v-for="card in item_cards"
-                                                                    :key="card.category"
-                                                                >
-
-                                                                <v-card style="height: auto; min-width: 200px">
-                                                                    <v-card-media
-                                                                            :src="card.src"
-                                                                            height="300px"
-                                                                    >
-
-                                                                    </v-card-media>
-                                                                    <v-card-title>
-                                                                        <span style="font-weight: bold;padding-left: 12px;font-size: 140%;color: #d84315">
-                                                                            Category
-                                                                        </span>
-                                                                        <span style="padding-left: 10px" v-text="card.category"/><br>
-                                                                    </v-card-title>
-                                                                    <div>
-                                                                        <span style="font-weight: bold;padding-left: 0px;font-size: 100%;color: #fb8c00">
-                                                                            <span style="font-weight: bold;color: grey;padding-left: 7px;">#</span><span style="padding-left: 8px">Tags</span>
-                                                                        </span>
-                                                                        <span style="padding-left: 10px" v-text="card.date"/>
-                                                                    </div>
-                                                                    <div>
-                                                                        <span style="font-weight: bold;padding-left: 0px;font-size: 100%; color: #fb8c00">
-                                                                            <v-icon>schedule</v-icon><span style="padding-left: 3px">Date</span>
-                                                                        </span>
-                                                                        <span style="padding-left: 10px" v-text="card.date"/>
-                                                                    </div>
-                                                                    <v-card-actions style="padding-left: 20%;">
-                                                                        <v-btn flat color="orange">Share</v-btn>
-                                                                        <v-btn flat color="orange" style="padding-left: 0">Detail</v-btn>
-                                                                    </v-card-actions>
-                                                                </v-card>
-
-
-
-                                                            </v-tab>
-
-                                                        </v-layout>
-                                                    </v-container>
-                                            </v-tabs>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-flex>
-
-                        </v-layout>
-                    </section>
--->
-                    <hr/>
+                    <!--<hr style="border: 0.3px solid #cccccc;"/>-->
 
 
 
@@ -567,7 +513,7 @@
                         >
                         <v-flex xs12 sm4 class="my-3">
                             <div class="text-xs-center">
-                                <h2 class="headline" style="color: #D84315">통계</h2>
+                                <h2 class="headline black--text"  >통계</h2> <!--style="color: #D84315;"-->
                                 <span class="subheading">유실물들의 통계 그래프입니다</span>
                             </div>
                         </v-flex>
@@ -575,25 +521,33 @@
                     </section>
 
 
+                    <!--<section>
+                        <v-parallax src="../images/picture/main3.png" height="350" jumbotron="jumbotron" class="px-0"> &lt;!&ndash;style="background-color: #8ebad0;"&ndash;&gt;
+                            <v-layout column="" align-center="" justify-center="">
+                                &lt;!&ndash;<h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
+                                <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>&ndash;&gt;
+                            </v-layout>
+                        </v-parallax>
+                    </section>
+-->
                     <!--######## 등록 설명 ########-->
 
-                        <section>
+                        <section id="introduce_register" class="grey lighten-5" style="height: 550px;">
                             <v-layout
-                                    id="introduce_register"
-                                    column
-                                    style="height: 400px;"
-                                    class="my-5 text-xs-center"
+                                    wrap
+                                    class="my-5 pt-4 text-xs-center"
                                     justify-center
                                     align-center
                             >
-                                <v-flex xs12 class="my-3">
-                                    <div class="">
-                                        <h2 class="headline" style="color: #D84315">찍고 선택하고 등록</h2>
+                                <v-flex xs12 class="mt-5 mb-0 pt-4">
+                                    <div>
+                                        <h2 class="headline deep-orange--text text--darken-3">찍고, 선택하고, 등록</h2>
                                         <span class="subheading">촬영만 해주세요 무엇인지는 저희가 알아내겠습니다</span>
                                     </div>
                                 </v-flex>
-                                <v-flex xs12>
-                                    <v-container grid-list-xl>
+
+                                <v-flex xs12 mt-5 pt-3>
+                                    <v-container grid-list-sm >
                                         <v-layout row wrap align-center>
                                             <v-flex xs12 sm4>
                                                 <v-card class="elevation-0 transparent">
@@ -604,7 +558,7 @@
                                                         <div class="headline text-xs-center">유실물 촬영</div>
                                                     </v-card-title>
                                                     <v-card-text>
-                                                        '누가 여기다 놓고갔네?'라는 생각이 드는 순간 [등록] 버튼을 누르고 바로 촬영해주세요. 여러분은 촬영만 했을 뿐인데 등록을 90% 완료했습니다.
+                                                        '누가 여기다 놓고갔네?'라는 생각이 드는 순간 [등록] 버튼을 누르고 바로 촬영해주세요. 여러분은 촬영만 했을 뿐이지만 등록을 90% 완료했습니다.
                                                     </v-card-text>
                                                 </v-card>
                                             </v-flex>
@@ -775,14 +729,13 @@
 
                     <!---->
                     <section>
-                        <v-parallax src="../images/picture/main.jpg" height="300" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
+                        <v-parallax src="../images/picture/main3.png" height="300" jumbotron="jumbotron" class="px-0"> <!--style="background-color: #8ebad0;"-->
                             <v-layout column="" align-center="" justify-center="">
                                 <h1 class="display-1 text-xs-center" style="margin-top: 12px;">Discovery and Lost</h1>
                                 <div class="subheading mt-1 mb-3 text-xs-center">Powered by _beat</div>
                             </v-layout>
                         </v-parallax>
                     </section>
-
                 </div>
 
 
@@ -852,15 +805,15 @@
 
             /*######## 최근 등록된 유실물 섹션 ########*/
             cards_item: [
-                { category: 'camera', date: '17.03.02', title: 'Pre-fab homes', src: '../images/picture/test_camera.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
-                { category: 'camera', date: '17.03.02', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
             ],
             loginData:{
 

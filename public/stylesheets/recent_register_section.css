@@ -1,0 +1,7 @@
+@media only screen and (max-width: 770px) {
+    /*메인 페이지_ 첫 번째 섹션(사용자 모드)*/
+/*
+    #recent_register_items #recent_register_tabs { height: auto !important;}*/
+    #recent_register_items #recent_register_cards img { height: 50px !important;}
+}
+
