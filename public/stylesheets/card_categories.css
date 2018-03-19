@@ -1,4 +1,4 @@
-/* 커서 시 카테고리 그림자 효과 파트 */
+/* 메인페이지_ 첫 번째 섹션_ 커서 시 카테고리 그림자 효과 파트 */
 #find, #register, #manage, #find_manager, #register_manager, #manage_manager {
     height: 250px !important; /*line-height: 200px !important;*/
     cursor: pointer;

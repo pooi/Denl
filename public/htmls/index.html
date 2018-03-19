@@ -42,11 +42,12 @@
         @media only screen and (max-width: 770px) {
 
             /*메인 페이지_ 등록 섹션*/
-            #introduce_register { height: auto !important; padding: 50px !important;}
+            #introduce_register { height: auto !important; padding: 5% 10% !important;}
 
             /*메인 페이지_ 개발진 소개 섹션*/
             #introduce_developer_desktop { display: none !important;}
             #introduce_developer_mobile { height: auto !important; display: block !important;}
+
 
         }
 
@@ -433,10 +434,9 @@
                                             <p class="headline black--text">최근 등록된 유실물</p>
                                         </v-flex>
 
-                                        <v-flex xs12 style="padding-right: 11.5%;">
+                                        <v-flex id="recent_register_button" xs12 style="padding-right: 11.5%;">
                                             <v-btn
-                                                    id="recent_register_button"
-                                                    class="right"
+                                                    :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'center' : 'right'"
                                                     style="margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;"
                                                     dark
                                                     small
@@ -554,7 +554,7 @@
                                                     <v-card-text class="text-xs-center">
                                                         <v-icon x-large class="blue--text text--lighten-2">photo_camera</v-icon>
                                                     </v-card-text>
-                                                    <v-card-title primary-title class="layout justify-center pt-1">
+                                                    <v-card-title primary-title class="layout justify-center pt-0">
                                                         <div class="headline text-xs-center">유실물 촬영</div>
                                                     </v-card-title>
                                                     <v-card-text>
@@ -567,7 +567,7 @@
                                                     <v-card-text class="text-xs-center">
                                                         <span style="font-weight: bold; font-size: 250%; color:#64b5f6">#</span>
                                                     </v-card-text>
-                                                    <v-card-title primary-title class="layout justify-center pt-0">
+                                                    <v-card-title primary-title class="layout justify-center pt-0" style="margin-top: -3%;">
                                                         <div class="headline">자동 태깅</div>
                                                     </v-card-title>
                                                     <v-card-text>
@@ -580,7 +580,7 @@
                                                     <v-card-text class="text-xs-center">
                                                         <v-icon x-large class="blue--text text--lighten-2">check_circle</v-icon>
                                                     </v-card-text>
-                                                    <v-card-title primary-title class="layout justify-center pt-1">
+                                                    <v-card-title primary-title class="layout justify-center pt-0">
                                                         <div class="headline text-xs-center">등록 완료</div>
                                                     </v-card-title>
                                                     <v-card-text>
@@ -689,7 +689,7 @@
                     <!--######## 개발진 소개 ver.2(모바일 버전) ########-->
                     <section>
                         <v-layout id="introduce_developer_mobile" column="" align-center class="text-xs-center" style="display: none;">
-                            <v-flex xs11 container fill-height style="padding: 60px 40px;">
+                            <v-flex xs11 container fill-height style="padding: 25% 13%;"> <!--style="padding: 60px 40px;"-->
                                 <v-container fluid grid-list-md>
 
                                     <v-carousel
