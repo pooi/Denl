@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
     <!--<script src="/scripts/jquery.min.js"></script>-->
     <!--script(src='/bootstrap/dist/js/bootstrap.min.js')-->
@@ -51,7 +51,7 @@
 
         }
 
-        * { font-family: Georgia;}
+        * { font-family: 'Ubuntu', sans-serif;}
 
         .tabs__icon { line-height: 380px; font-size: 2.0em;}
 
@@ -124,13 +124,13 @@
                         <img id="toolbar_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="40"
                              onclick="window.location.href='https://denl.xyz/'" style="cursor: pointer; display: none;"/>
                         <v-toolbar-title id="toolbar_title" v-text="title" onclick="window.location.href='https://denl.xyz/'" class="ml-4"
-                                         style="cursor: pointer; color: #E6E6E6; font-size: 1.8em;"></v-toolbar-title>
+                                         style="cursor: pointer; color: white; font-size: 1.8em;"></v-toolbar-title>
                         <v-spacer></v-spacer>
 
                         <!--########로그인 클릭 시 로그인 창 생성########-->
                         <v-dialog v-model="loginData.dialog" :persistent="loginData.isProgress" max-width="500px" style="border-radius: 20px;">
                            <v-toolbar-title id="toolbar_login" v-text="title_login" class="mr-2 subheading" slot="activator"
-                                             style="cursor: pointer; color: #E6E6E6;"></v-toolbar-title>
+                                             style="cursor: pointer; color: white;"></v-toolbar-title>
                             <v-card ref="form">
                                 <v-card-title style="background-color: rgb(194,0,47);"><img src="../images/logo/sejong_white.svg" style="width: 50%;">
                                     <!--span.headline Login-->
@@ -425,16 +425,26 @@
 
 
                     <!--######## 최근 등록된 유실물 ver1(카드 4개씩) ########-->
-                    <section class="grey lighten-5">
+                    <section>
                         <v-layout id="recent_register_items" column="" align-center class="text-xs-center py-5">
                             <v-flex xs11 container fill-height :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'pa-5' : ''">
                                 <v-container fluid grid-list-md >
                                     <v-layout wrap >
+
+
                                         <v-flex xs12 class="text-xs-center pb-1 pt-5" justify-center align-center>
                                             <p class="headline black--text">최근 등록된 유실물</p>
                                         </v-flex>
+                                        <v-container fluid grid-list-xl style="padding: 0px">
 
-                                        <v-flex id="recent_register_button" xs12 style="padding-right: 11.5%;">
+                                            <v-layout row justify-space-around>
+                                                <v-flex xs2>
+
+                                                </v-flex>
+                                                <v-flex xs2>
+
+                                                </v-flex>
+                                        <v-flex id="recent_register_button" xs2 style="padding-left: 5%;">
                                             <v-btn
                                                     :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'center' : 'right'"
                                                     style="margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;"
@@ -449,6 +459,11 @@
                                                 <span>MORE</span>
                                             </v-btn>
                                         </v-flex>
+                                            </v-layout>
+                                        </v-container>
+
+
+
 
                                         <v-flex xs12 sm10 container class="pt-0">
                                             <v-tabs id="recent_register_tabs" height="400px" color="transparent" slider-color="none"
@@ -503,7 +518,7 @@
 
 
                     <!--######## 유실물 통계 ########-->
-                    <section>
+                    <section style="background-color: #fff2e5">
                         <v-layout
                                 style="height: 400px;"
                                 column
@@ -532,7 +547,7 @@
 -->
                     <!--######## 등록 설명 ########-->
 
-                        <section id="introduce_register" class="grey lighten-5" style="height: 550px;">
+                        <section id="introduce_register" style="height: 550px;">
                             <v-layout
                                     wrap
                                     class="my-5 pt-4 text-xs-center"
@@ -654,7 +669,7 @@
 
                     <!--######## 개발진 소개 ver.2(데스크탑 버전) ########-->
 
-                    <section>
+                    <section style="background-color: #fff2e5">
                         <v-layout id="introduce_developer_desktop" column="" align-center class="text-xs-center" style="height: 600px;">
                             <v-flex xs12 md11 container fill-height class="px-0">
                                 <v-container grid-list-md style="padding: 100px;">
@@ -688,7 +703,7 @@
 
                     <!--######## 개발진 소개 ver.2(모바일 버전) ########-->
                     <section>
-                        <v-layout id="introduce_developer_mobile" column="" align-center class="text-xs-center" style="display: none;">
+                        <v-layout id="introduce_developer_mobile" column="" align-center class="text-xs-center" style="display: none;background-color: #fff2e5">
                             <v-flex xs11 container fill-height style="padding: 25% 13%;"> <!--style="padding: 60px 40px;"-->
                                 <v-container fluid grid-list-md>
 
