@@ -111,7 +111,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 상세설명:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         div(v-if="itemData.description.length > 0")
-                                            v-subheader.pa-0.black--text {{ itemData.description }}
+                                            .pa-0.black--text.mt-2.pt-1 {{ itemData.description }}
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 입력된 정보가 없습니다.
 

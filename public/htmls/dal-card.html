@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Discovery and Lost beta</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+
+    <script src="https://beta.denl.xyz/javascripts/additional-func.js"></script>
+    <link href="https://beta.denl.xyz/stylesheets/style.css" rel="stylesheet">
+
+    <!--<script src="/scripts/jquery.min.js"></script>-->
+    <!--script(src='/bootstrap/dist/js/bootstrap.min.js')-->
+    <!--link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')-->
+    <!--<script src="/scripts/axios.min.js"></script>-->
+    <!--<script src="/scripts/vue.js"></script>-->
+    <!--link(href='/styles/vuetify.min.css', rel='stylesheet')-->
+    <!--script(src='/scripts/vuetify.min.js')-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
+        //]]>
+    </script>
+</head>
+<body>
+
+<div id="app">
+    <v-app light>
+        <v-container id="scroll-target" fluid style="overflow-x: hidden;" class="scroll-y pa-0">
+            <v-layout column>
+
+                <v-app>
+                    <v-content class="brown lighten-5">
+                        <v-container :fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly" class="pa-0">
+                            <v-flex md12="">
+                                <v-card :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'" class="pa-3">
+                                    <v-card-title class="headline pa-0">유실물 찾기</v-card-title>
+                                    <v-divider class="my-3"></v-divider>
+                                    <v-card-title class="rounded-expansion-panel ma-1">
+                                        <v-expansion-panel popout="popout" class="elevation-0 ma-0">
+                                            <v-expansion-panel-content :value="true" class="ma-0">
+                                                <div slot="header" class="subheading grey--text">검색 조건</div>
+                                                <v-container v-bind="{ [`grid-list-lg`]: true }">
+                                                    <v-layout wrap="wrap">
+                                                        <v-flex xs12="xs12">
+                                                            <div class="title">1차 조건</div>
+                                                        </v-flex>
+                                                        <v-flex xs12="xs12">
+                                                            <v-divider></v-divider>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </v-container>
+                                            </v-expansion-panel-content>
+                                        </v-expansion-panel>
+                                    </v-card-title>
+                                    <v-flex xs12="xs12">
+                                        <v-divider class="mb-1 mt-3"></v-divider>
+                                    </v-flex>
+                                    <v-flex xs12="xs12" :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' " class="mt-4">
+                                        <div class="headline pa-0 mt4">유실물 목록</div>
+                                        <v-divider class="mb-1 mt-3"></v-divider>
+                                    </v-flex>
+                                    <vcard-title class="pa-0">
+                                        <v-container v-bind="{ [`grid-list-lg`]: true }" :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ">
+                                            <v-layout wrap="wrap">
+                                                <v-flex xs12="xs12" sm6="sm6" md6="md6" lg4="lg4" >
+
+                                                    <v-card flat="" tile="" hover="hover" raised="raised" :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' " href="/items/4" class="dal-card">
+                                                        <v-card-media src="https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg" height="250px"></v-card-media>
+                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                        <v-card-text class="py-0 subheading grey--text text--lighten-1">화장품 > 립밤/립스틱</v-card-text>
+                                                        <v-card-text class="py-3 grey--text text--darken-2">상세 설명</v-card-text>
+                                                        <v-card-text class="py-0 text-xs-left caption grey--text text--lighten-1">2018년 03월 04일</v-card-text>
+                                                        <v-card-text class="py-0 text-xs-left"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+
+                                                    <v-card flat="" tile="" hover="hover" raised="raised" :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' " href="/items/4" class="dal-card">
+                                                        <v-card-media src="https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg" height="250px"></v-card-media>
+                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                        <v-card-text class="py-0 subheading grey--text text--lighten-1">화장품 > 립밤/립스틱</v-card-text>
+                                                        <v-card-text class="py-3 grey--text text--darken-2">상세 설명</v-card-text>
+                                                        <v-card-text class="py-0 text-xs-left caption grey--text text--lighten-1">2018년 03월 04일</v-card-text>
+                                                        <v-card-text class="py-0 text-xs-left"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+
+                                                    <v-card flat="" tile="" hover="hover" raised="raised" :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' " href="/items/4" class="dal-card">
+                                                        <v-card-media src="https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg" height="250px"></v-card-media>
+                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                        <v-card-text class="py-0 subheading grey--text text--lighten-1">화장품 > 립밤/립스틱</v-card-text>
+                                                        <v-card-text class="py-3 grey--text text--darken-2">상세 설명</v-card-text>
+                                                        <v-card-text class="py-0 text-xs-left caption grey--text text--lighten-1">2018년 03월 04일</v-card-text>
+                                                        <v-card-text class="py-0 text-xs-left"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-container>
+                                    </vcard-title>
+                                </v-card>
+                            </v-flex>
+                        </v-container>
+                    </v-content>
+                </v-app>
+
+
+
+
+            </v-layout>
+        </v-container>
+    </v-app>
+</div>
+
+
+
+
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            title: 'D&L',
+            scrollData: {
+                fab: false,
+                offsetTop: 0,
+                scrollT: 0,
+                delta: 200,
+                isShowFabTop: true,
+                transition: 'slide-y-reverse-transition'
+            },
+            loginData:{
+
+            }
+
+        },
+        method:{
+            loginSejong: function(){
+                var id = document.getElementsByName('loginId');
+                var pw = document.getElementsByName('loginPw');
+                loginSejong(id, pw);
+            }
+        },
+        mounted:[
+            // function(){
+            //     $(window).scroll(
+            //         function (event) {
+            //
+            //             var scroll = $(window).scrollTop();
+            //
+            //             vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
+            //
+            //             if(vue.scrollData.scrollT > vue.scrollData.delta){
+            //                 vue.scrollData.isShowFabTop = true;
+            //                 vue.scrollData.scrollT = 0;
+            //             }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
+            //                 vue.scrollData.isShowFabTop = false;
+            //                 vue.scrollData.scrollT = 0;
+            //             }
+            //
+            //             vue.scrollData.offsetTop = scroll;
+            //
+            //             if(scroll === 0){
+            //                 vue.scrollData.isShowFabTop = false;
+            //                 vue.scrollData.scrollT = 0;
+            //                 vue.scrollData.offsetTop = 0;
+            //             }
+            //
+            //         }
+            //     );
+            // }
+        ]
+    })
+</script>
+
+
+
+</body>
+</html>

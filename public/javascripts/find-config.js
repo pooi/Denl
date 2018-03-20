@@ -3,6 +3,10 @@
 function init(init_category) {
     var vue = new Vue({
         el: '#app',
+        components: {
+            'waterfall': Waterfall.waterfall,
+            'waterfall-slot': Waterfall.waterfallSlot
+        },
         data: {
             title: 'D&L',
             scrollData: {
@@ -53,6 +57,13 @@ function init(init_category) {
                     tags += "...";
 
                 return tags;
+            },
+            reduceString: function (str, len) {
+                var newStr = str.substring(0, len);
+                if(str.length > 100){
+                    newStr += "...";
+                }
+                return newStr;
             },
             getCategoryStringFromResult: function (title) {
                 title = title.replace(" ", "_");
