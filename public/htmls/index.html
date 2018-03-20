@@ -48,7 +48,7 @@
             #introduce_developer_desktop { display: none !important;}
             #introduce_developer_mobile { height: auto !important; display: block !important;}
 
-
+            #bottom_nav {display: block !important;}
         }
 
         * { font-family: 'Ubuntu', sans-serif;}
@@ -487,7 +487,7 @@
                             >
                                 <v-flex xs12 class="mt-5 mb-0 pt-4">
                                     <div>
-                                        <h2 class="headline deep-orange--text text--darken-3">찍고, 선택하고, 등록</h2>
+                                        <p class="deep-orange--text text--darken-3" style="font-weight: bold;font-size: 230%;">찍고, 선택하고, 등록</p>
                                         <span class="subheading">촬영만 해주세요 무엇인지는 저희가 알아내겠습니다</span>
                                     </div>
                                 </v-flex>
@@ -713,7 +713,24 @@
                 </v-footer>
                 <!-- ####################################################### -->
 
+                <section id="bottom_nav" style="display: none;">
 
+
+                    <v-bottom-nav fixed :value="true" :active.sync="e1" color="white">
+                        <v-btn flat color="teal" value="recent">
+                            <span>홈</span>
+                            <v-icon>home</v-icon>
+                        </v-btn>
+                        <v-btn flat color="teal" value="favorites">
+                            <span>등록</span>
+                            <v-icon>photo_camera</v-icon>
+                        </v-btn>
+                        <v-btn flat color="teal" value="nearby">
+                            <span>찾기</span>
+                            <v-icon>search</v-icon>
+                        </v-btn>
+                    </v-bottom-nav>
+                </section>
             </v-layout>
         </v-container>
     </v-app>
@@ -763,8 +780,11 @@
             ],
             loginData:{
 
+            },
+            return: {
+                e3: 1,
+                e31: true
             }
-
         },
         method:{
             loginSejong: function(){
