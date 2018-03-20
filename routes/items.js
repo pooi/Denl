@@ -92,6 +92,7 @@ router.get('/:id', function (req, res) {
             console.log(json);
             console.log(photos);
 
+
             var sql = 'SELECT * FROM category';
             conn.query(sql, [], function (err, results) {
                 if (err) {

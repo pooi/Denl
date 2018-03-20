@@ -36,8 +36,11 @@ function init(init_data, init_category) {
                 { img: 'facebook.png', title: 'Facebook' },
             ],
             loginErrorDialog: false,
+            requestCheckDialog: false,
             requestSuccessDialog: false,
-            requestErrorDialog: false
+            requestErrorDialog: false,
+            requestCancelDialog: false,
+            requestCancelErrorDialog: false
         },
         methods: {
             getCurrentUrl: function () {
@@ -222,6 +225,11 @@ function init(init_data, init_category) {
                 return this.loginData.user.id === this.itemData.rgt_user.id;
             },
             removeRequest: function (request_id) {
+
+                var chk = confirm("요청을 취소하시겠습니까?");
+                if(!chk)
+                    return;
+
                 var data = {
                     request_id: request_id
                 };
@@ -236,12 +244,14 @@ function init(init_data, init_category) {
                     if (affectedRows > 0) {
                         // vue.requestSuccessDialog = true;
                         vue.getRequestUser();
+                        vue.requestCancelDialog = true;
                     } else {
-                        vue.requestErrorDialog = true;
+                        vue.requestCancelErrorDialog = true;
                     }
                 })
                     .catch(function (error) {
                         alert(error);
+                        vue.requestCancelErrorDialog = true;
                     });
             }
         },

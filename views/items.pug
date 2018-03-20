@@ -111,7 +111,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 상세설명:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         div(v-if="itemData.description.length > 0")
-                                            v-subheader.pa-0.black--text {{ itemData.description }}
+                                            .pa-0.black--text.mt-2.pt-1 {{ itemData.description }}
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 입력된 정보가 없습니다.
 
@@ -201,7 +201,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="sendRequest()") 요청하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
 
 
 
@@ -214,7 +214,19 @@ block content
                             img(:src="'/images/' + tile.img")
                     v-list-tile-title {{ tile.title }}
 
-        v-dialog.md6(v-model='requestSuccessDialog', persistent, scrollable, max-width='500px')
+        v-dialog.md6(v-model='requestCheckDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='warning') info_outline
+                    | 확인
+                v-card-text
+                    | 유실물 수령을 요청하시겠습니까?
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat, @click.native="requestCheckDialog = false") 취소
+                    v-btn(color='success', flat, @click.native="requestCheckDialog = false; sendRequest()") 확인
+
+        v-dialog.md6(v-model='requestSuccessDialog',  scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
@@ -235,6 +247,40 @@ block content
                 v-card-actions
                     v-spacer
                     v-btn(color='error', flat='flat', @click.native="requestErrorDialog = false") 확인
+
+        v-dialog.md6(v-model='requestCancelCheckDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='warning') info_outline
+                    | 확인
+                v-card-text
+                    | 유실물 수령 요청을 취소하시겠습니까?
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat, @click.native="requestCancelCheckDialog = false") 취소
+                    v-btn(color='success', flat, @click.native="requestCancelCheckDialog = false;") 확인
+
+        v-dialog.md6(v-model='requestCancelDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text
+                    | 성공적으로 취소하였습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click.native="requestCancelDialog = false") 확인
+
+        v-dialog(v-model='requestCancelErrorDialog', max-width='500px')
+            v-card
+                v-card-title.headline
+                    v-icon.mr-2(color='error') error
+                    | 실패
+                v-card-text
+                    | 계속해서 요청 취소에 실패할 경우 관리자에게 문의해주세요.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat='flat', @click.native="requestCancelErrorDialog = false") 확인
 
         v-dialog(v-model='loginErrorDialog', max-width='500px')
             v-card

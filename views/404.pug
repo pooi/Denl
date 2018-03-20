@@ -3,19 +3,42 @@ block content
 
     include toolbar
 
-    div(style='margin-top:48px')
+    //div(style='margin-top:48px')
 
-        section
-            v-layout(column='', align-center='', justify-center='', style="height: 500px")
-                v-flex(xs12)
-                    | 404 Not Found
-                    br
-                    = url
+    v-app
+        v-content.brown.lighten-5
+            v-container(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly", :style="$vuetify.breakpoint.xsOnly ? 'height: 100vh;' : 'height: 95vh; margin-top: 48px;' ", :class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'pa-5' ")
+                //v-layout(style="height: 100vh;", :class="$vuetify.breakpoint.xsOnly ? '' : 'pa-5' ")
+
+                //#bg
+                //    img(src='https://cdn.pixabay.com/photo/2018/03/13/22/53/puzzle-3223941_1280.jpg', alt='')
+                //
+
+                v-card.dal-card.full-background-image(raised, hover, style="height: 100% !important; width: 100%;")
+
+                    v-layout#overlay(column='', align-center='', justify-center='', :class="$vuetify.breakpoint.xsOnly ? '' : 'py-5' ")
+                        img(src='/images/logo/logo_color.svg', height='150')
+                        h1.mt-4.mb-4.display-1.text-xs-center.white--text Discovery and Lost
+                        //.subheading.mb-3.text-xs-center.white--text Powered by _beat
+
+
+                        .display-3.mb-3.text-xs-center.white--text 404 Not Found
+                        .display-2.mb-3.text-xs-center.white--text= url
+
+                        v-card-text.text-xs-center
+                            v-btn.white--text(flat, outline, round, href="/") 홈
+                            v-btn.white--text(flat, outline, round, href="/lost") 등록
+                            v-btn.white--text(flat, outline, round, href="/find") 찾기
+
+            //v-flex(xs12)
+            //    | 404 Not Found
+            //    br
+            //    = url
 
 
     //include menu_fab
 
-    include footer
+    //include footer
 
     script.
         const vue = new Vue({
@@ -32,7 +55,11 @@ block content
                 },
                 loginData:{
 
-                }
+                },
+                items: [
+                    "https://cdn.pixabay.com/photo/2018/03/13/22/53/puzzle-3223941_1280.jpg",
+                    "https://cdn.pixabay.com/photo/2018/03/13/22/53/puzzle-3223941_1280.jpg"
+                ]
 
             },
             method:{
