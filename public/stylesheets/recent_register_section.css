@@ -2,6 +2,10 @@
     /*메인 페이지_ 첫 번째 섹션(사용자 모드)*/
 /*
     #recent_register_items #recent_register_tabs { height: auto !important;}*/
+
+    /*#recent_register_items #recent_register_button { font-size: 0.35em !important; min-width: 20px !important;}*/
     #recent_register_items #recent_register_cards img { height: 50px !important;}
+
+
 }
 

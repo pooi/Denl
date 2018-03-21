@@ -1,9 +1,12 @@
 @media only screen and (max-width: 770px) {
     /*메인 페이지_ 첫 번째 섹션(사용자 모드)*/
 
-    #main_first_section { height: auto !important;}
-    #main_first_section #main_top { display: none;}
-    #main_first_section #select_cards { margin-top: 65px;}
+    /*#main_first_section { height: auto !important;}*/
+    /*#main_first_section #main_top { display: none;}*/
+
+    #main_first_section #main_top #main_top_logo { height: 70px !important; }
+    #main_first_section #main_top h1 { }
+    #main_first_section #select_cards { margin-top: 65px; display: none !important;}
     #main_first_section #select_cards #find, #register, #manage { height: auto !important; } /*######## 모바일에서 카드(찾기,등록,관리) 높이 조절 ########*/
 
 
