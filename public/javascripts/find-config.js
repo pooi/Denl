@@ -19,6 +19,7 @@ function init(init_category) {
             },
             loginData:{
             },
+            bottomTab: "find",
             todayDate: null,
             categoryData: null,
             searchItems: [],

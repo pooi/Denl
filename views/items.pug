@@ -34,7 +34,7 @@ block content
 
                         else
 
-                            v-card.pt-3(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+                            v-card.pt-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
 
                                 code.mb-2.mx-3(v-if="convertStatus(itemData.status).length > 0") {{convertStatus(itemData.status)}}
                                 .headline.pa-0.mx-3 유실물 상세보기
@@ -295,6 +295,7 @@ block content
 
 
         include footer
+        include bottom_tab
 
 
     script(type="text/javascript" src='/javascripts/items-config.js')

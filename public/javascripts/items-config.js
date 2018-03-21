@@ -15,6 +15,7 @@ function init(init_data, init_category) {
             },
             loginData:{
             },
+            bottomTab: "find",
             todayDate: null,
             itemData: null,
             requestList: [],

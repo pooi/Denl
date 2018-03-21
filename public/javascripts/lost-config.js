@@ -15,6 +15,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             loginData:{
             },
+            bottomTab: "lost",
             imgSrc: '',
             domEleArray: null,
             isFile: false,

@@ -15,6 +15,7 @@ function init() {
             },
             loginData:{
             },
+            bottomTab: "manage",
             todayDate: null
 
         },

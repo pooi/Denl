@@ -110,3 +110,33 @@
     cursor: pointer; /* Add a pointer on hover */
 }
 
+.tab-nav {
+    margin-bottom: env(safe-area-inset-bottom);
+    margin-bottom: constant(safe-area-inset-bottom);
+
+}
+
+.safe-area-inset {
+    margin-left: constant(safe-area-inset-left) !important;
+    margin-left: env(safe-area-inset-left) !important;
+    margin-right: constant(safe-area-inset-right) !important;
+    margin-right: env(safe-area-inset-right) !important;
+}
+.safe-area-inset-padding {
+    padding-left: constant(safe-area-inset-left) !important;
+    padding-left: env(safe-area-inset-left) !important;
+    padding-right: constant(safe-area-inset-right) !important;
+    padding-right: env(safe-area-inset-right) !important;
+}
+
+.bottom-tab-height {
+    min-height: 48px;
+    height: calc(48px + env(safe-area-inset-bottom)) !important;
+    height: calc(48px + constant(safe-area-inset-bottom)) !important;
+}
+
+.footer-bottom-padding {
+    padding-bottom: 48px;
+    margin-bottom: calc((-48px + env(safe-area-inset-bottom)));
+    margin-bottom: calc((-48px + constant(safe-area-inset-bottom)));
+}
