@@ -3,10 +3,6 @@
 function init(init_category) {
     var vue = new Vue({
         el: '#app',
-        components: {
-            'waterfall': Waterfall.waterfall,
-            'waterfall-slot': Waterfall.waterfallSlot
-        },
         data: {
             title: 'D&L',
             scrollData: {
