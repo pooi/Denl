@@ -50,8 +50,13 @@
 
             #bottom_nav {display: block !important;}
         }
+        @font-face {
+            font-family: "day";
+            src: url(../stylesheets/day.ttf);
+        }
 
-        * { font-family: 'Ubuntu', sans-serif;}
+            /*폰트 설정*/
+        * { font-family: 'day', sans-serif;}
 
         .tabs__icon { line-height: 380px; font-size: 2.0em;}
 
@@ -459,7 +464,7 @@
                         >
                         <v-flex xs12 sm4 class="my-3">
                             <div class="text-xs-center">
-                                <h2 class="headline black--text"  >통계</h2> <!--style="color: #D84315;"-->
+                                <h2 class="headline black--text test"  >통계</h2> <!--style="color: #D84315;"-->
                                 <span class="subheading">유실물들의 통계 그래프입니다</span>
                             </div>
                         </v-flex>
@@ -781,10 +786,10 @@
             loginData:{
 
             },
-            return: {
-                e3: 1,
-                e31: true
-            }
+
+            e1: 1,
+            e1: true
+
         },
         method:{
             loginSejong: function(){
