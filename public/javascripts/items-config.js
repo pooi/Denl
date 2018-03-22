@@ -41,7 +41,14 @@ function init(init_data, init_category) {
             requestSuccessDialog: false,
             requestErrorDialog: false,
             requestCancelDialog: false,
-            requestCancelErrorDialog: false
+            requestCancelErrorDialog: false,
+            requestEmail: null,
+            emailRules: [
+                v => {
+                    return !!v || '잘못된 이메일 주소입니다.'
+                },
+                v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || '잘못된 이메일 주소입니다.'
+            ]
         },
         methods: {
             getCurrentUrl: function () {
@@ -174,8 +181,9 @@ function init(init_data, init_category) {
                     var data = response.data;
                     var insertId = data.insertId;
                     if (insertId != null) {
-                        vue.requestSuccessDialog = true;
                         vue.getRequestUser();
+                        vue.requestEmail = vue.loginData.user.email;
+                        vue.requestSuccessDialog = true;
                     } else {
                         vue.requestErrorDialog = true;
                     }
