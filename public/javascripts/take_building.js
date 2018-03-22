@@ -1,4 +1,4 @@
-var Test = function(){
+var Get_building_list = function(){
     var buildings;
     var catch_point;
     var result = "";
@@ -21,11 +21,11 @@ var Test = function(){
                 var check = {
                     building : "",
                     distance : 100000,
-                    point : "",
-                    low_x : 100000,
-                    high_x : -100000,
-                    low_y : 100000,
-                    high_y : -100000,
+                    point : ""
+                    // low_x : 100000,
+                    // high_x : -100000,
+                    // low_y : 100000,
+                    // high_y : -100000,
                 };
                 check.building = building;
                 console.log(building);
@@ -38,10 +38,10 @@ var Test = function(){
                         next = 0;
                     }
                     var temp = buildings[check["building"]];
-                    if(temp[line]['point'][1] < check["low_y"]) check["low_y"] = temp[line]['point'][1]
-                    if(temp[line]['point'][1] > check["high_y"]) check["high_y"] = temp[line]['point'][1]
-                    if(temp[line]['point'][0] < check["low_x"]) check["low_x"] = temp[line]['point'][0]
-                    if(temp[line]['point'][0] > check["high_x"]) check["high_x"] = temp[line]['point'][0]
+                    // if(temp[line]['point'][1] < check["low_y"]) check["low_y"] = temp[line]['point'][1]
+                    // if(temp[line]['point'][1] > check["high_y"]) check["high_y"] = temp[line]['point'][1]
+                    // if(temp[line]['point'][0] < check["low_x"]) check["low_x"] = temp[line]['point'][0]
+                    // if(temp[line]['point'][0] > check["high_x"]) check["high_x"] = temp[line]['point'][0]
                     var incli = (temp[line]['point'][1] - temp[next]['point'][1])/(temp[line]['point'][0] - temp[next]['point'][0]);
                     var y_ = temp[line]['point'][1] - incli*temp[line]['point'][0];
                     var temp_arr = [incli,y_];
@@ -164,7 +164,7 @@ var buildings2 = {
     ]
 }
 var test_4 = [127.073867,37.552320];//충무관 안
-var test = new Test(buildings,test_4);
+var test = new Get_building_list(buildings,test_4);
 
 var test_1 = [127.073362, 37.552274]; // 영실관 밖
 var test_2 = [127.073880,37.551951]; //율근처 밖
