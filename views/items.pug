@@ -175,7 +175,11 @@ block content
                                                             .title.pa-0.black--text {{ vueMsToDateKo(req.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
-                                                v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, color='error', style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;", @click="removeRequest(req.id)") 요청취소
+                                                v-layout
+                                                    v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, color='error', style="border-radius: 0px 0px 0px 20px;", @click="removeRequest(req.id)") 요청취소
+                                                    v-btn.elevation-0.my-0(v-if="loginData.user !== null && loginData.user.id === req.user.id", block, small, dark, color='cyan darken-1', style="border-radius: 0px 0px 20px 0px;", @click="showRgtEmailDialog(req);")
+                                                        span(v-if='req.email === null') 메일등록
+                                                        span(v-else) 메일수정
 
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 요청자가 없습니다.
@@ -232,7 +236,7 @@ block content
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
-                    | Request Successful
+                    | 요청 성공
                 v-card-text.subheading
                     | 성공적으로 수령 요청하였습니다.
                 v-card.dal-card.ma-3
@@ -242,11 +246,36 @@ block content
                     v-card-actions
                         v-spacer
                         //v-btn(color='success', flat, @click.native="requestSuccessDialog = false") 닫기
-                        v-btn(color='deep-orange darken-3', flat, @click.native="requestSuccessDialog = false") 등록
+                        v-btn(color='deep-orange darken-3', flat, @click.native="rgtRequestEmail()") 등록
                 v-card-actions
                     v-spacer
                     v-btn(color='success', flat, @click.native="requestSuccessDialog = false") 닫기
 
+        v-dialog.md6(v-model='rgtEmailDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') info_outline
+                    | 이메일 등록
+                v-card-text.pb-0
+                    .pb-2 이메일을 통해 진행 상황을 안내 받으시겠습니까?
+                    v-text-field(label='이메일', placeholder='Please input email', :rules="emailRules", v-model='requestEmail', persistent-hint, ref='requestEmail')
+                v-card-actions
+                    v-spacer
+                    //v-btn(color='success', flat, @click.native="requestSuccessDialog = false") 닫기
+                    v-btn(color='success', flat, @click.native="rgtEmailDialog = false") 닫기
+                    v-btn(color='deep-orange darken-3', flat, @click.native="rgtRequestEmail()") 등록
+
+
+        v-dialog.md6(v-model='rgtEmailSuccessDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text.subheading
+                    | 성공적으로 이메일을 등록하였습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click.native="rgtEmailSuccessDialog = false") 확인
 
         v-dialog(v-model='requestErrorDialog', max-width='500px')
             v-card

@@ -43,6 +43,9 @@ function init(init_data, init_category) {
             requestCancelDialog: false,
             requestCancelErrorDialog: false,
             requestEmail: null,
+            requestRecentID: null,
+            rgtEmailDialog: false,
+            rgtEmailSuccessDialog: false,
             emailRules: [
                 v => {
                     return !!v || '잘못된 이메일 주소입니다.'
@@ -162,6 +165,16 @@ function init(init_data, init_category) {
                 this.sheet = false;
 
             },
+            showRgtEmailDialog: function (req) {
+
+                if(req.email === null) {
+                    this.requestEmail = this.loginData.user.email;
+                }else{
+                    this.requestEmail = req.email;
+                }
+                this.requestRecentID = req.id;
+                this.rgtEmailDialog = true;
+            },
             sendRequest: function () {
                 if(this.loginData.user === null){
                     this.loginErrorDialog = true;
@@ -183,6 +196,7 @@ function init(init_data, init_category) {
                     if (insertId != null) {
                         vue.getRequestUser();
                         vue.requestEmail = vue.loginData.user.email;
+                        vue.requestRecentID = insertId;
                         vue.requestSuccessDialog = true;
                     } else {
                         vue.requestErrorDialog = true;
@@ -192,6 +206,39 @@ function init(init_data, init_category) {
                     .catch(function (error) {
                         alert(error);
                     });
+            },
+            rgtRequestEmail: function () {
+
+                var email = vue.$refs['requestEmail'];
+
+                if(!email.valid){
+                    email.validate(true);
+                    return
+                }
+
+                var data = {
+                    request_id: this.requestRecentID,
+                    email: this.requestEmail
+                };
+                axios.post(
+                    '/items/rgtEmail',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var affectedRows = data.affectedRows;
+                    if (affectedRows > 0) {
+                        vue.getRequestUser();
+                        vue.requestSuccessDialog = false;
+                        vue.rgtEmailDialog = false;
+                        vue.rgtEmailSuccessDialog = true;
+                        vue.requestEmail= null;
+                        vue.requestRecentID= null;
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                }).catch(function (error) {
+                    alert(error);
+                });
             },
             getRequestUser: function () {
                 var data = {

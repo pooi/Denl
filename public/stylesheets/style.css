@@ -5,6 +5,13 @@
     border-radius: 2px !important;
 }
 
+.bottom-sheet.dialog.bottom-sheet--inset{
+    border-radius: 20px 20px 0px 0px !important;
+    overflow: hidden;
+}
+
+
+
 .rounded-expansion-panel{
 
 }
@@ -139,4 +146,10 @@
     padding-bottom: 48px;
     margin-bottom: calc((-48px + env(safe-area-inset-bottom)));
     margin-bottom: calc((-48px + constant(safe-area-inset-bottom)));
+}
+
+.bottom-sheet .list{
+    /*padding-bottom: 50px;*/
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: constant(safe-area-inset-bottom);
 }
