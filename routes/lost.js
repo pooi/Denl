@@ -3,10 +3,10 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var multer = require('multer');
 var _storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function(req, file, cb) {
         cb(null, 'uploads_temp/')
     },
-    filename: function (req, file, cb) {
+    filename: function(req, file, cb) {
         cb(null, Date.now() + makeRandomString(10) + getExt(file));
         // console.log(file);
     }
@@ -26,21 +26,21 @@ var jsonfile = __dirname + '/../config/NodePractice-2f88e00ddb65.json';
 //Initialize the api
 vision.init(jsonfile);
 
-function getExt(file){
+function getExt(file) {
     var ext = ".jpg";
     var mimetype = file.mimetype.toString();
-    if(mimetype.search("png") > 0){
+    if (mimetype.search("png") > 0) {
         ext = ".png";
-    }else if(mimetype.search("jpg") > 0 || mimetype.search("jpeg") > 0){
+    } else if (mimetype.search("jpg") > 0 || mimetype.search("jpeg") > 0) {
         ext = ".jpg";
-    }else if(mimetype.search("gif") > 0){
+    } else if (mimetype.search("gif") > 0) {
         ext = ".jpg";
     }
     return ext;
 }
 
 function makeRandomString(len) {
-    if(len <= 0)
+    if (len <= 0)
         len = 4;
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -52,24 +52,24 @@ function makeRandomString(len) {
 }
 
 /* GET lost listing. */
-router.get('/', function (req, res) {
-    res.render('lost', {userData: JSON.stringify(req.session.userData)});
+router.get('/', function(req, res) {
+    res.render('lost', { userData: JSON.stringify(req.session.userData) });
 });
-router.post('/', upload.single('file'), function (req, res) {
+router.post('/', upload.single('file'), function(req, res) {
     // console.log(req.file); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
     //Build the request payloads
 
     var d = requtil.createRequests().addRequest(
         requtil.createRequest(__dirname + '/../uploads_temp/' + req.file.filename)
-            .withFeature('LABEL_DETECTION', 4)
-            .withFeature('TEXT_DETECTION', 4)
-            .withFeature('LOGO_DETECTION', 20)
-            .withFeature('IMAGE_PROPERTIES', 4)
-            .build());
+        .withFeature('LABEL_DETECTION', 4)
+        .withFeature('TEXT_DETECTION', 4)
+        .withFeature('LOGO_DETECTION', 20)
+        .withFeature('IMAGE_PROPERTIES', 4)
+        .build());
 
 
     //Do query to the api server
-    vision.query(d, function (e, r, d) {
+    vision.query(d, function(e, r, d) {
 
         if (e) console.log('ERROR:', e);
         // console.log(JSON.stringify(d));
@@ -87,37 +87,37 @@ router.post('/', upload.single('file'), function (req, res) {
         var logos = [];
         var colors = [];
 
-        if(labelAnnotations != null){
-            for(var i=0; i<labelAnnotations.length; i++){
+        if (labelAnnotations != null) {
+            for (var i = 0; i < labelAnnotations.length; i++) {
                 labels[i] = labelAnnotations[i].description;
             }
         }
 
-        if(textAnnotations != null){
+        if (textAnnotations != null) {
             var index = 0;
-            for(var i=1; i<textAnnotations.length; i++){
+            for (var i = 1; i < textAnnotations.length; i++) {
                 var t = textAnnotations[i].description;
-                if(t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
+                if (t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
                     continue
                 texts[index] = textAnnotations[i].description;
-                index ++;
+                index++;
             }
         }
 
-        if(logoAnnotations != null){
-            for(var i=0; i<logoAnnotations.length; i++){
+        if (logoAnnotations != null) {
+            for (var i = 0; i < logoAnnotations.length; i++) {
                 logos[i] = logoAnnotations[i].description;
             }
         }
 
-        if(dominantColors != null){
-            for(var i=0; i<dominantColors.length; i++){
+        if (dominantColors != null) {
+            for (var i = 0; i < dominantColors.length; i++) {
                 colors[i] = dominantColors[i].color;
             }
         }
 
         var sql = 'SELECT * FROM category';
-        conn.query(sql, [], function (err, results) {
+        conn.query(sql, [], function(err, results) {
             if (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
@@ -125,7 +125,7 @@ router.post('/', upload.single('file'), function (req, res) {
             var category = {}
             for (var i = 0; i < results.length; i++) {
                 var result = results[i];
-                if(! category.hasOwnProperty(result.category_name)){
+                if (!category.hasOwnProperty(result.category_name)) {
                     category[result.category_name] = {
                         subcategory: [],
                         name: result.category_name,
@@ -154,14 +154,14 @@ router.post('/', upload.single('file'), function (req, res) {
     });
 
 });
-router.post('/submit', function (req, res) {
+router.post('/submit', function(req, res) {
 
-    if(req.body){
+    if (req.body) {
         var imgPath = req.body.photos;
         var oldPath = __dirname + "/../uploads_temp" + imgPath;
         var newPath = __dirname + "/../uploads" + imgPath;
-        fs.rename(oldPath, newPath, function(err){
-            if(err){
+        fs.rename(oldPath, newPath, function(err) {
+            if (err) {
                 if (!fs.existsSync(newPath)) {
                     req.body.photos = "/images/logo/logo_color.svg";
                 }
@@ -178,7 +178,7 @@ router.post('/submit', function (req, res) {
             });
 
         });
-    }else{
+    } else {
         console.log(err);
         res.status(500).send("Internal Server Error");
     }
@@ -186,10 +186,10 @@ router.post('/submit', function (req, res) {
 
 });
 
-router.post('/recognition', function (req, res) {
+router.post('/recognition', function(req, res) {
 
     var imagePath = req.body.image;
-    if(!imagePath.startsWith('/')){
+    if (!imagePath.startsWith('/')) {
         imagePath = '/' + imagePath;
     }
 
@@ -203,37 +203,37 @@ router.post('/recognition', function (req, res) {
 
     exec(command, function(err, stdout, stderr) {
 
-        if(err){
+        if (err) {
             console.log(err);
             res.status(500).send("Internal Server Error");
-        }else{
+        } else {
 
             var result = [];
 
-            try{
+            try {
                 var list = stdout.split('\n');
-                for(var i=0; i<list.length; i++){
+                for (var i = 0; i < list.length; i++) {
                     var re = list[i];
-                    if(re.length <= 0){
+                    if (re.length <= 0) {
                         continue;
                     }
                     // console.log(re);
                     var tempList = re.split(' ');
-                    if(tempList.length < 2){
+                    if (tempList.length < 2) {
                         continue;
                     }
                     var data = {};
                     data.title = "";
-                    for(var j=0; j<tempList.length-1; j++){
+                    for (var j = 0; j < tempList.length - 1; j++) {
                         data.title += tempList[j];
-                        if(j < tempList.length-2){
+                        if (j < tempList.length - 2) {
                             data.title += " ";
                         }
                     }
-                    data.accuracy = parseFloat(tempList[tempList.length-1] * 100.0).toFixed(5);
+                    data.accuracy = parseFloat(tempList[tempList.length - 1] * 100.0).toFixed(5);
                     result.push(data);
                 }
-            }catch (err){
+            } catch (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
             }
@@ -245,7 +245,7 @@ router.post('/recognition', function (req, res) {
     });
 });
 
-router.get('/test', function (req, res){
+router.get('/test', function(req, res) {
     var filename = testImage;
     var json = testJson;
 
@@ -261,37 +261,37 @@ router.get('/test', function (req, res){
     var logos = [];
     var colors = [];
 
-    if(labelAnnotations != null){
-        for(var i=0; i<labelAnnotations.length; i++){
+    if (labelAnnotations != null) {
+        for (var i = 0; i < labelAnnotations.length; i++) {
             labels[i] = labelAnnotations[i].description;
         }
     }
 
-    if(textAnnotations != null){
+    if (textAnnotations != null) {
         var index = 0;
-        for(var i=1; i<textAnnotations.length; i++){
+        for (var i = 1; i < textAnnotations.length; i++) {
             var t = textAnnotations[i].description;
-            if(t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
+            if (t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
                 continue
             texts[index] = textAnnotations[i].description;
-            index ++;
+            index++;
         }
     }
 
-    if(logoAnnotations != null){
-        for(var i=0; i<logoAnnotations.length; i++){
+    if (logoAnnotations != null) {
+        for (var i = 0; i < logoAnnotations.length; i++) {
             logos[i] = logoAnnotations[i].description;
         }
     }
 
-    if(dominantColors != null){
-        for(var i=0; i<dominantColors.length; i++){
+    if (dominantColors != null) {
+        for (var i = 0; i < dominantColors.length; i++) {
             colors[i] = dominantColors[i].color;
         }
     }
 
     var sql = 'SELECT * FROM category';
-    conn.query(sql, [], function (err, results) {
+    conn.query(sql, [], function(err, results) {
         if (err) {
             console.log(err);
             res.status(500).send("Internal Server Error");
@@ -299,7 +299,7 @@ router.get('/test', function (req, res){
         var category = {}
         for (var i = 0; i < results.length; i++) {
             var result = results[i];
-            if(! category.hasOwnProperty(result.category_name)){
+            if (!category.hasOwnProperty(result.category_name)) {
                 category[result.category_name] = {
                     subcategory: [],
                     name: result.category_name,
@@ -329,89 +329,89 @@ router.get('/test', function (req, res){
 
 });
 
-router.get('/test2', function (req, res){
-    var filename = testImage;
-    var json = testJson;
+// router.get('/test2', function (req, res){
+//     var filename = testImage;
+//     var json = testJson;
 
-    var obj = JSON.parse(json);
-    var obj_response = obj.responses[0];
-    var labelAnnotations = obj_response.labelAnnotations;
-    var textAnnotations = obj_response.textAnnotations;
-    var logoAnnotations = obj_response.logoAnnotations;
-    var dominantColors = obj_response.imagePropertiesAnnotation.dominantColors.colors;
+//     var obj = JSON.parse(json);
+//     var obj_response = obj.responses[0];
+//     var labelAnnotations = obj_response.labelAnnotations;
+//     var textAnnotations = obj_response.textAnnotations;
+//     var logoAnnotations = obj_response.logoAnnotations;
+//     var dominantColors = obj_response.imagePropertiesAnnotation.dominantColors.colors;
 
-    var labels = [];
-    var texts = [];
-    var logos = [];
-    var colors = [];
+//     var labels = [];
+//     var texts = [];
+//     var logos = [];
+//     var colors = [];
 
-    if(labelAnnotations != null){
-        for(var i=0; i<labelAnnotations.length; i++){
-            labels[i] = labelAnnotations[i].description;
-        }
-    }
+//     if(labelAnnotations != null){
+//         for(var i=0; i<labelAnnotations.length; i++){
+//             labels[i] = labelAnnotations[i].description;
+//         }
+//     }
 
-    if(textAnnotations != null){
-        var index = 0;
-        for(var i=1; i<textAnnotations.length; i++){
-            var t = textAnnotations[i].description;
-            if(t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
-                continue
-            texts[index] = textAnnotations[i].description;
-            index ++;
-        }
-    }
+//     if(textAnnotations != null){
+//         var index = 0;
+//         for(var i=1; i<textAnnotations.length; i++){
+//             var t = textAnnotations[i].description;
+//             if(t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
+//                 continue
+//             texts[index] = textAnnotations[i].description;
+//             index ++;
+//         }
+//     }
 
-    if(logoAnnotations != null){
-        for(var i=0; i<logoAnnotations.length; i++){
-            logos[i] = logoAnnotations[i].description;
-        }
-    }
+//     if(logoAnnotations != null){
+//         for(var i=0; i<logoAnnotations.length; i++){
+//             logos[i] = logoAnnotations[i].description;
+//         }
+//     }
 
-    if(dominantColors != null){
-        for(var i=0; i<dominantColors.length; i++){
-            colors[i] = dominantColors[i].color;
-        }
-    }
+//     if(dominantColors != null){
+//         for(var i=0; i<dominantColors.length; i++){
+//             colors[i] = dominantColors[i].color;
+//         }
+//     }
 
-    var sql = 'SELECT * FROM category';
-    conn.query(sql, [], function (err, results) {
-        if (err) {
-            console.log(err);
-            res.status(500).send("Internal Server Error");
-        }
-        var category = {}
-        for (var i = 0; i < results.length; i++) {
-            var result = results[i];
-            if(! category.hasOwnProperty(result.category_name)){
-                category[result.category_name] = {
-                    subcategory: [],
-                    name: result.category_name,
-                    ko: result.category_name_ko,
-                    en: result.category_name_en
-                }
-            }
-            category[result.category_name].subcategory.push({
-                name: result.name,
-                ko: result.ko,
-                en: result.en
-            })
-        }
-        // console.log(category);
-        res.render('lost_test2', {
-            userData: JSON.stringify(req.session.userData),
-            image: filename,
-            labels: labels,
-            texts: texts,
-            logos: logos,
-            colors: JSON.stringify(colors),
-            category: JSON.stringify(category)
-        });
-    });
+//     var sql = 'SELECT * FROM category';
+//     conn.query(sql, [], function (err, results) {
+//         if (err) {
+//             console.log(err);
+//             res.status(500).send("Internal Server Error");
+//         }
+//         var category = {}
+//         for (var i = 0; i < results.length; i++) {
+//             var result = results[i];
+//             if(! category.hasOwnProperty(result.category_name)){
+//                 category[result.category_name] = {
+//                     subcategory: [],
+//                     name: result.category_name,
+//                     ko: result.category_name_ko,
+//                     en: result.category_name_en
+//                 }
+//             }
+//             category[result.category_name].subcategory.push({
+//                 name: result.name,
+//                 ko: result.ko,
+//                 en: result.en
+//             })
+//         }
+//         // console.log(category);
+//         res.render('lost_test2', {
+//             userData: JSON.stringify(req.session.userData),
+//             image: filename,
+//             labels: labels,
+//             texts: texts,
+//             logos: logos,
+//             colors: JSON.stringify(colors),
+//             category: JSON.stringify(category)
+//         });
+//     });
 
 
 
-});
+// });
 
 module.exports = router;
 
