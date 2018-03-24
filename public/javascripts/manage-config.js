@@ -1,6 +1,6 @@
 
 
-function init(WFA, WFRQ, L_WFRQ) {
+function init(WFA, WFRQ, init_category) {
     var vue = new Vue({
         el: '#app',
         data: {
@@ -16,9 +16,33 @@ function init(WFA, WFRQ, L_WFRQ) {
             loginData:{
             },
             todayDate: null,
+            itemData: null,
+            requestList: [],
+            recognitionDataHeaders: [
+                {
+                    text: '카테고리',
+                    value: 'title'
+                },
+                {
+                    text: '정확도 (%)',
+                    align: 'right',
+                    value: 'accuracy'
+                }
+            ],
+            categoryData: null,
+            shareSheet: false,
+            shares: [
+                { img: 'kakao.png', title: 'Kakao' },
+                { img: 'facebook.png', title: 'Facebook' },
+            ],
+            loginErrorDialog: false,
+            requestCheckDialog: false,
+            requestSuccessDialog: false,
+            requestErrorDialog: false,
+            requestCancelDialog: false,
+            requestCancelErrorDialog: false,
             WFAs : null,
-            WFRQs : null,
-            categoryData: null
+            WFRQs : null
         },
         methods: {
             hastTagsToString: function (itemData) {
@@ -107,6 +131,29 @@ function init(WFA, WFRQ, L_WFRQ) {
                 }
                 var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
                 this.todayDate = today;
+            },
+            function () {
+                var json = init_data;
+                this.itemData = JSON.parse(json);
+                console.log(this.itemData);
+            },
+            function () {
+                this.categoryData = JSON.parse(init_category);
+                console.log("category: ", this.categoryData);
+            },
+            function () {
+                var title = document.createElement('meta');
+                title.name = "og:title";
+                title.content = this.itemData.id;
+                document.getElementsByTagName('head')[0].appendChild(title);
+
+                var origin = window.location.origin;
+                var image = document.createElement('meta');
+                image.name = "og:image";
+                image.content = origin + "/" + this.itemData.photos;
+                document.getElementsByTagName('head')[0].appendChild(image);
+
+                console.log(document.getElementsByTagName('head')[0]);
             }
         ]
     });
