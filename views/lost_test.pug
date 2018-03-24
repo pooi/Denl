@@ -3,7 +3,9 @@ block content
 
     include toolbar
 
-    div(style="margin-top: 48px;")
+    - function getMargin(){ if(image == null) {return "margin-top: 48px;";} else { return "margin-top: 48px; margin-bottom: 36px"; } }
+
+    div(style=getMargin())
         v-app
             v-content.brown.lighten-5
                 v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
@@ -223,7 +225,10 @@ block content
                                         //        v-btn(color='error', type='button', onclick="window.location.href='/lost'") Back
                                         //        v-btn(color='info', @click="submitWithAxios") Submit
 
-
+        if image != null
+            v-flex(xs12, style="width: 100%; position: fixed; bottom: 0px; z-index: 2; background: white;")
+                v-btn.my-0(block, color='info', @click="submitWithAxios()", :disabled="isRecognitionProgress") 제출
+                v-flex.bottom-tab-height(v-if="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
 
         include footer
         include bottom_tab

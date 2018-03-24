@@ -329,6 +329,90 @@ router.get('/test', function (req, res){
 
 });
 
+router.get('/test2', function (req, res){
+    var filename = testImage;
+    var json = testJson;
+
+    var obj = JSON.parse(json);
+    var obj_response = obj.responses[0];
+    var labelAnnotations = obj_response.labelAnnotations;
+    var textAnnotations = obj_response.textAnnotations;
+    var logoAnnotations = obj_response.logoAnnotations;
+    var dominantColors = obj_response.imagePropertiesAnnotation.dominantColors.colors;
+
+    var labels = [];
+    var texts = [];
+    var logos = [];
+    var colors = [];
+
+    if(labelAnnotations != null){
+        for(var i=0; i<labelAnnotations.length; i++){
+            labels[i] = labelAnnotations[i].description;
+        }
+    }
+
+    if(textAnnotations != null){
+        var index = 0;
+        for(var i=1; i<textAnnotations.length; i++){
+            var t = textAnnotations[i].description;
+            if(t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
+                continue
+            texts[index] = textAnnotations[i].description;
+            index ++;
+        }
+    }
+
+    if(logoAnnotations != null){
+        for(var i=0; i<logoAnnotations.length; i++){
+            logos[i] = logoAnnotations[i].description;
+        }
+    }
+
+    if(dominantColors != null){
+        for(var i=0; i<dominantColors.length; i++){
+            colors[i] = dominantColors[i].color;
+        }
+    }
+
+    var sql = 'SELECT * FROM category';
+    conn.query(sql, [], function (err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }
+        var category = {}
+        for (var i = 0; i < results.length; i++) {
+            var result = results[i];
+            if(! category.hasOwnProperty(result.category_name)){
+                category[result.category_name] = {
+                    subcategory: [],
+                    name: result.category_name,
+                    ko: result.category_name_ko,
+                    en: result.category_name_en
+                }
+            }
+            category[result.category_name].subcategory.push({
+                name: result.name,
+                ko: result.ko,
+                en: result.en
+            })
+        }
+        // console.log(category);
+        res.render('lost_test2', {
+            userData: JSON.stringify(req.session.userData),
+            image: filename,
+            labels: labels,
+            texts: texts,
+            logos: logos,
+            colors: JSON.stringify(colors),
+            category: JSON.stringify(category)
+        });
+    });
+
+
+
+});
+
 module.exports = router;
 
 

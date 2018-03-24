@@ -329,6 +329,8 @@ function init(init_data, init_category) {
             },
             function () {
                 var json = init_data;
+                // console.log("tt");
+                // console.log(json);
                 this.itemData = JSON.parse(json);
                 console.log(this.itemData);
             },

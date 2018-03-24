@@ -5,7 +5,7 @@ block content
 
     include toolbar
 
-    div(:style="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly ? 'margin-top: 48px; margin-bottom: calc(48px + env(safe-area-inset-bottom));' : 'margin-top: 48px;' ")
+    div(:style="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly ? 'margin-top: 48px;' : 'margin-top: 48px;' ")
         v-app
             v-content.brown.lighten-5
                 v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
