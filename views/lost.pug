@@ -51,161 +51,332 @@ block content
                                 v-divider.my-3
                                 v-form.form-horizontal(ref="form")
                                     v-layout(row, wrap)
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 이미지:
-                                        v-flex.mb-5(sm10, xs12)
+
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 이미지
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 이미지:
+                                        //        v-layout(sm10, xs12, align-center, justify-center)
+                                        //            //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
+                                        //            img.dal-image-card(src= image, :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
+
+                                                    //v-card.dal-card(:style='$vuetify.breakpoint.xsOnly ? "width : 100%;" : "width : 60%;"', hover, raised)
+                                                    //    img(src= image, width="100%")
+
+                                        //v-flex(xs12)
+                                        //    v-divider.mb-4
+
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 카테고리
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader.bold(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리(*):
+                                        //        v-layout(sm10, xs12, align-center, justify-center, wrap)
+                                        //            v-flex.mt-2(xs12, d-inline-flex)
+                                        //                v-progress-circular(indeterminate, color="orange darken-2", v-show='isRecognitionProgress')
+                                        //                .subheading.ml-2.mt-1(v-show='isRecognitionProgress') 이미지 인식 중입니다. 잠시만 기다려주세요.
+                                        //
+                                        //            v-flex(sm8, xs12, d-inline-flex, v-if='!isRecognitionProgress')
+                                        //                v-breadcrumbs.pa-0.pr-2(v-if="category != null")
+                                        //                    v-icon(slot='divider') chevron_right
+                                        //                    v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
+                                        //                        | {{ item }}
+                                        //                v-btn(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
+                                        //
+                                        //
+                                        //            v-flex.rounded-expansion-panel(sm8, xs12)
+                                        //                v-expansion-panel.elevation-0(v-if='recognitionData != null', popout)
+                                        //                    v-expansion-panel-content
+                                        //                        div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
+                                        //                        v-data-table(:headers="recognitionDataHeaders", :items='recognitionData', hide-actions, disable-initial-sort)
+                                        //                            template(slot='items', slot-scope='props')
+                                        //                                tr(@click="changedCateogryFromResult(props.item);")
+                                        //                                    td {{getCategoryStringFromResult(props.item.title)}}
+                                        //                                    td.text-xs-right {{props.item.accuracy}}%
+
+
+                                                                //v-card.pb-2(v-for='rd in recognitionData')
+                                                                //    v-card-text.py-0(@click="changedCateogryFromResult(rd);")
+                                                                //        | {{ rd.title }} - {{ rd.accuracy }}%
+
+                                        //v-flex(xs12)
+                                        //    v-divider.mb-4
+
+
+                                        //v-flex(d-flex xs12 sm4 md4)
+                                        //    v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //        //v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 이미지
+                                        //        v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //            //v-flex(sm2, xs12)
+                                        //            //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 이미지:
+                                        v-flex(xs12, sm5, :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pb-3' : 'pa-3' ")
                                             //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
-                                            img.dal-image-card(src= image, :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
+                                            img.dal-image-card(src= image, :width='$vuetify.breakpoint.xsOnly ? "100%;" : "100%;"')
 
-                                            //v-card.dal-card(:style='$vuetify.breakpoint.xsOnly ? "width : 100%;" : "width : 60%;"', hover, raised)
-                                            //    img(src= image, width="100%")
+                                        v-flex(d-flex xs12 sm7, :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pb-3' : 'pa-3' ")
+                                            v-card.dal-card(hover, raised, style="width: 100%;")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 카테고리
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //v-flex(sm2, xs12)
+                                                    //    v-subheader.bold(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리(*):
+                                                    v-layout(xs12, align-center, justify-center, wrap)
+                                                        v-flex.mt-2(xs12, d-inline-flex)
+                                                            v-progress-circular(indeterminate, color="orange darken-2", v-show='isRecognitionProgress')
+                                                            .subheading.ml-2.mt-1(v-show='isRecognitionProgress') 이미지 인식 중입니다. 잠시만 기다려주세요.
 
-                                        v-flex(xs12)
-                                            v-divider.mb-4
-
-                                        v-flex(sm2, xs12)
-                                            v-subheader.bold(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리(*):
-                                        v-flex.pb-4(sm10, xs12)
-                                            v-flex.mt-2(xs12, d-inline-flex)
-                                                v-progress-circular(indeterminate, color="orange darken-2", v-show='isRecognitionProgress')
-                                                .subheading.ml-2.mt-1(v-show='isRecognitionProgress') 이미지 인식 중입니다. 잠시만 기다려주세요.
-
-                                            v-flex(xs12, d-inline-flex, v-if='!isRecognitionProgress')
-                                                v-breadcrumbs.pa-0.pr-2(v-if="category != null")
-                                                    v-icon(slot='divider') chevron_right
-                                                    v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
-                                                        | {{ item }}
-                                                v-btn(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
+                                                        v-flex.px-4.pb-2(xs12, d-inline-flex, v-if='!isRecognitionProgress', justify-space-around)
+                                                            v-breadcrumbs.pa-0.pr-2(v-if="category != null")
+                                                                v-icon(slot='divider') chevron_right
+                                                                v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
+                                                                    | {{ item }}
+                                                            v-btn.ma-0(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
 
 
-                                            v-flex.rounded-expansion-panel(sm8, xs12)
-                                                v-expansion-panel.elevation-0(v-if='recognitionData != null', popout)
-                                                    v-expansion-panel-content
-                                                        div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
-                                                        v-data-table(:headers="recognitionDataHeaders", :items='recognitionData', hide-actions, disable-initial-sort)
-                                                            template(slot='items', slot-scope='props')
-                                                                tr(@click="changedCateogryFromResult(props.item);")
-                                                                    td {{getCategoryStringFromResult(props.item.title)}}
-                                                                    td.text-xs-right {{props.item.accuracy}}%
-                                                        //v-card.pb-2(v-for='rd in recognitionData')
-                                                        //    v-card-text.py-0(@click="changedCateogryFromResult(rd);")
-                                                        //        | {{ rd.title }} - {{ rd.accuracy }}%
-
-                                        v-flex(xs12)
-                                            v-divider.mb-4
+                                                        v-flex.rounded-expansion-panel(xs12)
+                                                            v-expansion-panel.elevation-0(v-if='recognitionData != null', popout)
+                                                                v-expansion-panel-content
+                                                                    div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
+                                                                    v-data-table(:headers="recognitionDataHeaders", :items='recognitionData', hide-actions, disable-initial-sort)
+                                                                        template(slot='items', slot-scope='props')
+                                                                            tr(@click="changedCateogryFromResult(props.item);")
+                                                                                td {{getCategoryStringFromResult(props.item.title)}}
+                                                                                td.text-xs-right {{props.item.accuracy}}%
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 브랜드:
-                                        v-flex.pb-4(sm10, xs12)
-                                            v-select(color="orange darken-2", label='브랜드명을 입력하세요.', chips='', tags='', clearable='', v-model='logos')
-                                                template(slot='selection', slot-scope='data')
-                                                    v-chip.elevation-2( close='', @input='removeLogo(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
-                                                        strong.title.mr-1 #
-                                                        strong {{ data.item }}
-                                            .caption.grey--text.mt-2(v-if="logos.length <= 0") 인식된 브랜드가 없습니다.
+                                        v-flex(d-flex xs12)
+                                            v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 추천 태그
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //v-flex(sm2, xs12)
+                                                    //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 추천 태그:
+                                                    v-flex(xs12, v-if="suggestTag.length > 0")
+                                                        .caption.grey--text.mb-2.text-xs-center 클릭해서 활성화
+                                                        v-layout(wrap, justify-center)
+                                                            v-chip(v-for='tag in suggestTag', :class="selectedSuggestTag.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='selectedSuggestTag.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='changeSuggestTag(tag)')
+                                                                strong.title.mr-1 #
+                                                                strong {{ tag }}
+                                                        v-layout(d-flex-inline, align-center, justify-center, wrap)
+                                                            v-btn(flat, color='error', @click='selectedSuggestTag = []') 초기화
+                                                            v-btn(flat, color='orange darken-2', @click='selectedSuggestTag = suggestTag.slice(0)') 전체선택
 
 
-                                        v-flex(xs12)
-                                            v-divider.mb-4
+                                                    v-flex(xs12, v-else)
+                                                        .caption.grey--text.mt-3 인식된 추천 태그가 없습니다.
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 해시 태그:
-                                        v-flex(sm10, xs12)
-                                            v-select(color="orange darken-2", label='태그를 입력하세요.', chips='', tags='', clearable='', v-model='hashtags' )
-                                                template(slot='selection', slot-scope='data')
-                                                    v-chip.elevation-2(close='', @input='removeHashtag(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
-                                                        strong.title.mr-1 #
-                                                        strong {{ data.item }}
+                                                    //v-card.ma-2.elevation-1(style="width: 100%; border-radius: 20px !important;")
+                                                    //    v-card-text.text-xs-center.grey.white--text.px-0.py-1.body-1 추천 태그
+                                                    //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //        //v-flex(sm2, xs12)
+                                                    //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 추천 태그:
+                                                    //        v-flex(sm10, xs12)
+                                                    //            div(v-if="suggestTag.length > 0")
+                                                    //                v-chip(v-for='tag in suggestTag', :class="selectedSuggestTag.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='selectedSuggestTag.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='changeSuggestTag(tag)')
+                                                    //                    strong.title.mr-1 #
+                                                    //                    strong {{ tag }}
+                                                    //                v-layout(d-flex-inline, align-center, justify-center, wrap)
+                                                    //                    v-btn(flat, color='error', @click='selectedSuggestTag = []') 초기화
+                                                    //                    v-btn(flat, color='orange darken-2', @click='selectedSuggestTag = suggestTag.slice(0)') 전체선택
+                                                    //                .caption.grey--text.mt-2.text-xs-center 클릭해서 활성화
+                                                    //
+                                                    //            .caption.grey--text.mt-3(v-else) 인식된 추천 태그가 없습니다.
+
+                                        //v-flex(d-flex xs12 sm7)
+                                        //    v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //        v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 브랜드
+                                        //        v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-3' : 'pa-3' ", align-center, justify-center)
+                                        //            //v-flex(sm2, xs12)
+                                        //            //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 브랜드:
+                                        //            v-flex(sm10, xs12)
+                                        //                v-select(color="orange darken-2", label='브랜드명을 입력하세요.', chips='', tags='', clearable='', v-model='logos')
+                                        //                    template(slot='selection', slot-scope='data')
+                                        //                        v-chip.elevation-2( close='', @input='removeLogo(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
+                                        //                            strong.title.mr-1 #
+                                        //                            strong {{ data.item }}
+                                        //                .caption.grey--text.mt-2(v-if="logos.length <= 0") 인식된 브랜드가 없습니다.
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 추천 태그:
-                                        v-flex.pb-4(sm10, xs12)
-                                            div(v-if="suggestTag.length > 0")
-                                                v-chip(v-for='tag in suggestTag', :class="selectedSuggestTag.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='selectedSuggestTag.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='changeSuggestTag(tag)')
-                                                    strong.title.mr-1 #
-                                                    strong {{ tag }}
-                                                v-flex(d-flex-inline)
-                                                    v-btn(flat, color='error', @click='selectedSuggestTag = []') 초기화
-                                                    v-btn(flat, color='orange darken-2', @click='selectedSuggestTag = suggestTag.slice(0)') 전체선택
-                                                .caption.grey--text.mt-2 클릭해서 활성화
-
-                                            .caption.grey--text.mt-3(v-else) 인식된 추천 태그가 없습니다.
-
-
-
-
-                                        v-flex(xs12)
-                                            v-divider.mb-4
+                                        v-flex(d-flex xs12 sm5)
+                                            v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 습득일
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //v-flex(sm2, xs12)
+                                                    //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득일(*):
+                                                    v-layout(sm10, xs12, align-center, justify-center)
+                                                        v-date-picker.elevation-4.hidden-xs-only.dal-card(v-model='date', locale="ko-kr", full-width, :landscape='false', color="brown darken-1", name='date')
+                                                            //v-date-picker.mt-3(full-width landscape v-model='picker', color="green lighten-1")
+                                                        v-dialog.hidden-sm-and-up(ref='dialog', persistent, v-model='modal', lazy, full-width, width='330px', :return-value.sync='date')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='습득일', v-model='date', readonly)
+                                                            v-date-picker(v-model='date', locale="ko-kr", scrollable, lazy, full-width, width='330px', color="brown darken-1", name='date')
+                                                                v-spacer
+                                                                v-btn(flat='', color='primary', @click='modal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.dialog.save(date)') OK
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 상세설명:
-                                        v-flex.pb-4(sm10, xs12)
-                                            v-text-field(color="orange darken-2", label='상세한 설명을 입력하세요.', v-model='description', name='description', multi-line)
+
+                                        v-flex(d-flex xs12 sm7)
+                                            v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 습득장소
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-3' : 'pa-0' ", align-center, justify-center)
+                                                    //v-flex(sm2, xs12)
+                                                    //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득장소(*):
+                                                    v-flex(sm10, xs12)
+                                                        v-layout( wrap)
+                                                            v-flex(xs5)
+                                                                v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete)
+                                                            v-flex.pl-2(xs4)
+                                                                v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete)
+                                                            v-layout.pl-2.pt-2(xs2, v-show='!locationProgress', style='vertical-align: middle;', justify-center)
+                                                                v-fab-transition
+                                                                    v-btn.ma-0(color='primary', dark, fab, small, v-on:click='getCurrentLocation')
+                                                                        v-icon(style="width: auto; height: auto;") my_location
+                                                            //v-flex.ml-2(xs6, md1, v-if='locationProgress')
+                                                            //    v-progress-circular(:indeterminate="true", color='info')
+
+                                                        //v-btn(color='primary', v-on:click='getCurrentLocation', v-if='!locationProgress') Get location
+
+                                                        v-card.elevation-5.mx-2.mb-3
+                                                            v-progress-linear.py-0.my-0(:indeterminate="true", color='deep-orange darken-3', v-if='locationProgress', height='2')
+                                                            div(id='div_map', style='width:100%; height:200px;')
+
+                                                        .caption.grey--text.mt-2.text-xs-center 실내 위치 인식은 정확하지 않을 수 있습니다.
 
 
-                                        v-flex(xs12)
-                                            v-divider.mb-4
+                                        v-flex(d-flex xs12)
+                                            v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 색상
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //v-flex(sm2, xs12)
+                                                    //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 색상:
+                                                    v-layout(sm10, xs12, align-center, justify-center, wrap)
+                                                        //v-container
+                                                        //    v-layout
+                                                        //v-chip(v-for='color in colors', color="red")
+                                                        //    strong {{color.red}}
+                                                        v-flex(v-for='color in colors', d-inline-flex)
+                                                            v-card.ma-2.elevation-4.dal-small-card(hover, raised, :width="$vuetify.breakpoint.xsOnly ? '40' : '80' ", :height="$vuetify.breakpoint.xsOnly ? '30' : '40' ", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 색상:
-                                        v-flex.pb-4(sm10, xs12)
-                                            //v-container
-                                            //    v-layout
-                                            //v-chip(v-for='color in colors', color="red")
-                                            //    strong {{color.red}}
-                                            v-flex(v-for='color in colors', d-inline-flex)
-                                                v-card.mb-3.mr-3.elevation-4.dal-small-card(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
+                                        //v-flex(xs12)
+                                        //    v-divider.mb-4
 
 
-                                        v-flex(xs12)
-                                            v-divider.mb-4
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 해시 태그
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 해시 태그:
+                                        //        v-flex(sm10, xs12)
+                                        //            v-select(color="orange darken-2", label='태그를 입력하세요.', chips='', tags='', clearable='', v-model='hashtags' )
+                                        //                template(slot='selection', slot-scope='data')
+                                        //                    v-chip.elevation-2(close='', @input='removeHashtag(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
+                                        //                        strong.title.mr-1 #
+                                        //                        strong {{ data.item }}
+                                        //
+                                        //
+                                        //        v-card.ma-2.elevation-1(style="width: 100%; border-radius: 20px !important;")
+                                        //            v-card-text.text-xs-center.grey.white--text.px-0.py-1.body-1 추천 태그
+                                        //            v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //                //v-flex(sm2, xs12)
+                                        //                //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 추천 태그:
+                                        //                v-flex(sm10, xs12)
+                                        //                    div(v-if="suggestTag.length > 0")
+                                        //                        v-chip(v-for='tag in suggestTag', :class="selectedSuggestTag.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='selectedSuggestTag.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='changeSuggestTag(tag)')
+                                        //                            strong.title.mr-1 #
+                                        //                            strong {{ tag }}
+                                        //                        v-layout(d-flex-inline, align-center, justify-center, wrap)
+                                        //                            v-btn(flat, color='error', @click='selectedSuggestTag = []') 초기화
+                                        //                            v-btn(flat, color='orange darken-2', @click='selectedSuggestTag = suggestTag.slice(0)') 전체선택
+                                        //                        .caption.grey--text.mt-2.text-xs-center 클릭해서 활성화
+                                        //
+                                        //                    .caption.grey--text.mt-3(v-else) 인식된 추천 태그가 없습니다.
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득일(*):
-                                        v-flex(sm10, xs12)
-                                            v-date-picker.elevation-10.mb-3.hidden-xs-only(v-model='date', :landscape='true', color="brown darken-1", name='date')
-                                                //v-date-picker.mt-3(full-width landscape v-model='picker', color="green lighten-1")
-                                            v-dialog.hidden-sm-and-up(ref='dialog', persistent, v-model='modal', lazy, full-width, width='330px', :return-value.sync='date')
-                                                v-text-field(color="orange darken-2", slot='activator', label='습득일', v-model='date', readonly)
-                                                v-date-picker(v-model='date', scrollable, lazy, full-width, width='330px', color="brown darken-1", name='date')
-                                                    v-spacer
-                                                    v-btn(flat='', color='primary', @click='modal = false') Cancel
-                                                    v-btn(flat='', color='primary', @click='$refs.dialog.save(date)') OK
 
 
-                                        v-flex(xs12)
-                                            v-divider.my-4
+                                        //v-flex(xs12)
+                                        //    v-divider.mb-4
 
 
-                                        v-flex(sm2, xs12)
-                                            v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득장소(*):
-                                        v-flex.mb-4(sm10, xs12)
-                                            v-layout( wrap)
-                                                v-flex(xs5, md3)
-                                                    v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete)
-                                                v-flex.ml-2(xs4, md2)
-                                                    v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete)
-                                                v-flex.ml-2.pt-2(xs2, md1, v-show='!locationProgress', style='vertical-align: middle;')
-                                                    v-fab-transition
-                                                        v-btn(color='primary', dark, fab, small, v-on:click='getCurrentLocation')
-                                                            v-icon(style="width: auto; height: auto;") my_location
-                                                //v-flex.ml-2(xs6, md1, v-if='locationProgress')
-                                                //    v-progress-circular(:indeterminate="true", color='info')
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 상세설명
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 상세설명:
+                                        //        v-flex(sm10, xs12)
+                                        //            v-text-field(color="orange darken-2", label='상세한 설명을 입력하세요.', v-model='description', name='description', multi-line)
 
-                                            //v-btn(color='primary', v-on:click='getCurrentLocation', v-if='!locationProgress') Get location
 
-                                            v-card.elevation-5.ml-1.mr-3.mb-3
-                                                v-progress-linear.py-0.my-0(:indeterminate="true", color='deep-orange darken-3', v-if='locationProgress', height='2')
-                                                div(id='div_map', style='width:100%; height:200px;')
+                                        //v-flex(xs12)
+                                        //    v-divider.mb-4
 
-                                            .caption.grey--text.mt-2 실내 위치 인식은 정확하지 않을 수 있습니다.
 
+
+
+                                        //v-flex(xs12)
+                                        //    v-divider.mb-4
+
+
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 습득일
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득일(*):
+                                        //        v-layout(sm10, xs12, align-center, justify-center)
+                                        //            v-date-picker.elevation-4.hidden-xs-only(v-model='date', :landscape='true', color="brown darken-1", name='date')
+                                        //                //v-date-picker.mt-3(full-width landscape v-model='picker', color="green lighten-1")
+                                        //            v-dialog.hidden-sm-and-up(ref='dialog', persistent, v-model='modal', lazy, full-width, width='330px', :return-value.sync='date')
+                                        //                v-text-field(color="orange darken-2", slot='activator', label='습득일', v-model='date', readonly)
+                                        //                v-date-picker(v-model='date', scrollable, lazy, full-width, width='330px', color="brown darken-1", name='date')
+                                        //                    v-spacer
+                                        //                    v-btn(flat='', color='primary', @click='modal = false') Cancel
+                                        //                    v-btn(flat='', color='primary', @click='$refs.dialog.save(date)') OK
+
+
+                                        //v-flex(xs12)
+                                        //    v-divider.my-4
+
+
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 습득장소
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득장소(*):
+                                        //        v-flex.mb-4(sm10, xs12)
+                                        //            v-layout( wrap)
+                                        //                v-flex(xs5, md3)
+                                        //                    v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete)
+                                        //                v-flex.ml-2(xs4, md2)
+                                        //                    v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete)
+                                        //                v-flex.ml-2.pt-2(xs2, md1, v-show='!locationProgress', style='vertical-align: middle;')
+                                        //                    v-fab-transition
+                                        //                        v-btn(color='primary', dark, fab, small, v-on:click='getCurrentLocation')
+                                        //                            v-icon(style="width: auto; height: auto;") my_location
+                                        //                //v-flex.ml-2(xs6, md1, v-if='locationProgress')
+                                        //                //    v-progress-circular(:indeterminate="true", color='info')
+                                        //
+                                        //            //v-btn(color='primary', v-on:click='getCurrentLocation', v-if='!locationProgress') Get location
+                                        //
+                                        //            v-card.elevation-5.ml-1.mr-3.mb-3
+                                        //                v-progress-linear.py-0.my-0(:indeterminate="true", color='deep-orange darken-3', v-if='locationProgress', height='2')
+                                        //                div(id='div_map', style='width:100%; height:200px;')
+                                        //
+                                        //            .caption.grey--text.mt-2 실내 위치 인식은 정확하지 않을 수 있습니다.
+
+
+                                        //v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                        //    v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 색상
+                                        //    v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                        //        //v-flex(sm2, xs12)
+                                        //        //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 색상:
+                                        //        v-layout(sm10, xs12, align-center, justify-center, wrap)
+                                        //            //v-container
+                                        //            //    v-layout
+                                        //            //v-chip(v-for='color in colors', color="red")
+                                        //            //    strong {{color.red}}
+                                        //            v-flex(v-for='color in colors', d-inline-flex)
+                                        //                v-card.mb-3.mr-3.elevation-4.dal-small-card(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
 
 
 
@@ -214,8 +385,8 @@ block content
 
                                         v-flex(sm12, xs12)
                                             v-card-actions.right
-                                                v-btn(color='error', type='button', onclick="window.location.href='/lost'") 뒤로
-                                                v-btn(color='info', @click="submitWithAxios()") 제출
+                                                v-btn(color='error', type='button', onclick="window.location.href='/lost'") 취소
+                                                v-btn(color='info', @click="submitWithAxios()", :disabled="isRecognitionProgress") 제출
                                         //p(class='right')
                                         //div(class=right)
                                             //v-btn(color='info', @click.native="responseDialog = true") Dialog(temp)
@@ -224,6 +395,8 @@ block content
                                         //    v-card-actions.right
                                         //        v-btn(color='error', type='button', onclick="window.location.href='/lost'") Back
                                         //        v-btn(color='info', @click="submitWithAxios") Submit
+
+                        //v-btn(@click="detailDialog = true") test
 
         if image != null
             v-flex(xs12, style="width: 100%; position: fixed; bottom: 0px; z-index: 2; background: white;")
@@ -282,6 +455,7 @@ block content
                 //| Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
             v-divider.py-0.my-0
             v-card-actions
+                v-btn(color='blue darken-4', flat, small, @click="detailDialog = true") 추가 정보 입력
                 v-spacer
                 v-btn(color='error', flat, small, href='/lost') 닫기
                 v-btn(color='green darken-1', flat, small, :href='resSuccessRedirectHref') 확인하기
@@ -309,6 +483,84 @@ block content
                 v-spacer
                 v-btn(color='error', flat='flat', @click.native="loginErrorDialog = false; loginData.dialog = true") Ok
 
+
+    v-dialog(v-model='detailDialog', :fullscreen='$vuetify.breakpoint.xsOnly', max-width='600px', persistent, transition='dialog-bottom-transition', :overlay='true')
+        v-card.white.elevation-10
+            v-toolbar(dark='', color='deep-orange darken-3',  dense)
+                v-btn(icon='',dark, @click="detailDialog = false")
+                    v-icon close
+                v-toolbar-title 추가 정보 입력
+                v-spacer
+                //v-toolbar-items
+                //    v-btn(dark='', flat='', @click.native='dialog = false') Save
+            v-layout.px-3.pt-3.bottom-safe-area-padding(row, wrap)
+
+                v-flex(sm2, xs12)
+                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 이미지:
+                v-flex.mb-5(sm10, xs12)
+                    //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
+                    img.dal-image-card(src= image, :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
+
+
+                v-flex(sm2, xs12)
+                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 브랜드:
+                v-flex.pb-4(sm10, xs12)
+                    v-select(color="orange darken-2", label='브랜드명을 입력하세요.', chips='', tags='', clearable='', v-model='logos')
+                        template(slot='selection', slot-scope='data')
+                            v-chip.elevation-2( close='', @input='removeLogo(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
+                                strong.title.mr-1 #
+                                strong {{ data.item }}
+                    .caption.grey--text.mt-2(v-if="logos.length <= 0") 인식된 브랜드가 없습니다.
+
+
+                v-flex(sm2, xs12)
+                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 해시 태그:
+                v-flex(sm10, xs12)
+                    v-select(color="orange darken-2", label='태그를 입력하세요.', chips='', tags='', clearable='', v-model='hashtags' )
+                        template(slot='selection', slot-scope='data')
+                            v-chip.elevation-2(close='', @input='removeHashtag(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
+                                strong.title.mr-1 #
+                                strong {{ data.item }}
+
+
+                v-flex(sm2, xs12)
+                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 상세설명:
+                v-flex.pb-4(sm10, xs12)
+                    v-text-field(color="orange darken-2", label='상세한 설명을 입력하세요.', v-model='description', name='description', multi-line)
+
+
+                v-flex(sm12, xs12)
+                    v-divider
+
+                v-flex(sm12, xs12)
+                    v-card-actions.right
+                        v-btn(color='error', flat, small, type='button', @click="detailDialog = false") 취소
+                        v-btn(color='info', flat, small, @click="submitDetailWithAxios()") 제출
+
+
+    v-dialog.md6(v-model='submitDetailSuccessDialog', persistent, scrollable, max-width='500px')
+        v-card
+            v-card-title.headline(icon)
+                v-icon.mr-2(color='success') check_circle
+                | 성공
+            v-card-text.subheading
+                | 성공적으로 추가 정보를 등록하였습니다.
+            v-card-actions
+                v-spacer
+                v-btn(color='error', flat, small, href='/lost') 닫기
+                v-btn(color='green darken-1', flat, small, :href='resSuccessRedirectHref') 확인하기
+
+    v-dialog(v-model='requestErrorDialog', max-width='500px')
+        v-card
+            v-card-title.headline
+                v-icon.mr-2(color='error') error
+                | Request Failed
+            v-card-text
+                | 계속해서 요청에 실패할 경우 관리자에게 문의해주세요.
+            v-card-actions
+                v-spacer
+                v-btn(color='error', flat='flat', @click.native="requestErrorDialog = false") 확인
+
     script.
         function initMap() {
             // console.log('initMap');
@@ -325,6 +577,6 @@ block content
         }
     script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCEFVgjGWKUi7iA37ful7Fgkle2nGVzfv8&callback=initMap')
 
-    script(type="text/javascript" src='/javascripts/lost-config.js')
+    script(type="text/javascript" src='/javascripts/lost-config-2.js')
     script.
         const vue = init("#{image}", '#{labels}', '#{texts}', '#{logos}', '!{colors}', '!{category}');

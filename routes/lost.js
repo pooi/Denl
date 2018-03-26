@@ -186,6 +186,30 @@ router.post('/submit', function(req, res) {
 
 });
 
+router.post('/submitDetail', function(req, res) {
+
+    if (req.body) {
+        var lostID = req.body.lost_id;
+        var brand = req.body.brand;
+        var tags = req.body.tags;
+        var description = req.body.description;
+
+        var sql = 'UPDATE lost set brand=?, tags=?, description=? WHERE id=?';
+        conn.query(sql, [brand, tags, description, lostID], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+    } else {
+        res.status(500).send("Internal Server Error");
+    }
+
+
+});
+
 router.post('/recognition', function(req, res) {
 
     var imagePath = req.body.image;
@@ -193,13 +217,14 @@ router.post('/recognition', function(req, res) {
         imagePath = '/' + imagePath;
     }
 
-    var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image.py"';
+    var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image_hierarchical.py"';
     var path_labels = '"' + __dirname + '/../recognition/retrained_labels.txt"';
     var path_graph = '"' + __dirname + '/../recognition/retrained_graph.pb"';
     var path_image = '"' + __dirname + '/../uploads_temp' + imagePath + '"';
+    var path_detail_dir = '"' + __dirname + '/../recognition/hierarchical_detail"';
 
-    var COMMAND = "{0} --input_layer=Mul --output_layer=final_result --labels={1} --graph={2} --image={3} ";
-    var command = COMMAND.format(path_labelImage, path_labels, path_graph, path_image);
+    var COMMAND = "{0} --input_layer=Mul --output_layer=final_result --labels={1} --graph={2} --image={3} --detailDir={4} ";
+    var command = COMMAND.format(path_labelImage, path_labels, path_graph, path_image, path_detail_dir);
 
     exec(command, function(err, stdout, stderr) {
 
