@@ -65,21 +65,22 @@
                 <div style="margin-top: 48px;">
                     <v-app>
                         <v-content class="brown lighten-5">
-                            <v-container class="pa-0" :fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly">
+                            <v-container :fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly"
+                                         :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-2' : 'pa-0'">
 
-                                <v-card class="" :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-5'">
+                                <v-card :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 my-2' : 'elevation-10 my-5'">
 
                                     <v-layout wrap>
-                                        <v-flex sm12="">
+                                        <v-flex xs12 sm12>
+
                                             <!--<v-card-title class="headline pa-0">유실물 관리</v-card-title>
                                             <v-divider class="mt-4 mb-4"></v-divider>-->
 
-
                                             <v-tabs icons-and-text centered dark color="deep-orange darken-1" height="125">
 
-                                                <v-layout wrap>
-
-                                                    <v-flex xs12 pa-2>
+                                                <v-tabs-slider color="yellow"></v-tabs-slider>
+                                                <v-layout column>
+                                                    <v-flex xs12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-1' : 'pa-2'">
                                                         <v-text-field
                                                                 append-icon="search"
                                                                 label="search"
@@ -106,9 +107,6 @@
                                                     </v-flex>
 
                                                 </v-layout>
-                                                <v-tabs-slider color="yellow"></v-tabs-slider>
-
-
 
 
                                                 <!--######## Home 탭 컨텐츠 ########-->
@@ -117,8 +115,8 @@
                                                 >
 
                                                     <!--####### 수거하지 않은 물품 #######-->
-                                                    <v-flex class="mt-4" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
-                                                        <div class="headline pa-1 pl-3">수거하지 않은 물품</div>
+                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                        <div class="headline ">수거하지 않은 물품</div>
                                                         <v-divider class="my-2"></v-divider>
                                                     </v-flex>
 
@@ -178,8 +176,8 @@
 
 
                                                     <!--####### 요청이 발생한 품목 #######-->
-                                                    <v-flex class="mt-4" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
-                                                        <div class="headline pa-1 pl-3">요청이 발생한 품목</div>
+                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                        <div class="headline">요청이 발생한 품목</div>
                                                         <v-divider class="my-2"></v-divider>
                                                     </v-flex>
 
@@ -238,8 +236,8 @@
 
 
                                                     <!--####### 장기간 미 수령 품목 #######-->
-                                                    <v-flex class="mt-4" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
-                                                        <div class="headline pa-1 pl-3">장기간 미 수령 품목</div>
+                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                        <div class="headline">장기간 미 수령 품목</div>
                                                         <v-divider class="my-2"></v-divider>
                                                     </v-flex>
 
@@ -305,8 +303,8 @@
                                                         :id="'tab-' + 2"
                                                 >
 
-                                                    <v-flex class="mt-4" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
-                                                        <div class="headline pa-1 pl-3">유실물</div>
+                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                        <div class="headline">유실물</div>
                                                         <v-divider class="my-2"></v-divider>
                                                     </v-flex>
 
@@ -370,15 +368,14 @@
                                                 <v-tab-item
                                                         :id="'tab-' + 3"
                                                 >
-                                                    <v-flex class="mt-4" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
-                                                        <div class="headline pa-1 pl-3">유실물 추이</div>
+                                                    <v-flex class="mt-4 mx-5 pa-1 px-3" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
+                                                        <div class="headline">유실물 추이</div>
                                                         <v-divider class="my-2"></v-divider>
                                                     </v-flex>
                                                 </v-tab-item>
                                             </v-tabs>
 
                                         </v-flex>
-
 
                                     </v-layout>
                                 </v-card>
