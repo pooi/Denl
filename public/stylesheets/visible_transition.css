@@ -1,4 +1,0 @@
-/* 0.15초 뒤에 화면에 나타나는 파트*/
-#main_top, #select_cards, #main_top_manager, #select_cards_manager {
-    visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s linear;
-}

@@ -36,9 +36,8 @@
     </script>
 
 
-    <link href="../stylesheets/card_categories.css" rel="stylesheet"> <!--마우스 커서시 그림자 효과-->
-    <link href="../stylesheets/visible_transition.css" rel="stylesheet"> <!--**초 뒤에 화면에 나타나는 효과-->
     <link href="../stylesheets/main_first_section.css" rel="stylesheet"> <!--첫 번째 섹션 모바일 버전-->
+    <link href="../stylesheets/recent_register_section.css" rel="stylesheet"> <!--최근 등록된 유실물 섹션 모바일 버전-->
 
 
     <style>
@@ -48,23 +47,24 @@
             #introduce_register { height: auto !important; padding: 5% 10% !important;}
 
             /*메인 페이지_ 개발진 소개 섹션*/
+            /*데스크탑과 모바일일때 경우 다르게 나타남*/
             #introduce_developer_desktop { display: none !important;}
             #introduce_developer_mobile { height: auto !important; display: block !important;}
 
+            /*하단 툴바 네비게이션 나타나게*/
             #bottom_nav {display: block !important;}
 
-            /*최근 등록된 유실물 more버튼 모바일 크기 변화*/
-            #recent_register_button{min-width: 50px !important; font-size: 0.6em !important; max-height: 18px !important;}
+
         }
         @font-face {
             font-family: "day";
             src: url(../stylesheets/day.ttf);
         }
 
-            /*폰트 설정*/
-        * { font-family: 'day', sans-serif;}
+        /*등록 소개 섹션_ 폰트 설정*/
+        #introduce_register { font-family: 'day', sans-serif;}
 
-        .tabs__icon { line-height: 380px; font-size: 2.0em;}
+
 
     </style>
 </head>
@@ -211,7 +211,7 @@
 
                                 <!--######## 로고 ########-->
 
-                                <v-layout id="main_top" column align-center="" justify-center="">
+                                <v-layout id="main_top" column align-center="" justify-center="" text-xs-center>
                                     <img id="main_top_logo" src="https://beta.denl.xyz/images/logo/logo_color.svg" height="120" style="margin-top: 75px;"/>
                                     <h1 class="" :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'headline text-xs-center' : 'display-1 text-xs-center'"
                                         style="margin-top: 12px;">Discovery and Lost</h1>
@@ -222,7 +222,7 @@
 
                                 <!--######## 카드(찾기,등록,관리) ########-->
 
-                                <v-layout id="select_cards" container wrap align-center justify-center mt-5 pt-3>
+                                <v-layout id="select_cards" container wrap align-center justify-center class="mt-5 pt-3 pl-0">
 
                                     <!--찾기-->
                                     <v-flex id="find" xs12 sm4>
@@ -281,6 +281,14 @@
                                         </v-card>
                                     </v-flex>
 
+                                </v-layout>
+
+                                <!--모바일 버전에서 스크롤 다운 표시-->
+                                <v-layout id="scroll_down" wrap class="pt-5 mt-5" style="display: none;">
+                                    <v-flex xs12 text-xs-center>
+                                        <v-text class="caption white--text">Scroll Down</v-text></br>
+                                        <v-icon medium color="white">keyboard_arrow_down</v-icon></br>
+                                    </v-flex>
                                 </v-layout>
 
                             </v-card>
@@ -416,13 +424,15 @@
 
 
                                         <v-flex xs12 sm10 container class="pt-0">
-                                            <v-tabs id="recent_register_tabs" height="500px" color="transparent" slider-color="none"
-                                                    prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right">
 
-                                                <!---3.5px은 딱 떨어지는 느낌-->
+                                            <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
+                                            <v-tabs id="recent_register_tabs" height="500px" color="transparent" slider-color="none"
+                                                    prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
+
+                                                <!---tab에 있는 카드 사이의 간격 조절-->
                                                 <v-tab
                                                         xs12
-                                                        style="margin: 0 -8px;"
+                                                        style="margin: 0 -6px;"
                                                         class="pr-0"
                                                         v-for="card in cards_item"
                                                         v-bind="{ [`sm${card.flex}`]: true }">
@@ -433,9 +443,11 @@
                                                                 class="elevation-0"
                                                                 :key="card.category"
                                                         >
+
+                                                            <!--tab 안에 있는 카드 내용 콘텐츠-->
                                                             <v-layout row>
                                                                 <v-flex xs12 md12>
-                                                                    <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 150px;"
+                                                                    <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 235px;"
                                                                             :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
                                                                         <v-card-media :src="card.src" height="250px"></v-card-media>
                                                                         <code class="mx-3 elevation-0 mt-3">수거전</code>
@@ -444,31 +456,15 @@
                                                                         <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
                                                                         <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
                                                                         <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
-                                                                        <v-card-actions>
+
+                                                                        <!--share / detail 버튼 가운데로 배치-->
+                                                                        <v-card-actions justify-center>
                                                                             <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
                                                                             <v-spacer></v-spacer>
                                                                             <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
                                                                         </v-card-actions>
                                                                     </v-card>
 
-
-
-                                                                    <!--<v-card id="recent_register_cards" style="min-width: 150px;">
-                                                                        <img :src="card.src" style="height: 250px; width: 100%;" >
-
-                                                                        <div class="mt-2">
-                                                                            <span class="subheading black&#45;&#45;text" v-text="card.category"></span></br>
-                                                                        </div>
-                                                                        <div id="test" class="mt-1">
-                                                                            <span class="body-2" v-text="card.date"></span></br>
-                                                                            <strong>#</strong><span class="body-2" v-text="card.tag"></span></br>
-                                                                            <v-card-actions>
-                                                                                <v-btn flat color="orange">Share</v-btn>
-                                                                                <v-spacer></v-spacer>
-                                                                                <v-btn flat color="orange" style="padding-left: 0">Detail</v-btn>
-                                                                            </v-card-actions>
-                                                                        </div>
-                                                                    </v-card>-->
                                                                 </v-flex>
                                                             </v-layout>
                                                         </v-flex>
@@ -476,9 +472,6 @@
                                                 </v-tab>
                                             </v-tabs>
                                         </v-flex>
-
-
-
 
                                     </v-layout>
 
@@ -493,7 +486,6 @@
                     <!--######## 유실물 통계 ########-->
                     <section style="background-color: #fff6f3; height: 400px;">
                         <v-layout
-                                style="height: 400px;"
                                 column
                                 wrap
                                 class="py-5"
@@ -750,7 +742,6 @@
 
                 <section id="bottom_nav" style="display: none;">
 
-
                     <v-bottom-nav fixed :value="true" :active.sync="e1" color="white">
                         <v-btn flat color="deep-orange darken-4" value="home">
                             <span>홈</span>
@@ -814,16 +805,11 @@
                 { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
             ],
 
-            e1: 1,
-            e1: true,
+            e1: 'home',
 
             loginData:{
 
             },
-            return: {
-                e3: 1,
-                e31: true
-            }
         },
         method:{
             loginSejong: function(){
