@@ -92,13 +92,16 @@
                                                     <v-flex xs12 justify-center align-center text-xs-center>
                                                         <v-tab class="subheading" href="#tab-1">
                                                             HOME
+                                                            <v-icon>home</v-icon>
                                                             <!--<v-icon>account_box</v-icon>-->
                                                         </v-tab>
                                                         <v-tab class="subheading" href="#tab-2">
                                                             Lost
+                                                            <v-icon>view_comfy</v-icon>
                                                         </v-tab>
                                                         <v-tab class="subheading" href="#tab-3">
                                                             Statistics
+                                                            <v-icon>poll</v-icon>
                                                         </v-tab>
                                                     </v-flex>
 
@@ -130,7 +133,7 @@
                                                                     xs12
                                                                     style="margin: 0 10px;"
                                                                     class="pr-0"
-                                                                    v-for="card in cards_item"
+                                                                    v-for="card in home_collect"
                                                                     v-bind="{ [`sm${card.flex}`]: true }"
                                                                     :key="card.category">
 
@@ -190,7 +193,7 @@
                                                                     xs12
                                                                     style="margin: 0 10px;"
                                                                     class="pr-0"
-                                                                    v-for="card in cards_item"
+                                                                    v-for="card in home_request"
                                                                     v-bind="{ [`sm${card.flex}`]: true }"
                                                                     :key="card.category">
 
@@ -250,7 +253,7 @@
                                                                     xs12
                                                                     style="margin: 0 10px;"
                                                                     class="pr-0"
-                                                                    v-for="card in cards_item"
+                                                                    v-for="card in home_longterm"
                                                                     v-bind="{ [`sm${card.flex}`]: true }"
                                                                     :key="card.category">
 
@@ -317,7 +320,7 @@
                                                                     xs12
                                                                     style="margin: 0 10px;"
                                                                     class="pr-0"
-                                                                    v-for="card in cards_item"
+                                                                    v-for="card in Lost"
                                                                     v-bind="{ [`sm${card.flex}`]: true }"
                                                                     :key="card.category">
 
@@ -432,8 +435,47 @@
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
             ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 
-            /*######## 최근 등록된 유실물 섹션 ########*/
-            cards_item: [
+            /*######## 홈 탭_ 수거하지 않은 품목 섹션 ########*/
+            home_collect: [
+                { category: '상위 > 하위', category2: '하위', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Favorite road trips', src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+            ],
+
+            /*######## 홈 탭_ 요청이 발생한 품목 섹션 ########*/
+            home_request: [
+                { category: '상위 > 하위', category2: '하위', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Favorite road trips', src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+            ],
+
+            /*######## 홈 탭_ 장기간 미 수령 품목 섹션 ########*/
+            home_longterm: [
+                { category: '상위 > 하위', category2: '하위', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Favorite road trips', src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
+                { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+            ],
+
+            /*######## Lost 탭_ 유실물 섹션 ########*/
+            Lost: [
                 { category: '상위 > 하위', category2: '하위', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
                 { category: '상위', category2: '하위', date: '17.03.02', tag: 'Favorite road trips', src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg', flex: 3 },
                 { category: '상위', category2: '하위', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },

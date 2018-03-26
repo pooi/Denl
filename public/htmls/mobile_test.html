@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Discovery and Lost beta_mobile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+
+    <!--<script src="/scripts/jquery.min.js"></script>-->
+    <!--script(src='/bootstrap/dist/js/bootstrap.min.js')-->
+    <!--link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')-->
+    <!--<script src="/scripts/axios.min.js"></script>-->
+    <!--<script src="/scripts/vue.js"></script>-->
+    <!--link(href='/styles/vuetify.min.css', rel='stylesheet')-->
+    <!--script(src='/scripts/vuetify.min.js')-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
+        //]]>
+    </script>
+
+
+    <link href="../stylesheets/card_categories.css" rel="stylesheet"> <!--마우스 커서시 그림자 효과-->
+    <link href="../stylesheets/visible_transition.css" rel="stylesheet"> <!--**초 뒤에 화면에 나타나는 효과-->
+    <link href="../stylesheets/main_first_section.css" rel="stylesheet"> <!--첫 번째 섹션 모바일 버전-->
+
+
+    <style>
+        @media only screen and (max-width: 770px) {
+
+
+
+        }
+
+        .tabs__icon { line-height: 380px; font-size: 2.0em;}
+
+    </style>
+</head>
+<body>
+
+<!--스크롤 시 툴바 생성 & 로고 변화-->
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
+            document.getElementById("toolbar").style.backgroundColor = "white";
+            document.getElementById("toolbar_login").style.color = "black";
+
+            document.getElementById("main_top_logo").style.display = "block";
+            document.getElementById("toolbar_logo").style.display = "block";
+            document.getElementById("toolbar_title").style.display = "none";
+        } else {
+            document.getElementById("toolbar").style.backgroundColor = "transparent";
+            document.getElementById("toolbar_login").style.color = "#E6E6E6";
+            document.getElementById("main_top_logo").style.display = "block";
+            document.getElementById("toolbar_logo").style.display = "none";
+            document.getElementById("toolbar_title").style.display = "block";
+        }
+    }
+</script>
+
+
+<div id="app">
+    <v-app light>
+        <v-container id="scroll-target" fluid style="overflow-x: hidden;" class="scroll-y pa-0">
+
+            <v-layout column>
+
+                <!--<div>
+                    <v-tabs-items v-model="tab">
+                        <v-tab-item v-for="item in items" :key="item" :to="item.path">
+                            <v-card>
+
+
+
+                            </v-card>
+                        </v-tab-item>
+                    </v-tabs-items>
+
+                    <div dark style="position:fixed; bottom:0; width:100%;">
+                        <v-tabs
+                                color="white"
+                                slot="extension"
+                                v-model="tab"
+                                grow
+                        >
+                            <v-tabs-slider color="orange"></v-tabs-slider>
+                            <v-tab v-for="item in items" :key="item" >
+                                {{ item }}
+                            </v-tab>
+                        </v-tabs>
+                    </div>
+                </div>-->
+               <!-- <v-tabs
+                        fixed-tabs
+                        v-model="currentItem"
+                        color="transparent"
+                        slider-color="yellow"
+                        slot="extension"
+                >
+                    <v-tab
+                            v-for="item in items"
+                            :key="item"
+                            :href="'#tab-' + item"
+                    >
+                        {{ item }}
+                    </v-tab>
+                </v-tabs>
+
+                <v-tabs-items v-model="currentItem">
+                    <v-tab-item
+                            v-for="item in items.concat(more)"
+                            :key="item"
+                            :id="'tab-' + item"
+
+                    >
+                        <v-card flat>
+                            <v-card-text>
+                                <div >
+                                    <h1>hello web</h1>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs-items>-->
+
+
+                <v-content class="brown lighten-5">
+                    <v-container :fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly" class="pa-0">
+                        <v-flex md12="">
+                            <v-card :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'" class="pa-3">
+
+                                <v-card-title class="pa-0">
+                                    <v-container v-bind="{ [`grid-list-lg`]: true }" :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ">
+                                        <v-layout wrap="wrap">
+                                            <v-flex xs12="xs12" sm6="sm6" md6="md6" lg4="lg4" >
+
+                                                <v-card flat="" tile="" hover="hover" raised="raised" :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' " href="/items/4" class="dal-card">
+                                                    <v-card-media src="https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg" height="250px"></v-card-media>
+                                                    <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                    <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                    <v-card-text class="py-0 subheading grey--text text--lighten-1">화장품 > 립밤/립스틱</v-card-text>
+                                                    <v-card-text class="py-3 grey--text text--darken-2">상세 설명</v-card-text>
+                                                    <v-card-text class="py-0 text-xs-left caption grey--text text--lighten-1">2018년 03월 04일</v-card-text>
+                                                    <v-card-text class="py-0 text-xs-left"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                    <v-card-actions>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                        <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-card-title>
+                            </v-card>
+                        </v-flex>
+                    </v-container>
+                </v-content>
+
+            </v-layout>
+
+        </v-container>
+    </v-app>
+</div>
+
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            title: 'D&L', title_login: 'Login',
+            dialog: false, drawer: false,
+
+            currentItem: 'tab-Web',
+            items: [
+                'Web', 'Shopping', 'Videos', 'Images'
+            ],
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut ' +
+            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+
+            scrollData: {
+                fab: false,
+                offsetTop: 0,
+                scrollT: 0,
+                delta: 200,
+                isShowFabTop: true,
+                transition: 'slide-y-reverse-transition'
+            },
+            /*######## 개발자 소개 섹션 해시태그 ########*/
+            cards_introduce: [
+                { title_name: '유태우', title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
+                    src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex_md: 3 },
+                { title_name: '정하민', title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
+                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/keanu-reeves-500w.jpg', flex_md: 3},
+                { title_name: '유현수', title_skill_1: 'FrontEnd developer', title_skill_2: 'Test UI/UX',
+                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/daniel-arsham-500w.jpg?2', flex_md: 3},
+                { title_name: '김윤욱', title_skill_1: 'FrontEnd developer', title_skill_2: 'Test UI/UX',
+                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/danny-bowien-500w.jpg?2', flex_md: 3 },
+            ],
+
+            /*######## 최근 등록된 유실물 섹션 ########*/
+            cards_item: [
+                { category: 'camera', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+                { category: 'camera', date: '17.03.02', tag: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 3 },
+            ],
+            loginData:{
+
+            }
+
+        },
+        method:{
+            loginSejong: function(){
+                var id = document.getElementsByName('loginId');
+                var pw = document.getElementsByName('loginPw');
+                loginSejong(id, pw);
+            }
+        },
+        mounted:[
+            // function(){
+            //     $(window).scroll(
+            //         function (event) {
+            //
+            //             var scroll = $(window).scrollTop();
+            //
+            //             vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
+            //
+            //             if(vue.scrollData.scrollT > vue.scrollData.delta){
+            //                 vue.scrollData.isShowFabTop = true;
+            //                 vue.scrollData.scrollT = 0;
+            //             }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
+            //                 vue.scrollData.isShowFabTop = false;
+            //                 vue.scrollData.scrollT = 0;
+            //             }
+            //
+            //             vue.scrollData.offsetTop = scroll;
+            //
+            //             if(scroll === 0){
+            //                 vue.scrollData.isShowFabTop = false;
+            //                 vue.scrollData.scrollT = 0;
+            //                 vue.scrollData.offsetTop = 0;
+            //             }
+            //
+            //         }
+            //     );
+            // }
+        ]
+    })
+</script>
+
+</body>
+</html>

@@ -770,7 +770,7 @@
     const vue = new Vue({
         el: '#app',
         data: {
-            title: 'D&L', title_login: 'Login',
+            title: null, title_login: 'Login',
             dialog: false, drawer: false,
             scrollData: {
                 fab: false,
@@ -791,7 +791,6 @@
                 { title_name: '김윤욱', title_skill_1: 'FrontEnd developer', title_skill_2: 'Test UI/UX',
                     src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/danny-bowien-500w.jpg?2', flex_md: 3 },
             ],
-
             /*######## 최근 등록된 유실물 섹션 ########*/
             cards_item: [
                 { category: '상위 > 하위', category2: '하위', date: '17.03.02', tag: '카테고리', src: '../images/picture/test_camera.jpg', flex: 3 },
@@ -817,6 +816,9 @@
                 var pw = document.getElementsByName('loginPw');
                 loginSejong(id, pw);
             }
+        },
+        created: {
+
         },
         mounted:[
             // function(){
