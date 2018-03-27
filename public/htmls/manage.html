@@ -110,269 +110,247 @@
 
 
                                                 <!--######## Home 탭 컨텐츠 ########-->
-                                                <v-tab-item
-                                                        :id="'tab-' + 1"
-                                                >
+                                                <v-tabs-items :touchless="true">
+                                                    <v-tab-item :id="'tab-' + 1">
 
-                                                    <!--####### 수거하지 않은 물품 #######-->
-                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
-                                                        <div class="headline ">수거하지 않은 물품</div>
-                                                        <v-divider class="my-2"></v-divider>
-                                                    </v-flex>
+                                                        <!--####### 수거하지 않은 물품 #######-->
+                                                        <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                            <div class="headline ">수거하지 않은 물품</div>
+                                                            <v-divider class="my-2"></v-divider>
+                                                        </v-flex>
 
-                                                    <v-flex xs12 sm12 container class="pt-0">
+                                                        <v-flex xs12 sm12 container class="pt-0">
 
-                                                        <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
-                                                        <v-tabs id="#" height="500px" color="transparent" slider-color="none"
-                                                                prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
+                                                            <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
+                                                            <v-tabs id="#" height="500px" color="transparent" slider-color="none"
+                                                                    prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
 
-                                                            <!---tab에 있는 카드 사이의 간격 조절-->
-                                                            <v-tab
-                                                                    xs12
-                                                                    style="margin: 0 10px;"
-                                                                    class="pr-0"
-                                                                    v-for="card in home_collect"
-                                                                    v-bind="{ [`sm${card.flex}`]: true }"
-                                                                    :key="card.category">
+                                                                <!---tab에 있는 카드 사이의 간격 조절-->
+                                                                <v-tab
+                                                                        xs12
+                                                                        style="margin: 0 10px;"
+                                                                        class="pr-0"
+                                                                        v-for="card in home_collect"
+                                                                        v-bind="{ [`sm${card.flex}`]: true }"
+                                                                        :key="card.category">
 
-                                                                <v-layout wrap>
-                                                                    <v-flex
-                                                                            xs12
-                                                                            flat
-                                                                            class="elevation-0"
-                                                                    >
+                                                                    <v-layout wrap>
+                                                                        <v-flex xs12 flat class="elevation-0">
 
+                                                                            <!--tab 안에 있는 카드 내용 콘텐츠-->
+                                                                            <v-layout row>
+                                                                                <v-flex xs12 md12>
+                                                                                    <v-card id="#" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
+                                                                                            :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
+                                                                                        <v-card-media :src="card.src" height="250px"></v-card-media>
+                                                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                                                        <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
+                                                                                        <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
+                                                                                        <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
+                                                                                        <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
 
-                                                                        <!--tab 안에 있는 카드 내용 콘텐츠-->
-                                                                        <v-layout row>
-                                                                            <v-flex xs12 md12>
-                                                                                <v-card id="#" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
-                                                                                        :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
-                                                                                    <v-card-media :src="card.src" height="250px"></v-card-media>
-                                                                                    <code class="mx-3 elevation-0 mt-3">수거전</code>
-                                                                                    <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
-                                                                                    <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
-                                                                                    <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
-                                                                                    <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
-                                                                                    <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                                                        <!--share / detail 버튼 가운데로 배치-->
+                                                                                        <v-card-actions justify-center>
+                                                                                            <v-spacer></v-spacer>
+                                                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                                                        </v-card-actions>
+                                                                                    </v-card>
 
-                                                                                    <!--share / detail 버튼 가운데로 배치-->
-                                                                                    <v-card-actions justify-center>
-                                                                                        <v-spacer></v-spacer>
-                                                                                        <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
-                                                                                        <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
-                                                                                    </v-card-actions>
-                                                                                </v-card>
+                                                                                </v-flex>
+                                                                            </v-layout>
+                                                                        </v-flex>
 
-                                                                            </v-flex>
-                                                                        </v-layout>
-                                                                    </v-flex>
-
-                                                                </v-layout>
-                                                            </v-tab>
-                                                        </v-tabs>
-                                                    </v-flex>
+                                                                    </v-layout>
+                                                                </v-tab>
+                                                            </v-tabs>
+                                                        </v-flex>
 
 
 
-                                                    <!--####### 요청이 발생한 품목 #######-->
-                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
-                                                        <div class="headline">요청이 발생한 품목</div>
-                                                        <v-divider class="my-2"></v-divider>
-                                                    </v-flex>
+                                                        <!--####### 요청이 발생한 품목 #######-->
+                                                        <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                            <div class="headline">요청이 발생한 품목</div>
+                                                            <v-divider class="my-2"></v-divider>
+                                                        </v-flex>
 
-                                                    <v-flex xs12 sm12 container class="pt-0">
+                                                        <v-flex xs12 sm12 container class="pt-0">
 
-                                                        <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
-                                                        <v-tabs id="#" height="500px" color="transparent" slider-color="none"
-                                                                prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
+                                                            <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
+                                                            <v-tabs id="#" height="500px" color="transparent" slider-color="none"
+                                                                    prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
 
-                                                            <!---tab에 있는 카드 사이의 간격 조절-->
-                                                            <v-tab
-                                                                    xs12
-                                                                    style="margin: 0 10px;"
-                                                                    class="pr-0"
-                                                                    v-for="card in home_request"
-                                                                    v-bind="{ [`sm${card.flex}`]: true }"
-                                                                    :key="card.category">
+                                                                <!---tab에 있는 카드 사이의 간격 조절-->
+                                                                <v-tab
+                                                                        xs12
+                                                                        style="margin: 0 10px;"
+                                                                        class="pr-0"
+                                                                        v-for="card in home_request"
+                                                                        v-bind="{ [`sm${card.flex}`]: true }"
+                                                                        :key="card.category">
 
-                                                                <v-layout wrap>
-                                                                    <v-flex
-                                                                            xs12
-                                                                            flat
-                                                                            class="elevation-0"
-                                                                    >
+                                                                    <v-layout wrap>
+                                                                        <v-flex xs12 flat class="elevation-0">
 
-                                                                        <!--tab 안에 있는 카드 내용 콘텐츠-->
-                                                                        <v-layout row>
-                                                                            <v-flex xs12 md12>
-                                                                                <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
-                                                                                        :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
-                                                                                    <v-card-media :src="card.src" height="250px"></v-card-media>
-                                                                                    <code class="mx-3 elevation-0 mt-3">수거전</code>
-                                                                                    <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
-                                                                                    <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
-                                                                                    <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
-                                                                                    <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
-                                                                                    <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                                            <!--tab 안에 있는 카드 내용 콘텐츠-->
+                                                                            <v-layout row>
+                                                                                <v-flex xs12 md12>
+                                                                                    <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
+                                                                                            :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
+                                                                                        <v-card-media :src="card.src" height="250px"></v-card-media>
+                                                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                                                        <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
+                                                                                        <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
+                                                                                        <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
+                                                                                        <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
 
-                                                                                    <!--share / detail 버튼 가운데로 배치-->
-                                                                                    <v-card-actions justify-center>
-                                                                                        <v-spacer></v-spacer>
-                                                                                        <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
-                                                                                        <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
-                                                                                    </v-card-actions>
-                                                                                </v-card>
+                                                                                        <!--share / detail 버튼 가운데로 배치-->
+                                                                                        <v-card-actions justify-center>
+                                                                                            <v-spacer></v-spacer>
+                                                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                                                        </v-card-actions>
+                                                                                    </v-card>
 
-                                                                            </v-flex>
-                                                                        </v-layout>
-                                                                    </v-flex>
+                                                                                </v-flex>
+                                                                            </v-layout>
+                                                                        </v-flex>
 
-                                                                </v-layout>
-                                                            </v-tab>
-                                                        </v-tabs>
-                                                    </v-flex>
+                                                                    </v-layout>
+                                                                </v-tab>
+                                                            </v-tabs>
+                                                        </v-flex>
 
 
 
-                                                    <!--####### 장기간 미 수령 품목 #######-->
-                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
-                                                        <div class="headline">장기간 미 수령 품목</div>
-                                                        <v-divider class="my-2"></v-divider>
-                                                    </v-flex>
+                                                        <!--####### 장기간 미 수령 품목 #######-->
+                                                        <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                            <div class="headline">장기간 미 수령 품목</div>
+                                                            <v-divider class="my-2"></v-divider>
+                                                        </v-flex>
 
-                                                    <v-flex xs12 sm12 container class="pt-0">
+                                                        <v-flex xs12 sm12 container class="pt-0">
 
-                                                        <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
-                                                        <v-tabs id="#" height="500px" color="transparent" slider-color="none"
-                                                                prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
+                                                            <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
+                                                            <v-tabs id="#" height="500px" color="transparent" slider-color="none"
+                                                                    prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
 
-                                                            <!---tab에 있는 카드 사이의 간격 조절-->
-                                                            <v-tab
-                                                                    xs12
-                                                                    style="margin: 0 10px;"
-                                                                    class="pr-0"
-                                                                    v-for="card in home_longterm"
-                                                                    v-bind="{ [`sm${card.flex}`]: true }"
-                                                                    :key="card.category">
+                                                                <!---tab에 있는 카드 사이의 간격 조절-->
+                                                                <v-tab
+                                                                        xs12
+                                                                        style="margin: 0 10px;"
+                                                                        class="pr-0"
+                                                                        v-for="card in home_longterm"
+                                                                        v-bind="{ [`sm${card.flex}`]: true }"
+                                                                        :key="card.category">
 
-                                                                <v-layout wrap>
-                                                                    <v-flex
-                                                                            xs12
-                                                                            flat
-                                                                            class="elevation-0"
-                                                                    >
+                                                                    <v-layout wrap>
+                                                                        <v-flex xs12 flat class="elevation-0">
 
-                                                                        <!--tab 안에 있는 카드 내용 콘텐츠-->
-                                                                        <v-layout row>
-                                                                            <v-flex xs12 md12>
-                                                                                <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
-                                                                                        :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
-                                                                                    <v-card-media :src="card.src" height="250px"></v-card-media>
-                                                                                    <code class="mx-3 elevation-0 mt-3">수거전</code>
-                                                                                    <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
-                                                                                    <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
-                                                                                    <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
-                                                                                    <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
-                                                                                    <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
+                                                                            <!--tab 안에 있는 카드 내용 콘텐츠-->
+                                                                            <v-layout row>
+                                                                                <v-flex xs12 md12>
+                                                                                    <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
+                                                                                            :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
+                                                                                        <v-card-media :src="card.src" height="250px"></v-card-media>
+                                                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                                                        <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
+                                                                                        <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
+                                                                                        <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
+                                                                                        <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
 
-                                                                                    <!--share / detail 버튼 가운데로 배치-->
-                                                                                    <v-card-actions justify-center>
-                                                                                        <v-spacer></v-spacer>
-                                                                                        <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
-                                                                                        <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
-                                                                                    </v-card-actions>
-                                                                                </v-card>
+                                                                                        <!--share / detail 버튼 가운데로 배치-->
+                                                                                        <v-card-actions justify-center>
+                                                                                            <v-spacer></v-spacer>
+                                                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                                                        </v-card-actions>
+                                                                                    </v-card>
 
-                                                                            </v-flex>
-                                                                        </v-layout>
-                                                                    </v-flex>
+                                                                                </v-flex>
+                                                                            </v-layout>
+                                                                        </v-flex>
 
-                                                                </v-layout>
-                                                            </v-tab>
-                                                        </v-tabs>
-                                                    </v-flex>
+                                                                    </v-layout>
+                                                                </v-tab>
+                                                            </v-tabs>
+                                                        </v-flex>
+
+                                                    </v-tab-item>
 
 
+                                                    <!--######## Lost 탭 컨텐츠 ########-->
+                                                    <v-tab-item :id="'tab-' + 2">
 
-                                                </v-tab-item>
+                                                        <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
+                                                            <div class="headline">유실물</div>
+                                                            <v-divider class="my-2"></v-divider>
+                                                        </v-flex>
 
+                                                        <v-flex xs12 sm12 container class="pt-0">
 
-                                                <!--######## Lost 탭 컨텐츠 ########-->
-                                                <v-tab-item
-                                                        :id="'tab-' + 2"
-                                                >
+                                                            <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
+                                                            <v-tabs id="#" height="500px" color="transparent" slider-color="none"
+                                                                    prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
 
-                                                    <v-flex xs12 sm12 :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'">
-                                                        <div class="headline">유실물</div>
-                                                        <v-divider class="my-2"></v-divider>
-                                                    </v-flex>
+                                                                <!---tab에 있는 카드 사이의 간격 조절-->
+                                                                <v-tab
+                                                                        xs12
+                                                                        style="margin: 0 10px;"
+                                                                        class="pr-0"
+                                                                        v-for="card in Lost"
+                                                                        v-bind="{ [`sm${card.flex}`]: true }"
+                                                                        :key="card.category">
 
-                                                    <v-flex xs12 sm12 container class="pt-0">
+                                                                    <v-layout wrap>
+                                                                        <v-flex xs12 flat class="elevation-0">
 
-                                                        <!--tabs의 높이 조절, 배경 투명화, slider 제거-->
-                                                        <v-tabs id="#" height="500px" color="transparent" slider-color="none"
-                                                                prev-icon="keyboard_arrow_left" next-icon="keyboard_arrow_right" >
+                                                                            <!--tab 안에 있는 카드 내용 콘텐츠-->
+                                                                            <v-layout row>
+                                                                                <v-flex xs12 md12>
+                                                                                    <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
+                                                                                            :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
+                                                                                        <v-card-media :src="card.src" height="250px"></v-card-media>
+                                                                                        <code class="mx-3 elevation-0 mt-3">수거전</code>
+                                                                                        <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
+                                                                                        <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
+                                                                                        <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
+                                                                                        <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
+                                                                                        <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
 
-                                                            <!---tab에 있는 카드 사이의 간격 조절-->
-                                                            <v-tab
-                                                                    xs12
-                                                                    style="margin: 0 10px;"
-                                                                    class="pr-0"
-                                                                    v-for="card in Lost"
-                                                                    v-bind="{ [`sm${card.flex}`]: true }"
-                                                                    :key="card.category">
+                                                                                        <!--share / detail 버튼 가운데로 배치-->
+                                                                                        <v-card-actions justify-center>
+                                                                                            <v-spacer></v-spacer>
+                                                                                            <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
+                                                                                            <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
+                                                                                        </v-card-actions>
+                                                                                    </v-card>
 
-                                                                <v-layout wrap>
-                                                                    <v-flex
-                                                                            xs12
-                                                                            flat
-                                                                            class="elevation-0"
-                                                                    >
-
-                                                                        <!--tab 안에 있는 카드 내용 콘텐츠-->
-                                                                        <v-layout row>
-                                                                            <v-flex xs12 md12>
-                                                                                <v-card id="recent_register_cards" flat="" tile="" hover="hover" raised="raised" style="min-width: 265px;"
-                                                                                        :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' " href="###" class="dal-card" >
-                                                                                    <v-card-media :src="card.src" height="250px"></v-card-media>
-                                                                                    <code class="mx-3 elevation-0 mt-3">수거전</code>
-                                                                                    <v-card-title class="title mb-0 py-2 grey--text text--darken-3">유실물 - 4</v-card-title>
-                                                                                    <v-card-text v-text="card.category" class="pt-0 subheading grey--text text--lighten-1"></v-card-text>
-                                                                                    <!--<v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>-->
-                                                                                    <v-card-text v-text="card.date" class="py-0 body-1 grey--text text--lighten-1"></v-card-text>
-                                                                                    <v-card-text class="py-0"><span class="caption brown--text">#lipstick #cosmetics #nail #lip</span></v-card-text>
-
-                                                                                    <!--share / detail 버튼 가운데로 배치-->
-                                                                                    <v-card-actions justify-center>
-                                                                                        <v-spacer></v-spacer>
-                                                                                        <v-btn flat="flat" small="small" slot="activator" color="orange" dark="dark">Share</v-btn>
-                                                                                        <v-btn flat="flat" small="small" color="orange" href="/items/4">Detail</v-btn>
-                                                                                    </v-card-actions>
-                                                                                </v-card>
-
-                                                                            </v-flex>
-                                                                        </v-layout>
-                                                                    </v-flex>
+                                                                                </v-flex>
+                                                                            </v-layout>
+                                                                        </v-flex>
 
 
-                                                                </v-layout>
-                                                            </v-tab>
-                                                        </v-tabs>
-                                                    </v-flex>
+                                                                    </v-layout>
+                                                                </v-tab>
+                                                            </v-tabs>
+                                                        </v-flex>
 
-                                                </v-tab-item>
+                                                    </v-tab-item>
 
 
-                                                <!--######## Statistic 탭 컨텐츠 ########-->
-                                                <v-tab-item
-                                                        :id="'tab-' + 3"
-                                                >
-                                                    <v-flex class="mt-4 mx-5 pa-1 px-3" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
-                                                        <div class="headline">유실물 추이</div>
-                                                        <v-divider class="my-2"></v-divider>
-                                                    </v-flex>
-                                                </v-tab-item>
+                                                    <!--######## Statistic 탭 컨텐츠 ########-->
+                                                    <v-tab-item :id="'tab-' + 3">
+                                                        <v-flex class="mt-4 mx-5 pa-1 px-3" xs12 sm12 :class="$vuetify.breakpoint.xsOnly ? '' : 'px-0' ">
+                                                            <div class="headline">유실물 추이</div>
+                                                            <v-divider class="my-2"></v-divider>
+                                                        </v-flex>
+                                                    </v-tab-item>
+
+                                                </v-tabs-items>
                                             </v-tabs>
 
                                         </v-flex>
