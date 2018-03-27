@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Discovery and Lost beta</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
+
+
+    <!--<script src="/scripts/jquery.min.js"></script>-->
+    <!--script(src='/bootstrap/dist/js/bootstrap.min.js')-->
+    <!--link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')-->
+    <!--<script src="/scripts/axios.min.js"></script>-->
+    <!--<script src="/scripts/vue.js"></script>-->
+    <!--link(href='/styles/vuetify.min.css', rel='stylesheet')-->
+    <!--script(src='/scripts/vuetify.min.js')-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
+        //]]>
+    </script>
+
+
+    <link href="../stylesheets/card_shadow.css" rel="stylesheet"> <!--마우스 커서시 그림자 효과-->
+    <link href="../stylesheets/visible_transition.css" rel="stylesheet"> <!--**초 뒤에 화면에 나타나는 효과-->
+
+    <style>
+        @media only screen and (max-width: 770px) {
+            /*메인 페이지_ 첫 번째 섹션*/
+            #main_first_section { height: auto !important;}
+            #main_first_section #main_top { display: none;}
+            #main_first_section #select_cards { margin-top: 65px;}
+            #main_first_section #find img, #register img, #manage img { height: 70px !important;}
+
+            #main_first_section #select_cards #find img { margin-top: 5px !important; }
+            #main_first_section #select_cards #manage img { margin-top: 17px !important; }
+
+
+            /*개발진 소개*/
+            #develop_introduce { display: none;}
+        }
+
+    </style>
+</head>
+<body>
+
+<!--스크롤 시 툴바 생성 & 로고 변화-->
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
+            document.getElementById("toolbar").style.backgroundColor = "white";
+            document.getElementById("toolbar_login").style.color = "black";
+
+            document.getElementById("main_top_logo").style.display = "none";
+            document.getElementById("toolbar_logo").style.display = "block";
+            document.getElementById("toolbar_title").style.display = "none";
+        } else {
+            document.getElementById("toolbar").style.backgroundColor = "transparent";
+            document.getElementById("toolbar_login").style.color = "#E6E6E6";
+            document.getElementById("main_top_logo").style.display = "block";
+            document.getElementById("toolbar_logo").style.display = "none";
+            document.getElementById("toolbar_title").style.display = "block";
+        }
+    }
+</script>
+
+
+<div id="app">
+    <v-app light>
+        <v-container id="scroll-target" fluid style="overflow-x: hidden;" class="scroll-y pa-0">
+            <v-layout column>
+
+                <!-- ####################### Toolbar ####################### -->
+
+                <!--<v-slide-y-transition>-->
+
+
+
+                    <!--######## 최근 등록된 유실물 ########-->
+                    <section>
+                        <v-layout column="" style="height: auto">
+                            최근 등록된 유실물
+                            <v-flex xs12 sm12 >
+
+
+                                <v-container fluid grid-list-md>
+                                    <v-layout row wrap>
+                                        <v-flex
+                                                v-bind="{ [`xs${card.flex}`]: true }"
+                                                v-for="card in item_cards"
+                                                :key="card.title"
+                                        >
+                                            <v-card>
+                                                <v-card-media
+                                                        :src="card.src"
+                                                        height="300px"
+                                                >
+
+                                                </v-card-media>
+                                                <span class="subheading black--text" v-text="card.category"/>
+
+                                                <v-card-actions>
+                                                    <v-btn flat color="orange">Share</v-btn>
+                                                    <v-btn flat color="orange">Detail</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+
+                            </v-flex>
+                        </v-layout>
+                    </section>>
+
+
+                    <!--######## 유실물 통계 ########-->
+
+
+
+
+                <!-- ####################################################### -->
+
+
+                <!-- ####################### Footer ####################### -->
+                <v-footer dark="dark" height="auto" clv-f="grey darken-3">
+                    <v-layout column justify-center="justify-center" class="text-xs-center">
+                        <v-flex xs12 sm12>
+                            <v-card-text>
+                                <v-btn icon="icon" href="https://facebook.com" class="white--text">
+                                    <v-icon size="30px">fa-facebook-square</v-icon>
+                                </v-btn>
+                                <v-btn icon="icon" href="https://instagram.com" class="white--text">
+                                    <v-icon size="30px">fa-instagram</v-icon>
+                                </v-btn>
+                                <v-btn icon="icon" href="https://github.com/pooi/DiscoveryAndLost_Web" class="white--text">
+                                    <v-icon size="30px">fa-github</v-icon>
+                                </v-btn>
+                            </v-card-text>
+                            <v-card-text class="white--text">Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.</v-card-text>
+                            <v-card-text class="white--text">© 2018&nbsp;<strong><a style="color: white;" href="https://denl.xyz">DenL.xyz</a></strong></v-card-text>
+                        </v-flex>
+                    </v-layout>
+                </v-footer>
+                <!-- ####################################################### -->
+
+
+            </v-layout>
+        </v-container>
+    </v-app>
+</div>
+
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            title: 'D&L', title_login: 'Login',
+            dialog: false,
+            scrollData: {
+                fab: false,
+                offsetTop: 0,
+                scrollT: 0,
+                delta: 200,
+                isShowFabTop: true,
+                transition: 'slide-y-reverse-transition'
+            },
+            /*######## 개발자 소개 해시태그 ########*/
+            cards: [
+                { title_name: '유태우', title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',
+                    src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex: 12, flex_md: 3 },
+                { title_name: '정하민', title_intro_1: 'Server', title_intro_2: 'BackEnd', title_intro_3: ' ', title_intro_4: ' ',
+                    src: 'http://img.insight.co.kr/static/2017/01/23/700/9J925O2P1HMFX7XLOU0V.jpg', flex: 12 , flex_md: 3},
+                { title_name: '유현수', title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',
+                    src: 'http://img.insight.co.kr/static/2017/01/23/700/9J925O2P1HMFX7XLOU0V.jpg', flex: 12 , flex_md: 3},
+                { title_name: '김윤욱', title_intro_1: 'FrontEnd', title_intro_2: 'Data', title_intro_3: ' ', title_intro_4: ' ',
+                    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_yhyjhDIwk-x1iCIH3KxCAUuao7loSfux9lOkgbe_eyv_chH1', flex: 12 , flex_md: 3 },
+            ],
+            item_cards: [
+                { category: 'camera', title: 'Pre-fab homes', src: '../images/picture/test_camera.jpg', flex: 2 },
+                { category: 'camera', title: 'Favorite road trips', src: '../images/picture/test_mp3.jpg', flex: 2 },
+                { category: 'camera', title: 'Best airlines', src: '../images/picture/test_earing.jpg', flex: 2 },
+                { category: 'camera', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 2 },
+                { category: 'camera', title: 'Best airlines', src: '../images/picture/test_ring.jpg', flex: 2 }
+            ],
+            loginData:{
+
+            }
+
+        },
+        method:{
+            loginSejong: function(){
+                var id = document.getElementsByName('loginId');
+                var pw = document.getElementsByName('loginPw');
+                loginSejong(id, pw);
+            }
+        },
+        mounted:[
+            // function(){
+            //     $(window).scroll(
+            //         function (event) {
+            //
+            //             var scroll = $(window).scrollTop();
+            //
+            //             vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
+            //
+            //             if(vue.scrollData.scrollT > vue.scrollData.delta){
+            //                 vue.scrollData.isShowFabTop = true;
+            //                 vue.scrollData.scrollT = 0;
+            //             }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
+            //                 vue.scrollData.isShowFabTop = false;
+            //                 vue.scrollData.scrollT = 0;
+            //             }
+            //
+            //             vue.scrollData.offsetTop = scroll;
+            //
+            //             if(scroll === 0){
+            //                 vue.scrollData.isShowFabTop = false;
+            //                 vue.scrollData.scrollT = 0;
+            //                 vue.scrollData.offsetTop = 0;
+            //             }
+            //
+            //         }
+            //     );
+            // }
+        ]
+    })
+</script>
+
+</body>
+</html>
