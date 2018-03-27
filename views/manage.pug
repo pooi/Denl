@@ -6,42 +6,58 @@ block content
     div(style="margin-top: 48px;")
         v-app
             v-content.brown.lighten-5
-                v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
-                    v-flex(md12='')
-                        v-card.pa-3(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+                v-container(:fluid='$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-2' : 'pa-0'")
+                    v-card(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 my-2' : 'elevation-10 my-5'")
+                        v-layout(wrap='')
+                            v-flex(xs12='', sm12='')
+                                v-tabs(icons-and-text='', centered='', dark='', color='deep-orange darken-1', height='125')
+                                    v-tabs-slider(color='yellow')
+                                    v-layout(column='')
+                                        v-flex(xs12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-1' : 'pa-2'")
+                                            v-text-field.mx-8(append-icon='search', label='search', solo-inverted='', flat='')
+                                        v-flex(xs12='', justify-center='', align-center='', text-xs-center='')
+                                            v-tab.subheading(href='#tab-1')
+                                                | HOME
+                                                v-icon home
+                                                // <v-icon>account_box</v-icon>
+                                            v-tab.subheading(href='#tab-2')
+                                                | Lost
+                                                v-icon view_comfy
+                                            v-tab.subheading(href='#tab-3')
+                                                | Statistics
+                                                v-icon poll
+                                    // ######## Home 탭 컨텐츠 ########
+                                    v-tab-item(:id="'tab-' + 1")
+                                        v-flex(xs12='', sm12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'")
+                                            .headline 수령하지 않은 물품
+                                            v-divider.my-2
 
-                            v-card-title.headline.pa-0 유실물 관리
+                                        v-flex.pt-0(xs12='', sm12='', container='')
+                                            // tabs의 높이 조절, 배경 투명화, slider 제거
+                                            v-tabs(height='500px', color='transparent', slider-color='none', prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
+                                                // -tab에 있는 카드 사이의 간격 조절
+                                                v-tab.pr-0(xs12='', style='margin: 0 10px;', v-for='item in WFAs', v-bind='{ [`sm3`]: true }')
+                                                    include manage_card
+                                        //vcard-title.pa-0
+                                        //    v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
+                                        //        v-layout(wrap)
+                                        //            v-flex(xs12, sm6, md6, lg4 v-for="item in WFAs", :key="item.id", v-model='WFAs')
 
-                            v-divider.my-3
+                                        v-flex(xs12='', sm12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'")
+                                            .headline 요청이 발생한 품목
+                                            v-divider.my-2
 
-                            v-toolbar
-                                v-spacer
-                                v-toolbar-items
-                                    v-btn(flat="", href="/manage") Home
-                                    v-btn(flat="") Lost
-                                    v-btn(flat="") Statistic
-
-                    v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
-                        .headline.pa-0.mt4 수거하지 않은 물품
-                        v-divider.mb-1.mt-3
-
-                    vcard-title.pa-0
-                        v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
-                            v-layout(wrap)
-                                v-flex(xs12, sm6, md6, lg4 v-for="item in WFAs", :key="item.id", v-model='WFAs')
-                                    include card_item
-
-                    v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
-                        .headline.pa-0.mt4 요청이 들어온 물품
-                        v-divider.mb-1.mt-3
-
-                    vcard-title.pa-0
-                        v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
-                            v-layout(wrap)
-                                v-flex(xs12, sm6, md6, lg4 v-for="item in WFRQs", :key="item.id", v-model='WFRQs')
-                                    include card_item
-
-
+                                        //vcard-title.pa-0
+                                        //    v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
+                                        //        v-layout(wrap)
+                                        //            v-flex(xs12, sm6, md6, lg4 v-for="item in WFRQs", :key="item.id", v-model='WFRQs')
+                                        //                include card_item
+                                        v-flex.pt-0(xs12='', sm12='', container='')
+                                            // tabs의 높이 조절, 배경 투명화, slider 제거
+                                            v-tabs(height='500px', color='transparent', slider-color='none', prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
+                                                // -tab에 있는 카드 사이의 간격 조절
+                                                v-tab.pr-0(xs12='', style='margin: 0 10px;', v-for='item in WFRQs', v-bind='{ [`sm3`]: true }')
+                                                    include manage_card
 
 
         include footer
@@ -49,4 +65,4 @@ block content
 
     script(type="text/javascript" src='/javascripts/manage-config.js')
     script.
-        const vue = init('!{WFA}','!{WFRQ}','!{category}');
+        const vue = init('!{WFA}','!{WFRQ}','!{category}', '!{WFL}');

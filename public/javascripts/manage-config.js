@@ -1,6 +1,5 @@
 
-
-function init(WFA, WFRQ, init_category) {
+function init(WFA, WFRQ, init_category, WFL) {
     var vue = new Vue({
         el: '#app',
         data: {
@@ -42,7 +41,8 @@ function init(WFA, WFRQ, init_category) {
             requestCancelDialog: false,
             requestCancelErrorDialog: false,
             WFAs : null,
-            WFRQs : null
+            WFRQs : null,
+            WFLs : null
         },
         methods: {
             hastTagsToString: function (itemData) {
@@ -108,6 +108,7 @@ function init(WFA, WFRQ, init_category) {
         created : function(){
             this.WFAs = JSON.parse(WFA);
             this.WFRQs = JSON.parse(WFRQ);
+            this.WFLs = JSON.parse(WFL);
             // wfas.forEach(function (lost){
             //     this.WFAs.push(lost)
             // })
