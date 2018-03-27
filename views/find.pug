@@ -28,6 +28,69 @@ block content
                                                 v-flex(xs12)
                                                     v-divider
 
+                                                v-flex(sm2, xs12)
+                                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득일:
+                                                v-flex(sm10, xs12)
+                                                    //v-date-picker.elevation-10.mb-3.hidden-xs-only(v-model='date', :landscape='true', color="brown darken-1", name='date', full-width)
+                                                        //v-date-picker.mt-3(full-width landscape v-model='picker', color="green lighten-1")
+                                                    div(v-if='dcv_filter_item.checkbox')
+                                                        v-dialog(ref='dcv_filter_item_alldayDialog', persistent, v-model='dcv_filter_item.alldayModal', lazy, full-width, width='400px', :return-value.sync='dcv_filter_item.alldayDate')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='습득일', v-model='dcv_filter_item.alldayDate', readonly)
+                                                            v-date-picker(v-model='dcv_filter_item.alldayDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='dcv_filter_item.alldayDate')
+                                                                v-spacer
+                                                                v-btn(flat='', color='error', @click='dcv_filter_item.alldayDate = null') Clear
+                                                                v-btn(flat='', color='primary', @click='dcv_filter_item.alldayModal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.dcv_filter_item_alldayDialog.save(dcv_filter_item.alldayDate)') OK
+                                                    div(v-else)
+                                                        v-dialog(ref='dcv_filter_item_startDialog', persistent, v-model='dcv_filter_item.startModal', lazy, full-width, width='400px', :return-value.sync='dcv_filter_item.startDate')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='시작일', v-model='dcv_filter_item.startDate', readonly)
+                                                            v-date-picker(v-model='dcv_filter_item.startDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='dcv_filter_item.startDate')
+                                                                v-spacer
+                                                                v-btn(flat='', color='error', @click='dcv_filter_item.startDate = null') Clear
+                                                                v-btn(flat='', color='primary', @click='dcv_filter_item.startModal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.dcv_filter_item_startDialog.save(dcv_filter_item.startDate)') OK
+                                                        v-dialog(ref='dcv_filter_item_finishDialog', persistent, v-model='dcv_filter_item.finishModal', lazy, full-width, width='400px', :return-value.sync='dcv_filter_item.finishDate')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='종료일', v-model='dcv_filter_item.finishDate', readonly)
+                                                            v-date-picker(v-model='dcv_filter_item.finishDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='dcv_filter_item.finishDate')
+                                                                v-spacer
+                                                                v-btn(flat='', color='error', @click='dcv_filter_item.finishDate = null') Clear
+                                                                v-btn(flat='', color='primary', @click='dcv_filter_item.finishModal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.dcv_filter_item_finishDialog.save(dcv_filter_item.finishDate)') OK
+                                                    //v-flex(xs12)
+                                                    v-btn.mb-2(flat, color='error', @click='dcv_filter_item.startDate = dcv_filter_item.finishDate = null', v-if='!dcv_filter_item.checkbox') Clear
+                                                    v-switch(color='orange', label='All-day', hide-details, v-model='dcv_filter_item.checkbox')
+
+
+                                                v-flex(sm2, xs12)
+                                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 등록일:
+                                                v-flex(sm10, xs12)
+                                                    div(v-if='rgt_filter_item.checkbox')
+                                                        v-dialog(ref='rgt_filter_item_alldayDialog', persistent, v-model='rgt_filter_item.alldayModal', lazy, full-width, width='400px', :return-value.sync='rgt_filter_item.alldayDate')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='등록일', v-model='rgt_filter_item.alldayDate', readonly)
+                                                            v-date-picker(v-model='rgt_filter_item.alldayDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='rgt_filter_item.alldayDate')
+                                                                v-spacer
+                                                                v-btn(flat='', color='error', @click='rgt_filter_item.alldayDate = null') Clear
+                                                                v-btn(flat='', color='primary', @click='rgt_filter_item.alldayModal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.rgt_filter_item_alldayDialog.save(rgt_filter_item.alldayDate)') OK
+                                                    div(v-else)
+                                                        v-dialog(ref='rgt_filter_item_startDialog', persistent, v-model='rgt_filter_item.startModal', lazy, full-width, width='400px', :return-value.sync='rgt_filter_item.startDate')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='시작일', v-model='rgt_filter_item.startDate', readonly)
+                                                            v-date-picker(v-model='rgt_filter_item.startDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='rgt_filter_item.startDate')
+                                                                v-spacer
+                                                                v-btn(flat='', color='error', @click='rgt_filter_item.startDate = null') Clear
+                                                                v-btn(flat='', color='primary', @click='rgt_filter_item.startModal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.rgt_filter_item_startDialog.save(rgt_filter_item.startDate)') OK
+                                                        v-dialog(ref='rgt_filter_item_finishDialog', persistent, v-model='rgt_filter_item.finishModal', lazy, full-width, width='400px', :return-value.sync='rgt_filter_item.finishDate')
+                                                            v-text-field(color="orange darken-2", slot='activator', label='종료일', v-model='rgt_filter_item.finishDate', readonly)
+                                                            v-date-picker(v-model='rgt_filter_item.finishDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='rgt_filter_item.finishDate')
+                                                                v-spacer
+                                                                v-btn(flat='', color='error', @click='rgt_filter_item.finishDate = null') Clear
+                                                                v-btn(flat='', color='primary', @click='rgt_filter_item.finishModal = false') Cancel
+                                                                v-btn(flat='', color='primary', @click='$refs.rgt_filter_item_finishDialog.save(rgt_filter_item.finishDate)') OK
+                                                    //v-flex(xs12)
+                                                    v-btn.mb-2(flat, color='error', @click='rgt_filter_item.startDate = rgt_filter_item.finishDate = null', v-if='!rgt_filter_item.checkbox') Clear
+                                                    v-switch(color='orange', label='All-day', hide-details, v-model='rgt_filter_item.checkbox')
+
 
 
                             v-flex(xs12)

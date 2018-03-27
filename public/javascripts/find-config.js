@@ -19,7 +19,27 @@ function init(init_category) {
             todayDate: null,
             categoryData: null,
             searchItems: [],
-            searchSnackbar : false
+            searchSnackbar : false,
+            // Filter
+            dcv_filter_item:{
+                checkbox: true,
+                startModal: false,
+                startDate: null,
+                finishModal: false,
+                finishDate: null,
+                alldayModal: false,
+                alldayDate: null
+            },
+            rgt_filter_item:{
+                checkbox: true,
+                startModal: false,
+                startDate: null,
+                finishModal: false,
+                finishDate: null,
+                alldayModal: false,
+                alldayDate: null
+            }
+
         },
         methods: {
             vueMsToDate: function (date) {

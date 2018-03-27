@@ -120,17 +120,19 @@ block content
                                                 v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
                                                     //v-flex(sm2, xs12)
                                                     //    v-subheader.bold(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리(*):
+                                                    v-layout(v-if='!isRecognitionProgress')
+                                                        v-btn.mx-2(color='orange darken-2', block, flat, dark, @click.native='categoryDialog = true') 카테고리 선택
                                                     v-layout(xs12, align-center, justify-center, wrap)
                                                         v-flex.mt-2(xs12, d-inline-flex)
                                                             v-progress-circular(indeterminate, color="orange darken-2", v-show='isRecognitionProgress')
                                                             .subheading.ml-2.mt-1(v-show='isRecognitionProgress') 이미지 인식 중입니다. 잠시만 기다려주세요.
 
-                                                        v-flex.px-4.pb-2(xs12, d-inline-flex, v-if='!isRecognitionProgress', justify-space-around)
-                                                            v-breadcrumbs.pa-0.pr-2(v-if="category != null")
+                                                        v-flex.px-4.pb-2(xs12, v-if='!isRecognitionProgress', justify-center, align-center)
+                                                            v-breadcrumbs.pa-0.pr-2(v-if="category != null", justify-center)
                                                                 v-icon(slot='divider') chevron_right
                                                                 v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
                                                                     | {{ item }}
-                                                            v-btn.ma-0(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
+                                                            //v-btn.ma-0(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
 
 
                                                         v-flex.rounded-expansion-panel(xs12)
@@ -142,6 +144,8 @@ block content
                                                                             tr(@click="changedCateogryFromResult(props.item);")
                                                                                 td {{getCategoryStringFromResult(props.item.title)}}
                                                                                 td.text-xs-right {{props.item.accuracy}}%
+
+
 
 
                                         v-flex(d-flex xs12)
