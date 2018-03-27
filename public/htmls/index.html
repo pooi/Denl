@@ -55,6 +55,8 @@
             #bottom_nav {display: block !important;}
 
 
+            /*최근 등록된 유실물 more버튼 모바일 크기 변화*/
+            #recent_register_button{min-width: 55px !important; font-size: 0.7em !important; max-height: 25px !important;}
         }
         @font-face {
             font-family: "day";
@@ -141,7 +143,7 @@
                         <!--########로그인 클릭 시 로그인 창 생성########-->
                         <v-dialog v-model="loginData.dialog" :persistent="loginData.isProgress" max-width="500px" style="border-radius: 20px;">
                            <v-toolbar-title id="toolbar_login" v-text="title_login" class="mr-2 subheading" slot="activator"
-                                             style="cursor: pointer; color: white;"></v-toolbar-title>
+                                             style="cursor: pointer; color: white; font-weight: bold;"></v-toolbar-title>
                             <v-card ref="form">
                                 <v-card-title style="background-color: rgb(194,0,47);"><img src="../images/logo/sejong_white.svg" style="width: 50%;">
                                     <!--span.headline Login-->
@@ -809,6 +811,7 @@
             loginData:{
 
             },
+
         },
         method:{
             loginSejong: function(){
