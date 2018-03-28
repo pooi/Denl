@@ -54,7 +54,7 @@ block content
                                     v-btn#register_button_manager.layout.justify-center(style='margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 30px;', dark='', small='', flat='', outline='', round='', href='#introduce_register')
                                         span MORE
                         // 관리
-                        v-flex#manage(xs12='', sm4='', v-if='false')
+                        v-flex#manage(xs12='', sm4='', v-if='loginData.user !== null && loginData.user.admin == 1')
                             v-card.elevation-0.transparent
                                 v-card-text.text-xs-center(onclick="window.location.href='/manage'")
                                     a(href='#')
