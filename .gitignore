@@ -76,3 +76,4 @@ uploads_temp/
 config/*.json
 config/db.js
 config/session.js
+*/hierarchical_detail/

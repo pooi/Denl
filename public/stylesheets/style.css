@@ -3,7 +3,20 @@
 }
 .dialog--fullscreen{
     border-radius: 2px !important;
+    /*padding-bottom: env(safe-area-inset-bottom);*/
+    /*padding-bottom: constant(safe-area-inset-bottom);*/
 }
+
+.bottom-sheet.dialog.bottom-sheet--inset{
+    border-radius: 20px 20px 0px 0px !important;
+    overflow: hidden;
+}
+.snack__wrapper{
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: constant(safe-area-inset-bottom);
+}
+
+
 
 .rounded-expansion-panel{
 
@@ -110,3 +123,44 @@
     cursor: pointer; /* Add a pointer on hover */
 }
 
+.bottom-safe-area-padding {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-bottom: constant(safe-area-inset-bottom) !important;
+}
+
+.tab-nav {
+    margin-bottom: env(safe-area-inset-bottom);
+    margin-bottom: constant(safe-area-inset-bottom);
+
+}
+
+.safe-area-inset {
+    margin-left: constant(safe-area-inset-left) !important;
+    margin-left: env(safe-area-inset-left) !important;
+    margin-right: constant(safe-area-inset-right) !important;
+    margin-right: env(safe-area-inset-right) !important;
+}
+.safe-area-inset-padding {
+    padding-left: constant(safe-area-inset-left) !important;
+    padding-left: env(safe-area-inset-left) !important;
+    padding-right: constant(safe-area-inset-right) !important;
+    padding-right: env(safe-area-inset-right) !important;
+}
+
+.bottom-tab-height {
+    min-height: 48px;
+    height: calc(48px + env(safe-area-inset-bottom)) !important;
+    height: calc(48px + constant(safe-area-inset-bottom)) !important;
+}
+
+.footer-bottom-padding {
+    padding-bottom: 48px;
+    margin-bottom: calc((-48px + env(safe-area-inset-bottom)));
+    margin-bottom: calc((-48px + constant(safe-area-inset-bottom)));
+}
+
+.bottom-sheet .list{
+    /*padding-bottom: 50px;*/
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: constant(safe-area-inset-bottom);
+}

@@ -15,6 +15,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             loginData:{
             },
+            bottomTab: "lost",
             imgSrc: '',
             domEleArray: null,
             isFile: false,
@@ -383,7 +384,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 })
                     .catch(function (error) {
                         vue.isRecognitionProgress = false;
-                        alert(error);
+                        alert("이미지 인식에 실패하였습니다. 카테고리를 선택해주세요.");
                     });
             },
             function () {

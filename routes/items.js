@@ -142,7 +142,6 @@ router.post('/request', function (req, res) {
         });
 
     }else{
-        console.log(err);
         res.status(500).send("Internal Server Error");
     }
 });
@@ -162,10 +161,29 @@ router.post('/removeRequest', function (req, res) {
         });
 
     }else{
-        console.log(err);
         res.status(500).send("Internal Server Error");
     }
-})
+});
+
+router.post('/rgtEmail', function (req, res) {
+    if(req.body){
+        var requestID = req.body.request_id;
+        var email = req.body.email;
+        var sql = 'UPDATE request set email=? WHERE id=?'
+        conn.query(sql, [email, requestID], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                console.log(results);
+                res.send(results);
+            }
+        });
+
+    } else{
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 router.post('/requestList', function (req, res) {
     if(req.body){
@@ -205,7 +223,6 @@ router.post('/requestList', function (req, res) {
         });
 
     }else{
-        console.log(err);
         res.status(500).send("Internal Server Error");
     }
 });

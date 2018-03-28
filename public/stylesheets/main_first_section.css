@@ -1,0 +1,66 @@
+/*메인 페이지_ 첫 번째 섹션*/
+
+/* 0.15초 뒤에 화면에 나타나는 파트*/
+#main_top, #select_cards, #main_top_manager, #select_cards_manager {
+    visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s linear;
+}
+
+
+/* 커서 시 카테고리(아이콘) 그림자 효과 파트 */
+#find, #register, #manage, #find_manager, #register_manager, #manage_manager {
+    height: 250px !important; /*line-height: 200px !important;*/
+    cursor: pointer;
+    border-radius: 20px !important;
+    -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
+    box-shadow: 0 2px 10px -4px rgba(0,0,0,.19) !important; }
+
+#find:hover, #register:hover, #manage:hover, #find_manager:hover, #register_manager:hover, #manage_manager:hover  {
+    -webkit-box-shadow: 0 2px 10px -4px rgba(0,0,0,.59) !important;
+    box-shadow: 0 2px 40px -4px rgba(0,0,0,.79) !important;
+
+    /*커서 시 이미지 흔들리는 효과*/
+    /*animation: shake 0.3s;
+    animation-iteration-count: 10%;*/
+}
+
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+
+@media only screen and (max-width: 770px) {
+    /*메인 페이지_ 첫 번째 섹션(사용자 모드)*/
+
+    /*#main_first_section { height: auto !important;}*/
+    /*#main_first_section #main_top { display: none;}*/
+
+    #main_first_section #main_top #main_top_logo { height: 70px !important; }
+    #main_first_section #main_top h1 { }
+    #main_first_section #select_cards { margin-top: 65px; display: none !important;}
+    #main_first_section #select_cards #find, #register, #manage { height: auto !important; } /*######## 모바일에서 카드(찾기,등록,관리) 높이 조절 ########*/
+
+
+    /*찾기, 등록, 관리 아이콘 크기 설정 및 간격 조정*/
+    #main_first_section #find img, #register img, #manage img { height: 55px !important;}
+    #main_first_section #select_cards #find img { margin-top: 5px !important; }
+    #main_first_section #select_cards #manage img { margin-top: 17px !important; }
+
+    /*등록 more 버튼 간격 및 폰트 조절*/
+    #main_first_section #select_cards #register #register_btn { margin: 0 auto !important; }
+    #main_first_section #select_cards #register #register_btn span { font-size: 0.8em !important;}
+
+    /*스크롤 표시*/
+    #main_first_section #scroll_down { display: block !important; margin-top: 40% !important;}
+}
+

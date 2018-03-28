@@ -1,37 +1,9 @@
-key
-necklace
-hair strap
-umbrella
-mouse
-phone
-mp3
-comb
-headband
-book
-lip balm
-pen
-camera
-watch
-ring
-headphone
-earplug
-pencil case
-scarf
-mirror
-supplementary battery
-earing
-laptop
-hat
-sanitary napkin
-gloves
-earphone
-sunglasses
-wallet
-calculator
-pouch
-tumbler
-cash
-perfume
-charger
-blanket
-card
+classification7
+classification6
+classification2
+classification3
+classification4
+classification1
+classification9
+classification5
+classification8

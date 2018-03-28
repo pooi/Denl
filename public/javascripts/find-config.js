@@ -3,10 +3,6 @@
 function init(init_category) {
     var vue = new Vue({
         el: '#app',
-        components: {
-            'waterfall': Waterfall.waterfall,
-            'waterfall-slot': Waterfall.waterfallSlot
-        },
         data: {
             title: 'D&L',
             scrollData: {
@@ -19,10 +15,31 @@ function init(init_category) {
             },
             loginData:{
             },
+            bottomTab: "find",
             todayDate: null,
             categoryData: null,
             searchItems: [],
-            searchSnackbar : false
+            searchSnackbar : false,
+            // Filter
+            dcv_filter_item:{
+                checkbox: true,
+                startModal: false,
+                startDate: null,
+                finishModal: false,
+                finishDate: null,
+                alldayModal: false,
+                alldayDate: null
+            },
+            rgt_filter_item:{
+                checkbox: true,
+                startModal: false,
+                startDate: null,
+                finishModal: false,
+                finishDate: null,
+                alldayModal: false,
+                alldayDate: null
+            }
+
         },
         methods: {
             vueMsToDate: function (date) {

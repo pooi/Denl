@@ -1,0 +1,17 @@
+v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync="bottomTab", v-if="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
+    v-layout.tab-nav(align-center='', justify-center='')
+        v-btn.py-2(flat, color='deep-orange darken-3', value='home', href='/')
+            //span.caption Home
+            v-icon.ma-0 home
+        v-btn.py-2(flat='', color='deep-orange darken-3', value='find', href='/find')
+            //span.caption Favorites
+            v-icon.ma-0 search
+        v-btn.py-2(flat='', color='deep-orange darken-3', value='lost', href='/lost')
+            //span.caption Nearby
+            v-icon.ma-0 cloud_upload
+        v-btn.py-2(flat='', color='deep-orange darken-3', value='manage', href='/manage')
+            //span.caption Nearby
+            v-icon.ma-0 camera_alt
+        //v-flex(xs12, style="height:20px;")
+    //div(style="width: 100%; height: 20px;")
+
