@@ -1,0 +1,11 @@
+//v-slide-y-transition
+v-toolbar.safe-area-inset-padding(fixed, dark, flat, :dense="$vuetify.breakpoint.xsOnly", :color="scrollData.offsetTop < 50 ? 'transparent' : 'white' ")
+    img(src='/images/logo/logo_color.svg', height='25px', onclick="window.location.href='/'", v-if="scrollData.offsetTop >= 50")
+    v-toolbar-title.ml-2.orange--text.darken-3(v-text='title', onclick="window.location.href='/'", v-if="scrollData.offsetTop >= 50")
+    v-spacer
+    v-toolbar-items
+        v-btn(flat, style='height: auto;', :color="scrollData.offsetTop < 50 ? 'white' : 'orange darken-3' ",@click.native="loginData.dialog = true", v-if='loginData.user === null') Login
+        v-btn(flat, style='height: auto;', :color="scrollData.offsetTop < 50 ? 'white' : 'orange darken-3' ", @click.native="loginData.infoDialog = true", v-if='loginData.user !== null') {{ loginData.user.name }}님
+
+include dialog_login
+

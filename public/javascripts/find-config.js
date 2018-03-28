@@ -22,7 +22,7 @@ function init(init_category) {
             searchSnackbar : false,
             // Filter
             dcv_filter_item:{
-                checkbox: true,
+                isAllday: true,
                 startModal: false,
                 startDate: null,
                 finishModal: false,
@@ -31,7 +31,7 @@ function init(init_category) {
                 alldayDate: null
             },
             rgt_filter_item:{
-                checkbox: true,
+                isAllday: true,
                 startModal: false,
                 startDate: null,
                 finishModal: false,
@@ -100,6 +100,51 @@ function init(init_category) {
                     }
                 }
                 return title;
+            },
+            resetFilterItem: function () {
+                this.dcv_filter_item = {
+                    isAllday: true,
+                    startModal: false,
+                    startDate: null,
+                    finishModal: false,
+                    finishDate: null,
+                    alldayModal: false,
+                    alldayDate: null
+                };
+                this.rgt_filter_item = {
+                    isAllday: true,
+                    startModal: false,
+                    startDate: null,
+                    finishModal: false,
+                    finishDate: null,
+                    alldayModal: false,
+                    alldayDate: null
+                }
+            },
+            search: function(showSnackbar){
+                this.searchSnackbar = false;
+                var data = {
+                    dcv_filter_item: this.dcv_filter_item,
+                    rgt_filter_item: this.rgt_filter_item
+                };
+                console.log(data);
+
+                axios.post(
+                    '/search',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    console.log("data: ", data);
+                    vue.searchItems = [];
+                    vue.searchItems = vue.searchItems.concat(data);
+                    vue.searchSnackbar = showSnackbar;
+                }).catch(function (error) {
+                    alert(error);
+                    // vue.filterDialog = false;
+                    // vue.isFilterProgress = false;
+                });
+
             }
         },
         mounted: [
@@ -123,22 +168,37 @@ function init(init_category) {
                 console.log("category: ", this.categoryData);
             },
             function () {
-                var data = {
-                };
-
-                axios.post(
-                    '/search',
-                    data
-                ).then(function (response) {
-                    var res = response;
-                    var data = res.data;
-                    console.log("data: ", data);
-                    vue.searchItems = vue.searchItems.concat(data);
-                }).catch(function (error) {
-                    alert(error);
-                });
+                this.search(false);
+                // var data = {
+                // };
+                //
+                // axios.post(
+                //     '/search',
+                //     data
+                // ).then(function (response) {
+                //     var res = response;
+                //     var data = res.data;
+                //     console.log("data: ", data);
+                //     vue.searchItems = vue.searchItems.concat(data);
+                // }).catch(function (error) {
+                //     alert(error);
+                // });
             }
-        ]
+        ],
+        watch: {
+            'dcv_filter_item.alldayDate': function () {
+                vue.search(true);
+            },
+            'dcv_filter_item.startDate': function () {
+                vue.search(true);
+            },
+            'dcv_filter_item.finishDate': function () {
+                vue.search(true);
+            },
+            rgt_filter_item () {
+                vue.search(true);
+            }
+        }
     });
     return vue;
 }

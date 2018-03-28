@@ -17,7 +17,7 @@ block content
 
                             v-divider.my-3
 
-                            v-card-title.rounded-expansion-panel.ma-1
+                            v-card-title.rounded-expansion-panel.ma-1(:class="$vuetify.breakpoint.xsOnly ? 'pa-1' : '' ")
                                 v-expansion-panel.elevation-0.ma-0(popout)
                                     v-expansion-panel-content.ma-0(:value="true")
                                         div(slot="header", class="subheading grey--text") 검색 조건
@@ -33,7 +33,7 @@ block content
                                                 v-flex(sm10, xs12)
                                                     //v-date-picker.elevation-10.mb-3.hidden-xs-only(v-model='date', :landscape='true', color="brown darken-1", name='date', full-width)
                                                         //v-date-picker.mt-3(full-width landscape v-model='picker', color="green lighten-1")
-                                                    div(v-if='dcv_filter_item.checkbox')
+                                                    div(v-if='dcv_filter_item.isAllday')
                                                         v-dialog(ref='dcv_filter_item_alldayDialog', persistent, v-model='dcv_filter_item.alldayModal', lazy, full-width, width='400px', :return-value.sync='dcv_filter_item.alldayDate')
                                                             v-text-field(color="orange darken-2", slot='activator', label='습득일', v-model='dcv_filter_item.alldayDate', readonly)
                                                             v-date-picker(v-model='dcv_filter_item.alldayDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='dcv_filter_item.alldayDate')
@@ -57,14 +57,14 @@ block content
                                                                 v-btn(flat='', color='primary', @click='dcv_filter_item.finishModal = false') Cancel
                                                                 v-btn(flat='', color='primary', @click='$refs.dcv_filter_item_finishDialog.save(dcv_filter_item.finishDate)') OK
                                                     //v-flex(xs12)
-                                                    v-btn.mb-2(flat, color='error', @click='dcv_filter_item.startDate = dcv_filter_item.finishDate = null', v-if='!dcv_filter_item.checkbox') Clear
-                                                    v-switch(color='orange', label='All-day', hide-details, v-model='dcv_filter_item.checkbox')
+                                                    v-btn.mb-2(flat, color='error', @click='dcv_filter_item.startDate = dcv_filter_item.finishDate = null', v-if='!dcv_filter_item.isAllday') Clear
+                                                    v-switch(color='orange', label='All-day', hide-details, v-model='dcv_filter_item.isAllday')
 
 
                                                 v-flex(sm2, xs12)
                                                     v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 등록일:
                                                 v-flex(sm10, xs12)
-                                                    div(v-if='rgt_filter_item.checkbox')
+                                                    div(v-if='rgt_filter_item.isAllday')
                                                         v-dialog(ref='rgt_filter_item_alldayDialog', persistent, v-model='rgt_filter_item.alldayModal', lazy, full-width, width='400px', :return-value.sync='rgt_filter_item.alldayDate')
                                                             v-text-field(color="orange darken-2", slot='activator', label='등록일', v-model='rgt_filter_item.alldayDate', readonly)
                                                             v-date-picker(v-model='rgt_filter_item.alldayDate', scrollable, lazy, locale="ko-kr", full-width, width='400px', color="brown darken-1", name='rgt_filter_item.alldayDate')
@@ -88,8 +88,16 @@ block content
                                                                 v-btn(flat='', color='primary', @click='rgt_filter_item.finishModal = false') Cancel
                                                                 v-btn(flat='', color='primary', @click='$refs.rgt_filter_item_finishDialog.save(rgt_filter_item.finishDate)') OK
                                                     //v-flex(xs12)
-                                                    v-btn.mb-2(flat, color='error', @click='rgt_filter_item.startDate = rgt_filter_item.finishDate = null', v-if='!rgt_filter_item.checkbox') Clear
-                                                    v-switch(color='orange', label='All-day', hide-details, v-model='rgt_filter_item.checkbox')
+                                                    v-btn.mb-2(flat, color='error', @click='rgt_filter_item.startDate = rgt_filter_item.finishDate = null', v-if='!rgt_filter_item.isAllday') Clear
+                                                    v-switch(color='orange', label='All-day', hide-details, v-model='rgt_filter_item.isAllday')
+
+                                                v-flex.mx-2(xs12)
+                                                    v-divider
+
+                                                v-layout(xs12, alilgn-right)
+                                                    v-spacer
+                                                    v-btn(flat, small, color='error', @click="resetFilterItem()") 초기화
+                                                    v-btn(flat, small, color='orange darken-3', @click='search(true)') 검색
 
 
 
@@ -128,6 +136,9 @@ block content
 
 
 
+        v-snackbar(timeout='2500', :top='!$vuetify.breakpoint.xsOnly', :bottom="$vuetify.breakpoint.xsOnly" right, v-model='searchSnackbar')
+            | {{ searchItems.length }}개의 검색결과가 있습니다.
+            v-btn(flat='', color='pink', @click.native='searchSnackbar = false') Close
 
         include footer
 

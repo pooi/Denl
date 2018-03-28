@@ -1,21 +1,213 @@
 extends layout
 block content
 
-    include toolbar
+    link(href='/stylesheets/main_first_section.css', rel='stylesheet')
+    link(href='/stylesheets/recent_register_section.css', rel='stylesheet')
 
-    div(style='margin-top:48px')
+    style.
+
+        @font-face {
+            font-family: "day";
+            src: url(/stylesheets/day.ttf);
+        }
+
+        /*등록 소개 섹션_ 폰트 설정*/
+        #introduce_register {
+            font-family: 'day', sans-serif;
+        }
+
+
+
+    include toolbar_index
+
+    div(style='background-color: white;')
+        section
+            v-layout#main_first_section(wrap, align-center, justify-space-around, style='height: 100vh; background: url(../images/picture/main3.jpg) center center / cover no-repeat;')
+                v-card.pa-0.ma-0(row='', wrap='', flat='', style='width:100%; height: fit-content; background: transparent;')
+                    // ######## 로고 ########
+                    v-layout#main_top(column='', align-center='', justify-center='', text-xs-center='')
+                        img#main_top_logo(src='https://beta.denl.xyz/images/logo/logo_color.svg', height='120', style='margin-top: 75px;')
+                        h1(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'headline text-xs-center' : 'display-1 text-xs-center'", style='margin-top: 12px;') Discovery and Lost
+                        div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'body-2 mt-0 pt-0 text-xs-center' : 'subheading mt-1 mb-3 text-xs-center'")
+                            | Powered by _beat
+                    // ######## 카드(찾기,등록,관리) ########
+                    v-layout#select_cards.mt-5.pt-3.pl-0(container='', wrap='', align-center='', justify-center='')
+                        // 찾기
+                        v-flex#find(xs12='', sm4='')
+                            v-card.elevation-0.transparent
+                                v-card-text.text-xs-center(onclick="window.location.href='/find'")
+                                    a(href='#')
+                                        img(src='../images/picture/find.png', style='height: 80px; margin-top: 12px;')
+                                v-card-title(primary-title='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -8px;')
+                                    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'") 찾기
+                        // 등록
+                        v-flex#register(xs12='', sm4='')
+                            // onmouseover="document.getElementById('register_btn').style.display = 'block';" onmouseout="document.getElementById('register_btn').style.display = 'none';"
+                            v-card.elevation-0.transparent(onmouseover='mouseover()', onmouseout='mouseout()')
+                                v-card-text.text-xs-center(onclick="window.location.href='/lost'")
+                                    a(href='#')
+                                        img(src='../images/picture/register.png', style='height: 80px; margin-top: 20px;')
+                                v-card-title(primary-title='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
+                                    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'") 등록
+                                // ######## 마우스 hover 했을 때 상세보기 버튼 등장 ########
+                                v-card-title#register_btn.layout.justify-center.white--text.pt-0.mt-3(primary-title='', style='display: none;')
+                                    v-btn#register_button_manager.layout.justify-center(style='margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 30px;', dark='', small='', flat='', outline='', round='', href='#introduce_register')
+                                        span MORE
+                        // 관리
+                        v-flex#manage(xs12='', sm4='', v-if='false')
+                            v-card.elevation-0.transparent
+                                v-card-text.text-xs-center(onclick="window.location.href='/manage'")
+                                    a(href='#')
+                                        img(src='../images/picture/manage.png', style='height: 74px; margin-top: 21px;')
+                                v-card-title(primary-title='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
+                                    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-1'") 관리
+                    // 모바일 버전에서 스크롤 다운 표시
+                    v-layout#scroll_down.pt-5.mt-5(wrap='', style='display: none;')
+                        v-flex(xs12='', text-xs-center='')
+                            v-text.caption.white--text Scroll Down
+                            br
+                            v-icon(medium='', color='white') keyboard_arrow_down
+                            br
+
+        // ######## 최근 등록된 유실물 ver1(카드 4개씩) ########
+        section#recent_register_items
+            v-layout.text-xs-center.py-5(column='', align-center='')
+                v-flex(xs12='', container='', fill-height='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
+                    v-container(fluid='', grid-list-md='')
+                        v-layout(wrap='')
+                            v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
+                                p.headline.black--text 최근 등록된 유실물
+                            v-container(fluid='', grid-list-xl='', pa-0='')
+                                v-layout(row='', justify-space-around='')
+                                    v-flex(xs2='')
+                                    v-flex(xs2='')
+                                    v-flex(xs2='', style='padding-left: 5%;')
+                                        v-btn#recent_register_button(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : 'right'", style='margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;', dark='', small='', flat='', color='', outline='', round='', href='#')
+                                            span MORE
+
+                            v-flex.pt-0(xs12='', container='')
+                                // tabs의 높이 조절, 배경 투명화, slider 제거
+                                v-tabs#recent_register_tabs(height='500px', color='transparent', slider-color='none', show-arrows, prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
+                                    // -tab에 있는 카드 사이의 간격 조절
+                                    v-tab.pr-0(xs12, style='margin: 0 -6px;', v-for='card in cards_item', v-bind='{ [`sm${card.flex}`]: true }')
+                                        v-layout(wrap='')
+                                            v-flex.elevation-0(xs12='', flat='', :key='card.category')
+                                                // tab 안에 있는 카드 내용 콘텐츠
+                                                v-layout(row='')
+                                                    v-flex(xs12='', md12='')
+                                                        v-card#recent_register_cards.dal-card(flat='', tile='', hover='hover', raised='raised', style='min-width: 235px;', :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' ", href='###')
+                                                            v-card-media(:src='card.src', height='250px')
+                                                            code.mx-3.elevation-0.mt-3 수거전
+                                                            v-card-title.title.mb-0.py-2.grey--text.text--darken-3 유실물 - 4
+                                                            v-card-text.pt-0.subheading.grey--text.text--lighten-1(v-text='card.category')
+                                                            // <v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>
+                                                            v-card-text.py-0.body-1.grey--text.text--lighten-1(v-text='card.date')
+                                                            v-card-text.py-0
+                                                                span.caption.brown--text #lipstick #cosmetics #nail #lip
+                                                            // share / detail 버튼 가운데로 배치
+                                                            v-card-actions(justify-center='')
+                                                                v-btn(flat='flat', small='small', slot='activator', color='orange', dark='dark') Share
+                                                                v-spacer
+                                                                v-btn(flat='flat', small='small', color='orange', href='/items/4') Detail
+
+
+        // ######## 유실물 통계 ########
+        section(style='background-color: #fff6f3; height: 400px;')
+            v-layout.py-5(column='', wrap='', align-center='')
+                v-flex.my-3.pt-3(xs12='', sm4='')
+                    .text-xs-center
+                        h2.headline.black--text 통계
+                        // style="color: #D84315;"
+                        span.subheading 유실물들의 통계 그래프입니다
+
+
+        // ######## 등록 설명 ########
+        section#introduce_register
+            v-layout.my-5.pt-4.text-xs-center(wrap='', justify-center='', align-center='')
+                v-flex.mt-5.mb-0.pt-4(xs12='')
+                    div
+                        p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') 찍고, 선택하고, 등록
+                        span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'") 촬영만 해주세요 무엇인지는 저희가 알아내겠습니다
+                v-flex(xs12='', mt-5='', pt-3='')
+                    v-container(grid-list-sm='')
+                        v-layout(row='', wrap='', align-center='')
+                            v-flex(xs12='', sm4='')
+                                v-card.elevation-0.transparent
+                                    v-card-text.text-xs-center
+                                        v-icon.blue--text.text--lighten-2(x-large='') photo_camera
+                                    v-card-title.layout.justify-center.pt-0(primary-title='')
+                                        .headline.text-xs-center 유실물 촬영
+                                    v-card-text
+                                        | '누가 여기다 놓고갔네?'라는 생각이 드는 순간 [등록] 버튼을 누르고 바로 촬영해주세요. 여러분은 촬영만 했을 뿐이지만 등록을 90% 완료했습니다.
+                            v-flex(xs12='', sm4='')
+                                v-card.elevation-0.transparent
+                                    v-card-text.text-xs-center
+                                        span(style='font-weight: bold; font-size: 250%; color:#64b5f6') #
+                                    v-card-title.layout.justify-center.pt-0(primary-title='', style='margin-top: -3%;')
+                                        .headline 자동 태깅
+                                    v-card-text
+                                        | "언제 어디서 무엇을?" 유실물을 촬영하면 정보가 자동으로 태깅됩니다. 알맞은 정보를 선택하여 추가할 수 있습니다.
+                            v-flex(xs12='', sm4='')
+                                v-card.elevation-0.transparent
+                                    v-card-text.text-xs-center
+                                        v-icon.blue--text.text--lighten-2(x-large='') check_circle
+                                    v-card-title.layout.justify-center.pt-0(primary-title='')
+                                        .headline.text-xs-center 등록 완료
+                                    v-card-text
+                                        | 수동으로 정보를 입력할 필요없이 유실물 등록이 완료되었습니다. 등록이 완료됐다면 유실물을 해당 건물 유실물 사물함에 넣어주세요.
+
+
+        // ######## 개발진 소개 ver.2(데스크탑 버전) ########
+        section(style='background-color: #fff6f3', v-if="!$vuetify.breakpoint.xsOnly")
+            v-layout.text-xs-center(column='', align-center='', style='height: 600px;')
+                v-flex.px-0(xs12='', md11='', container='', fill-height='')
+                    v-container(grid-list-md='', style='padding: 100px;')
+                        v-layout(row='', wrap='')
+                            v-flex.elevation-0(xs12='', flat='', v-bind='{ [`md${card.flex_md}`]: true }', v-for='card in cards_introduce', :key='card.title_name')
+                                v-layout(row='')
+                                    v-flex(xs12='', md12='')
+                                        v-card
+                                            img(:src='card.src', height='280px', width='100%')
+                                            span.subheading.black--text(v-text='card.title_name')
+                                            br
+                                            #introduce_skill_desktop
+                                                strong #
+                                                span.body-2(v-text='card.title_skill_1')
+                                                br
+                                                strong #
+                                                span.body-2(v-text='card.title_skill_2')
+
+
+        // ######## 개발진 소개 ver.2(모바일 버전) ########
+        section(v-else)
+            v-layout.text-xs-center(column='', align-center='', style='height: auto !important; display:block !important; background-color: #fff2e5')
+                v-flex(xs11='', container='', fill-height='', style='padding: 25% 13%;')
+                    // style="padding: 60px 40px;"
+                    v-container(fluid='', grid-list-md='')
+                        v-carousel(style='height: 425px;', delimiter-icon='stop', prev-icon='mdi-arrow-left', next-icon='mdi-arrow-right')
+                            v-carousel-item(v-for='card in cards_introduce')
+                                v-layout(wrap='')
+                                    v-flex.elevation-0(xs12='', flat='', v-bind='{ [`md${card.flex_md}`]: true }', :key='card.title_name')
+                                        v-layout(row='')
+                                            v-flex(xs12='', md12='')
+                                                v-card
+                                                    img(:src='card.src', height='300px', width='100%')
+                                                    span.subheading.black--text(v-text='card.title_name')
+                                                    br
+                                                    #introduce_skill_mobile
+                                                        strong #
+                                                        span.body-2(v-text='card.title_skill_1')
+                                                        br
+                                                        strong #
+                                                        span.body-2(v-text='card.title_skill_2')
+
 
         section
-            v-parallax.px-0(src='https://vuetifyjs.com/static/doc-images/carousel/planet.jpg', height='600', jumbotron)
+            v-parallax.px-0(src='../images/picture/main3.png', height='300', jumbotron='jumbotron')
+                // style="background-color: #8ebad0;"
                 v-layout(column='', align-center='', justify-center='')
-                    img(src='images/logo/logo_color.svg', height='150')
-                    h1.mt-4.mb-2.display-1.text-xs-center Discovery and Lost
-                    .subheading.mb-3.text-xs-center Powered by _beat
-
-
-        section
-            v-layout(column='', align-center='', justify-center='')
-                | index
+                    h1.display-1.text-xs-center(style='margin-top: 12px;') Discovery and Lost
+                    .subheading.mt-1.mb-3.text-xs-center Powered by _beat
 
     //include menu_fab
 
@@ -23,10 +215,51 @@ block content
     include bottom_tab
 
     script.
+        window.onscroll = function () {
+            scrollFunction()
+        };
+        function scrollFunction() {
+            if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
+                document.getElementById("toolbar").style.backgroundColor = "white";
+                document.getElementById("toolbar_login").style.color = "black";
+                document.getElementById("main_top_logo").style.display = "block";
+                document.getElementById("toolbar_logo").style.display = "block";
+                document.getElementById("toolbar_title").style.display = "none";
+            } else {
+                document.getElementById("toolbar").style.backgroundColor = "transparent";
+                document.getElementById("toolbar_login").style.color = "#E6E6E6";
+                document.getElementById("main_top_logo").style.display = "block";
+                document.getElementById("toolbar_logo").style.display = "none";
+                document.getElementById("toolbar_title").style.display = "block";
+            }
+        }
+
+    script.
+        /*######## **초 뒤에 화면에 나타나는 기능 ########*/
+        setTimeout(function () {
+            /* 첫 번째 섹션 (사용자 모드)*/
+            document.getElementById('main_top').style.visibility = "visible";
+            document.getElementById('main_top').style.opacity = "1";
+            document.getElementById('select_cards').style.visibility = "visible";
+            document.getElementById('select_cards').style.opacity = "1";
+        }, 500);
+        /*clearTimeout(myTimer);*/
+        <!--######## mouse over= 버튼 생성, mouseout= 버튼 사라짐 ########-->
+        function mouseover() {
+            document.getElementById('register_btn').style.display = 'block';
+            /*document.getElementById('register_btn').style.display = 'none';*/
+        }
+        function mouseout() {
+            document.getElementById('register_btn').style.display = 'none';
+        }
+
+    script.
         const vue = new Vue({
             el: '#app',
             data: {
                 title: 'D&L',
+                dialog: false,
+                drawer: false,
                 scrollData: {
                     fab: false,
                     offsetTop: 0,
@@ -39,6 +272,105 @@ block content
 
                 },
                 bottomTab: "home",
+                cards_introduce: [
+                    {
+                        title_name: '유태우', title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
+                        src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex_md: 3
+                    },
+                    {
+                        title_name: '정하민',
+                        title_skill_1: 'Full_Stack developer',
+                        title_skill_2: 'Manage Server',
+                        src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/keanu-reeves-500w.jpg',
+                        flex_md: 3
+                    },
+                    {
+                        title_name: '유현수',
+                        title_skill_1: 'FrontEnd developer',
+                        title_skill_2: 'Test UI/UX',
+                        src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/daniel-arsham-500w.jpg?2',
+                        flex_md: 3
+                    },
+                    {
+                        title_name: '김윤욱',
+                        title_skill_1: 'FrontEnd developer',
+                        title_skill_2: 'Test UI/UX',
+                        src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/danny-bowien-500w.jpg?2',
+                        flex_md: 3
+                    },
+                ],
+                /*######## 최근 등록된 유실물 섹션 ########*/
+                cards_item: [
+                    {
+                        category: '상위 > 하위',
+                        category2: '하위',
+                        date: '17.03.02',
+                        tag: '카테고리',
+                        src: '../images/picture/test_camera.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: '상위',
+                        category2: '하위',
+                        date: '17.03.02',
+                        tag: 'Favorite road trips',
+                        src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: '상위',
+                        category2: '하위',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_earing.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: '상위',
+                        category2: '하위',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_ring.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: 'camera',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_ring.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: 'camera',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_ring.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: 'camera',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_ring.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: 'camera',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_ring.jpg',
+                        flex: 3
+                    },
+                    {
+                        category: 'camera',
+                        date: '17.03.02',
+                        tag: 'Best airlines',
+                        src: '../images/picture/test_ring.jpg',
+                        flex: 3
+                    },
+                ],
+
+                e1: 'home'
 
             },
             method:{
@@ -49,33 +381,33 @@ block content
                 }
             },
             mounted:[
-                // function(){
-                //     $(window).scroll(
-                //         function (event) {
-                //
-                //             var scroll = $(window).scrollTop();
-                //
-                //             vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
-                //
-                //             if(vue.scrollData.scrollT > vue.scrollData.delta){
-                //                 vue.scrollData.isShowFabTop = true;
-                //                 vue.scrollData.scrollT = 0;
-                //             }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
-                //                 vue.scrollData.isShowFabTop = false;
-                //                 vue.scrollData.scrollT = 0;
-                //             }
-                //
-                //             vue.scrollData.offsetTop = scroll;
-                //
-                //             if(scroll === 0){
-                //                 vue.scrollData.isShowFabTop = false;
-                //                 vue.scrollData.scrollT = 0;
-                //                 vue.scrollData.offsetTop = 0;
-                //             }
-                //
-                //         }
-                //     );
-                // }
+                function(){
+                    $(window).scroll(
+                        function (event) {
+
+                            var scroll = $(window).scrollTop();
+
+                            vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
+
+                            if(vue.scrollData.scrollT > vue.scrollData.delta){
+                                vue.scrollData.isShowFabTop = true;
+                                vue.scrollData.scrollT = 0;
+                            }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
+                                vue.scrollData.isShowFabTop = false;
+                                vue.scrollData.scrollT = 0;
+                            }
+
+                            vue.scrollData.offsetTop = scroll;
+
+                            if(scroll === 0){
+                                vue.scrollData.isShowFabTop = false;
+                                vue.scrollData.scrollT = 0;
+                                vue.scrollData.offsetTop = 0;
+                            }
+
+                        }
+                    );
+                }
             ]
         })
 
