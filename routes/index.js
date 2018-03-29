@@ -35,11 +35,72 @@ function msToDate(ms) {
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-    if(req.session)
-        res.render('index', {userData: JSON.stringify(req.session.userData)});
-    else
-        res.render('index', {userData: ""});
+    var sql = 'SELECT * FROM category';
+    conn.query(sql, [], function (err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }
+        var category = {};
+        for (var i = 0; i < results.length; i++) {
+            var result = results[i];
+            if(! category.hasOwnProperty(result.category_name)){
+                category[result.category_name] = {
+                    subcategory: [],
+                    name: result.category_name,
+                    ko: result.category_name_ko,
+                    en: result.category_name_en
+                }
+            }
+            category[result.category_name].subcategory.push({
+                name: result.name,
+                ko: result.ko,
+                en: result.en
+            })
+        }
+        if(req.session)
+            res.render('index', {userData: JSON.stringify(req.session.userData), category: JSON.stringify(category)});
+        else
+            res.render('index', {userData: "", category: JSON.stringify(category)});
+    });
 
+    // if(req.session)
+    //     res.render('index', {userData: JSON.stringify(req.session.userData)});
+    // else
+    //     res.render('index', {userData: ""});
+
+});
+
+router.post('/recent', function (req, res) {
+    var sql = "SELECT * FROM lost ORDER BY id DESC limit 0, 10;";
+    console.log(sql);
+    conn.query(sql, [], function(err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+
+            var newResults = [];
+            for(var i=0; i<results.length; i++){
+                var result = results[i];
+                var json = JSON.stringify(result);
+                // console.log("json1: ", json);
+                json = json.split('"[').join('[');
+                json = json.split(']"').join(']');
+                json = json.split('"{').join('{');
+                json = json.split('}"').join('}');
+
+                json = json.split('\\"').join('\"');
+                // console.log("json2: ", json);
+                newResults.push(JSON.parse(json));
+            }
+
+            // console.log("newResults: ", newResults);
+            // var json = JSON.stringify(newResults);
+            // console.log(json);
+            res.send(newResults);
+        }
+    });
 });
 
 router.post('/search', function (req, res) {
@@ -118,7 +179,6 @@ router.post('/search', function (req, res) {
         }
     }
     sql +=  " ORDER BY id DESC;";
-    console.log(sql, conditions, params);
 
     // var sql = "SELECT * FROM lost ORDER BY id DESC;";
     conn.query(sql, params, function(err, results) {

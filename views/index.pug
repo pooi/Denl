@@ -70,45 +70,76 @@ block content
                             br
 
         // ######## 최근 등록된 유실물 ver1(카드 4개씩) ########
-        section#recent_register_items
+        //section#recent_register_items
+        //    v-layout.text-xs-center.py-5(column='', align-center='')
+        //        v-flex(xs12='', container='', fill-height='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
+        //            v-container(fluid='', grid-list-md='')
+        //                v-layout(wrap='')
+        //                    v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
+        //                        p.headline.black--text 최근 등록된 유실물
+        //                    v-container(fluid='', grid-list-xl='', pa-0='')
+        //                        v-layout(row='', justify-space-around='')
+        //                            v-flex(xs2='')
+        //                            v-flex(xs2='')
+        //                            v-flex(xs2='', style='padding-left: 5%;')
+        //                                v-btn#recent_register_button(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : 'right'", style='margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;', dark='', small='', flat='', color='', outline='', round='', href='#')
+        //                                    span MORE
+        //
+        //                    v-flex.pt-0(xs12='', container='')
+        //                        // tabs의 높이 조절, 배경 투명화, slider 제거
+        //                        v-tabs#recent_register_tabs(height='500px', color='transparent', slider-color='none', show-arrows, prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
+        //                            // -tab에 있는 카드 사이의 간격 조절
+        //                            v-tab.pr-0(xs12, style='margin: 0 -6px;', v-for='item in recentItems', v-bind='{ ["sm3"]: true }')
+        //                                v-layout(wrap='')
+        //                                    v-flex.elevation-0(xs12='', flat='', :key='item.id')
+        //                                        // tab 안에 있는 카드 내용 콘텐츠
+        //                                        v-layout(row='')
+        //                                            v-flex(xs12='', md12='')
+        //                                                include index_card_item
+                                                        //v-card#recent_register_cards.dal-card(flat='', tile='', hover='hover', raised='raised', style='min-width: 235px;', :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' ", href='###')
+                                                        //    v-card-media(:src='card.src', height='250px')
+                                                        //    code.mx-3.elevation-0.mt-3 수거전
+                                                        //    v-card-title.title.mb-0.py-2.grey--text.text--darken-3 유실물 - 4
+                                                        //    v-card-text.pt-0.subheading.grey--text.text--lighten-1(v-text='card.category')
+                                                        //    // <v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>
+                                                        //    v-card-text.py-0.body-1.grey--text.text--lighten-1(v-text='card.date')
+                                                        //    v-card-text.py-0
+                                                        //        span.caption.brown--text #lipstick #cosmetics #nail #lip
+                                                        //    // share / detail 버튼 가운데로 배치
+                                                        //    v-card-actions(justify-center='')
+                                                        //        v-btn(flat='flat', small='small', slot='activator', color='orange', dark='dark') Share
+                                                        //        v-spacer
+                                                        //        v-btn(flat='flat', small='small', color='orange', href='/items/4') Detail
+
+
+
+        section
             v-layout.text-xs-center.py-5(column='', align-center='')
                 v-flex(xs12='', container='', fill-height='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
-                    v-container(fluid='', grid-list-md='')
-                        v-layout(wrap='')
+                    v-container(fluid='', grid-list-md='', style="overflow:visible")
+                        v-layout(wrap='', style="overflow:visible")
                             v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
-                                p.headline.black--text 최근 등록된 유실물
-                            v-container(fluid='', grid-list-xl='', pa-0='')
-                                v-layout(row='', justify-space-around='')
-                                    v-flex(xs2='')
-                                    v-flex(xs2='')
-                                    v-flex(xs2='', style='padding-left: 5%;')
-                                        v-btn#recent_register_button(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : 'right'", style='margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;', dark='', small='', flat='', color='', outline='', round='', href='#')
-                                            span MORE
+                                p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') 최근 등록된 유실물
+                                span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'") (내용을 입력해주세요.)
+                            //v-container(fluid='', grid-list-xl='', pa-0='')
+                            //    v-layout(row='', justify-space-around='')
+                            //        v-flex(xs2='')
+                            //        v-flex(xs2='')
+                            //        v-flex(xs2='', style='padding-left: 5%;')
+                            //            v-btn(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : 'right'", style='margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;', dark='', small='', flat='', color='', outline='', round='', href='#')
+                            //                span MORE
 
-                            v-flex.pt-0(xs12='', container='')
-                                // tabs의 높이 조절, 배경 투명화, slider 제거
-                                v-tabs#recent_register_tabs(height='500px', color='transparent', slider-color='none', show-arrows, prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
-                                    // -tab에 있는 카드 사이의 간격 조절
-                                    v-tab.pr-0(xs12, style='margin: 0 -6px;', v-for='card in cards_item', v-bind='{ [`sm${card.flex}`]: true }')
-                                        v-layout(wrap='')
-                                            v-flex.elevation-0(xs12='', flat='', :key='card.category')
-                                                // tab 안에 있는 카드 내용 콘텐츠
-                                                v-layout(row='')
-                                                    v-flex(xs12='', md12='')
-                                                        v-card#recent_register_cards.dal-card(flat='', tile='', hover='hover', raised='raised', style='min-width: 235px;', :class="$vuetify.breakpoint.xsOnly ? 'text-xs-left mb-3' : 'text-xs-left ma-2' ", href='###')
-                                                            v-card-media(:src='card.src', height='250px')
-                                                            code.mx-3.elevation-0.mt-3 수거전
-                                                            v-card-title.title.mb-0.py-2.grey--text.text--darken-3 유실물 - 4
-                                                            v-card-text.pt-0.subheading.grey--text.text--lighten-1(v-text='card.category')
-                                                            // <v-card-text class="py-3  grey&#45;&#45;text text&#45;&#45;darken-2">상세 설명</v-card-text>
-                                                            v-card-text.py-0.body-1.grey--text.text--lighten-1(v-text='card.date')
-                                                            v-card-text.py-0
-                                                                span.caption.brown--text #lipstick #cosmetics #nail #lip
-                                                            // share / detail 버튼 가운데로 배치
-                                                            v-card-actions(justify-center='')
-                                                                v-btn(flat='flat', small='small', slot='activator', color='orange', dark='dark') Share
-                                                                v-spacer
-                                                                v-btn(flat='flat', small='small', color='orange', href='/items/4') Detail
+                            v-flex.pt-3.mt-3(xs12='', container='', style="overflow:visible", :class="$vuetify.breakpoint.xsOnly ? '' : 'mx-3' ")
+                                v-carousel.elevation-0.jumbotron-overlay(hide-delimiters, style="overflow:visible", dark)
+                                    v-carousel-item.elevation-0(v-for='(array,i) in splitArray(recentItems)', :key='i', style="overflow:visible")
+                                        v-layout
+                                            //v-flex(d-inline-flex)
+                                            v-flex(v-for="(item, index) in array", :key='index', xs12, sm6, md4, lg3)
+                                                include index_card_item
+
+                                v-btn.mt-4(:class="$vuetify.breakpoint.xsOnly ?  '' : 'mr-2'", style='margin: 0 auto; color: #fa6e24; min-width: 60px; font-size: 0.8em;', dark='', small='', flat='', color='', outline='', round='', href='#')
+                                    span MORE
+
 
 
         // ######## 유실물 통계 ########
@@ -253,163 +284,6 @@ block content
             document.getElementById('register_btn').style.display = 'none';
         }
 
+    script(type="text/javascript" src='/javascripts/index-config.js')
     script.
-        const vue = new Vue({
-            el: '#app',
-            data: {
-                title: 'D&L',
-                dialog: false,
-                drawer: false,
-                scrollData: {
-                    fab: false,
-                    offsetTop: 0,
-                    scrollT: 0,
-                    delta: 200,
-                    isShowFabTop: true,
-                    transition: 'slide-y-reverse-transition'
-                },
-                loginData:{
-
-                },
-                bottomTab: "home",
-                cards_introduce: [
-                    {
-                        title_name: '유태우', title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
-                        src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex_md: 3
-                    },
-                    {
-                        title_name: '정하민',
-                        title_skill_1: 'Full_Stack developer',
-                        title_skill_2: 'Manage Server',
-                        src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/keanu-reeves-500w.jpg',
-                        flex_md: 3
-                    },
-                    {
-                        title_name: '유현수',
-                        title_skill_1: 'FrontEnd developer',
-                        title_skill_2: 'Test UI/UX',
-                        src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/daniel-arsham-500w.jpg?2',
-                        flex_md: 3
-                    },
-                    {
-                        title_name: '김윤욱',
-                        title_skill_1: 'FrontEnd developer',
-                        title_skill_2: 'Test UI/UX',
-                        src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/danny-bowien-500w.jpg?2',
-                        flex_md: 3
-                    },
-                ],
-                /*######## 최근 등록된 유실물 섹션 ########*/
-                cards_item: [
-                    {
-                        category: '상위 > 하위',
-                        category2: '하위',
-                        date: '17.03.02',
-                        tag: '카테고리',
-                        src: '../images/picture/test_camera.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: '상위',
-                        category2: '하위',
-                        date: '17.03.02',
-                        tag: 'Favorite road trips',
-                        src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: '상위',
-                        category2: '하위',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_earing.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: '상위',
-                        category2: '하위',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_ring.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: 'camera',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_ring.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: 'camera',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_ring.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: 'camera',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_ring.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: 'camera',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_ring.jpg',
-                        flex: 3
-                    },
-                    {
-                        category: 'camera',
-                        date: '17.03.02',
-                        tag: 'Best airlines',
-                        src: '../images/picture/test_ring.jpg',
-                        flex: 3
-                    },
-                ],
-
-                e1: 'home'
-
-            },
-            method:{
-                loginSejong: function(){
-                    var id = document.getElementsByName('loginId');
-                    var pw = document.getElementsByName('loginPw');
-                    loginSejong(id, pw);
-                }
-            },
-            mounted:[
-                function(){
-                    $(window).scroll(
-                        function (event) {
-
-                            var scroll = $(window).scrollTop();
-
-                            vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
-
-                            if(vue.scrollData.scrollT > vue.scrollData.delta){
-                                vue.scrollData.isShowFabTop = true;
-                                vue.scrollData.scrollT = 0;
-                            }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
-                                vue.scrollData.isShowFabTop = false;
-                                vue.scrollData.scrollT = 0;
-                            }
-
-                            vue.scrollData.offsetTop = scroll;
-
-                            if(scroll === 0){
-                                vue.scrollData.isShowFabTop = false;
-                                vue.scrollData.scrollT = 0;
-                                vue.scrollData.offsetTop = 0;
-                            }
-
-                        }
-                    );
-                }
-            ]
-        })
-
-
-
+        const vue = init('!{category}');
