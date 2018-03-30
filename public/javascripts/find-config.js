@@ -20,6 +20,9 @@ function init(init_category) {
             categoryData: null,
             searchItems: [],
             searchSnackbar : false,
+            category: null,
+            subcategory: null,
+            categoryDialog: false,
             // Filter
             dcv_filter_item:{
                 isAllday: true,
@@ -82,6 +85,30 @@ function init(init_category) {
                 }
                 return newStr;
             },
+            isSameCategoryData : function (c1, c2) {
+                if(c1 === null ||c2 === null)
+                    return false;
+                return c1.name == c2.name
+            },
+            changeSubCategories: function (key) {
+
+                if (vue.categoryData.hasOwnProperty(key)) {
+                    vue.category = vue.categoryData[key];
+                    vue.subcategory = null;
+                    vue.subcategories = vue.category.subcategory;
+                }
+
+            },
+            getCategoryBreadcrumbs : function () {
+                var list = [];
+                if(this.category !== null){
+                    list.push(this.category.ko);
+                }
+                if(this.subcategory !== null){
+                    list.push(this.subcategory.ko);
+                }
+                return list;
+            },
             getCategoryStringFromResult: function (title) {
                 title = title.replace(" ", "_");
                 var keys = Object.keys(this.categoryData);
@@ -124,6 +151,8 @@ function init(init_category) {
             search: function(showSnackbar){
                 this.searchSnackbar = false;
                 var data = {
+                    category: this.category === null ? "" : this.category,
+                    subcategory: this.subcategory === null ? "" : this.subcategory,
                     dcv_filter_item: this.dcv_filter_item,
                     rgt_filter_item: this.rgt_filter_item
                 };
@@ -193,9 +222,6 @@ function init(init_category) {
                 vue.search(true);
             },
             'dcv_filter_item.finishDate': function () {
-                vue.search(true);
-            },
-            rgt_filter_item () {
                 vue.search(true);
             }
         }

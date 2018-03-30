@@ -106,10 +106,32 @@ router.post('/recent', function (req, res) {
 router.post('/search', function (req, res) {
 
     var data = req.body;
+    console.log(data);
 
     var sql = "SELECT * FROM lost";
     var conditions = [];
     var params = [];
+
+    if(data.hasOwnProperty('category')){
+        var category = null;
+        var subcategory = null;
+        if(data.category !== ''){
+            category = data.category;
+        }
+        if(data.subcategory !== ''){
+            subcategory = data.subcategory;
+        }
+        // console.log(category, subcategory);
+        if(category !== null && subcategory !== null){
+            conditions.push(" category=? AND subcategory=?");
+            params.push(category.name);
+            params.push(subcategory.name);
+        }else if(category !== null){
+            conditions.push(" category=?");
+            params.push(category.name);
+        }
+    }
+
     if(data.hasOwnProperty('dcv_filter_item')){
         item = data.dcv_filter_item;
         if(item.isAllday){
@@ -179,6 +201,8 @@ router.post('/search', function (req, res) {
         }
     }
     sql +=  " ORDER BY id DESC;";
+
+    console.log(sql);
 
     // var sql = "SELECT * FROM lost ORDER BY id DESC;";
     conn.query(sql, params, function(err, results) {

@@ -29,6 +29,17 @@ block content
                                                     v-divider
 
                                                 v-flex(sm2, xs12)
+                                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리:
+                                                v-flex.pt-0(sm10, xs12)
+                                                    v-flex(xs12, d-inline-flex)
+                                                        v-breadcrumbs.pa-0.pr-2(v-if="category != null")
+                                                            v-icon(slot='divider') chevron_right
+                                                            v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
+                                                                | {{ item }}
+                                                        v-btn(color='orange darken-2', dark, @click.native='categoryDialog = true') 카테고리 선택
+
+
+                                                v-flex(sm2, xs12)
                                                     v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득일:
                                                 v-flex(sm10, xs12)
                                                     //v-date-picker.elevation-10.mb-3.hidden-xs-only(v-model='date', :landscape='true', color="brown darken-1", name='date', full-width)
@@ -131,6 +142,8 @@ block content
                                             //        v-btn(flat, small, slot='activator', color='orange', dark) Share
                                             //        v-btn(flat,small, color='orange', :href="'/items/'+item.id") Detail
 
+                            v-card-text.text-xs-center.my-4.grey--text(v-else) 검색 결과가 없습니다.
+
 
 
 
@@ -139,6 +152,37 @@ block content
         v-snackbar(timeout='2500', :top='!$vuetify.breakpoint.xsOnly', :bottom="$vuetify.breakpoint.xsOnly" right, v-model='searchSnackbar')
             | {{ searchItems.length }}개의 검색결과가 있습니다.
             v-btn(flat='', color='pink', @click.native='searchSnackbar = false') Close
+
+        v-dialog(v-model='categoryDialog', max-width='500px')
+            v-card
+                v-card-title.headline 카테고리 선택
+                v-divider
+                v-card-text
+                    v-layout(wrap)
+                        v-layout.mr-1(xs6)
+                            v-flex(xs12)
+                                v-list(one-line)
+                                    v-subheader Category 1
+                                    template(v-for='(item, index) in Object.keys(categoryData)')
+                                        v-list-tile(avatar, @click='changeSubCategories(item)', :key='item.name', :color="isSameCategoryData(category, categoryData[item]) ? 'orange darken-2' : '' ")
+                                            v-list-tile-content
+                                                v-list-tile-title(v-html='categoryData[item].ko', :class="isSameCategoryData(category, categoryData[item]) ? 'title' : '' ")
+                                            v-list-tile-action
+                                                v-icon(:color="isSameCategoryData(category, categoryData[item]) ? 'orange darken-2' : 'grey'") keyboard_arrow_right
+                                        //v-divider(v-if='index + 1 < categories.length', :key='index')
+
+                        v-layout.ml-1(xs6)
+                            v-flex(xs12)
+                                v-list(one-line)
+                                    v-subheader Category 2
+                                    template(v-for='(item, index) in subcategories')
+                                        v-list-tile(avatar, @click='subcategory = item; categoryDialog=false; search(true)', :key='item.name', :color="isSameCategoryData(subcategory, item) ? 'orange darken-2' : '' ")
+                                            v-list-tile-content
+                                                v-list-tile-title(v-html='item.ko', :class="isSameCategoryData(subcategory, item) ? 'title' : '' ")
+                v-divider
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat='flat', @click.native="categoryDialog = false; search(true)") Ok
 
         include footer
 
