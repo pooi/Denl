@@ -102,6 +102,17 @@ block content
                                                     v-btn.mb-2(flat, color='error', @click='rgt_filter_item.startDate = rgt_filter_item.finishDate = null', v-if='!rgt_filter_item.isAllday') Clear
                                                     v-switch(color='orange', label='All-day', hide-details, v-model='rgt_filter_item.isAllday')
 
+
+                                                v-flex(sm2, xs12)
+                                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득장소:
+                                                v-flex.pt-0(sm10, xs12)
+                                                    v-layout( wrap)
+                                                        v-flex(xs6, md3)
+                                                            v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete)
+                                                        v-flex.ml-2(xs5, md2)
+                                                            v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete)
+
+
                                                 v-flex.mx-2(xs12)
                                                     v-divider
 
@@ -147,6 +158,14 @@ block content
 
 
 
+        v-bottom-sheet(v-model='shareSheet', inset, max-width='500px')
+            v-list
+                v-subheader 공유하기
+                v-list-tile(v-for='tile in shares', :key='tile', @click='shareTo(tile.title)')
+                    v-list-tile-avatar
+                        v-avatar(size='32px', tile='')
+                            img(:src="'/images/' + tile.img")
+                    v-list-tile-title {{ tile.title }}
 
 
         v-snackbar(timeout='2500', :top='!$vuetify.breakpoint.xsOnly', :bottom="$vuetify.breakpoint.xsOnly" right, v-model='searchSnackbar')

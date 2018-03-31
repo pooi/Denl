@@ -41,7 +41,25 @@ function init(init_category) {
                 finishDate: null,
                 alldayModal: false,
                 alldayDate: null
-            }
+            },
+            selectedBuilding: null,
+            buildings: [
+                '고인돌 잔디밭', '광개토관', '군자관', '다산관', '대양홀', '모짜르트홀', '무방관', '박물관', '세종관',
+                '세종이노베이션센터', '아사달 연못', '애지헌', '영실관', '용덕관', '우정당', '율곡관', '이당관', '진관홀',
+                '집현관', '충무관', '학생회관', '학술정보원', '행복기숙사'
+            ],
+            selectedRoom: null,
+            rooms: [
+                '101', '201', '301', '401'
+            ],
+
+
+            shareSheet: false,
+            shareItem: null,
+            shares: [
+                { img: 'kakao.png', title: 'Kakao' },
+                { img: 'facebook.png', title: 'Facebook' },
+            ]
 
         },
         methods: {
@@ -128,6 +146,49 @@ function init(init_category) {
                 }
                 return title;
             },
+            shareTo: function (title) {
+                var url = window.location.href;
+                var origin = window.location.origin;
+
+                var shareItem = this.shareItem;
+                if(title === "Kakao"){
+
+                    var tags = "";
+                    var tagList = this.hastTagsToString(shareItem);
+                    for(var i=0; i<Math.min(tagList.length, 5); i++){
+                        var tag = tagList[i];
+                        if(tag !== ""){
+                            tags += "#" + tag + " ";
+                        }
+                    }
+                    if(tagList.length > 5)
+                        tags += "...";
+
+                    Kakao.Link.sendDefault({
+                        objectType: 'feed',
+                        content: {
+                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.getCategoryStringFromResult(shareItem.subcategory) + ")",
+                            description: tags,
+                            imageUrl: origin + "/" + shareItem.photos,
+                            link: {
+                                mobileWebUrl: url,
+                                webUrl: url
+                            }
+                        },
+                        buttons: [
+                            {
+                                title: '확인하기',
+                                link: {
+                                    mobileWebUrl: url,
+                                    webUrl: url
+                                }
+                            }
+                        ]
+                    });
+                }
+                this.shareSheet = false;
+
+            },
             resetFilterItem: function () {
                 this.dcv_filter_item = {
                     isAllday: true,
@@ -154,7 +215,9 @@ function init(init_category) {
                     category: this.category === null ? "" : this.category,
                     subcategory: this.subcategory === null ? "" : this.subcategory,
                     dcv_filter_item: this.dcv_filter_item,
-                    rgt_filter_item: this.rgt_filter_item
+                    rgt_filter_item: this.rgt_filter_item,
+                    building: this.selectedBuilding === null ? "" : this.selectedBuilding,
+                    room: this.selectedRoom === null ? "" : this.selectedRoom
                 };
                 console.log(data);
 
@@ -222,6 +285,12 @@ function init(init_category) {
                 vue.search(true);
             },
             'dcv_filter_item.finishDate': function () {
+                vue.search(true);
+            },
+            'selectedBuilding' : function () {
+                vue.search(true);
+            },
+            'selectedRoom' : function () {
                 vue.search(true);
             }
         }

@@ -72,7 +72,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/recent', function (req, res) {
-    var sql = "SELECT * FROM lost ORDER BY id DESC limit 0, 10;";
+    var sql = "SELECT * FROM lost ORDER BY id DESC limit 0, 12;";
     console.log(sql);
     conn.query(sql, [], function(err, results) {
         if (err) {
@@ -167,6 +167,22 @@ router.post('/search', function (req, res) {
                 conditions.push(" rgt_date<=?");
                 params.push(dateToMs(item.finishDate));
             }
+        }
+    }
+
+    if(data.hasOwnProperty('building')){
+        var building = data.building;
+        if(building.length > 0){
+            conditions.push(" building=?");
+            params.push(building);
+        }
+    }
+
+    if(data.hasOwnProperty('room')){
+        var room = data.room;
+        if(room.length > 0){
+            conditions.push(" room=?");
+            params.push(room);
         }
     }
 
