@@ -42,7 +42,33 @@ function init(WFA, WFRQ, init_category, WFL) {
             requestCancelErrorDialog: false,
             WFAs : null,
             WFRQs : null,
-            WFLs : null
+            WFLs : null,
+            filter_keyword: false,
+            filter_text: '전체 유실물 리스트',
+            dialog_filter: false,
+            a1: null,
+            lost_filter_num: [],
+            /*######## Lost 탭_ 필터 _ 상위 카테고리 ########*/
+            b1: null,
+            lost_filter_category_parent: [],
+            /*######## Lost 탭_ 필터 _ 상세 카테고리 ########*/
+            c1: null,
+            lost_filter_category_child: [],
+            /*######## Lost 탭_ 필터 _ 유실물 상태 ########*/
+            d1: null,
+            lost_filter_state: [
+                { name: '수거전', code:"WFA" },
+                { name: '수거 완료', code:"WFF" },
+                { name: '요청 전', code:"WFF" }
+            ],
+            customFilter (item, queryText, itemText) {
+                const hasValue = val => val != null ? val : ''
+                const text = hasValue(item.name)
+                const query = hasValue(queryText)
+                return text.toString()
+                    .toLowerCase()
+                    .indexOf(query.toString().toLowerCase()) > -1
+            }
         },
         methods: {
             hastTagsToString: function (itemData) {
@@ -103,12 +129,40 @@ function init(WFA, WFRQ, init_category, WFL) {
                     }
                 }
                 return title;
+            },
+            getBreadCrumbsList : function () {
+                var list = [];
+                if(this.a1 !== null){
+                    this.filter_keyword = true;
+                    list.push(this.a1);
+                }
+                if(this.b1 !== null){
+                    this.filter_keyword = true;
+                    list.push(this.b1);
+                }
+                if(this.c1 !== null){
+                    this.filter_keyword = true;
+                    list.push(this.c1);
+                }
+                if(this.d1 !== null){
+                    this.filter_keyword = true;
+                    list.push(this.d1);
+                }
+                return list;
+            },
+            /*초기화 버튼 눌렀을 때*/
+            resetFilterItem: function () {
+                this.a1 = null;
+                this.b1 = null;
+                this.c1 = null;
+                this.d1 = null;
+                this.filter_keyword = false;
             }
         },
         created : function(){
             this.WFAs = JSON.parse(WFA);
             this.WFRQs = JSON.parse(WFRQ);
-            this.WFLs = JSON.parse(WFL);
+            // this.WFLs = JSON.parse(WFL);
             // wfas.forEach(function (lost){
             //     this.WFAs.push(lost)
             // })
@@ -133,14 +187,22 @@ function init(WFA, WFRQ, init_category, WFL) {
                 var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
                 this.todayDate = today;
             },
-            function () {
-                var json = init_data;
-                this.itemData = JSON.parse(json);
-                console.log(this.itemData);
-            },
+            // function () {
+            //     var json = init_data;
+            //     this.itemData = JSON.parse(json);
+            //     console.log(this.itemData);
+            // },
             function () {
                 this.categoryData = JSON.parse(init_category);
                 console.log("category: ", this.categoryData);
+                for(item in this.categoryData){
+                    var obj = {"name":item};
+                    this.lost_filter_category_parent.push(obj);
+                }
+                for(item in this.WFAs){
+                    var obj = {"name":"유실물"+this.WFAs[item].id}
+                    this.lost_filter_num.push(obj)
+                }
             },
             function () {
                 var title = document.createElement('meta');
@@ -156,7 +218,16 @@ function init(WFA, WFRQ, init_category, WFL) {
 
                 console.log(document.getElementsByTagName('head')[0]);
             }
-        ]
+        ],
+        watch:{
+            b1: function(val){
+                this.lost_filter_category_child = [];
+                for(item in this.categoryData[val.name].subcategory){
+                    var obj = {"name":this.categoryData[val.name].subcategory[item].name}
+                    this.lost_filter_category_child.push(obj);
+                }
+            }
+        }
     });
     return vue;
 }

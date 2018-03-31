@@ -8,6 +8,7 @@ var Get_building_list = function(){
         3 : "out"
     };
     var near_building = [];
+    var near_list = [];
 
     var In_Out = function(ch_buildings, ch_catch_point) {
         buildings = ch_buildings ? ch_buildings : "";
@@ -16,7 +17,6 @@ var Get_building_list = function(){
 
     In_Out.prototype = {
         Verify_in_out : function () {
-            var near_list = [];
             for(var building in buildings) {
                 var check = {
                     building : "",
@@ -112,7 +112,7 @@ var Get_building_list = function(){
                 }
                 return 0;
             })
-            console.log(near_list);
+            // console.log(near_list);
         },
         Setnewarea : function(newarea){
             buildings = newarea;
@@ -122,6 +122,9 @@ var Get_building_list = function(){
         },
         Setcatchpoint : function(newpoint){
             catch_point = newpoint;
+        },
+        Getnearlist : function(){
+            return near_list;
         }
     }
 
@@ -163,10 +166,19 @@ var buildings2 = {
         {"point" : [127.073090,37.552065]}
     ]
 }
-var test_4 = [127.073867,37.552320];//충무관 안
-var test = new Get_building_list(buildings,test_4);
+// var test_4 = [127.073867,37.552320];//충무관 안
+// var test = new Get_building_list(buildings,test_4);
+//
+// var test_1 = [127.073362, 37.552274]; // 영실관 밖
+// var test_2 = [127.073880,37.551951]; //율근처 밖
+//
+// test.Verify_in_out();
+// var nears = test.Getnearlist();
+// var arr_near = [];
+// for(near in nears){
+//     arr_near.push(nears[near].building);
+// }
+// console.log(arr_near);
 
-var test_1 = [127.073362, 37.552274]; // 영실관 밖
-var test_2 = [127.073880,37.551951]; //율근처 밖
 
-console.log(test.Verify_in_out());
+exports.func = Get_building_list;

@@ -40,6 +40,7 @@ function manage (req, res) {
                             en: result.en
                         })
                     }
+                    console.log(JSON.stringify(category));
                     result_arr.push(JSON.stringify(category));
                 }
                 else{

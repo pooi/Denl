@@ -31,9 +31,7 @@ block content
                                         v-tab-item(:id="'tab-' + 1")
                                             include manage_home
                                         v-tab-item(:id="'tab-' + 2")
-                                            v-layout(wrap)
-                                                v-flex(xs12, sm6, md6, lg4 v-for="item in WFAs", :key="item.id")
-                                                    include card_item
+                                            include manage_lost
                                         v-tab-item(:id="'tab-' + 3")
 
 
