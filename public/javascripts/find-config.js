@@ -52,6 +52,7 @@ function init(init_category) {
             rooms: [
                 '101', '201', '301', '401'
             ],
+            searchTags: [],
 
 
             shareSheet: false,
@@ -68,6 +69,10 @@ function init(init_category) {
             },
             vueMsToDateKo: function (date) {
                 return msToDateKo(date);
+            },
+            removeHashtag: function(item){
+                this.searchTags.splice(this.searchTags(item), 1);
+                // this.hashtags = this.hashtags;
             },
             convertStatus: function (status) {
                 if(status === "WFA"){
@@ -147,22 +152,14 @@ function init(init_category) {
                 return title;
             },
             shareTo: function (title) {
-                var url = window.location.href;
-                var origin = window.location.origin;
 
                 var shareItem = this.shareItem;
+                var url = window.location.origin + "/items/" + shareItem.id;
+                var origin = window.location.origin;
+
                 if(title === "Kakao"){
 
-                    var tags = "";
-                    var tagList = this.hastTagsToString(shareItem);
-                    for(var i=0; i<Math.min(tagList.length, 5); i++){
-                        var tag = tagList[i];
-                        if(tag !== ""){
-                            tags += "#" + tag + " ";
-                        }
-                    }
-                    if(tagList.length > 5)
-                        tags += "...";
+                    var tags = this.hastTagsToString(shareItem);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
@@ -217,7 +214,8 @@ function init(init_category) {
                     dcv_filter_item: this.dcv_filter_item,
                     rgt_filter_item: this.rgt_filter_item,
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
-                    room: this.selectedRoom === null ? "" : this.selectedRoom
+                    room: this.selectedRoom === null ? "" : this.selectedRoom,
+                    tags: this.searchTags
                 };
                 console.log(data);
 
@@ -291,6 +289,9 @@ function init(init_category) {
                 vue.search(true);
             },
             'selectedRoom' : function () {
+                vue.search(true);
+            },
+            'searchTags' : function () {
                 vue.search(true);
             }
         }

@@ -20,6 +20,14 @@ function init(init_category) {
             },
             categoryData: null,
             bottomTab: "home",
+
+            shareSheet: false,
+            shareItem: null,
+            shares: [
+                { img: 'kakao.png', title: 'Kakao' },
+                { img: 'facebook.png', title: 'Facebook' },
+            ],
+
             cards_introduce: [
                 {
                     title_name: '유태우', title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
@@ -183,6 +191,41 @@ function init(init_category) {
                 }
                 return title;
             },
+            shareTo: function (title) {
+
+                var shareItem = this.shareItem;
+                var url = window.location.origin + "/items/" + shareItem.id;
+                var origin = window.location.origin;
+
+                if(title === "Kakao"){
+
+                    var tags = this.hastTagsToString(shareItem);
+
+                    Kakao.Link.sendDefault({
+                        objectType: 'feed',
+                        content: {
+                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.getCategoryStringFromResult(shareItem.subcategory) + ")",
+                            description: tags,
+                            imageUrl: origin + "/" + shareItem.photos,
+                            link: {
+                                mobileWebUrl: url,
+                                webUrl: url
+                            }
+                        },
+                        buttons: [
+                            {
+                                title: '확인하기',
+                                link: {
+                                    mobileWebUrl: url,
+                                    webUrl: url
+                                }
+                            }
+                        ]
+                    });
+                }
+                this.shareSheet = false;
+
+            },
             splitArray: function (array) {
                 var chunk = 1;
                 var breakpoint = this.__proto__.$vuetify.breakpoint;
@@ -208,7 +251,7 @@ function init(init_category) {
 
                     newArray.push(temparray);
                 }
-                console.log(newArray);
+                // console.log(newArray);
                 return newArray;
             }
         },
@@ -253,7 +296,7 @@ function init(init_category) {
                 ).then(function (response) {
                     var res = response;
                     var data = res.data;
-                    console.log("data: ", data);
+                    // console.log("data: ", data);
                     vue.recentItems = [];
                     vue.recentItems = vue.recentItems.concat(data);
                     vue.recentModel = 0;//vue.recentItems[0].id;

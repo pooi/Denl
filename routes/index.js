@@ -193,7 +193,8 @@ router.post('/search', function (req, res) {
         for(var i=0; i<tags.length; i++){
             var tag = tags[i];
             tag = tag.trim();
-            tagCond += " tags LIKE ? OR description LIKE ?";
+            tagCond += " brand LIKE ? OR tags LIKE ? OR recognition_tags LIKE ?";
+            params.push("%" + tag + "%");
             params.push("%" + tag + "%");
             params.push("%" + tag + "%");
             if(i+1 < tags.length){

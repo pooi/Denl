@@ -107,10 +107,30 @@ block content
                                                     v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득장소:
                                                 v-flex.pt-0(sm10, xs12)
                                                     v-layout( wrap)
-                                                        v-flex(xs6, md3)
+                                                        v-flex(xs5, md3)
                                                             v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete)
-                                                        v-flex.ml-2(xs5, md2)
+                                                        v-flex.ml-2(xs4, md2)
                                                             v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete)
+                                                    v-layout.ml-2.py-0(xs12, md1, v-show='!locationProgress', style='vertical-align: middle;')
+                                                        v-btn.py-0(flat, color='error', small, @click="selectedBuilding=null; selectedRoom=null;") Clear
+
+
+
+                                                v-flex(xs12)
+                                                    .title 2차 조건
+                                                v-flex(xs12)
+                                                    v-divider
+
+
+                                                v-flex(sm2, xs12)
+                                                    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 브랜드/태그:
+                                                v-flex.pt-0(sm10, xs12)
+                                                    v-select(color="orange darken-2", label='태그를 입력하세요.', chips='', tags='', clearable='', v-model='searchTags' )
+                                                        template(slot='selection', slot-scope='data')
+                                                            v-chip.elevation-2(close='', @input='removeHashtag(data.item)', :selected='data.selected', color="orange darken-2", text-color="white")
+                                                                strong.title.mr-1 #
+                                                                strong {{ data.item }}
+
 
 
                                                 v-flex.mx-2(xs12)
