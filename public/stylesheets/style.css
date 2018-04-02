@@ -1,3 +1,17 @@
+
+/*@font-face {font-family: "Roboto";*/
+
+    /*src: local("KopubDotum");}*/
+
+/*@font-face {font-family: "Noto Sans KR";*/
+
+    /*src: local("KopubDotum");}*/
+
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+}
+
 .dialog{
     border-radius: 20px !important;
 }
