@@ -207,6 +207,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
+                                    v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="requestReceiveDialog=true", v-if='vueIsAdmin() && requestList.length > 0') 수령승인
                                     v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
 
 
@@ -333,6 +334,17 @@ block content
                     v-spacer
                     v-btn(color='error', flat='flat', @click.native="loginErrorDialog = false; loginData.dialog = true") 확인
 
+        v-dialog.md6(v-model='requestReceiveDialog', scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='warning') info_outline
+                    | 확인
+                v-card-text
+                    | 유실물 수령을 승인하시겠습니까?
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat, @click="requestReceiveDialog = false") 취소
+                    v-btn(color='success', flat, @click="requestReceiveDialog = false;") 확인
 
         include footer
         include bottom_tab

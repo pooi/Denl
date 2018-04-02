@@ -113,12 +113,12 @@ block content
 
 
 
-        section
+        section.py-4
             v-layout.text-xs-center.py-5(column='', align-center='')
                 v-flex(xs12='', container='', fill-height='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
                     v-container(fluid='', grid-list-md='', style="overflow:visible")
                         v-layout(wrap='', style="overflow:visible")
-                            v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
+                            v-flex.text-xs-center.pb-1(xs12='', justify-center='', align-center='')
                                 p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') 최근 등록된 유실물
                                 span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'") (내용을 입력해주세요.)
                             //v-container(fluid='', grid-list-xl='', pa-0='')
@@ -146,7 +146,7 @@ block content
 
 
         // ######## 유실물 통계 ########
-        section(style='background-color: #fff6f3; height: 400px;')
+        section.py-4(style='background-color: #fff6f3; height: 400px;')
             v-layout.py-5(column='', wrap='', align-center='')
                 v-flex.my-3.pt-3(xs12='', sm4='')
                     .text-xs-center
@@ -156,16 +156,16 @@ block content
 
 
         // ######## 등록 설명 ########
-        section#introduce_register
-            v-layout.my-5.pt-4.text-xs-center(wrap='', justify-center='', align-center='')
-                v-flex.mt-5.mb-0.pt-4(xs12='')
+        section.py-4#introduce_register
+            v-layout.my-5.py-5.text-xs-center(wrap='', justify-center='', align-center='')
+                v-flex.mb-0(xs12='')
                     div
                         p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') 찍고, 선택하고, 등록
                         span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'") 촬영만 해주세요 무엇인지는 저희가 알아내겠습니다
-                v-flex(xs12='', mt-5='', pt-3='')
+                v-flex(xs12='', pt-3='')
                     v-container(grid-list-sm='')
                         v-layout(row='', wrap='', align-center='')
-                            v-flex(xs12='', sm4='')
+                            v-flex(xs12='', md4='')
                                 v-card.elevation-0.transparent
                                     v-card-text.text-xs-center
                                         v-icon.blue--text.text--lighten-2(x-large='') photo_camera
@@ -173,7 +173,7 @@ block content
                                         .headline.text-xs-center 유실물 촬영
                                     v-card-text
                                         | '누가 여기다 놓고갔네?'라는 생각이 드는 순간 [등록] 버튼을 누르고 바로 촬영해주세요. 여러분은 촬영만 했을 뿐이지만 등록을 90% 완료했습니다.
-                            v-flex(xs12='', sm4='')
+                            v-flex(xs12='', md4='')
                                 v-card.elevation-0.transparent
                                     v-card-text.text-xs-center
                                         span(style='font-weight: bold; font-size: 250%; color:#64b5f6') #
@@ -181,7 +181,7 @@ block content
                                         .headline 자동 태깅
                                     v-card-text
                                         | "언제 어디서 무엇을?" 유실물을 촬영하면 정보가 자동으로 태깅됩니다. 알맞은 정보를 선택하여 추가할 수 있습니다.
-                            v-flex(xs12='', sm4='')
+                            v-flex(xs12='', md4='')
                                 v-card.elevation-0.transparent
                                     v-card-text.text-xs-center
                                         v-icon.blue--text.text--lighten-2(x-large='') check_circle
@@ -192,7 +192,7 @@ block content
 
 
         // ######## 개발진 소개 ver.2(데스크탑 버전) ########
-        section(style='background-color: #fff6f3', v-if="!$vuetify.breakpoint.xsOnly")
+        section(style='background-color: #fff6f3', v-if="!($vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly )")
             v-layout.text-xs-center(column='', align-center='', style='height: 600px;')
                 v-flex.px-0(xs12='', md11='', container='', fill-height='')
                     v-container(grid-list-md='', style='padding: 100px;')

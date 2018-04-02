@@ -42,6 +42,7 @@ function init(init_data, init_category) {
             requestErrorDialog: false,
             requestCancelDialog: false,
             requestCancelErrorDialog: false,
+            requestReceiveDialog: false,
             requestEmail: null,
             requestRecentID: null,
             rgtEmailDialog: false,
@@ -54,6 +55,9 @@ function init(init_data, init_category) {
             ]
         },
         methods: {
+            vueIsAdmin: function () {
+                return isAdmin();
+            },
             getCurrentUrl: function () {
                 return window.location.href;
             },
