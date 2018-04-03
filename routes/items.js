@@ -71,8 +71,14 @@ router.get('/:id', function (req, res) {
             };
             if(rcvUser.id === null)
                 rcvUser = null;
-            rgtUser = settingAnonymousUser(rgtUser, true);
-            rcvUser = settingAnonymousUser(rcvUser, true);
+
+            var isHidden = true;
+            if(req.session.hasOwnProperty('userData')){
+                if(req.session.userData.hasOwnProperty('isAdmin') && req.session.userData.isAdmin == 1)
+                    isHidden = false;
+            }
+            rgtUser = settingAnonymousUser(rgtUser, isHidden);
+            rcvUser = settingAnonymousUser(rcvUser, isHidden);
 
             delete result['rgt_user'];
             delete result['rgtStudentID'];
@@ -210,7 +216,12 @@ router.post('/requestList', function (req, res) {
                         studentID: result.studentId,
                         name: result.name
                     };
-                    settingAnonymousUser(user, true);
+                    var isHidden = true;
+                    if(req.session.hasOwnProperty('userData')){
+                        if(req.session.userData.hasOwnProperty('isAdmin') && req.session.userData.isAdmin == 1)
+                            isHidden = false;
+                    }
+                    settingAnonymousUser(user, isHidden);
                     delete result['user_id'];
                     delete result['studentID'];
                     delete result['name'];

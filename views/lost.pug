@@ -120,7 +120,7 @@ block content
                                                 v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
                                                     //v-flex(sm2, xs12)
                                                     //    v-subheader.bold(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리(*):
-                                                    v-layout(v-if='!isRecognitionProgress')
+                                                    v-flex(v-if='!isRecognitionProgress', xs12)
                                                         v-btn.mx-2(color='orange darken-2', block, flat, dark, @click.native='categoryDialog = true') 카테고리 선택
                                                     v-layout(xs12, align-center, justify-center, wrap)
                                                         v-flex.mt-2(xs12, d-inline-flex)

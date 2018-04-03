@@ -62,3 +62,10 @@ function removeDuplicateUsingFilter(arr){
     });
     return unique_array
 }
+
+function isAdmin(){
+    if(vue === null)
+        return false;
+
+    return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
+}

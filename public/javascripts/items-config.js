@@ -42,6 +42,7 @@ function init(init_data, init_category) {
             requestErrorDialog: false,
             requestCancelDialog: false,
             requestCancelErrorDialog: false,
+            requestReceiveDialog: false,
             requestEmail: null,
             requestRecentID: null,
             rgtEmailDialog: false,
@@ -51,9 +52,14 @@ function init(init_data, init_category) {
                     return !!v || '잘못된 이메일 주소입니다.'
                 },
                 v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || '잘못된 이메일 주소입니다.'
-            ]
+            ],
+
+            selectedRequest: null
         },
         methods: {
+            vueIsAdmin: function () {
+                return isAdmin();
+            },
             getCurrentUrl: function () {
                 return window.location.href;
             },

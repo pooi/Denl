@@ -20,9 +20,12 @@ function init(init_category) {
             categoryData: null,
             searchItems: [],
             searchSnackbar : false,
+            category: null,
+            subcategory: null,
+            categoryDialog: false,
             // Filter
             dcv_filter_item:{
-                checkbox: true,
+                isAllday: true,
                 startModal: false,
                 startDate: null,
                 finishModal: false,
@@ -31,14 +34,33 @@ function init(init_category) {
                 alldayDate: null
             },
             rgt_filter_item:{
-                checkbox: true,
+                isAllday: true,
                 startModal: false,
                 startDate: null,
                 finishModal: false,
                 finishDate: null,
                 alldayModal: false,
                 alldayDate: null
-            }
+            },
+            selectedBuilding: null,
+            buildings: [
+                '고인돌 잔디밭', '광개토관', '군자관', '다산관', '대양홀', '모짜르트홀', '무방관', '박물관', '세종관',
+                '세종이노베이션센터', '아사달 연못', '애지헌', '영실관', '용덕관', '우정당', '율곡관', '이당관', '진관홀',
+                '집현관', '충무관', '학생회관', '학술정보원', '행복기숙사'
+            ],
+            selectedRoom: null,
+            rooms: [
+                '101', '201', '301', '401'
+            ],
+            searchTags: [],
+
+
+            shareSheet: false,
+            shareItem: null,
+            shares: [
+                { img: 'kakao.png', title: 'Kakao' },
+                { img: 'facebook.png', title: 'Facebook' },
+            ]
 
         },
         methods: {
@@ -47,6 +69,10 @@ function init(init_category) {
             },
             vueMsToDateKo: function (date) {
                 return msToDateKo(date);
+            },
+            removeHashtag: function(item){
+                this.searchTags.splice(this.searchTags(item), 1);
+                // this.hashtags = this.hashtags;
             },
             convertStatus: function (status) {
                 if(status === "WFA"){
@@ -82,6 +108,30 @@ function init(init_category) {
                 }
                 return newStr;
             },
+            isSameCategoryData : function (c1, c2) {
+                if(c1 === null ||c2 === null)
+                    return false;
+                return c1.name == c2.name
+            },
+            changeSubCategories: function (key) {
+
+                if (vue.categoryData.hasOwnProperty(key)) {
+                    vue.category = vue.categoryData[key];
+                    vue.subcategory = null;
+                    vue.subcategories = vue.category.subcategory;
+                }
+
+            },
+            getCategoryBreadcrumbs : function () {
+                var list = [];
+                if(this.category !== null){
+                    list.push(this.category.ko);
+                }
+                if(this.subcategory !== null){
+                    list.push(this.subcategory.ko);
+                }
+                return list;
+            },
             getCategoryStringFromResult: function (title) {
                 title = title.replace(" ", "_");
                 var keys = Object.keys(this.categoryData);
@@ -100,6 +150,91 @@ function init(init_category) {
                     }
                 }
                 return title;
+            },
+            shareTo: function (title) {
+
+                var shareItem = this.shareItem;
+                var url = window.location.origin + "/items/" + shareItem.id;
+                var origin = window.location.origin;
+
+                if(title === "Kakao"){
+
+                    var tags = this.hastTagsToString(shareItem);
+
+                    Kakao.Link.sendDefault({
+                        objectType: 'feed',
+                        content: {
+                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.getCategoryStringFromResult(shareItem.subcategory) + ")",
+                            description: tags,
+                            imageUrl: origin + "/" + shareItem.photos,
+                            link: {
+                                mobileWebUrl: url,
+                                webUrl: url
+                            }
+                        },
+                        buttons: [
+                            {
+                                title: '확인하기',
+                                link: {
+                                    mobileWebUrl: url,
+                                    webUrl: url
+                                }
+                            }
+                        ]
+                    });
+                }
+                this.shareSheet = false;
+
+            },
+            resetFilterItem: function () {
+                this.dcv_filter_item = {
+                    isAllday: true,
+                    startModal: false,
+                    startDate: null,
+                    finishModal: false,
+                    finishDate: null,
+                    alldayModal: false,
+                    alldayDate: null
+                };
+                this.rgt_filter_item = {
+                    isAllday: true,
+                    startModal: false,
+                    startDate: null,
+                    finishModal: false,
+                    finishDate: null,
+                    alldayModal: false,
+                    alldayDate: null
+                }
+            },
+            search: function(showSnackbar){
+                this.searchSnackbar = false;
+                var data = {
+                    category: this.category === null ? "" : this.category,
+                    subcategory: this.subcategory === null ? "" : this.subcategory,
+                    dcv_filter_item: this.dcv_filter_item,
+                    rgt_filter_item: this.rgt_filter_item,
+                    building: this.selectedBuilding === null ? "" : this.selectedBuilding,
+                    room: this.selectedRoom === null ? "" : this.selectedRoom,
+                    tags: this.searchTags
+                };
+                console.log(data);
+
+                axios.post(
+                    '/search',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    console.log("data: ", data);
+                    vue.searchItems = [];
+                    vue.searchItems = vue.searchItems.concat(data);
+                    vue.searchSnackbar = showSnackbar;
+                }).catch(function (error) {
+                    alert(error);
+                    // vue.filterDialog = false;
+                    // vue.isFilterProgress = false;
+                });
+
             }
         },
         mounted: [
@@ -123,22 +258,43 @@ function init(init_category) {
                 console.log("category: ", this.categoryData);
             },
             function () {
-                var data = {
-                };
-
-                axios.post(
-                    '/search',
-                    data
-                ).then(function (response) {
-                    var res = response;
-                    var data = res.data;
-                    console.log("data: ", data);
-                    vue.searchItems = vue.searchItems.concat(data);
-                }).catch(function (error) {
-                    alert(error);
-                });
+                this.search(false);
+                // var data = {
+                // };
+                //
+                // axios.post(
+                //     '/search',
+                //     data
+                // ).then(function (response) {
+                //     var res = response;
+                //     var data = res.data;
+                //     console.log("data: ", data);
+                //     vue.searchItems = vue.searchItems.concat(data);
+                // }).catch(function (error) {
+                //     alert(error);
+                // });
             }
-        ]
+        ],
+        watch: {
+            'dcv_filter_item.alldayDate': function () {
+                vue.search(true);
+            },
+            'dcv_filter_item.startDate': function () {
+                vue.search(true);
+            },
+            'dcv_filter_item.finishDate': function () {
+                vue.search(true);
+            },
+            'selectedBuilding' : function () {
+                vue.search(true);
+            },
+            'selectedRoom' : function () {
+                vue.search(true);
+            },
+            'searchTags' : function () {
+                vue.search(true);
+            }
+        }
     });
     return vue;
 }

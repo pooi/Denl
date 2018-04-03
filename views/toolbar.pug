@@ -1,21 +1,14 @@
-v-toolbar.safe-area-inset-padding(fixed, dark,  dense, color='deep-orange darken-3')
+v-toolbar.safe-area-inset-padding(fixed, flat, dark,  dense, color='deep-orange darken-3')
     //v-toolbar-side-icon
     //v-toolbar-title(v-text='title', onclick="window.location.href='/'")
     img(src='/images/logo/logo_white.svg', height='20px', onclick="window.location.href='/'")
     v-toolbar-title.ml-2(v-text='title', onclick="window.location.href='/'")
     v-spacer
+    code.elevation-0.mr-2(v-if='loginData.user !== null && loginData.user.admin == 1') 관리자
     v-toolbar-items
         v-btn(flat, style='height: auto;', @click.native="loginData.dialog = true", v-if='loginData.user === null') Login
         v-btn(flat, style='height: auto;', @click.native="loginData.infoDialog = true", v-if='loginData.user !== null') {{ loginData.user.name }}님
-        //v-btn(flat, @click.native="loginData.infoDialog = true") Temp
-        //v-btn(icon='', href='/').hidden-sm-and-down
-        //    v-icon home
-        //v-btn(icon='').hidden-sm-and-down
-        //    v-icon search
-        //v-btn(icon='').hidden-sm-and-down
-        //    v-icon refresh
-        //v-btn(icon='').hidden-md-and-up
-        //    v-icon more_vert
+
 
 include dialog_login
 

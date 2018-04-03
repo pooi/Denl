@@ -207,6 +207,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
+                                    v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="selectedRequest = null; requestReceiveDialog=true", v-if='vueIsAdmin() && requestList.length > 0') 수령승인
                                     v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
 
 
@@ -333,6 +334,55 @@ block content
                     v-spacer
                     v-btn(color='error', flat='flat', @click.native="loginErrorDialog = false; loginData.dialog = true") 확인
 
+        v-dialog(v-model='requestReceiveDialog', :fullscreen='$vuetify.breakpoint.xsOnly', max-width='600px', transition='dialog-bottom-transition', :overlay='true')
+            v-card.brown.lighten-5.elevation-10
+                v-toolbar(dark='', color='deep-orange darken-3',  dense)
+                    v-btn(icon='', @click.native='requestReceiveDialog = false', dark)
+                        v-icon close
+                    v-toolbar-title 수령 확인 메시지 보내기
+                    v-spacer
+                    //v-toolbar-items
+                    //    v-btn(dark='', flat='', @click.native='dialog = false') Save
+                v-layout.white(row, wrap)
+                    v-card-text.text-xs-center
+                        | 수령 요청을 보낼 사람을 선택해주세요.
+                    v-layout(xs12, align-center, justify-center)
+                        v-flex.pa-3(xs12, sm10, v-if="requestList !== null && requestList.length > 0")
+                            v-flex(v-for='req in requestList', :key='req',)
+                                v-card.dal-card.mb-3(hover, raised, :color="(selectedRequest !== null && req.id === selectedRequest.id) ? 'teal darken-4' : '' ", :dark="selectedRequest !== null && req.id === selectedRequest.id")
+                                    v-flex(d-inline-flex, xs12)
+                                        v-flex(xs5)
+                                            img.pa-3(src="/images/profile.png", width="100%")
+                                        v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
+                                            div(style="margin:auto;")
+                                                .title.pa-0 {{ vueMsToDateKo(req.rgt_date) }}
+                                                .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
+                                                .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
+                                    v-layout
+                                        v-btn.elevation-0.my-0(v-if="selectedRequest !== null && req.id === selectedRequest.id", block, small, color='error', style="border-radius: 0px 0px 20px 20px;", @click="selectedRequest = null") 선택취소
+                                        v-btn.elevation-0.my-0(v-else, block, small, dark, color='teal darken-4', style="border-radius: 0px 0px 20px 20px;", @click="selectedRequest = req") 선택
+
+                        v-subheader.pa-0(v-else)
+                            .caption.grey--text 요청자가 없습니다.
+
+                    v-flex(xs12)
+                        v-divider
+                    v-layout(xs12, align-right)
+                        v-spacer
+                        v-btn(color='error', flat, @click="requestReceiveDialog = false") 취소
+                        v-btn(color='success', flat, :disabled="selectedRequest === null", @click="requestReceiveDialog = false;") 확인
+
+        //v-dialog.md6(v-model='requestReceiveDialog', scrollable, max-width='500px')
+        //    v-card
+        //        v-card-title.headline(icon)
+        //            v-icon.mr-2(color='warning') info_outline
+        //            | 확인
+        //        v-card-text
+        //            | 유실물 수령을 승인하시겠습니까?
+        //        v-card-actions
+        //            v-spacer
+        //            v-btn(color='error', flat, @click="requestReceiveDialog = false") 취소
+        //            v-btn(color='success', flat, @click="requestReceiveDialog = false;") 확인
 
         include footer
         include bottom_tab
