@@ -195,9 +195,14 @@ block content
                                                         img.pa-3(src="/images/profile.png", width="100%")
                                                     v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                                         div(style="margin:auto;")
+                                                            code.mb-2.elevation-0(v-if="itemData.status === 'WFR'") 수령대기
+                                                            code.mb-2.elevation-0(v-else-if="itemData.status === 'COM'") 수령완료
                                                             .title.pa-0.black--text {{ vueMsToDateKo(itemData.rcv_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
+                                                v-layout(v-if="vueIsAdmin() && itemData.status === 'WFR'")
+                                                    v-btn.elevation-0.my-0(block, small, color='error', style="border-radius: 0px 0px 0px 20px;", @click="cancelRequestReceive()") 요청취소
+                                                    v-btn.elevation-0.my-0(block, small, dark, color='cyan darken-1', style="border-radius: 0px 0px 20px 0px;", @click="confirmReceive()") 수령확인
 
 
                                         v-subheader.pa-0(v-else)
@@ -207,7 +212,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                    v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="selectedRequest = null; requestReceiveDialog=true", v-if='vueIsAdmin() && requestList.length > 0') 수령승인
+                                    v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="selectedRequest = null; requestReceiveDialog=true", v-if='vueIsAdmin() && requestList.length > 0 && itemData.status !== "WFR" && itemData.status !== "COM"') 수령승인
                                     v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
 
 
@@ -370,7 +375,42 @@ block content
                     v-layout(xs12, align-right)
                         v-spacer
                         v-btn(color='error', flat, @click="requestReceiveDialog = false") 취소
-                        v-btn(color='success', flat, :disabled="selectedRequest === null", @click="requestReceiveDialog = false;") 확인
+                        v-btn(color='success', flat, :disabled="selectedRequest === null", @click="requestReceive()") 확인
+
+        v-dialog.md6(v-model='requestReceiveSuccessDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text.subheading
+                    | 성공적으로 수령 요청을 보냈습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click="reloadPage()") 확인
+
+        v-dialog.md6(v-model='requestReceiveCancelSuccessDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text.subheading
+                    | 성공적으로 수령 요청을 취소했습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click="reloadPage()") 확인
+
+        v-dialog.md6(v-model='confirmReceiveSuccessDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text.subheading
+                    | 성공적으로 수령 확인하였습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click="reloadPage()") 확인
+
+        // confirmReceiveSuccessDialog
 
         //v-dialog.md6(v-model='requestReceiveDialog', scrollable, max-width='500px')
         //    v-card

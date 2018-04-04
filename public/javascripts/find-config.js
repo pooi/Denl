@@ -75,10 +75,7 @@ function init(init_category) {
                 // this.hashtags = this.hashtags;
             },
             convertStatus: function (status) {
-                if(status === "WFA"){
-                    return "수거전"
-                }
-                return ""
+                return convertStatus(status)
             },
             hastTagsToString: function (itemData) {
                 var list = [];

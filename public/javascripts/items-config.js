@@ -53,10 +53,16 @@ function init(init_data, init_category) {
                 },
                 v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || '잘못된 이메일 주소입니다.'
             ],
+            requestReceiveSuccessDialog: false,
+            requestReceiveCancelSuccessDialog: false,
+            confirmReceiveSuccessDialog: false,
 
             selectedRequest: null
         },
         methods: {
+            reloadPage: function () {
+                location.reload();
+            },
             vueIsAdmin: function () {
                 return isAdmin();
             },
@@ -80,10 +86,7 @@ function init(init_data, init_category) {
                 return msToDateKo(date);
             },
             convertStatus: function (status) {
-                if(status === "WFA"){
-                    return "수거전"
-                }
-                return ""
+                return convertStatus(status)
             },
             getCategoryBreadcrumbs : function () {
 
@@ -315,6 +318,79 @@ function init(init_data, init_category) {
                         alert(error);
                         vue.requestCancelErrorDialog = true;
                     });
+            },
+            requestReceive: function () {
+                var data = {
+                    lost_id: this.itemData.id,
+                    user_id: this.selectedRequest.user.id
+                };
+
+                axios.post(
+                    '/items/requestReceive',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var insertId = data.insertId;
+                    if (insertId != null) {
+                        vue.requestReceiveSuccessDialog = true;
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            cancelRequestReceive: function () {
+                var data = {
+                    lost_id: this.itemData.id
+                };
+
+                axios.post(
+                    '/items/cancelRequestReceive',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var insertId = data.insertId;
+                    if (insertId != null) {
+                        vue.requestReceiveCancelSuccessDialog = true;
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            confirmReceive: function () {
+                var check = confirm("수령 확인하겠습니까? 이 작업은 되돌릴 수 없습니다.");
+                if(check){
+
+                    var data = {
+                        lost_id: this.itemData.id,
+                        dcv_date: getTodayMs()
+                    };
+
+                    axios.post(
+                        '/items/confirmReceive',
+                        data
+                    ).then(function (response) {
+                        var data = response.data;
+                        var insertId = data.insertId;
+                        if (insertId != null) {
+                            vue.confirmReceiveSuccessDialog = true;
+                        } else {
+                            vue.requestErrorDialog = true;
+                        }
+                        // console.log(response);
+                    })
+                        .catch(function (error) {
+                            alert(error);
+                        });
+
+                }
             }
         },
         mounted: [
