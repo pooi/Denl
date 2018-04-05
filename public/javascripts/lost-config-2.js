@@ -44,32 +44,9 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 '가방', '귀금속'
             ],
             subcategories: [],
-            // categoryData:{
-            //     '가방': [
-            //         '여성용가방', '남성용가방', '기타가방'
-            //     ],
-            //     '귀금속': [
-            //         '반지', '목걸이', '시계', '귀걸이'
-            //     ]
-            // },
             categoryData: {
 
             },
-            // categoryData: [
-            //     {
-            //         id: '가방',
-            //         data:[
-            //             '여성용가방', '남성용가방', '기타가방'
-            //         ]
-            //     },
-            //     {
-            //         id: '귀금속',
-            //         data:[
-            //             '반지', '목걸이', '시계', '귀걸이'
-            //         ]
-            //     }
-            //
-            // ],
             hashtags: [],
             suggestTag: [],
             selectedSuggestTag: [],
@@ -106,6 +83,26 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             requestErrorDialog: false
         },
         methods: {
+            onScroll (e) {
+                var scroll = window.pageYOffset || document.documentElement.scrollTop;
+                this.scrollData.offsetTop = scroll;
+
+                this.scrollData.scrollT += (scroll-this.scrollData.offsetTop);
+
+                if(this.scrollData.scrollT > this.scrollData.delta){
+                    this.scrollData.isShowFabTop = true;
+                    this.scrollData.scrollT = 0;
+                }else if (this.scrollData.scrollT < -this.scrollData.delta) {
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                }
+
+                if(scroll === 0){
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                    this.scrollData.offsetTop = 0;
+                }
+            },
             browseClick: function () {
                 var inputFile = document.getElementById('file')
                 inputFile.click()
@@ -370,37 +367,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             function () {
                 this.domEleArray = [$('#file').clone()];
             },
-            // function () {
-            //     this.scrollData.isShowFabTop = true;
-            //     $(window).scroll(
-            //         function (event) {
-            //
-            //             var scroll = $(window).scrollTop();
-            //
-            //             vue.scrollData.scrollT += (scroll - vue.scrollData.offsetTop);
-            //
-            //             if (vue.scrollData.scrollT > vue.scrollData.delta) {
-            //                 vue.scrollData.isShowFabTop = false;
-            //                 vue.scrollData.scrollT = 0;
-            //             } else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
-            //                 vue.scrollData.isShowFabTop = true;
-            //                 vue.scrollData.scrollT = 0;
-            //             }
-            //
-            //             vue.scrollData.offsetTop = scroll;
-            //
-            //             if (scroll === 0) {
-            //                 vue.scrollData.isShowFabTop = true;
-            //                 vue.scrollData.scrollT = 0;
-            //                 vue.scrollData.offsetTop = 0;
-            //             }
-            //             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
-            //                 vue.scrollData.isShowFabTop = true;
-            //             }
-            //
-            //         }
-            //     );
-            // },
             function () {
 
                 if(init_image === null || init_image === ''){

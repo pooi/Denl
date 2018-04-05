@@ -30,6 +30,12 @@
     padding-bottom: constant(safe-area-inset-bottom);
 }
 
+.menu__content {
+    border-radius: 20px !important;
+    -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
+    box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
+}
+
 
 
 .rounded-expansion-panel{

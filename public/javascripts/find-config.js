@@ -66,6 +66,26 @@ function init(init_category) {
 
         },
         methods: {
+            onScroll (e) {
+                var scroll = window.pageYOffset || document.documentElement.scrollTop;
+                this.scrollData.offsetTop = scroll;
+
+                this.scrollData.scrollT += (scroll-this.scrollData.offsetTop);
+
+                if(this.scrollData.scrollT > this.scrollData.delta){
+                    this.scrollData.isShowFabTop = true;
+                    this.scrollData.scrollT = 0;
+                }else if (this.scrollData.scrollT < -this.scrollData.delta) {
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                }
+
+                if(scroll === 0){
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                    this.scrollData.offsetTop = 0;
+                }
+            },
             vueMsToDate: function (date) {
                 return msToDate(date);
             },

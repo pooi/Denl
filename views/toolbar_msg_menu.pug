@@ -1,0 +1,20 @@
+v-menu(:close-on-content-click='false', :nudge-width='Math.min($vuetify.breakpoint.width - 60, 400)', v-model='msgData.menu', v-if="loginData.user !== null")
+    v-btn.ma-0.mr-2(flat, icon, :color="scrollData.offsetTop < 50 ? 'white' : 'orange darken-3' ", slot='activator')
+        v-icon.subheading {{ msgData.newMsgCount > 0 ? 'notifications_active' : 'notifications_none'}}
+        span(v-if='msgData.newMsgCount > 0')
+            | {{msgData.newMsgCount}}
+    v-card
+        v-tabs(color='white', grow='', v-model="msgData.msgTab")
+            v-tabs-slider(color='orange darken-3')
+            v-tab(v-for='item in msgData.msgTagItems', :key='item', :href="'#tab-' + item")
+                | {{ item }}
+
+
+            v-tabs-items(v-model="msgData.msgTab")
+                v-tab-item(:id="'tab-New'")
+                    v-card(flat='')
+                        v-card-text New tab
+
+                v-tab-item(:id="'tab-All'")
+                    v-card(flat='')
+                        v-card-text All tab
