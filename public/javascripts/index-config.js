@@ -18,6 +18,9 @@ function init(init_category) {
             loginData:{
 
             },
+            msgData:{
+                newMsgCount: 0
+            },
             categoryData: null,
             bottomTab: "home",
 

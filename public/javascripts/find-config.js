@@ -15,6 +15,8 @@ function init(init_category) {
             },
             loginData:{
             },
+            msgData:{
+            },
             bottomTab: "find",
             todayDate: null,
             categoryData: null,

@@ -71,6 +71,31 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.post('/getMsg', function (req, res) {
+
+    var data = req.body;
+    var params = [];
+
+    var sql = "select count(id) as count from msg WHERE user_id=? AND (is_read is null or is_read='0');";
+    if(data.hasOwnProperty("isNewMsgCount") && data.isNewMsgCount){
+        sql = "select count(id) as count from msg WHERE user_id=? AND (is_read is null or is_read='0');";
+        params.push(data.user_id);
+    }else{
+        res.send("0");
+    }
+
+    conn.query(sql, params, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            var result = results[0];
+            console.log(result.count);
+            res.send(result.count + "");
+        }
+    });
+});
+
 router.post('/recent', function (req, res) {
     var sql = "SELECT * FROM lost ORDER BY id DESC limit 0, 12;";
     console.log(sql);

@@ -1,0 +1,74 @@
+
+
+
+
+
+script.
+
+    $(document).ready(function () {
+        setMsgData();
+    });
+
+    function setMsgData() {
+        console.log('set msg data');
+
+        var msgData = null;
+        // if (check) {
+        //     try {
+        //         var tagsJSON = '!{userData}';
+        //         // console.log(tagsJSON);
+        //         tagsJSON = tagsJSON.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+        //         userData = JSON.parse(tagsJSON);
+        //     } catch (err) {
+        //         // console.log('There is no user data.');
+        //     }
+        // }
+
+        var data = {
+            newMsgCount: 0
+            // dialog: false,
+            // infoDialog: false,
+            // snackbar: false,
+            // snackColor: 'error',
+            // snackMsg: null,
+            // isProgress: false,
+            // id: null,
+            // pw: null,
+            // isHidePw: true,
+            // user: userData
+        };
+
+        vue.$set(vue.$data, 'msgData', data);
+        console.log(vue.msgData);
+        getNewMsgCount();
+        // console.log(vue.loginData);
+
+        // vue.loginData.isProgress = false;
+
+    }
+    
+    function getNewMsgCount() {
+
+        if(vue.loginData.user === null){
+            vue.msgData.newMsgCount = 0;
+            return;
+        }
+
+        var data = {
+            user_id: vue.loginData.user.id,
+            isNewMsgCount: true
+        };
+
+        axios.post(
+            '/getMsg',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            console.log("newMsg: ", data);
+            vue.msgData.newMsgCount = parseInt(data);
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }

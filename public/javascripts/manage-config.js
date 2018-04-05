@@ -15,6 +15,8 @@ function init() {
             },
             loginData:{
             },
+            msgData:{
+            },
             bottomTab: "manage",
             todayDate: null
 

@@ -15,6 +15,8 @@ function init(init_data, init_category) {
             },
             loginData:{
             },
+            msgData:{
+            },
             bottomTab: "find",
             todayDate: null,
             itemData: null,
@@ -370,7 +372,7 @@ function init(init_data, init_category) {
 
                     var data = {
                         lost_id: this.itemData.id,
-                        dcv_date: getTodayMs()
+                        rcv_date: getTodayMs()
                     };
 
                     axios.post(

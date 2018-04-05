@@ -7,7 +7,13 @@ v-toolbar.safe-area-inset-padding(fixed, dark, flat, :dense="$vuetify.breakpoint
     v-toolbar-items
         v-btn(flat, style='height: auto;', :color="scrollData.offsetTop < 50 ? 'white' : 'orange darken-3' ",@click.native="loginData.dialog = true", v-if='loginData.user === null') Login
         v-btn(flat, style='height: auto;', :color="scrollData.offsetTop < 50 ? 'white' : 'orange darken-3' ", @click.native="loginData.infoDialog = true", v-if='loginData.user !== null') {{ loginData.user.name }}님
+    v-btn.ma-0.mr-2(flat, icon, v-if="loginData.user !== null", :color="scrollData.offsetTop < 50 ? 'white' : 'orange darken-3' ")
+        v-icon.subheading {{ msgData.newMsgCount > 0 ? 'notifications_active' : 'notifications_none'}}
+        span(v-if='msgData.newMsgCount > 0')
+            | {{msgData.newMsgCount}}
+
 
 
 include dialog_login
+include dialog_msg
 
