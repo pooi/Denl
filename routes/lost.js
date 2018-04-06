@@ -217,7 +217,7 @@ router.post('/recognition', function(req, res) {
         imagePath = '/' + imagePath;
     }
 
-    var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image_hierarchical2.py"';
+    var path_labelImage = 'python3 "' + __dirname + '/../recognition/label_image_hierarchical3.py"';
     var path_labels = '"' + __dirname + '/../recognition/retrained_labels.txt"';
     var path_graph = '"' + __dirname + '/../recognition/retrained_graph.pb"';
     var path_image = '"' + __dirname + '/../uploads_temp' + imagePath + '"';
