@@ -1,1 +1,1 @@
-python3 label_image_hierarchical.py --input_layer=Mul --output_layer=final_result --labels=retrained_labels.txt --graph=retrained_graph.pb --detailDir=hierarchical_detail --image=test.jpg
+python3 label_image_hierarchical3.py --input_layer=Mul --output_layer=final_result --labels=retrained_labels.txt --graph=retrained_graph.pb --detailDir=hierarchical_detail --image=test.jpg
