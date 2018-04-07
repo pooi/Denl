@@ -40,13 +40,16 @@ function init(WFA, WFRQ, init_category, WFL) {
             requestErrorDialog: false,
             requestCancelDialog: false,
             requestCancelErrorDialog: false,
+            //리스트데이터
             WFAs : null,
             WFRQs : null,
             WFLs : null,
+            //필터데이터
             filter_keyword: false,
             filter_text: '전체 유실물 리스트',
             dialog_filter: false,
             a1: null,
+            //필터목록데이터
             lost_filter_num: [],
             /*######## Lost 탭_ 필터 _ 상위 카테고리 ########*/
             b1: null,
@@ -54,6 +57,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             /*######## Lost 탭_ 필터 _ 상세 카테고리 ########*/
             c1: null,
             lost_filter_category_child: [],
+            filter_child_item: [], // 세부 카테고리 초기화 데이터
             /*######## Lost 탭_ 필터 _ 유실물 상태 ########*/
             d1: null,
             lost_filter_state: [
@@ -194,11 +198,17 @@ function init(WFA, WFRQ, init_category, WFL) {
             // },
             function () {
                 this.categoryData = JSON.parse(init_category);
-                console.log("category: ", this.categoryData);
+                //console.log("category: ", this.categoryData);
+                //필터 값 초기화 부분
                 for(item in this.categoryData){
                     var obj = {"name":item};
                     this.lost_filter_category_parent.push(obj);
+                    for(sub_item in this.categoryData[item].subcategory){
+                        var sub_obj = {"name" : this.categoryData[item].subcategory[sub_item].name}
+                        this.filter_child_item.push(sub_obj);
+                    }
                 }
+                this.lost_filter_category_child = this.filter_child_item;
                 for(item in this.WFAs){
                     var obj = {"name":"유실물"+this.WFAs[item].id}
                     this.lost_filter_num.push(obj)
@@ -219,12 +229,22 @@ function init(WFA, WFRQ, init_category, WFL) {
                 console.log(document.getElementsByTagName('head')[0]);
             }
         ],
+        // 대분류 카테고리 선정 완료시 소분류 카테고리 자동 변형
         watch:{
             b1: function(val){
-                this.lost_filter_category_child = [];
-                for(item in this.categoryData[val.name].subcategory){
-                    var obj = {"name":this.categoryData[val.name].subcategory[item].name}
-                    this.lost_filter_category_child.push(obj);
+                //세부카테고리 초기화
+                this.c1 = null;
+                //세부카테고리 선택창 초기화
+                if(this.b1 === null){
+                    this.lost_filter_category_child = this.filter_child_item
+                }
+                //큰 카테고리 선택시 목록 렌더링
+                else {
+                    this.lost_filter_category_child = [];
+                    for (item in this.categoryData[val.name].subcategory) {
+                        var obj = {"name": this.categoryData[val.name].subcategory[item].name}
+                        this.lost_filter_category_child.push(obj);
+                    }
                 }
             }
         }

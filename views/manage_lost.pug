@@ -30,6 +30,7 @@ v-flex.mt-4(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
                     v-card-actions
                         v-spacer
                         v-btn(flat='', color='info', @click='resetFilterItem()') 초기화
+                        //함수여러개 호출이 가능한가??
                         v-btn(flat='', color='success', @click.native='dialog_filter = false') 확인
 
 v-flex(xs12='', sm12='', container='')
