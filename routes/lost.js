@@ -399,15 +399,37 @@ router.get('/test2', function (req, res){
         }
     }
 
-    var sql = 'SELECT * FROM category';
+    var sql = 'SELECT * FROM category; SELECT * FROM building;';
     conn.query(sql, [], function (err, results) {
         if (err) {
             console.log(err);
             res.status(500).send("Internal Server Error");
         }
+        var db_buildings = results[1];
+        var front_buildings = {};
+        for(db_building in db_buildings){
+            var real_lat = db_buildings[db_building].lat;
+            var temp_lat = real_lat.substring(1,real_lat.length-1);
+            var real_lng = db_buildings[db_building].lng;
+            var temp_lng = real_lng.substring(1,real_lng.length-1);
+            var arr_lat = temp_lat.split(",");
+            var arr_lng = temp_lng.split(",");
+            // console.log("lat",arr_lat);
+            // console.log("lng",arr_lng);
+            var up_arr = [];
+            for(var m = 0; m < arr_lat.length; m++){
+                var temp_arr = [];
+                temp_arr.push(arr_lng[m]);
+                temp_arr.push(arr_lat[m]);
+                var temp_obj = { "point" : temp_arr };
+                up_arr.push(temp_obj);
+            }
+            front_buildings[db_buildings[db_building].ko] = up_arr;
+        }
+        console.log(front_buildings);
         var category = {}
-        for (var i = 0; i < results.length; i++) {
-            var result = results[i];
+        for (var i = 0; i < results[0].length; i++) {
+            var result = results[0][i];
             if(! category.hasOwnProperty(result.category_name)){
                 category[result.category_name] = {
                     subcategory: [],
@@ -430,7 +452,8 @@ router.get('/test2', function (req, res){
             texts: texts,
             logos: logos,
             colors: JSON.stringify(colors),
-            category: JSON.stringify(category)
+            category: JSON.stringify(category),
+            sju_buildings : JSON.stringify(front_buildings)
         });
     });
 

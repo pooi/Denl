@@ -6,24 +6,40 @@ block content
     div(style="margin-top: 48px;")
         v-app
             v-content.brown.lighten-5
-                v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
-
-                    v-flex(md12='')
-                        v-card.pa-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
-
-                            v-card-title.headline.pa-0 유실물 관리
-
-                            v-divider.my-3
-
-                            v-card-text
+                v-container(:fluid='$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-2' : 'pa-0'")
+                    v-card(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 my-2' : 'elevation-10 my-5'")
+                        v-layout(wrap='')
+                            v-flex(xs12='', sm12='')
+                                v-tabs(icons-and-text='', centered='', dark='', color='deep-orange darken-1', height='125')
+                                    v-tabs-slider(color='yellow')
+                                    v-layout(column='')
+                                        v-flex(xs12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-1' : 'pa-2'")
+                                            v-text-field.mx-8(append-icon='search', label='search', solo-inverted='', flat='')
+                                        v-flex(xs12='', justify-center='', align-center='', text-xs-center='')
+                                            v-tab.subheading(href='#tab-1')
+                                                | HOME
+                                                v-icon home
+                                                // <v-icon>account_box</v-icon>
+                                            v-tab.subheading(href='#tab-2')
+                                                | Lost
+                                                v-icon view_comfy
+                                            v-tab.subheading(href='#tab-3')
+                                                | Statistics
+                                                v-icon poll
+                                    // ######## Home 탭 컨텐츠 ########
+                                    v-tabs-items(:touchless='true')
+                                        v-tab-item(:id="'tab-' + 1")
+                                            include manage_home
+                                        v-tab-item(:id="'tab-' + 2")
+                                            include manage_lost
+                                        v-tab-item(:id="'tab-' + 3")
 
 
 
 
         include footer
-        include bottom_tab
 
 
     script(type="text/javascript" src='/javascripts/manage-config.js')
     script.
-        const vue = init();
+        const vue = init('!{WFA}','!{WFRQ}','!{category}', '!{WFL}');
