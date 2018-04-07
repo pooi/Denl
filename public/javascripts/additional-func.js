@@ -206,3 +206,14 @@ var Get_building_list = function(){
 
     return In_Out;
 }();
+
+function convertStatus(status) {
+    if(status === "WFA"){
+        return "수거전"
+    }else if(status == "WFR"){
+        return "수령전"
+    }else if(status == "COM"){
+        return "완료"
+    }
+    return ""
+}

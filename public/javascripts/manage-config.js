@@ -65,6 +65,10 @@ function init(WFA, WFRQ, init_category, WFL) {
                 { name: '수거 완료', code:"WFF" },
                 { name: '요청 전', code:"WFF" }
             ],
+            msgData:{
+            },
+            bottomTab: "manage",
+            todayDate: null,
             customFilter (item, queryText, itemText) {
                 const hasValue = val => val != null ? val : ''
                 const text = hasValue(item.name)
@@ -75,7 +79,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             }
         },
         methods: {
-            hastTagsToString: function (itemData) {
+            hashTagsToString: function (itemData) {
                 var list = [];
                 for(var i=0; i<itemData.tags.length; i++){
                     list.push(itemData.tags[i]);
@@ -161,6 +165,32 @@ function init(WFA, WFRQ, init_category, WFL) {
                 this.c1 = null;
                 this.d1 = null;
                 this.filter_keyword = false;
+            },
+            onScroll (e) {
+                var scroll = window.pageYOffset || document.documentElement.scrollTop;
+                this.scrollData.offsetTop = scroll;
+
+                this.scrollData.scrollT += (scroll-this.scrollData.offsetTop);
+
+                if(this.scrollData.scrollT > this.scrollData.delta){
+                    this.scrollData.isShowFabTop = true;
+                    this.scrollData.scrollT = 0;
+                }else if (this.scrollData.scrollT < -this.scrollData.delta) {
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                }
+
+                if(scroll === 0){
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                    this.scrollData.offsetTop = 0;
+                }
+            },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
             }
         },
         created : function(){

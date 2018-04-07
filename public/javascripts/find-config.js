@@ -15,6 +15,8 @@ function init(init_category) {
             },
             loginData:{
             },
+            msgData:{
+            },
             bottomTab: "find",
             todayDate: null,
             categoryData: null,
@@ -64,6 +66,32 @@ function init(init_category) {
 
         },
         methods: {
+            onScroll (e) {
+                var scroll = window.pageYOffset || document.documentElement.scrollTop;
+                this.scrollData.offsetTop = scroll;
+
+                this.scrollData.scrollT += (scroll-this.scrollData.offsetTop);
+
+                if(this.scrollData.scrollT > this.scrollData.delta){
+                    this.scrollData.isShowFabTop = true;
+                    this.scrollData.scrollT = 0;
+                }else if (this.scrollData.scrollT < -this.scrollData.delta) {
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                }
+
+                if(scroll === 0){
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                    this.scrollData.offsetTop = 0;
+                }
+            },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            },
             vueMsToDate: function (date) {
                 return msToDate(date);
             },
@@ -75,12 +103,9 @@ function init(init_category) {
                 // this.hashtags = this.hashtags;
             },
             convertStatus: function (status) {
-                if(status === "WFA"){
-                    return "수거전"
-                }
-                return ""
+                return convertStatus(status)
             },
-            hastTagsToString: function (itemData) {
+            hashTagsToString: function (itemData) {
                 var list = [];
                 for(var i=0; i<itemData.tags.length; i++){
                     list.push(itemData.tags[i]);
@@ -159,7 +184,7 @@ function init(init_category) {
 
                 if(title === "Kakao"){
 
-                    var tags = this.hastTagsToString(shareItem);
+                    var tags = this.hashTagsToString(shareItem);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',

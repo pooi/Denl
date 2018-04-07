@@ -1,0 +1,162 @@
+
+
+
+
+
+script.
+
+    $(document).ready(function () {
+        setMsgData();
+    });
+
+    function setMsgData() {
+        console.log('set msg data');
+
+        var msgData = null;
+        // if (check) {
+        //     try {
+        //         var tagsJSON = '!{userData}';
+        //         // console.log(tagsJSON);
+        //         tagsJSON = tagsJSON.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+        //         userData = JSON.parse(tagsJSON);
+        //     } catch (err) {
+        //         // console.log('There is no user data.');
+        //     }
+        // }
+
+        var data = {
+            menu: false,
+            currentPath: window.location.pathname,
+            msgTab: 'tab-New',
+            msgTagItems: [
+                'New', 'Read'
+            ],
+            newMsgCount: 0,
+            isFirstLoading: true,
+            newMsgs: null,
+            readMsgs: null
+            // dialog: false,
+            // infoDialog: false,
+            // snackbar: false,
+            // snackColor: 'error',
+            // snackMsg: null,
+            // isProgress: false,
+            // id: null,
+            // pw: null,
+            // isHidePw: true,
+            // user: userData
+        };
+
+        vue.$set(vue.$data, 'msgData', data);
+        // console.log(vue.msgData);
+        getNewMsgCount();
+        // console.log(vue.loginData);
+
+        // vue.loginData.isProgress = false;
+
+    }
+    
+    function getNewMsgCount() {
+
+        if(vue.loginData.user === null){
+            vue.msgData.newMsgCount = 0;
+            return;
+        }
+
+        var data = {
+            user_id: vue.loginData.user.id
+        };
+
+        axios.post(
+            '/getMsgCount',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            // console.log("newMsg: ", data);
+            vue.msgData.newMsgCount = parseInt(data);
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }
+
+    function getMsg(){
+
+        if (vue.loginData.user === null) {
+            return;
+        }
+
+        if (vue.msgData.isFirstLoading) {
+            vue.msgData.isFirstLoading = false;
+        }else{
+            return;
+        }
+
+        var data = {
+            user_id: vue.loginData.user.id,
+            isNew: true
+        };
+
+        axios.post(
+            '/getMsg',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            vue.msgData.newMsgs = [];
+            vue.msgData.newMsgs = vue.msgData.newMsgs.concat(data);
+        })
+            .catch(function (error) {
+                vue.msgData.isFirstLoading = true;
+                alert(error);
+            });
+
+        data = {
+            user_id: vue.loginData.user.id,
+            isNew: false
+        };
+
+        axios.post(
+            '/getMsg',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            vue.msgData.readMsgs = [];
+            vue.msgData.readMsgs = vue.msgData.readMsgs.concat(data);
+        })
+            .catch(function (error) {
+                vue.msgData.isFirstLoading = true;
+                alert(error);
+            });
+
+
+    }
+
+    function setMsgRead(msg) {
+        var data = {
+            msg: msg
+        };
+
+        axios.post(
+            '/setMsgRead',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            var insertId = data.insertId;
+            if (insertId != null) {
+                for(var i =0; i<vue.msgData.newMsgs.length; i++){
+                    if(vue.msgData.newMsgs[i].id == msg.id){
+                        vue.msgData.newMsgs[i].is_read = 1;
+                        vue.msgData.newMsgCount = Math.max(0, vue.msgData.newMsgCount - 1);
+                        break;
+                    }
+                }
+            } else {
+                alert("error");
+            }
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }

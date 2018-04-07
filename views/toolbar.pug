@@ -8,7 +8,12 @@ v-toolbar.safe-area-inset-padding(fixed, flat, dark,  dense, color='deep-orange 
     v-toolbar-items
         v-btn(flat, style='height: auto;', @click.native="loginData.dialog = true", v-if='loginData.user === null') Login
         v-btn(flat, style='height: auto;', @click.native="loginData.infoDialog = true", v-if='loginData.user !== null') {{ loginData.user.name }}님
+    //v-btn.ma-0.mr-2(flat, icon, v-if="loginData.user !== null", color="white")
+    //    v-icon.subheading {{ msgData.newMsgCount > 0 ? 'notifications_active' : 'notifications_none'}}
+    //    span(v-if='msgData.newMsgCount > 0')
+    //        | {{msgData.newMsgCount}}
+    include toolbar_msg_menu
 
 
 include dialog_login
-
+include dialog_msg

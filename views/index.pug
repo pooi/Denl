@@ -120,7 +120,7 @@ block content
                         v-layout(wrap='', style="overflow:visible")
                             v-flex.text-xs-center.pb-1(xs12='', justify-center='', align-center='')
                                 p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') 최근 등록된 유실물
-                                span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'") (내용을 입력해주세요.)
+                                span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'") 일단, 여기부터 찾아보세요.
                             //v-container(fluid='', grid-list-xl='', pa-0='')
                             //    v-layout(row='', justify-space-around='')
                             //        v-flex(xs2='')
@@ -192,48 +192,48 @@ block content
 
 
         // ######## 개발진 소개 ver.2(데스크탑 버전) ########
-        section(style='background-color: #fff6f3', v-if="!($vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly )")
-            v-layout.text-xs-center(column='', align-center='', style='height: 600px;')
-                v-flex.px-0(xs12='', md11='', container='', fill-height='')
-                    v-container(grid-list-md='', style='padding: 100px;')
-                        v-layout(row='', wrap='')
-                            v-flex.elevation-0(xs12='', flat='', v-bind='{ [`md${card.flex_md}`]: true }', v-for='card in cards_introduce', :key='card.title_name')
-                                v-layout(row='')
-                                    v-flex(xs12='', md12='')
-                                        v-card
-                                            img(:src='card.src', height='280px', width='100%')
-                                            span.subheading.black--text(v-text='card.title_name')
-                                            br
-                                            #introduce_skill_desktop
-                                                strong #
-                                                span.body-2(v-text='card.title_skill_1')
-                                                br
-                                                strong #
-                                                span.body-2(v-text='card.title_skill_2')
-
-
-        // ######## 개발진 소개 ver.2(모바일 버전) ########
-        section(v-else)
-            v-layout.text-xs-center(column='', align-center='', style='height: auto !important; display:block !important; background-color: #fff2e5')
-                v-flex(xs11='', container='', fill-height='', style='padding: 25% 13%;')
-                    // style="padding: 60px 40px;"
-                    v-container(fluid='', grid-list-md='')
-                        v-carousel(style='height: 425px;', delimiter-icon='stop', prev-icon='mdi-arrow-left', next-icon='mdi-arrow-right')
-                            v-carousel-item(v-for='card in cards_introduce')
-                                v-layout(wrap='')
-                                    v-flex.elevation-0(xs12='', flat='', v-bind='{ [`md${card.flex_md}`]: true }', :key='card.title_name')
-                                        v-layout(row='')
-                                            v-flex(xs12='', md12='')
-                                                v-card
-                                                    img(:src='card.src', height='300px', width='100%')
-                                                    span.subheading.black--text(v-text='card.title_name')
-                                                    br
-                                                    #introduce_skill_mobile
-                                                        strong #
-                                                        span.body-2(v-text='card.title_skill_1')
-                                                        br
-                                                        strong #
-                                                        span.body-2(v-text='card.title_skill_2')
+        //section(style='background-color: #fff6f3', v-if="!($vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly )")
+        //    v-layout.text-xs-center(column='', align-center='', style='height: 600px;')
+        //        v-flex.px-0(xs12='', md11='', container='', fill-height='')
+        //            v-container(grid-list-md='', style='padding: 100px;')
+        //                v-layout(row='', wrap='')
+        //                    v-flex.elevation-0(xs12='', flat='', v-bind='{ [`md${card.flex_md}`]: true }', v-for='card in cards_introduce', :key='card.title_name')
+        //                        v-layout(row='')
+        //                            v-flex(xs12='', md12='')
+        //                                v-card
+        //                                    img(:src='card.src', height='280px', width='100%')
+        //                                    span.subheading.black--text(v-text='card.title_name')
+        //                                    br
+        //                                    #introduce_skill_desktop
+        //                                        strong #
+        //                                        span.body-2(v-text='card.title_skill_1')
+        //                                        br
+        //                                        strong #
+        //                                        span.body-2(v-text='card.title_skill_2')
+        //
+        //
+        //// ######## 개발진 소개 ver.2(모바일 버전) ########
+        //section(v-else)
+        //    v-layout.text-xs-center(column='', align-center='', style='height: auto !important; display:block !important; background-color: #fff2e5')
+        //        v-flex(xs11='', container='', fill-height='', style='padding: 25% 13%;')
+        //            // style="padding: 60px 40px;"
+        //            v-container(fluid='', grid-list-md='')
+        //                v-carousel(style='height: 425px;', delimiter-icon='stop', prev-icon='mdi-arrow-left', next-icon='mdi-arrow-right')
+        //                    v-carousel-item(v-for='card in cards_introduce')
+        //                        v-layout(wrap='')
+        //                            v-flex.elevation-0(xs12='', flat='', v-bind='{ [`md${card.flex_md}`]: true }', :key='card.title_name')
+        //                                v-layout(row='')
+        //                                    v-flex(xs12='', md12='')
+        //                                        v-card
+        //                                            img(:src='card.src', height='300px', width='100%')
+        //                                            span.subheading.black--text(v-text='card.title_name')
+        //                                            br
+        //                                            #introduce_skill_mobile
+        //                                                strong #
+        //                                                span.body-2(v-text='card.title_skill_1')
+        //                                                br
+        //                                                strong #
+        //                                                span.body-2(v-text='card.title_skill_2')
 
 
         section

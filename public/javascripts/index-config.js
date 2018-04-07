@@ -18,6 +18,9 @@ function init(init_category) {
             loginData:{
 
             },
+            msgData:{
+                newMsgCount: 0
+            },
             categoryData: null,
             bottomTab: "home",
 
@@ -28,103 +31,6 @@ function init(init_category) {
                 { img: 'facebook.png', title: 'Facebook' },
             ],
 
-            cards_introduce: [
-                {
-                    title_name: '유태우', title_skill_1: 'Full_Stack developer', title_skill_2: 'Manage Server',
-                    src: 'http://img.hani.co.kr/imgdb/resize/2017/0224/00500910_20170224.JPG', flex_md: 3
-                },
-                {
-                    title_name: '정하민',
-                    title_skill_1: 'Full_Stack developer',
-                    title_skill_2: 'Manage Server',
-                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/keanu-reeves-500w.jpg',
-                    flex_md: 3
-                },
-                {
-                    title_name: '유현수',
-                    title_skill_1: 'FrontEnd developer',
-                    title_skill_2: 'Test UI/UX',
-                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/daniel-arsham-500w.jpg?2',
-                    flex_md: 3
-                },
-                {
-                    title_name: '김윤욱',
-                    title_skill_1: 'FrontEnd developer',
-                    title_skill_2: 'Test UI/UX',
-                    src: 'https://static1.squarespace.com/static/ta/5134cbefe4b0c6fb04df8065/9309/assets/blocks/content/home-summer-2017/featured-customers/danny-bowien-500w.jpg?2',
-                    flex_md: 3
-                },
-            ],
-            /*######## 최근 등록된 유실물 섹션 ########*/
-            cards_item: [
-                {
-                    category: '상위 > 하위',
-                    category2: '하위',
-                    date: '17.03.02',
-                    tag: '카테고리',
-                    src: '../images/picture/test_camera.jpg',
-                    flex: 3
-                },
-                {
-                    category: '상위',
-                    category2: '하위',
-                    date: '17.03.02',
-                    tag: 'Favorite road trips',
-                    src: 'https://beta.denl.xyz/15209169980379ERwLMa3AK.jpg',
-                    flex: 3
-                },
-                {
-                    category: '상위',
-                    category2: '하위',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_earing.jpg',
-                    flex: 3
-                },
-                {
-                    category: '상위',
-                    category2: '하위',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_ring.jpg',
-                    flex: 3
-                },
-                {
-                    category: 'camera',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_ring.jpg',
-                    flex: 3
-                },
-                {
-                    category: 'camera',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_ring.jpg',
-                    flex: 3
-                },
-                {
-                    category: 'camera',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_ring.jpg',
-                    flex: 3
-                },
-                {
-                    category: 'camera',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_ring.jpg',
-                    flex: 3
-                },
-                {
-                    category: 'camera',
-                    date: '17.03.02',
-                    tag: 'Best airlines',
-                    src: '../images/picture/test_ring.jpg',
-                    flex: 3
-                },
-            ],
             recentItems: [],
             e1: 'home',
             recentModel: 0,
@@ -132,6 +38,32 @@ function init(init_category) {
 
         },
         methods:{
+            onScroll (e) {
+                var scroll = window.pageYOffset || document.documentElement.scrollTop;
+                this.scrollData.offsetTop = scroll;
+
+                this.scrollData.scrollT += (scroll-this.scrollData.offsetTop);
+
+                if(this.scrollData.scrollT > this.scrollData.delta){
+                    this.scrollData.isShowFabTop = true;
+                    this.scrollData.scrollT = 0;
+                }else if (this.scrollData.scrollT < -this.scrollData.delta) {
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                }
+
+                if(scroll === 0){
+                    this.scrollData.isShowFabTop = false;
+                    this.scrollData.scrollT = 0;
+                    this.scrollData.offsetTop = 0;
+                }
+            },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            },
             vueMsToDate: function (date) {
                 return msToDate(date);
             },
@@ -139,12 +71,9 @@ function init(init_category) {
                 return msToDateKo(date);
             },
             convertStatus: function (status) {
-                if (status === "WFA") {
-                    return "수거전"
-                }
-                return ""
+                return convertStatus(status)
             },
-            hastTagsToString: function (itemData) {
+            hashTagsToString: function (itemData) {
                 var list = [];
                 for (var i = 0; i < itemData.tags.length; i++) {
                     list.push(itemData.tags[i]);
@@ -199,7 +128,7 @@ function init(init_category) {
 
                 if(title === "Kakao"){
 
-                    var tags = this.hastTagsToString(shareItem);
+                    var tags = this.hashTagsToString(shareItem);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
@@ -256,33 +185,6 @@ function init(init_category) {
             }
         },
         mounted:[
-            function(){
-                $(window).scroll(
-                    function (event) {
-
-                        var scroll = $(window).scrollTop();
-
-                        vue.scrollData.scrollT += (scroll-vue.scrollData.offsetTop);
-
-                        if(vue.scrollData.scrollT > vue.scrollData.delta){
-                            vue.scrollData.isShowFabTop = true;
-                            vue.scrollData.scrollT = 0;
-                        }else if (vue.scrollData.scrollT < -vue.scrollData.delta) {
-                            vue.scrollData.isShowFabTop = false;
-                            vue.scrollData.scrollT = 0;
-                        }
-
-                        vue.scrollData.offsetTop = scroll;
-
-                        if(scroll === 0){
-                            vue.scrollData.isShowFabTop = false;
-                            vue.scrollData.scrollT = 0;
-                            vue.scrollData.offsetTop = 0;
-                        }
-
-                    }
-                );
-            },
             function () {
                 this.categoryData = JSON.parse(init_category);
                 console.log("category: ", this.categoryData);

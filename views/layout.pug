@@ -49,7 +49,7 @@ html(lang='en')
 
         v-container#scroll-target.scroll-y.pa-0(fluid, style='overflow-x: hidden;')
 
-          v-layout(column)
+          v-layout(column, v-scroll="onScroll")
 
             //include vue_toolbar
 

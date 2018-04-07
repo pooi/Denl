@@ -1,0 +1,41 @@
+v-menu(:close-on-content-click='false', max-height="430px", :nudge-width='Math.min($vuetify.breakpoint.width - 60, 400)', v-model='msgData.menu', v-if="loginData.user !== null")
+    v-btn.ma-0.mr-2(flat, icon, :color="scrollData.offsetTop >= 50 && msgData.currentPath === '/' ? 'orange darken-3' : 'white' ", slot='activator', @click="getMsg()")
+        v-icon.subheading {{ msgData.newMsgCount > 0 ? 'notifications_active' : 'notifications_none'}}
+        span(v-if='msgData.newMsgCount > 0')
+            | {{msgData.newMsgCount}}
+    v-card
+        v-tabs(color='white', grow='', v-model="msgData.msgTab")
+            v-tabs-slider(color='orange darken-3')
+            v-tab(v-for='item in msgData.msgTagItems', :key='item', :href="'#tab-' + item")
+                | {{ item }}
+
+
+            v-tabs-items(v-model="msgData.msgTab")
+                v-tab-item(:id="'tab-New'")
+                    v-card(flat='')
+                        v-list.py-0(two-line='')
+                            template(v-for='(item, index) in msgData.newMsgs')
+                                v-list-tile.py-2(avatar, ripple, :key='item.id', :style="item.is_read === null || item.is_read === 0 ? '' : 'background: #f2f2f2;' ")
+                                    v-list-tile-content
+                                        v-list-tile-title(:class="item.is_read === null || item.is_read === 0 ? '' : 'grey--text'") {{ item.title }}
+                                        v-list-tile-sub-title(:class="item.is_read === null || item.is_read === 0 ? '' : 'grey--text'") {{ item.content }}
+                                    v-list-tile-action
+                                        v-list-tile-action-text 15 min
+                                        v-icon(color='orange darken-2', @click="setMsgRead(item)", v-if="item.is_read === null || item.is_read === 0") close
+                                v-divider(v-if='index + 1 < msgData.newMsgs.length', :key='index')
+
+
+                v-tab-item(:id="'tab-Read'")
+                    v-card(flat='')
+                        v-list.py-0(two-line='')
+                            template(v-for='(item, index) in msgData.readMsgs')
+                                v-list-tile.py-2(avatar, ripple, :key='item.id')
+                                    v-list-tile-content
+                                        v-list-tile-title {{ item.title }}
+                                        v-list-tile-sub-title {{ item.content }}
+                                    v-list-tile-action
+                                        v-list-tile-action-text 15 min
+                                        //v-icon(color='orange darken-2', @click="item.is_read = 1", v-if="item.is_read === null || item.is_read === 0") close
+                                v-divider(v-if='index + 1 < msgData.readMsgs.length', :key='index')
+
+        //v-btn.my-0.elevation-0(block, color='brown lighten-1', dark, small) 새로고침

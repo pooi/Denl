@@ -71,6 +71,68 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.post('/getMsgCount', function (req, res) {
+
+    var data = req.body;
+    var params = [];
+
+    var sql = "select count(id) as count from msg WHERE user_id=? AND (is_read is null or is_read='0');";
+    params.push(data.user_id);
+
+    conn.query(sql, params, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            var result = results[0];
+            // console.log(result.count);
+            res.send(result.count + "");
+        }
+    });
+});
+
+router.post('/getMsg', function (req, res) {
+
+    var data = req.body;
+    var params = [];
+
+    var sql = "";
+    if(data.hasOwnProperty("isNew") && data.isNew){
+        sql = "select * from msg WHERE user_id=? AND (is_read is null or is_read='0');";
+        params.push(data.user_id);
+    }else{
+        sql = "select * from msg WHERE user_id=? AND (is_read is not null AND is_read='1');";
+        params.push(data.user_id);
+    }
+
+    conn.query(sql, params, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            res.send(results);
+        }
+    });
+});
+
+router.post('/setMsgRead', function (req, res) {
+    if(req.body){
+        var msg = req.body.msg;
+        var sql = 'UPDATE msg SET is_read=1 WHERE id=?;';
+        conn.query(sql, [msg.id], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 router.post('/recent', function (req, res) {
     var sql = "SELECT * FROM lost ORDER BY id DESC limit 0, 12;";
     console.log(sql);

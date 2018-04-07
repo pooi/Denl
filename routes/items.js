@@ -51,13 +51,17 @@ router.get('/:id', function (req, res) {
         'GROUP BY id) as C \n' +
         'ON (A.rcv_user = C.id) \n' +
         'WHERE A.id = ?;';
+
+    sql += "SELECT * FROM category;";
     conn.query(sql, [id], function (err, results, fields) {
         if (err) {
             console.log(err);
             res.status(500).send("Internal Server Error");
         }
-        if(results.length > 0){
-            var result = results[0];
+        var lostResults = results[0];
+        var categoryResults = results[1];
+        if(lostResults.length > 0){
+            var result = lostResults[0];
             var photos = result.photos;
             var rgtUser = {
                 id: result.rgt_user,
@@ -98,33 +102,26 @@ router.get('/:id', function (req, res) {
             console.log(json);
             console.log(photos);
 
-
-            var sql = 'SELECT * FROM category';
-            conn.query(sql, [], function (err, results) {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send("Internal Server Error");
-                }
-                var category = {}
-                for (var i = 0; i < results.length; i++) {
-                    var result = results[i];
-                    if(! category.hasOwnProperty(result.category_name)){
-                        category[result.category_name] = {
-                            subcategory: [],
-                            name: result.category_name,
-                            ko: result.category_name_ko,
-                            en: result.category_name_en
-                        }
+            var category = {}
+            for (var i = 0; i < categoryResults.length; i++) {
+                var result = categoryResults[i];
+                if(! category.hasOwnProperty(result.category_name)){
+                    category[result.category_name] = {
+                        subcategory: [],
+                        name: result.category_name,
+                        ko: result.category_name_ko,
+                        en: result.category_name_en
                     }
-                    category[result.category_name].subcategory.push({
-                        name: result.name,
-                        ko: result.ko,
-                        en: result.en
-                    })
                 }
-                console.log(photos);
-                res.render('items', {userData: JSON.stringify(req.session.userData), data: json, category: JSON.stringify(category), tempImg: photos});
-            });
+                category[result.category_name].subcategory.push({
+                    name: result.name,
+                    ko: result.ko,
+                    en: result.en
+                })
+            }
+            console.log(photos);
+            res.render('items', {userData: JSON.stringify(req.session.userData), data: json, category: JSON.stringify(category), tempImg: photos});
+
         }else{
             res.render('items', {userData: JSON.stringify(req.session.userData)});
         }
@@ -230,6 +227,62 @@ router.post('/requestList', function (req, res) {
                 }
                 res.send(userList);
                 // res.send(results);
+            }
+        });
+
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.post('/requestReceive', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var userID = req.body.user_id;
+        var sql = 'UPDATE lost SET status="WFR", rcv_user=? WHERE id=?;';
+        conn.query(sql, [userID, lostID], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.post('/cancelRequestReceive', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var sql = 'UPDATE lost SET status="WFA", rcv_user=null WHERE id=?;';
+        conn.query(sql, [lostID], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.post('/confirmReceive', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var date = req.body.rcv_date;
+        var sql = 'UPDATE lost SET status="COM", rcv_date=? WHERE id=?;';
+        conn.query(sql, [date, lostID], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
             }
         });
 
