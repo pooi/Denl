@@ -86,6 +86,12 @@ function init(init_category) {
                     this.scrollData.offsetTop = 0;
                 }
             },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            },
             vueMsToDate: function (date) {
                 return msToDate(date);
             },
@@ -99,7 +105,7 @@ function init(init_category) {
             convertStatus: function (status) {
                 return convertStatus(status)
             },
-            hastTagsToString: function (itemData) {
+            hashTagsToString: function (itemData) {
                 var list = [];
                 for(var i=0; i<itemData.tags.length; i++){
                     list.push(itemData.tags[i]);
@@ -178,7 +184,7 @@ function init(init_category) {
 
                 if(title === "Kakao"){
 
-                    var tags = this.hastTagsToString(shareItem);
+                    var tags = this.hashTagsToString(shareItem);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',

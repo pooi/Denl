@@ -42,6 +42,12 @@ function init() {
                     this.scrollData.offsetTop = 0;
                 }
             },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            }
         },
         mounted: [
             function () {

@@ -9,7 +9,7 @@ v-card.dal-card.text-xs-left(flat='', tile='', hover, raised, :class="$vuetify.b
     //v-card-text.py-3.grey--text.text--darken-2(v-if="item.description.length > 0") {{ reduceString(item.description, 100) }}
     v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ vueMsToDateKo(item.dcv_date) }}
     v-card-text.py-0.text-xs-left(v-if="item.tags.length > 0 || item.recognition_tags.length > 0")
-        span.caption.brown--text {{ hastTagsToString(item) }}
+        span.caption.brown--text {{ hashTagsToString(item) }}
     v-card-actions
         v-spacer
         v-btn(flat, small, slot='activator', color='orange', dark, @click="shareSheet=true; shareItem=item;") Share

@@ -103,6 +103,12 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     this.scrollData.offsetTop = 0;
                 }
             },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            },
             browseClick: function () {
                 var inputFile = document.getElementById('file')
                 inputFile.click()

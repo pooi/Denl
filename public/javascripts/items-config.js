@@ -82,6 +82,12 @@ function init(init_data, init_category) {
                     this.scrollData.offsetTop = 0;
                 }
             },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            },
             reloadPage: function () {
                 location.reload();
             },
