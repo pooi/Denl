@@ -1,5 +1,12 @@
 
-
+v-dialog.md6(v-model='msgData.msgDialog',  scrollable, max-width='500px')
+    v-card
+        v-card-title.headline(v-if="msgData.selectedMsg !== null") {{msgData.selectedMsg.title}}
+        v-card-text.subheading(v-if="msgData.selectedMsg !== null") {{msgData.selectedMsg.content}}
+        v-card-text.subheading(v-else) 선택된 메시지가 없습니다.
+        v-card-actions
+            v-spacer
+            v-btn(color='success', flat, @click="msgData.msgDialog = false; msgData.selectedMsg = null;") 확인
 
 
 
@@ -33,6 +40,8 @@ script.
             ],
             newMsgCount: 0,
             isFirstLoading: true,
+            msgDialog: false,
+            selectedMsg: null,
             newMsgs: null,
             readMsgs: null
             // dialog: false,

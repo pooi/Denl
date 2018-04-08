@@ -131,7 +131,7 @@ var Get_building_list = function(){
                     'distance' : distance_to_point
                 };
                 near_list.push(temp);
-                console.log(near_list);
+                // console.log(near_list);
                 // console.log(equation);
                 // console.log(check);
                 // if(catch_point[0] > check["high_x"] || catch_point[0] < check["low_x"] || catch_point[1] > check["high_y"] || catch_point[1] < check["low_y"]){

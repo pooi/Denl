@@ -98,10 +98,10 @@ router.post('/getMsg', function (req, res) {
 
     var sql = "";
     if(data.hasOwnProperty("isNew") && data.isNew){
-        sql = "select * from msg WHERE user_id=? AND (is_read is null or is_read='0');";
+        sql = "select * from msg WHERE user_id=? AND (is_read is null or is_read='0') ORDER BY id DESC;";
         params.push(data.user_id);
     }else{
-        sql = "select * from msg WHERE user_id=? AND (is_read is not null AND is_read='1');";
+        sql = "select * from msg WHERE user_id=? AND (is_read is not null AND is_read='1') ORDER BY id DESC;";
         params.push(data.user_id);
     }
 

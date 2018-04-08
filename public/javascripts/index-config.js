@@ -21,6 +21,7 @@ function init(init_category) {
             msgData:{
                 newMsgCount: 0
             },
+            moreBtn: null,
             categoryData: null,
             bottomTab: "home",
 

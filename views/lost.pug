@@ -225,12 +225,12 @@ block content
                                                 v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-3' : 'pa-0' ", align-center, justify-center)
                                                     //v-flex(sm2, xs12)
                                                     //    v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 습득장소(*):
-                                                    v-flex(sm10, xs12)
+                                                    v-flex(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pt-3' ")
                                                         v-layout( wrap)
                                                             v-flex(xs5)
-                                                                v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete)
+                                                                v-select.xs3(color="orange darken-2", :items='buildings', v-model='selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete, :dense="$vuetify.breakpoint.xsOnly")
                                                             v-flex.pl-2(xs4)
-                                                                v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete)
+                                                                v-select.xs3(color="orange darken-2", :items='rooms', v-model='selectedRoom', label='방 선택', auto, append-icon='room', autocomplete, :dense="$vuetify.breakpoint.xsOnly")
                                                             v-layout.pl-2.pt-2(xs2, v-show='!locationProgress', style='vertical-align: middle;', justify-center)
                                                                 v-fab-transition
                                                                     v-btn.ma-0(color='primary', dark, fab, small, v-on:click='getCurrentLocation')
@@ -583,4 +583,4 @@ block content
 
     script(type="text/javascript" src='/javascripts/lost-config-2.js')
     script.
-        const vue = init("#{image}", '#{labels}', '#{texts}', '#{logos}', '!{colors}', '!{category}');
+        const vue = init("#{image}", '#{labels}', '#{texts}', '#{logos}', '!{colors}', '!{category}', '!{sju_buildings}');

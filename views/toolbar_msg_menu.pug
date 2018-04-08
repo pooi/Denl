@@ -10,27 +10,30 @@ v-menu(:close-on-content-click='false', max-height="430px", :nudge-width='Math.m
                 | {{ item }}
 
 
+
             v-tabs-items(v-model="msgData.msgTab")
+                v-divider
                 v-tab-item(:id="'tab-New'")
                     v-card(flat='')
-                        v-list.py-0(two-line='')
+                        v-list.py-0(two-line='', v-if="msgData.newMsgs !== null && msgData.newMsgs.length > 0")
                             template(v-for='(item, index) in msgData.newMsgs')
-                                v-list-tile.py-2(avatar, ripple, :key='item.id', :style="item.is_read === null || item.is_read === 0 ? '' : 'background: #f2f2f2;' ")
-                                    v-list-tile-content
+                                v-list-tile.py-0(avatar, ripple, :key='item.id', :style="item.is_read === null || item.is_read === 0 ? '' : 'background: #f2f2f2;' ")
+                                    v-list-tile-content(@click="msgData.selectedMsg = item; msgData.msgDialog = true;")
                                         v-list-tile-title(:class="item.is_read === null || item.is_read === 0 ? '' : 'grey--text'") {{ item.title }}
                                         v-list-tile-sub-title(:class="item.is_read === null || item.is_read === 0 ? '' : 'grey--text'") {{ item.content }}
                                     v-list-tile-action
                                         v-list-tile-action-text 15 min
                                         v-icon(color='orange darken-2', @click="setMsgRead(item)", v-if="item.is_read === null || item.is_read === 0") close
                                 v-divider(v-if='index + 1 < msgData.newMsgs.length', :key='index')
+                        v-card-text.text-xs-center(v-else) 새로운 메시지가 없습니다.
 
 
                 v-tab-item(:id="'tab-Read'")
                     v-card(flat='')
                         v-list.py-0(two-line='')
                             template(v-for='(item, index) in msgData.readMsgs')
-                                v-list-tile.py-2(avatar, ripple, :key='item.id')
-                                    v-list-tile-content
+                                v-list-tile.py-0(avatar, ripple, :key='item.id')
+                                    v-list-tile-content(@click="msgData.selectedMsg = item; msgData.msgDialog = true;")
                                         v-list-tile-title {{ item.title }}
                                         v-list-tile-sub-title {{ item.content }}
                                     v-list-tile-action

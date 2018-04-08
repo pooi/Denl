@@ -23,50 +23,60 @@ block content
     div(style='background-color: white;')
         section
             v-layout#main_first_section(wrap, align-center, justify-space-around, style='height: 100vh; background: url(../images/picture/main3.jpg) center center / cover no-repeat;')
-                v-card.pa-0.ma-0(row='', wrap='', flat='', style='width:100%; height: fit-content; background: transparent;')
+                v-card.pa-0.ma-0#main_top(row='', wrap='', flat='', style='width:100%; height: fit-content; background: transparent; visibility: invisible;')
                     // ######## 로고 ########
-                    v-layout#main_top(column='', align-center='', justify-center='', text-xs-center='')
+                    v-layout(column='', align-center='', justify-center='', text-xs-center='')
                         img#main_top_logo(src='https://beta.denl.xyz/images/logo/logo_color.svg', height='120', style='margin-top: 75px;')
                         h1(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'headline text-xs-center' : 'display-1 text-xs-center'", style='margin-top: 12px;') Discovery and Lost
                         div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'body-2 mt-0 pt-0 text-xs-center' : 'subheading mt-1 mb-3 text-xs-center'")
                             | Powered by _beat
                     // ######## 카드(찾기,등록,관리) ########
-                    v-layout#select_cards.mt-5.pt-3.pl-0(container='', wrap='', align-center='', justify-center='')
+                    v-layout.mt-5.pt-3.pl-0(container='', wrap='', align-center='', justify-center='', v-if="$vuetify.breakpoint.mdAndUp")
                         // 찾기
-                        v-flex#find(xs12='', sm4='')
+                        v-flex.dal-card-scale-white.py-4(xs12='', sm4='', v-on:mouseover="moreBtn = 'find';", v-on:mouseout="moreBtn = null;")
                             v-card.elevation-0.transparent
                                 v-card-text.text-xs-center(onclick="window.location.href='/find'")
-                                    a(href='#')
-                                        img(src='../images/picture/find.png', style='height: 80px; margin-top: 12px;')
+                                    //a(href='#')
+                                    img(src='../images/picture/find.png', style='height: 80px; margin-top: 12px;')
                                 v-card-title(primary-title='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -8px;')
                                     div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'") 찾기
+                                v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
+                                    v-card-title.text-xs-center.pa-0
+                                        v-btn#find_btn(dark='', small='', flat='', outline='', round='', v-if="moreBtn === 'find'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
+                                            span MORE
                         // 등록
-                        v-flex#register(xs12='', sm4='')
+                        v-flex.dal-card-scale-white.py-4(xs12='', sm4='', v-on:mouseover="moreBtn = 'lost';", v-on:mouseout="moreBtn = null;")
                             // onmouseover="document.getElementById('register_btn').style.display = 'block';" onmouseout="document.getElementById('register_btn').style.display = 'none';"
-                            v-card.elevation-0.transparent(onmouseover='mouseover()', onmouseout='mouseout()')
+                            v-card.elevation-0.transparent
                                 v-card-text.text-xs-center(onclick="window.location.href='/lost'")
                                     a(href='#')
                                         img(src='../images/picture/register.png', style='height: 80px; margin-top: 20px;')
                                 v-card-title(primary-title='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
                                     div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'") 등록
-                                // ######## 마우스 hover 했을 때 상세보기 버튼 등장 ########
-                                v-card-title#register_btn.layout.justify-center.white--text.pt-0.mt-3(primary-title='', style='display: none;')
-                                    v-btn#register_button_manager.layout.justify-center(style='margin: 0 auto; width: 70px; background-color: #fa6e24; min-width: 30px;', dark='', small='', flat='', outline='', round='', href='#introduce_register')
-                                        span MORE
+                                v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
+                                    v-card-title.text-xs-center.pa-0
+                                        v-btn(dark='', small='', flat='', outline='', round='', v-if="moreBtn === 'lost'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
+                                            span MORE
                         // 관리
-                        v-flex#manage(xs12='', sm4='', v-if='loginData.user !== null && loginData.user.admin == 1')
+                        v-flex.dal-card-scale-white.py-4(xs12='', sm4='', v-if='loginData.user !== null && loginData.user.admin == 1', v-on:mouseover="moreBtn = 'manage';", v-on:mouseout="moreBtn = null;")
                             v-card.elevation-0.transparent
                                 v-card-text.text-xs-center(onclick="window.location.href='/manage'")
                                     a(href='#')
                                         img(src='../images/picture/manage.png', style='height: 74px; margin-top: 21px;')
                                 v-card-title(primary-title='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
                                     div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-1'") 관리
+                                v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
+                                    v-card-title.text-xs-center.pa-0
+
+
                     // 모바일 버전에서 스크롤 다운 표시
-                    v-layout#scroll_down.pt-5.mt-5(wrap='', style='display: none;')
+                    v-layout.pt-5.mt-5(wrap='', v-if="$vuetify.breakpoint.smAndDown")
                         v-flex(xs12='', text-xs-center='')
-                            v-text.caption.white--text Scroll Down
+                            //v-text.caption.white--text Scroll Down
+                            v-btn(flat, color="white", onclick="$('html, body').animate({scrollTop: $('#recent').offset().top - 40}, 500);") Scroll Down
                             br
-                            v-icon(medium='', color='white') keyboard_arrow_down
+                            v-btn(flat, icon, color="white", onclick="$('html, body').animate({scrollTop: $('#recent').offset().top - 40}, 500);")
+                                v-icon(color='white') keyboard_arrow_down
                             br
 
         // ######## 최근 등록된 유실물 ver1(카드 4개씩) ########
@@ -113,7 +123,7 @@ block content
 
 
 
-        section.py-4
+        section.py-4#recent
             v-layout.text-xs-center.py-5(column='', align-center='')
                 v-flex(xs12='', container='', fill-height='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
                     v-container(fluid='', grid-list-md='', style="overflow:visible")
@@ -165,7 +175,7 @@ block content
                 v-flex(xs12='', pt-3='')
                     v-container(grid-list-sm='')
                         v-layout(row='', wrap='', align-center='')
-                            v-flex(xs12='', md4='')
+                            v-flex(xs12='', md4='', :class="$vuetify.breakpoint.smAndDown ? 'px-4' : '' ")
                                 v-card.elevation-0.transparent
                                     v-card-text.text-xs-center
                                         v-icon.blue--text.text--lighten-2(x-large='') photo_camera
@@ -173,7 +183,7 @@ block content
                                         .headline.text-xs-center 유실물 촬영
                                     v-card-text
                                         | '누가 여기다 놓고갔네?'라는 생각이 드는 순간 [등록] 버튼을 누르고 바로 촬영해주세요. 여러분은 촬영만 했을 뿐이지만 등록을 90% 완료했습니다.
-                            v-flex(xs12='', md4='')
+                            v-flex(xs12='', md4='', :class="$vuetify.breakpoint.smAndDown ? 'px-4' : '' ")
                                 v-card.elevation-0.transparent
                                     v-card-text.text-xs-center
                                         span(style='font-weight: bold; font-size: 250%; color:#64b5f6') #
@@ -181,7 +191,7 @@ block content
                                         .headline 자동 태깅
                                     v-card-text
                                         | "언제 어디서 무엇을?" 유실물을 촬영하면 정보가 자동으로 태깅됩니다. 알맞은 정보를 선택하여 추가할 수 있습니다.
-                            v-flex(xs12='', md4='')
+                            v-flex(xs12='', md4='', :class="$vuetify.breakpoint.smAndDown ? 'px-4' : '' "  )
                                 v-card.elevation-0.transparent
                                     v-card-text.text-xs-center
                                         v-icon.blue--text.text--lighten-2(x-large='') check_circle
@@ -257,25 +267,6 @@ block content
     include footer
     include bottom_tab
 
-    script.
-        window.onscroll = function () {
-            scrollFunction()
-        };
-        function scrollFunction() {
-            if (document.body.scrollTop > 3 || document.documentElement.scrollTop > 3) {
-                document.getElementById("toolbar").style.backgroundColor = "white";
-                document.getElementById("toolbar_login").style.color = "black";
-                document.getElementById("main_top_logo").style.display = "block";
-                document.getElementById("toolbar_logo").style.display = "block";
-                document.getElementById("toolbar_title").style.display = "none";
-            } else {
-                document.getElementById("toolbar").style.backgroundColor = "transparent";
-                document.getElementById("toolbar_login").style.color = "#E6E6E6";
-                document.getElementById("main_top_logo").style.display = "block";
-                document.getElementById("toolbar_logo").style.display = "none";
-                document.getElementById("toolbar_title").style.display = "block";
-            }
-        }
 
     script.
         /*######## **초 뒤에 화면에 나타나는 기능 ########*/
@@ -283,18 +274,24 @@ block content
             /* 첫 번째 섹션 (사용자 모드)*/
             document.getElementById('main_top').style.visibility = "visible";
             document.getElementById('main_top').style.opacity = "1";
-            document.getElementById('select_cards').style.visibility = "visible";
-            document.getElementById('select_cards').style.opacity = "1";
-        }, 500);
+            // document.getElementById('select_cards').style.visibility = "visible";
+            // document.getElementById('select_cards').style.opacity = "1";
+        }, 800);
+
+        $("#find_btn").click(function () {
+            $('html, body').animate({
+                scrollTop: $("#introduce_register").offset().top
+            }, 2000);
+        });
         /*clearTimeout(myTimer);*/
         <!--######## mouse over= 버튼 생성, mouseout= 버튼 사라짐 ########-->
-        function mouseover() {
-            document.getElementById('register_btn').style.display = 'block';
-            /*document.getElementById('register_btn').style.display = 'none';*/
-        }
-        function mouseout() {
-            document.getElementById('register_btn').style.display = 'none';
-        }
+        // function mouseover() {
+        //     document.getElementById('register_btn').style.display = 'block';
+        //     /*document.getElementById('register_btn').style.display = 'none';*/
+        // }
+        // function mouseout() {
+        //     document.getElementById('register_btn').style.display = 'none';
+        // }
 
     script(type="text/javascript" src='/javascripts/index-config.js')
     script.

@@ -152,11 +152,14 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                         var latitude = pos.coords.latitude;   // 적도의 북쪽 기준 각도인 위도
                         var longitude = pos.coords.longitude; // 그리니치 천문대의 동쪽 기준 각도인 경도
                         var accuracy = pos.coords.accuracy;   // 미터 단위의 정확도
-                        vue.buildings = null;
-                        var test_2 = [127.074170,37.551589]; //율근처 밖
-                        // var test = new Get_building_list(vue.buildingData, [longitude, latitude]);
-                        var test = new Get_building_list(vue.buildingData, test_2);
-                        console.log(init_buildings);
+
+                        // console.log(latitude + ", " + longitude);
+
+                        // vue.buildings = null;
+                        // var test_2 = [127.074170,37.551589]; //율근처 밖
+                        var test = new Get_building_list(vue.buildingData, [longitude, latitude]);
+                        // var test = new Get_building_list(vue.buildingData, test_2);
+                        // console.log(init_buildings);
                         test.Verify_in_out();
                         // console.log(test.Getnearlist());//값 넘겨놓고 배열 초기화
                         var temp_arr = test.Getnearlist();
@@ -164,7 +167,12 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                         for(temp_ar in temp_arr){
                             new_arr.push(temp_arr[temp_ar].building);
                         }
-                        vue.buildings = new_arr;
+                        if(new_arr.length > 0)
+                            vue.buildings = new_arr;
+
+                        if(vue.buildings.length > 0)
+                            vue.selectedBuilding = vue.buildings[0];
+
                         test.Resetnearlist();
                         vue.isShowMap = true
                         // // initMap(latitude, longitude);
