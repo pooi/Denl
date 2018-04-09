@@ -127,7 +127,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
 
                 var reader = new FileReader();
                 reader.onload = function () {
-                    $('#uploaded-img').attr('src', reader.result);
+                    // $('#uploaded-img').attr('src', reader.result);
+                    vue.imgSrc = reader.result;
                 }
                 reader.readAsDataURL(inputFile.files[0]);
                 this.isFile = true

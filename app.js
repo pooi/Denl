@@ -33,6 +33,7 @@ app.use('/scripts', express.static(__dirname + '/node_modules/vuetify/dist'));
 app.use('/styles', express.static(__dirname + '/node_modules/vuetify/dist'));
 app.use('/scripts', express.static(__dirname + '/node_modules/axios/dist'));
 app.use('/scripts', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/scripts', express.static(__dirname + '/node_modules/chart.js/dist'));
 
 app.use('/', index);
 app.use('/auth', auth);

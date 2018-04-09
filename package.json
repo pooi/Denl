@@ -11,6 +11,7 @@
     "axios": "^0.17.1",
     "body-parser": "~1.18.2",
     "casper": "^0.1.1",
+    "chart.js": "^2.7.2",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
