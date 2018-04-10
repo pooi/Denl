@@ -1,6 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var exec = require('child_process').exec;
+var KakaoAK = require('../config/kakao.js').KakaoAK();
 var multer = require('multer');
 var _storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -116,63 +117,81 @@ router.post('/', upload.single('file'), function(req, res) {
             }
         }
 
-        var sql = 'SELECT * FROM category; SELECT * FROM building;';
-        conn.query(sql, [], function (err, results) {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Internal Server Error");
+        var KAKAO_COMMAND = 'curl -v -X POST "{0}" -F "file=@{1}" -H "Authorization: {2}"';
+        var kakaoCommand = KAKAO_COMMAND.format("https://kapi.kakao.com/v1/vision/multitag/generate", __dirname + '/../uploads_temp/' + req.file.filename, KakaoAK);
+
+        exec(kakaoCommand, function(err, stdout, stderr) {
+
+            var data = JSON.parse(stdout);
+            var result = data.result;
+            for(var i=0; i<result.label.length; i++){
+                labels.push(result.label[i]);
             }
-            var db_buildings = results[1];
-            var front_buildings = {};
-            for(db_building in db_buildings){
-                var real_lat = db_buildings[db_building].lat;
-                var temp_lat = real_lat.substring(1,real_lat.length-1);
-                var real_lng = db_buildings[db_building].lng;
-                var temp_lng = real_lng.substring(1,real_lng.length-1);
-                var arr_lat = temp_lat.split(",");
-                var arr_lng = temp_lng.split(",");
-                // console.log("lat",arr_lat);
-                // console.log("lng",arr_lng);
-                var up_arr = [];
-                for(var m = 0; m < arr_lat.length; m++){
-                    var temp_arr = [];
-                    temp_arr.push(arr_lng[m]);
-                    temp_arr.push(arr_lat[m]);
-                    var temp_obj = { "point" : temp_arr };
-                    up_arr.push(temp_obj);
+            for(var i=0; i<result.label_kr.length; i++){
+                labels.push(result.label_kr[i]);
+            }
+
+            var sql = 'SELECT * FROM category; SELECT * FROM building;';
+            conn.query(sql, [], function (err, results) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send("Internal Server Error");
                 }
-                front_buildings[db_buildings[db_building].ko] = up_arr;
-            }
-            // console.log(front_buildings);
-            var category = {}
-            for (var i = 0; i < results[0].length; i++) {
-                var result = results[0][i];
-                if(! category.hasOwnProperty(result.category_name)){
-                    category[result.category_name] = {
-                        subcategory: [],
-                        name: result.category_name,
-                        ko: result.category_name_ko,
-                        en: result.category_name_en
+                var db_buildings = results[1];
+                var front_buildings = {};
+                for(db_building in db_buildings){
+                    var real_lat = db_buildings[db_building].lat;
+                    var temp_lat = real_lat.substring(1,real_lat.length-1);
+                    var real_lng = db_buildings[db_building].lng;
+                    var temp_lng = real_lng.substring(1,real_lng.length-1);
+                    var arr_lat = temp_lat.split(",");
+                    var arr_lng = temp_lng.split(",");
+                    // console.log("lat",arr_lat);
+                    // console.log("lng",arr_lng);
+                    var up_arr = [];
+                    for(var m = 0; m < arr_lat.length; m++){
+                        var temp_arr = [];
+                        temp_arr.push(arr_lng[m]);
+                        temp_arr.push(arr_lat[m]);
+                        var temp_obj = { "point" : temp_arr };
+                        up_arr.push(temp_obj);
                     }
+                    front_buildings[db_buildings[db_building].ko] = up_arr;
                 }
-                category[result.category_name].subcategory.push({
-                    name: result.name,
-                    ko: result.ko,
-                    en: result.en
-                })
-            }
-            // console.log(category);
-            res.render('lost', {
-                userData: JSON.stringify(req.session.userData),
-                image: req.file.filename,
-                labels: labels,
-                texts: texts,
-                logos: logos,
-                colors: JSON.stringify(colors),
-                category: JSON.stringify(category),
-                sju_buildings : JSON.stringify(front_buildings)
+                // console.log(front_buildings);
+                var category = {}
+                for (var i = 0; i < results[0].length; i++) {
+                    var result = results[0][i];
+                    if(! category.hasOwnProperty(result.category_name)){
+                        category[result.category_name] = {
+                            subcategory: [],
+                            name: result.category_name,
+                            ko: result.category_name_ko,
+                            en: result.category_name_en
+                        }
+                    }
+                    category[result.category_name].subcategory.push({
+                        name: result.name,
+                        ko: result.ko,
+                        en: result.en
+                    })
+                }
+                // console.log(category);
+                res.render('lost', {
+                    userData: JSON.stringify(req.session.userData),
+                    image: req.file.filename,
+                    labels: labels,
+                    texts: texts,
+                    logos: logos,
+                    colors: JSON.stringify(colors),
+                    category: JSON.stringify(category),
+                    sju_buildings : JSON.stringify(front_buildings)
+                });
             });
+
         });
+
+
 
     });
 
