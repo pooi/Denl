@@ -120,7 +120,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 색상:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         v-flex.mt-2(v-for='color in itemData.color', d-inline-flex)
-                                            v-card.mb-3.mr-3.elevation-4.dal-small-card(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
+                                            v-card.mb-3.mr-3.elevation-4.dal-small-card-scale(hover, raised, width="80", height="40", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
 
 
                                     v-flex(sm2, xs12)

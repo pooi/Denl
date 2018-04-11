@@ -4,20 +4,6 @@ block content
     link(href='/stylesheets/main_first_section.css', rel='stylesheet')
     link(href='/stylesheets/recent_register_section.css', rel='stylesheet')
 
-    style.
-
-        @font-face {
-            font-family: "day";
-            src: url(/stylesheets/day.ttf);
-        }
-
-        /*등록 소개 섹션_ 폰트 설정*/
-        #introduce_register {
-            font-family: 'day', sans-serif;
-        }
-
-
-
     include toolbar_index
 
     div(style='background-color: white;')
@@ -174,7 +160,7 @@ block content
 
 
         // ######## 등록 설명 ########
-        section.py-4#introduce_register
+        section.py-4#introduce_register.dal-header
             v-layout.my-5.py-5.text-xs-center(wrap, justify-center, align-center)
                 v-flex.mb-0(xs12)
                     div

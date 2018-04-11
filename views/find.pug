@@ -147,9 +147,12 @@ block content
                                 v-divider.mb-1.mt-3
 
 
-                            v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
-                                .headline.pa-0.mt4 유실물 목록
-                                v-divider.mb-1.mt-3
+                            v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
+                                p.headline.deep-orange--text(style="font-weight: 500;") 유실물 목록
+
+                            //v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
+                            //    .headline.pa-0.mt4 유실물 목록
+                            //    v-divider.mb-1.mt-3
 
                             vcard-title.pa-0(v-if="searchItems.length > 0")
                                 v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")

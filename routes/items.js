@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 var conn = require('../config/db')();
 
+function getTodayMs(){
+    var d = new Date();
+    return d.getTime();
+}
+
 function settingAnonymousUser(user, isHidden) {
     if(isHidden && user !== null){
         var userName = user.name;
@@ -28,6 +33,8 @@ function settingAnonymousUser(user, isHidden) {
     }
     return user;
 }
+
+var msgSQL = "INSERT INTO msg(user_id, title, content, date) VALUES({0}, '{1}', '{2}', '{3}');";
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -134,13 +141,16 @@ router.get('/:id', function (req, res) {
 router.post('/request', function (req, res) {
     if(req.body){
         var lostID = req.body.lost_id;
+        var rgtUserMsg = msgSQL.format("(SELECT rgt_user FROM lost WHERE id='{0}')".format(lostID), '요청 발생 - ' + lostID, '등록하신 유실물에 수령 요청이 들어왔습니다.', getTodayMs());
+        var requestUserMsg = msgSQL.format(req.body.user_id, '요청 등록 - ' + lostID, lostID + '번 유실물 수령을 성공적으로 요청하였습니다.', getTodayMs());
         var sql = 'INSERT INTO request SET ?';
+        sql = rgtUserMsg + requestUserMsg + sql;
         conn.query(sql, req.body, function(err, results) {
             if (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
             } else {
-                res.send(results);
+                res.send(results[2]);
             }
         });
 
@@ -151,15 +161,19 @@ router.post('/request', function (req, res) {
 
 router.post('/removeRequest', function (req, res) {
     if(req.body){
+        var lostId = req.body.lost_id;
         var requestID = req.body.request_id;
+        var requestUserMsg = msgSQL.format("(SELECT user_id FROM request WHERE id={0})".format(requestID), '요청 취소 - ' + lostId, lostId + '번 유실물 수령 요청이 취소되었습니다.', getTodayMs());
+
         var sql = 'DELETE FROM request WHERE id=?;';
+        sql = requestUserMsg + sql;
         conn.query(sql, requestID, function(err, results) {
             if (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
             } else {
-                console.log(results);
-                res.send(results);
+                // console.log(results);
+                res.send(results[1]);
             }
         });
 
