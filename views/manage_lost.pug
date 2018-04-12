@@ -18,20 +18,21 @@ v-flex.mt-4(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
             v-dialog(v-model='dialog_filter', max-width='500px')
                 v-card
                     v-card-text.pb-0
-                        v-select(required='', label='유실물 번호', :items='lost_filter_num', :filter='customFilter', v-model='a1', item-text='name', autocomplete='', color='orange darken-1')
+                        v-select(required='', label='유실물 번호', :items='lost_filter_num', :filter='customFilter', v-model='id', item-text='name', autocomplete='', color='orange darken-1')
                         // append-icon="format_list_numbered"(아이콘)
                     v-card-text.pb-0
-                        v-select(required='', label='상위 카테고리', :items='lost_filter_category_parent', :filter='customFilter', v-model='b1', item-text='name', autocomplete='', color='orange darken-1')
+                        v-select(required='', label='상위 카테고리', :items='lost_filter_category_parent', :filter='customFilter', v-model='category', item-text='name', autocomplete='', color='orange darken-1')
                     v-card-text.pb-0
-                        v-select(required='', label='상세 카테고리', :items='lost_filter_category_child', :filter='customFilter', v-model='c1', item-text='name', autocomplete='', color='orange darken-1')
+                        v-select(required='', label='상세 카테고리', :items='lost_filter_category_child', :filter='customFilter', v-model='subcategory', item-text='name', autocomplete='', color='orange darken-1')
                     v-card-text.pb-0
-                        v-select(required='', label='유실물 상태', :items='lost_filter_state', :filter='customFilter', v-model='d1', item-text='name', autocomplete='', color='orange darken-1')
+                        v-select(required='', label='유실물 상태', :items='lost_filter_state', :filter='customFilter', v-model='status', item-text='name', autocomplete='', color='orange darken-1')
                         small.grey--text * This doesn't actually save.
                     v-card-actions
                         v-spacer
                         v-btn(flat='', color='info', @click='resetFilterItem()') 초기화
                         //함수여러개 호출이 가능한가??
-                        v-btn(flat='', color='success', @click.native='dialog_filter = false') 확인
+                        v-btn(flat='', color='warning', @click.native='postFilterData()') 확인
+                        v-btn(flat='', color='success', @click.native='dialog_filter = false') 닫기
 
 v-flex(xs12='', sm12='', container='')
     v-layout(wrap)

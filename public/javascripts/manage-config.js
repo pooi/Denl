@@ -48,18 +48,18 @@ function init(WFA, WFRQ, init_category, WFL) {
             filter_keyword: false,
             filter_text: '전체 유실물 리스트',
             dialog_filter: false,
-            a1: null,
+            id: null,
             //필터목록데이터
             lost_filter_num: [],
             /*######## Lost 탭_ 필터 _ 상위 카테고리 ########*/
-            b1: null,
+            category: null,
             lost_filter_category_parent: [],
             /*######## Lost 탭_ 필터 _ 상세 카테고리 ########*/
-            c1: null,
+            subcategory: null,
             lost_filter_category_child: [],
             filter_child_item: [], // 세부 카테고리 초기화 데이터
             /*######## Lost 탭_ 필터 _ 유실물 상태 ########*/
-            d1: null,
+            status: null,
             lost_filter_state: [
                 { name: '수거전', code:"WFA" },
                 { name: '수거 완료', code:"WFF" },
@@ -138,32 +138,32 @@ function init(WFA, WFRQ, init_category, WFL) {
                 }
                 return title;
             },
-            getBreadCrumbsList : function () {
+            getBreadCrumbsList: function () {
                 var list = [];
-                if(this.a1 !== null){
+                if(this.id !== null){
                     this.filter_keyword = true;
-                    list.push(this.a1);
+                    list.push(this.id);
                 }
-                if(this.b1 !== null){
+                if(this.category !== null){
                     this.filter_keyword = true;
-                    list.push(this.b1);
+                    list.push(this.category);
                 }
-                if(this.c1 !== null){
+                if(this.subcategory !== null){
                     this.filter_keyword = true;
-                    list.push(this.c1);
+                    list.push(this.subcategory);
                 }
-                if(this.d1 !== null){
+                if(this.status !== null){
                     this.filter_keyword = true;
-                    list.push(this.d1);
+                    list.push(this.status);
                 }
                 return list;
             },
             /*초기화 버튼 눌렀을 때*/
             resetFilterItem: function () {
-                this.a1 = null;
-                this.b1 = null;
-                this.c1 = null;
-                this.d1 = null;
+                this.id = null;
+                this.category = null;
+                this.subcategory = null;
+                this.status = null;
                 this.filter_keyword = false;
             },
             onScroll (e) {
@@ -186,11 +186,44 @@ function init(WFA, WFRQ, init_category, WFL) {
                     this.scrollData.offsetTop = 0;
                 }
             },
-            getMsg:function () {
+            getMsg: function () {
                 getMsg();
             },
             setMsgRead: function (msg) {
                 setMsgRead(msg);
+            },
+            postFilterData : function () {
+                var filterdata = {
+                    id: this.id === null ? null : parseInt(this.id.name),
+                    category: this.category === null ? null : this.category,
+                    subcategory: this.subcategory === null ? null : this.subcategory,
+                    // building: this.selectedBuilding === null ? "" : this.selectedBuilding,
+                    // room: this.selectedRoom === null ? "" : this.selectedRoom,
+                    // tags: this.searchTags,
+                    status: this.status === null ? null : this.status.code
+                }
+                console.log(filterdata);
+                axios({
+                    method: 'post',
+                    url: '/manage/filter',
+                    data : filterdata
+                }).then(function(response){
+                    var result_data = response.data;
+                    if(result_data.length > 0){
+                        vue.WFAs = null;
+                        vue.WFAs = result_data;
+                    }
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
             }
         },
         created : function(){
@@ -240,7 +273,7 @@ function init(WFA, WFRQ, init_category, WFL) {
                 }
                 this.lost_filter_category_child = this.filter_child_item;
                 for(item in this.WFAs){
-                    var obj = {"name":"유실물"+this.WFAs[item].id}
+                    var obj = {"name": this.WFAs[item].id}
                     this.lost_filter_num.push(obj)
                 }
             },
@@ -261,11 +294,11 @@ function init(WFA, WFRQ, init_category, WFL) {
         ],
         // 대분류 카테고리 선정 완료시 소분류 카테고리 자동 변형
         watch:{
-            b1: function(val){
+            category: function(val){
                 //세부카테고리 초기화
-                this.c1 = null;
+                this.subcategory = null;
                 //세부카테고리 선택창 초기화
-                if(this.b1 === null){
+                if(this.category === null){
                     this.lost_filter_category_child = this.filter_child_item
                 }
                 //큰 카테고리 선택시 목록 렌더링
