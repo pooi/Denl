@@ -76,6 +76,11 @@ function init(WFA, WFRQ, init_category, WFL) {
                 return text.toString()
                     .toLowerCase()
                     .indexOf(query.toString().toLowerCase()) > -1
+            },
+            statisticsData: {
+
+
+
             }
         },
         methods: {
