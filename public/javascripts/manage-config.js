@@ -78,8 +78,10 @@ function init(WFA, WFRQ, init_category, WFL) {
                     .indexOf(query.toString().toLowerCase()) > -1
             },
             statisticsData: {
-
-
+                weekChartData: {
+                    labels: [],
+                    data: []
+                }
 
             }
         },
@@ -196,6 +198,55 @@ function init(WFA, WFRQ, init_category, WFL) {
             },
             setMsgRead: function (msg) {
                 setMsgRead(msg);
+            },
+
+            // Statistics
+            getWeekData: function () {
+                var data = {};
+
+                axios.post(
+                    '/statistics/dailySubcategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    console.log(data);
+                    vue.statisticsData.weekChartData = data;
+                    vue.drawWeekChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+            },
+            drawWeekChart: function () {
+                const weekChart_ctx = document.getElementById("weekChart");
+
+                const weekChart = new Chart(weekChart_ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: vue.statisticsData.weekChartData.labels,
+                        datasets: [{
+                            label: 'Subcategory',
+                            data: vue.statisticsData.weekChartData.data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+                });
             }
         },
         created : function(){
@@ -262,7 +313,10 @@ function init(WFA, WFRQ, init_category, WFL) {
                 document.getElementsByTagName('head')[0].appendChild(image);
 
                 console.log(document.getElementsByTagName('head')[0]);
-            }
+            },
+
+            // Statistics
+
         ],
         // 대분류 카테고리 선정 완료시 소분류 카테고리 자동 변형
         watch:{

@@ -5,7 +5,12 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
         // 필터 아이콘 터치한 경우
         v-flex(xs12, justify-center='', align-center='')
 
-            v-card-text.title.pb-0 월별 유실물 통계
+            v-card-text.title.pb-0 최근 일주일 통계
+            v-layout.px-3(xs12, wrap, justify-center, align-center)
+                v-flex.pa-3(xs12)
+                    canvas(id="weekChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+
+            v-card-text.title.pb-0.mt-5 월별 유실물 통계
             v-layout.px-3(xs12, wrap, justify-center, align-center)
                 v-flex.pa-3(xs12)
                     canvas(id="monthlyChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
@@ -23,15 +28,14 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
 
 script.
     $(document).ready(function () {
+        vue.getWeekData();
         drawMonthlyChart();
         drawtotalChart();
         drawtrendChart();
     });
 
     function drawMonthlyChart() {
-        console.log("createChart");
         const ctx = document.getElementById("monthlyChart");
-        console.log("ctx:", ctx);
 
         const monthlyChart = new Chart(ctx, {
             type: 'line',
@@ -63,9 +67,7 @@ script.
     }
 
     function drawtotalChart() {
-        console.log("createChart");
         const ctx = document.getElementById("totalChart");
-        console.log("ctx:", ctx);
 
         const totalChart = new Chart(ctx, {
             type: 'bar',
@@ -97,9 +99,7 @@ script.
     }
 
     function drawtrendChart() {
-        console.log("createChart");
         const ctx = document.getElementById("trendChart");
-        console.log("ctx:", ctx);
 
         const trendChart = new Chart(ctx, {
             type: 'line',

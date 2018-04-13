@@ -14,6 +14,7 @@ var lost = require('./routes/lost');
 var find = require('./routes/find');
 var items = require('./routes/items');
 var manage = require('./routes/manage');
+var statistics = require('./routes/statistics');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,6 +42,7 @@ app.use('/lost', lost);
 app.use('/find', find);
 app.use('/items', items);
 app.use('/manage', manage);
+app.use('/statistics', statistics);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
