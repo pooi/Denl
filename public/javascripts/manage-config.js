@@ -1,5 +1,9 @@
 
 function init(WFA, WFRQ, init_category, WFL) {
+
+    Vue.use(VueObserveVisibility);
+    Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
+
     var vue = new Vue({
         el: '#app',
         data: {
@@ -79,8 +83,20 @@ function init(WFA, WFRQ, init_category, WFL) {
             },
             statisticsData: {
                 weekChartData: {
-                    labels: [],
-                    data: []
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    }
+                },
+                weekCategoryChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    }
                 }
 
             }
@@ -210,31 +226,41 @@ function init(WFA, WFRQ, init_category, WFL) {
                 ).then(function (response) {
                     var res = response;
                     var data = res.data;
-                    console.log(data);
-                    vue.statisticsData.weekChartData = data;
-                    vue.drawWeekChart();
+                    vue.statisticsData.weekChartData.item = data;
+                    vue.statisticsData.weekChartData.isDraw = false;
+                    // vue.drawWeekChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+
+                axios.post(
+                    '/statistics/dailyCategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.weekCategoryChartData.item = data;
+                    vue.statisticsData.weekCategoryChartData.isDraw = false;
+                    // vue.drawWeekCategoryChart();
                 }).catch(function (error) {
                     alert(error);
                 });
             },
             drawWeekChart: function () {
-                const weekChart_ctx = document.getElementById("weekChart");
+                if(this.statisticsData.weekChartData.chart == null){
+                    this.statisticsData.weekChartData.ctx = document.getElementById("weekChart");
+                }else{
+                    this.statisticsData.weekChartData.chart.destroy();
+                }
 
-                const weekChart = new Chart(weekChart_ctx, {
+                this.statisticsData.weekChartData.chart = new Chart(this.statisticsData.weekChartData.ctx, {
                     type: 'pie',
                     data: {
-                        labels: vue.statisticsData.weekChartData.labels,
+                        labels: vue.statisticsData.weekChartData.item.labels,
                         datasets: [{
                             label: 'Subcategory',
-                            data: vue.statisticsData.weekChartData.data,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            data: vue.statisticsData.weekChartData.item.data,
+                            backgroundColor: pastelColors,
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
                                 'rgba(54, 162, 235, 1)',
@@ -245,6 +271,44 @@ function init(WFA, WFRQ, init_category, WFL) {
                             ],
                             borderWidth: 1
                         }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                });
+
+            },
+            drawWeekCategoryChart: function () {
+                if(this.statisticsData.weekCategoryChartData.chart == null){
+                    this.statisticsData.weekCategoryChartData.ctx = document.getElementById("weekCategoryChart");
+                }else{
+                    this.statisticsData.weekCategoryChartData.chart.destroy();
+                }
+                this.statisticsData.weekCategoryChartData.chart = new Chart(this.statisticsData.weekCategoryChartData.ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: vue.statisticsData.weekCategoryChartData.item.labels,
+                        datasets: [{
+                            label: 'Category',
+                            data: vue.statisticsData.weekCategoryChartData.item.data,
+                            backgroundColor: pastelColors,
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'right'
+                        }
                     }
                 });
             }

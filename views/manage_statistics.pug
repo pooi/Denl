@@ -7,8 +7,13 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
 
             v-card-text.title.pb-0 최근 일주일 통계
             v-layout.px-3(xs12, wrap, justify-center, align-center)
-                v-flex.pa-3(xs12)
-                    canvas(id="weekChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+                v-flex.pa-3.text-xs-center(xs12)
+                    .subheading.my-3 세부카테고리별
+                    canvas(id="weekChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekChart')
+
+                v-flex.pa-3.text-xs-center(xs12)
+                    .subheading.my-3() 카테고리별
+                    canvas(id="weekCategoryChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekCategoryChart')
 
             v-card-text.title.pb-0.mt-5 월별 유실물 통계
             v-layout.px-3(xs12, wrap, justify-center, align-center)
