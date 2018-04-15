@@ -147,31 +147,22 @@ block content
                                 v-divider.mb-1.mt-3
 
 
-                            v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
-                                .headline.pa-0.mt4 유실물 목록
-                                v-divider.mb-1.mt-3
+                            v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
+                                p.headline.deep-orange--text(style="font-weight: 500;") 유실물 목록
+
+                            //v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
+                            //    .headline.pa-0.mt4 유실물 목록
+                            //    v-divider.mb-1.mt-3
 
                             vcard-title.pa-0(v-if="searchItems.length > 0")
                                 v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
                                     v-layout(wrap)
                                         v-flex(xs12, sm6, md6, lg4 v-for="item in searchItems", :key="item.id", v-model='searchItems')
                                             include card_item
-                                            //v-card.dal-card(flat='', tile='', hover, raised, :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' ", :href="'/items/'+item.id")
-                                            //
-                                            //    v-card-media(:src="item.photos", height='250px')
-                                            //
-                                            //    code.mx-3.elevation-0.mt-3(v-if="convertStatus(item.status).length > 0") {{convertStatus(item.status)}}
-                                            //    v-card-title.title.mb-0.py-2.grey--text.text--darken-3 {{ "유실물 - " + item.id}}
-                                            //    v-card-text.py-0.subheading.grey--text.text--lighten-1 {{ getCategoryStringFromResult(item.subcategory) }}
-                                            //
-                                            //    v-card-text.py-3.grey--text.text--darken-2(v-if="item.description.length > 0") {{ item.description }}
-                                            //    v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ vueMsToDateKo(item.dcv_date) }}
-                                            //    v-card-text.py-0.text-xs-left(v-if="item.tags.length > 0 || item.recognition_tags.length > 0")
-                                            //        span.caption.brown--text {{ hashTagsToString(item) }}
-                                            //    v-card-actions
-                                            //        v-spacer
-                                            //        v-btn(flat, small, slot='activator', color='orange', dark) Share
-                                            //        v-btn(flat,small, color='orange', :href="'/items/'+item.id") Detail
+
+                                        v-flex.text-xs-center.mt-4(xs12, v-if="!loadMoreData.isLoadFinish")
+                                            v-progress-circular.py-0.my-0(:indeterminate="true", color='deep-orange darken-3', :size="50", v-show='loadMoreData.isLoadMore')
+                                            v-btn(dark, color='deep-orange darken-3', v-if='loadMoreData.isBtnLoadMore', @click='loadMore()') Load More
 
                             v-card-text.text-xs-center.my-4.grey--text(v-else) 검색 결과가 없습니다.
 

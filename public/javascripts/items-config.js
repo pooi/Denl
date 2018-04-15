@@ -324,6 +324,7 @@ function init(init_data, init_category) {
                     return;
 
                 var data = {
+                    lost_id: this.itemData.id,
                     request_id: request_id
                 };
 

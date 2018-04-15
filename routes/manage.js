@@ -2,18 +2,21 @@ var express = require('express');
 var async = require('async');
 var router = express.Router();
 var conn = require('../config/db')();
-var get_date = function(){
+var get_date = function(num){
     var d = new Date(Date.now());
     var day = d.getDate();
-    d.setDate(day - 8);
+    d.setDate(day - num);
     var date_sentence = Date.parse(d);
     return date_sentence;
 }
 
 /* GET home page. */
 function manage (req, res) {
-    var date_sentence = get_date();
-    var sql = 'select * from lost where status="WFA";select * from lost where id IN (select distinct lost_id from request);select * from lost where id IN (select lost_id from request where rgt_date < '+ date_sentence + ');SELECT * FROM category';
+    var date_sentence = get_date(8);
+    var recent_period = get_date(30);
+    var sql = 'select * from lost where status="WFA";' +
+        'select * from lost where id IN (select distinct lost_id from request where rgt_date > '+ recent_period + ');' +
+        'select * from lost where id IN (select lost_id from request where rgt_date < '+ date_sentence + ');SELECT * FROM category';
     conn.query(sql, function (err, results) {
         if (err) {
             console.log(err);

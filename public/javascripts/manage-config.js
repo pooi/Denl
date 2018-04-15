@@ -1,5 +1,6 @@
 
 function init(WFA, WFRQ, init_category, WFL) {
+
     var vue = new Vue({
         el: '#app',
         data: {
@@ -191,6 +192,34 @@ function init(WFA, WFRQ, init_category, WFL) {
             },
             setMsgRead: function (msg) {
                 setMsgRead(msg);
+            },
+            splitArray: function (array) {
+                var chunk = 1;
+                var breakpoint = this.__proto__.$vuetify.breakpoint;
+                if(breakpoint.xs || breakpoint.xl)
+                    chunk = 1;
+                else if(breakpoint.sm)
+                    chunk = 2;
+                else if(breakpoint.md)
+                    chunk = 3;
+                else
+                    chunk = 4;
+                // console.log(this.__proto__.$vuetify.breakpoint);
+                // console.log("chunk", chunk);
+
+                var i,j,temparray;
+                var newArray = [];
+                for (i=0,j=array.length; i<j; i+=chunk) {
+                    temparray = array.slice(i,i+chunk);
+
+                    while(temparray.length < chunk){
+                        temparray.push(null);
+                    }
+
+                    newArray.push(temparray);
+                }
+                // console.log(newArray);
+                return newArray;
             },
             postFilterData : function () {
                 var filterdata = {

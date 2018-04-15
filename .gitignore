@@ -73,6 +73,7 @@ package-lock.json
 
 uploads/
 uploads_temp/
+config/*
 config/*.json
 config/db.js
 config/session.js

@@ -1,30 +1,29 @@
-v-flex(xs12='', sm12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'")
-    .headline 수령하지 않은 물품
-    v-divider.my-2
+v-flex(xs12, container, fill-height, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
+    v-container(fluid, grid-list-md, style="overflow:visible")
+        v-layout(wrap, style="overflow:visible")
+            v-flex.text-xs-center.pb-1(xs12, justify-center, align-center)
+                p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') WFA 수거하지 않은 품목
+                span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'")
 
-v-flex.pt-0(xs12='', sm12='', container='')
-    // tabs의 높이 조절, 배경 투명화, slider 제거
-    v-tabs(height='500px', color='transparent', slider-color='none', prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
-        // -tab에 있는 카드 사이의 간격 조절
-        v-tab.pr-0(xs12='', style='margin: 0 10px;', v-for='item in WFAs', v-bind='{ [`sm3`]: true }')
-            include manage_card
-//vcard-title.pa-0
-//    v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
-//        v-layout(wrap)
-//            v-flex(xs12, sm6, md6, lg4 v-for="item in WFAs", :key="item.id", v-model='WFAs')
+            v-flex.pt-3.mt-3(xs12, container, style="overflow:visible", :class="$vuetify.breakpoint.xsOnly ? '' : 'mx-3' ", v-if="WFAs.length > 0")
+                v-carousel.elevation-0.jumbotron-overlay(hide-delimiters, style="overflow:visible", dark)
+                    v-carousel-item.elevation-0(v-for='(array,i) in splitArray(WFAs)', :key='i', style="overflow:visible")
+                        v-layout
+                            //v-flex(d-inline-flex)
+                            v-flex(v-for="(item, index) in array", :key='index', xs12, sm6, md4, lg3)
+                                include index_card_item
 
-v-flex(xs12='', sm12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'mt-4 mx-0 pa-1 px-3' : 'mt-4 mx-5 pa-1 px-3'")
-    .headline 요청이 발생한 품목
-    v-divider.my-2
+v-flex(xs12, container, fill-height, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
+    v-container(fluid, grid-list-md, style="overflow:visible")
+        v-layout(wrap, style="overflow:visible")
+            v-flex.text-xs-center.pb-1(xs12, justify-center, align-center)
+                p(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'headline deep-orange--text text--darken-3 mb-0' : 'deep-orange--text text--darken-3 mb-0'", style='font-weight: bold; font-size: 230%;') WFRQ 장기간 미수령 품목
+                span(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'body-2' : 'subheading'")
 
-//vcard-title.pa-0
-//    v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
-//        v-layout(wrap)
-//            v-flex(xs12, sm6, md6, lg4 v-for="item in WFRQs", :key="item.id", v-model='WFRQs')
-//                include card_item
-v-flex.pt-0(xs12='', sm12='', container='')
-    // tabs의 높이 조절, 배경 투명화, slider 제거
-    v-tabs(height='500px', color='transparent', slider-color='none', prev-icon='keyboard_arrow_left', next-icon='keyboard_arrow_right')
-        // -tab에 있는 카드 사이의 간격 조절
-        v-tab.pr-0(xs12='', style='margin: 0 10px;', v-for='item in WFRQs', v-bind='{ [`sm3`]: true }')
-            include manage_card
+            v-flex.pt-3.mt-3(xs12, container, style="overflow:visible", :class="$vuetify.breakpoint.xsOnly ? '' : 'mx-3' ", v-if="WFRQs.length > 0")
+                v-carousel.elevation-0.jumbotron-overlay(hide-delimiters, style="overflow:visible", dark)
+                    v-carousel-item.elevation-0(v-for='(array,i) in splitArray(WFRQs)', :key='i', style="overflow:visible")
+                        v-layout
+                            //v-flex(d-inline-flex)
+                            v-flex(v-for="(item, index) in array", :key='index', xs12, sm6, md4, lg3)
+                                include index_card_item

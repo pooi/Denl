@@ -12,6 +12,22 @@
     font-weight: 500;
 }
 
+@font-face {
+    font-family: "day";
+    src: url(/stylesheets/day.ttf);
+}
+
+/*등록 소개 섹션_ 폰트 설정*/
+.dal-header {
+    font-family: 'day', sans-serif;
+}
+
+.dal-header-title {
+    font-family: 'day', sans-serif;
+    font-weight: bold;
+    font-size: 230%;
+}
+
 .dialog{
     border-radius: 20px !important;
 }
@@ -153,6 +169,35 @@
     box-shadow: 0 2px 10px -4px rgba(0,0,0,.59) !important;
 }
 
+.dal-small-card-scale {
+    border-radius: 10px !important;
+    -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
+    box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
+
+    -webkit-transition: all 200ms ease-in !important;
+    -webkit-transform: scale(1) !important;
+    -ms-transition: all 200ms ease-in !important;
+    -ms-transform: scale(1) !important;
+    -moz-transition: all 200ms ease-in !important;
+    -moz-transform: scale(1) !important;
+    transition: all 200ms ease-in !important;
+    transform: scale(1) !important;
+}
+
+.dal-small-card-scale:hover{
+    -webkit-box-shadow: 0 2px 10px -4px rgba(0,0,0,.59) !important;
+    box-shadow: 0 2px 10px -4px rgba(0,0,0,.59) !important;
+
+    -webkit-transition: all 200ms ease-in !important;
+    -webkit-transform: scale(0.95) !important;
+    -ms-transition: all 200ms ease-in !important;
+    -ms-transform: scale(0.95) !important;
+    -moz-transition: all 200ms ease-in !important;
+    -moz-transform: scale(0.95) !important;
+    transition: all 200ms ease-in !important;
+    transform: scale(0.95) !important;
+}
+
 .dal-image-card {
     border-radius: 20px !important;
     -webkit-box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
@@ -250,4 +295,75 @@
     /*padding-bottom: 50px;*/
     padding-bottom: env(safe-area-inset-bottom);
     padding-bottom: constant(safe-area-inset-bottom);
+}
+
+.mobile-full-section-height {
+    max-height: calc(100vh - 48px);
+    /*height: calc(100vh - 48px) !important;*/
+    height: calc(100vh - (48px + env(safe-area-inset-bottom))) !important;
+    height: calc(100vh - (48px + constant(safe-area-inset-bottom))) !important;
+}
+
+
+/* Animation */
+
+
+@-webkit-keyframes jump {
+    0%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    20%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    40%{
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
+    50%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    60%{
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
+    }
+    80%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes jump {
+    0%{
+        transform: translateY(0);
+    }
+    20%{
+        transform: translateY(0);
+    }
+    40%{
+        transform: translateY(-15px);
+    }
+    50%{
+        transform: translateY(0);
+    }
+    60%{
+        transform: translateY(-5px);
+    }
+    80%{
+        transform: translateY(0);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+
+.jump {
+    -webkit-animation: jump 1.5s ease 0s infinite normal ;
+    animation: jump 1.5s ease 0s infinite normal ;
 }

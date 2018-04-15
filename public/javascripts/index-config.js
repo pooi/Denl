@@ -35,7 +35,10 @@ function init(init_category) {
             recentItems: [],
             e1: 'home',
             recentModel: 0,
-            recentSteps: []
+            recentSteps: [],
+
+            ctx: null,
+            myChart : null
 
         },
         methods:{
@@ -58,6 +61,18 @@ function init(init_category) {
                     this.scrollData.scrollT = 0;
                     this.scrollData.offsetTop = 0;
                 }
+            },
+            goRecent: function () {
+                var offset = 40;
+                if(this.__proto__.$vuetify.breakpoint.smAndDown)
+                    offset = 0;
+
+                $('html, body').animate({
+                    scrollTop: $('#recent').offset().top - offset
+                }, 500);
+            },
+            vueIsAdmin: function () {
+                return isAdmin();
             },
             getMsg:function () {
                 getMsg();
@@ -189,6 +204,9 @@ function init(init_category) {
             function () {
                 this.categoryData = JSON.parse(init_category);
                 console.log("category: ", this.categoryData);
+            },
+            function () {
+                this.createChart();
             },
             function () {
                 var data = {};

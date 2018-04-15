@@ -23,6 +23,7 @@ module.exports = function (app) {
 
     app.use(session(sessionData));
 
+    var msgSQL = "INSERT INTO msg(user_id, title, content, date) VALUES({0}, '{1}', '{2}', '{3}');";
 
     router.post('/sejong', function (req, res, next) {
 
@@ -108,6 +109,9 @@ module.exports = function (app) {
                                     data.status = 'success';
                                     req.session.userData = data;
                                     // console.log('session: ', req.session);
+
+
+
                                     req.session.save(function () {
                                         res.send(req.session.userData);
                                     });

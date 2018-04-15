@@ -168,7 +168,14 @@ router.post('/recent', function (req, res) {
 router.post('/search', function (req, res) {
 
     var data = req.body;
-    console.log(data);
+
+    var isRequireLimit = false;
+    var numOfItem = 10;
+    var page = 0;
+    if(data.hasOwnProperty('page')){
+        page = data.page - 1;
+        isRequireLimit = true;
+    }
 
     var sql = "SELECT * FROM lost";
     var conditions = [];
@@ -279,7 +286,13 @@ router.post('/search', function (req, res) {
             sql += " AND";
         }
     }
-    sql +=  " ORDER BY id DESC;";
+
+    if(isRequireLimit){
+        var limit = " LIMIT " + (page * numOfItem) + ", " + numOfItem;
+        sql +=  " ORDER BY id DESC " + limit + ";";
+    }else{
+        sql +=  " ORDER BY id DESC;";
+    }
 
     console.log(sql);
 

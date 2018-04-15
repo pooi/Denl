@@ -22,6 +22,17 @@ function init(init_category) {
             categoryData: null,
             searchItems: [],
             searchSnackbar : false,
+
+            loadMoreData: {
+                loadStep: 3,
+                page: 1,
+                isLoadMore: false,
+                isBtnLoadMore: false,
+                numOfItem: 10,
+                isLoadFinish: false
+            },
+
+
             category: null,
             subcategory: null,
             categoryDialog: false,
@@ -84,6 +95,12 @@ function init(init_category) {
                     this.scrollData.isShowFabTop = false;
                     this.scrollData.scrollT = 0;
                     this.scrollData.offsetTop = 0;
+                }
+
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 400 && !this.loadMoreData.isLoadFinish && !this.loadMoreData.isLoadMore && this.loadMoreData.page % this.loadMoreData.loadStep != 0) {
+                    // console.log('load more2');
+                    this.loadMoreData.isLoadMore = true;
+                    this.loadMore();
                 }
             },
             getMsg:function () {
@@ -212,6 +229,11 @@ function init(init_category) {
 
             },
             resetFilterItem: function () {
+                this.category = null;
+                this.subcategory = null;
+                this.selectedBuilding = null;
+                this.selectedRoom = null;
+                this.searchTags = [];
                 this.dcv_filter_item = {
                     isAllday: true,
                     startModal: false,
@@ -232,8 +254,20 @@ function init(init_category) {
                 }
             },
             search: function(showSnackbar){
+                // console.log("search");
+
+                this.loadMoreData = {
+                    loadStep: 3,
+                    page: 1,
+                    isLoadMore: false,
+                    isBtnLoadMore: false,
+                    numOfItem: 10,
+                    isLoadFinish: false
+                };
+
                 this.searchSnackbar = false;
                 var data = {
+                    page: this.loadMoreData.page,
                     category: this.category === null ? "" : this.category,
                     subcategory: this.subcategory === null ? "" : this.subcategory,
                     dcv_filter_item: this.dcv_filter_item,
@@ -242,7 +276,7 @@ function init(init_category) {
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
                     tags: this.searchTags
                 };
-                console.log(data);
+                // console.log(data);
 
                 axios.post(
                     '/search',
@@ -250,7 +284,7 @@ function init(init_category) {
                 ).then(function (response) {
                     var res = response;
                     var data = res.data;
-                    console.log("data: ", data);
+                    // console.log("data: ", data);
                     vue.searchItems = [];
                     vue.searchItems = vue.searchItems.concat(data);
                     vue.searchSnackbar = showSnackbar;
@@ -260,6 +294,53 @@ function init(init_category) {
                     // vue.isFilterProgress = false;
                 });
 
+            },
+            loadMore: function () {
+                // console.log("load more");
+
+                this.loadMoreData.isLoadMore = true;
+                this.loadMoreData.isBtnLoadMore = false;
+                this.loadMoreData.page += 1;
+
+                this.searchSnackbar = false;
+                var data = {
+                    page: this.loadMoreData.page,
+                    category: this.category === null ? "" : this.category,
+                    subcategory: this.subcategory === null ? "" : this.subcategory,
+                    dcv_filter_item: this.dcv_filter_item,
+                    rgt_filter_item: this.rgt_filter_item,
+                    building: this.selectedBuilding === null ? "" : this.selectedBuilding,
+                    room: this.selectedRoom === null ? "" : this.selectedRoom,
+                    tags: this.searchTags
+                };
+
+                axios.post(
+                    '/search',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.searchItems = vue.searchItems.concat(data);
+
+                    if(data.length == 0){
+                        // console.log("data.length true");
+                        vue.loadMoreData.isLoadFinish = true;
+                        vue.loadMoreData.isLoadMore = false;
+                        vue.loadMoreData.isBtnLoadMore = false;
+                    }else{
+                        // console.log("data.length false");
+                        vue.loadMoreData.isLoadMore = false;
+                        vue.loadMoreData.isBtnLoadMore = (vue.loadMoreData.page % vue.loadMoreData.loadStep == 0);
+                    }
+
+                    // if(vue.page % vue.loadStep == 0){
+                    //     vue.isBtnLoadMore = true;
+                    // }else{
+                    //     vue.isBtnLoadMore = false;
+                    // }
+                }).catch(function (error) {
+                    alert(error);
+                });
             }
         },
         mounted: [
@@ -280,7 +361,7 @@ function init(init_category) {
             },
             function () {
                 this.categoryData = JSON.parse(init_category);
-                console.log("category: ", this.categoryData);
+                // console.log("category: ", this.categoryData);
             },
             function () {
                 this.search(false);
