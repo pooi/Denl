@@ -23,7 +23,7 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
             v-card-text.title.pb-0.mt-5 전체 유실물 통계
             v-layout.px-3(xs12, wrap, justify-center, align-center)
                 v-flex.pa-3(xs12)
-                    canvas(id="totalChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+                    canvas(id="totalChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawTotalChart')
 
             v-card-text.title.pb-0.mt-5 유실물 추이
             v-layout.px-3(xs12, wrap, justify-center, align-center)
@@ -34,8 +34,8 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
 script.
     $(document).ready(function () {
         vue.getWeekData();
+        vue.getTotalData();
         drawMonthlyChart();
-        drawtotalChart();
         drawtrendChart();
     });
 
@@ -62,38 +62,6 @@ script.
                         'rgba(54, 162, 235, 1)',
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            }
-        });
-    }
-
-    function drawtotalChart() {
-        const ctx = document.getElementById("totalChart");
-
-        const totalChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
                         'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, 1)'
                     ],

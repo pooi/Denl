@@ -97,7 +97,15 @@ function init(WFA, WFRQ, init_category, WFL) {
                         labels: [],
                         data: []
                     }
-                }
+                },
+                totalChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    }
+                },
 
             }
         },
@@ -228,7 +236,7 @@ function init(WFA, WFRQ, init_category, WFL) {
                     var data = res.data;
                     vue.statisticsData.weekChartData.item = data;
                     vue.statisticsData.weekChartData.isDraw = false;
-                    // vue.drawWeekChart();
+                    vue.drawWeekChart();
                 }).catch(function (error) {
                     alert(error);
                 });
@@ -241,7 +249,7 @@ function init(WFA, WFRQ, init_category, WFL) {
                     var data = res.data;
                     vue.statisticsData.weekCategoryChartData.item = data;
                     vue.statisticsData.weekCategoryChartData.isDraw = false;
-                    // vue.drawWeekCategoryChart();
+                    vue.drawWeekCategoryChart();
                 }).catch(function (error) {
                     alert(error);
                 });
@@ -311,7 +319,65 @@ function init(WFA, WFRQ, init_category, WFL) {
                         }
                     }
                 });
-            }
+            },
+            getTotalData: function () {
+                var data = {};
+
+                axios.post(
+                    '/statistics/totalSubcategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.totalChartData.item = data;
+                    vue.statisticsData.totalChartData.isDraw = false;
+                    vue.drawTotalChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+
+            },
+            drawTotalChart: function () {
+                if(this.statisticsData.totalChartData.chart == null){
+                    this.statisticsData.totalChartData.ctx = document.getElementById("totalChart");
+                }else{
+                    this.statisticsData.totalChartData.chart.destroy();
+                }
+                this.statisticsData.totalChartData.chart = new Chart(this.statisticsData.totalChartData.ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: vue.statisticsData.totalChartData.item.labels,
+                        datasets: [{
+                            label: 'Subcategory',
+                            data: vue.statisticsData.totalChartData.item.data,
+                            backgroundColor: pastelColors,
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                            position: 'right'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    stepSize: 1
+                                }
+                            }]
+                        }
+                    }
+                });
+            },
         },
         created : function(){
             this.WFAs = JSON.parse(WFA);
