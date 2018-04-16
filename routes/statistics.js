@@ -89,7 +89,12 @@ router.post('/dailySubcategory', function (req, res) {
 
         var data = req.body;
 
-        var startDate = getTodayMsWithoutTime() - oneDayMs * 7; // 일주일 전
+        var period = 7;
+        if(data.hasOwnProperty('period')){
+            period = data.period;
+        }
+
+        var startDate = getTodayMsWithoutTime() - oneDayMs * period; // 일주일 전
         if(data.hasOwnProperty('start')){
             startDate = data.start;
         }
@@ -161,7 +166,12 @@ router.post('/dailyCategory', function (req, res) {
 
         var data = req.body;
 
-        var startDate = getTodayMsWithoutTime() - oneDayMs * 7; // 일주일 전
+        var period = 7;
+        if(data.hasOwnProperty('period')){
+            period = data.period;
+        }
+
+        var startDate = getTodayMsWithoutTime() - oneDayMs * period; // 일주일 전
         if(data.hasOwnProperty('start')){
             startDate = data.start;
         }
