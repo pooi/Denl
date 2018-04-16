@@ -1,6 +1,9 @@
 
 function init(WFA, WFRQ, init_category, WFL) {
 
+    Vue.use(VueObserveVisibility);
+    Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
+
     var vue = new Vue({
         el: '#app',
         data: {
@@ -77,6 +80,32 @@ function init(WFA, WFRQ, init_category, WFL) {
                 return text.toString()
                     .toLowerCase()
                     .indexOf(query.toString().toLowerCase()) > -1
+            },
+            statisticsData: {
+                weekChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    }
+                },
+                weekCategoryChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    }
+                },
+                totalChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    }
+                }
             }
         },
         methods: {
@@ -187,7 +216,7 @@ function init(WFA, WFRQ, init_category, WFL) {
                     this.scrollData.offsetTop = 0;
                 }
             },
-            getMsg: function () {
+            getMsg:function () {
                 getMsg();
             },
             setMsgRead: function (msg) {
@@ -253,6 +282,159 @@ function init(WFA, WFRQ, init_category, WFL) {
                         console.log(err.message);
                     }
                 })
+            },
+            getWeekData: function () {
+                var data = {};
+
+                axios.post(
+                    '/statistics/dailySubcategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.weekChartData.item = data;
+                    vue.statisticsData.weekChartData.isDraw = false;
+                    vue.drawWeekChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+
+                axios.post(
+                    '/statistics/dailyCategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.weekCategoryChartData.item = data;
+                    vue.statisticsData.weekCategoryChartData.isDraw = false;
+                    vue.drawWeekCategoryChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+            },
+            drawWeekChart: function () {
+                if(this.statisticsData.weekChartData.chart == null){
+                    this.statisticsData.weekChartData.ctx = document.getElementById("weekChart");
+                }else{
+                    this.statisticsData.weekChartData.chart.destroy();
+                }
+
+                this.statisticsData.weekChartData.chart = new Chart(this.statisticsData.weekChartData.ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: vue.statisticsData.weekChartData.item.labels,
+                        datasets: [{
+                            label: 'Subcategory',
+                            data: vue.statisticsData.weekChartData.item.data,
+                            backgroundColor: pastelColors,
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                });
+
+            },
+            drawWeekCategoryChart: function () {
+                if(this.statisticsData.weekCategoryChartData.chart == null){
+                    this.statisticsData.weekCategoryChartData.ctx = document.getElementById("weekCategoryChart");
+                }else{
+                    this.statisticsData.weekCategoryChartData.chart.destroy();
+                }
+                this.statisticsData.weekCategoryChartData.chart = new Chart(this.statisticsData.weekCategoryChartData.ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: vue.statisticsData.weekCategoryChartData.item.labels,
+                        datasets: [{
+                            label: 'Category',
+                            data: vue.statisticsData.weekCategoryChartData.item.data,
+                            backgroundColor: pastelColors,
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                });
+            },
+            getTotalData: function () {
+                var data = {};
+
+                axios.post(
+                    '/statistics/totalSubcategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.totalChartData.item = data;
+                    vue.statisticsData.totalChartData.isDraw = false;
+                    vue.drawTotalChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+
+            },
+            drawTotalChart: function () {
+                if(this.statisticsData.totalChartData.chart == null){
+                    this.statisticsData.totalChartData.ctx = document.getElementById("totalChart");
+                }else{
+                    this.statisticsData.totalChartData.chart.destroy();
+                }
+                this.statisticsData.totalChartData.chart = new Chart(this.statisticsData.totalChartData.ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: vue.statisticsData.totalChartData.item.labels,
+                        datasets: [{
+                            label: 'Subcategory',
+                            data: vue.statisticsData.totalChartData.item.data,
+                            backgroundColor: pastelColors,
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                            position: 'right'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    stepSize: 1
+                                }
+                            }]
+                        }
+                    }
+                });
             }
         },
         created : function(){

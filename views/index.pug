@@ -153,10 +153,14 @@ block content
                         // style="color: #D84315;"
                         span.subheading 유실물들의 통계 그래프입니다
                 v-layout.px-3(xs12, wrap, justify-center, align-center)
-                    v-flex.pa-3(xs12, sm6)
-                        canvas(id="myChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
-                    v-flex.pa-3(xs12, sm6)
-                        canvas(id="myChart2", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+                    v-flex.text-xs-center(xs12)
+                        .subheading.my-3() 최근 30일 유실물 통계
+                    v-flex.pa-3.text-xs-center(xs12, sm6)
+                        .subheading.my-3 카테고리별
+                        canvas(id="weekCategoryChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekCategoryChart')
+                    v-flex.pa-3.text-xs-center(xs12, sm6)
+                        .subheading.my-3 세부카테고리별 Top 5
+                        canvas(id="weekChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekChart')
 
 
         // ######## 등록 설명 ########
@@ -264,38 +268,38 @@ block content
 
     script.
         $(document).ready(function () {
-            console.log("createChart");
-            const ctx = document.getElementById("myChart");
+            // console.log("createChart");
+            // const ctx = document.getElementById("myChart");
             const ctx2 = document.getElementById("myChart2");
-            console.log("ctx:", ctx);
-            const myChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ["Red", "Blue", "Yellow"],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {}
-            });
+            // console.log("ctx:", ctx);
+            // const myChart = new Chart(ctx, {
+            //     type: 'pie',
+            //     data: {
+            //         labels: ["Red", "Blue", "Yellow"],
+            //         datasets: [{
+            //             label: '# of Votes',
+            //             data: [12, 19, 3],
+            //             backgroundColor: [
+            //                 'rgba(255, 99, 132, 1)',
+            //                 'rgba(54, 162, 235, 1)',
+            //                 'rgba(255, 206, 86, 1)',
+            //                 'rgba(75, 192, 192, 1)',
+            //                 'rgba(153, 102, 255, 1)',
+            //                 'rgba(255, 159, 64, 1)'
+            //             ],
+            //             borderColor: [
+            //                 'rgba(255,99,132,1)',
+            //                 'rgba(54, 162, 235, 1)',
+            //                 'rgba(255, 206, 86, 1)',
+            //                 'rgba(75, 192, 192, 1)',
+            //                 'rgba(153, 102, 255, 1)',
+            //                 'rgba(255, 159, 64, 1)'
+            //             ],
+            //             borderWidth: 1
+            //         }]
+            //     },
+            //     options: {}
+            // });
 
             const myChart2 = new Chart(ctx2, {
                 type: 'line',
@@ -326,6 +330,10 @@ block content
             });
         });
 
+    script.
+        $(document).ready(function () {
+            vue.getWeekData();
+        });
 
     script.
         /*######## **초 뒤에 화면에 나타나는 기능 ########*/
@@ -342,15 +350,6 @@ block content
                 scrollTop: $("#introduce_register").offset().top
             }, 2000);
         });
-        /*clearTimeout(myTimer);*/
-        <!--######## mouse over= 버튼 생성, mouseout= 버튼 사라짐 ########-->
-        // function mouseover() {
-        //     document.getElementById('register_btn').style.display = 'block';
-        //     /*document.getElementById('register_btn').style.display = 'none';*/
-        // }
-        // function mouseout() {
-        //     document.getElementById('register_btn').style.display = 'none';
-        // }
 
     script(type="text/javascript" src='/javascripts/index-config.js')
     script.

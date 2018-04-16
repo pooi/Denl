@@ -39,6 +39,40 @@ router.get('/', function (req, res) {
     res.render('404', {userData: JSON.stringify(req.session.userData)});
 });
 
+router.post('/totalSubcategory', function (req, res) {
+
+    var sql = "SELECT B.ko as label, count(*) as data " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "SELECT name, ko, en FROM category " +
+        ") as B on (A.subcategory = B.name) " +
+        "GROUP BY label ORDER BY data DESC, label ASC;";
+
+    console.log(sql);
+
+    conn.query(sql, [], function(err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+
+            var labels = [];
+            var data = [];
+            for(var i=0; i<results.length; i++){
+                var result = results[i];
+                labels.push(result.label);
+                data.push(result.data);
+            }
+            var newData = {
+                labels: labels,
+                data: data
+            };
+
+            res.send(newData);
+        }
+    });
+
+});
 
 router.post('/dailySubcategory', function (req, res) {
 
@@ -55,7 +89,12 @@ router.post('/dailySubcategory', function (req, res) {
 
         var data = req.body;
 
-        var startDate = getTodayMsWithoutTime() - oneDayMs * 7; // 일주일 전
+        var period = 7;
+        if(data.hasOwnProperty('period')){
+            period = data.period;
+        }
+
+        var startDate = getTodayMsWithoutTime() - oneDayMs * period; // 일주일 전
         if(data.hasOwnProperty('start')){
             startDate = data.start;
         }
@@ -127,7 +166,12 @@ router.post('/dailyCategory', function (req, res) {
 
         var data = req.body;
 
-        var startDate = getTodayMsWithoutTime() - oneDayMs * 7; // 일주일 전
+        var period = 7;
+        if(data.hasOwnProperty('period')){
+            period = data.period;
+        }
+
+        var startDate = getTodayMsWithoutTime() - oneDayMs * period; // 일주일 전
         if(data.hasOwnProperty('start')){
             startDate = data.start;
         }
