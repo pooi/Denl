@@ -95,28 +95,28 @@ v-dialog(v-model='loginData.infoDialog', :fullscreen='$vuetify.breakpoint.xsOnly
                 v-btn(color='red', flat, onClick='logout()') Logout
 
         //v-divider( v-if='loginData.user !== null')
-        v-list.mb-5(three-line='', subheader='')
-            v-subheader.py-0.pb-1.my-0.brown.lighten-5(style='height: auto;') General
-            v-list-tile(avatar='')
-                v-list-tile-action
-                    v-checkbox(v-model='notifications')
-                v-list-tile-content
-                    v-list-tile-title Notifications
-                    v-list-tile-sub-title Notify me about updates to apps or games that I downloaded
-            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
-            v-list-tile(avatar='')
-                v-list-tile-action
-                    v-checkbox(v-model='sound')
-                v-list-tile-content
-                    v-list-tile-title Sound
-                    v-list-tile-sub-title Auto-update apps at any time. Data charges may apply
-            //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
-            v-list-tile(avatar='')
-                v-list-tile-action
-                    v-checkbox(v-model='widgets')
-                v-list-tile-content
-                    v-list-tile-title Auto-add widgets
-                    v-list-tile-sub-title Automatically add home screen widgets
+        //v-list.mb-5(three-line='', subheader='')
+        //    v-subheader.py-0.pb-1.my-0.brown.lighten-5(style='height: auto;') General
+        //    v-list-tile(avatar='')
+        //        v-list-tile-action
+        //            v-checkbox(v-model='notifications')
+        //        v-list-tile-content
+        //            v-list-tile-title Notifications
+        //            v-list-tile-sub-title Notify me about updates to apps or games that I downloaded
+        //    //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+        //    v-list-tile(avatar='')
+        //        v-list-tile-action
+        //            v-checkbox(v-model='sound')
+        //        v-list-tile-content
+        //            v-list-tile-title Sound
+        //            v-list-tile-sub-title Auto-update apps at any time. Data charges may apply
+        //    //v-divider.my-0.ml-3.mr-0(inset, style='width:100%;')
+        //    v-list-tile(avatar='')
+        //        v-list-tile-action
+        //            v-checkbox(v-model='widgets')
+        //        v-list-tile-content
+        //            v-list-tile-title Auto-add widgets
+        //            v-list-tile-sub-title Automatically add home screen widgets
 
         v-list.brown.lighten-5.bottom-safe-area-padding(three-line='', subheader='')
 
