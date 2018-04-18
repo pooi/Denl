@@ -6,12 +6,28 @@ v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync
         v-btn.py-2(flat='', color='deep-orange darken-3', value='find', href='/find')
             //span.caption Favorites
             v-icon.ma-0 search
+        v-btn.py-2.btn--active.dal-small-card(color='deep-orange darken-3', :value='bottomTab', dark, style='background-color: #ff5722!important', @click='oneClick_browseClick()')
+            //span.caption Nearby
+            v-icon.ma-0 camera_alt
         v-btn.py-2(flat='', color='deep-orange darken-3', value='lost', href='/lost')
             //span.caption Nearby
             v-icon.ma-0 cloud_upload
         v-btn.py-2(flat='', color='deep-orange darken-3', value='manage', href='/manage')
             //span.caption Nearby
-            v-icon.ma-0 camera_alt
-        //v-flex(xs12, style="height:20px;")
-    //div(style="width: 100%; height: 20px;")
+            v-icon.ma-0 build
+
+
+v-dialog.md6(v-model='oneClickData.dialog',  scrollable, max-width='500px')
+    v-card
+        v-card-text.subheading.deep-orange.darken-3.white--text.text-xs-center.py-2(icon) 간편 유실물 등록
+        v-card-text.pa-2
+            form(action='/lost' method='post' enctype="multipart/form-data", id='image-form')
+                input(id='file', type='file', name='file', @change='oneClick_imageChange()', accept="image/*" style='display: none;')
+                v-layout(xs12, align-center)
+                    v-flex(xs12, text-xs-center)
+                        img.dal-image-card(:src='oneClickData.imgSrc', id='uploaded-img', width='50%', v-if='oneClickData.isFile')
+        v-card-actions
+            v-spacer
+            v-btn(color='success', flat, @click="oneClick_reset()") 취소
+            v-btn(color='info', flat, ) 제출
 

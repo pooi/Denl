@@ -28,6 +28,12 @@ function init(init_category) {
             moreBtn: null,
             categoryData: null,
             bottomTab: "home",
+            oneClickData: {
+                dialog: false,
+                imgSrc: null,
+                ifFile: false,
+                isProgress: false
+            },
 
             shareSheet: false,
             shareItem: null,
@@ -343,6 +349,45 @@ function init(init_category) {
                         vue.statisticsData.weekChartData.bg.style.visibility = 'visible';
                     vue.drawWeekChart()
                 },1000);
+            },
+
+
+            oneClick_reset: function () {
+                this.oneClickData = {
+                    dialog: false,
+                    imgSrc: null,
+                    ifFile: false,
+                    isProgress: false
+                }
+            },
+            oneClick_browseClick: function () {
+                var inputFile = document.getElementById('file')
+                inputFile.click()
+            },
+            oneClick_removeFile: function () {
+                this.domEleArray[1] = this.domEleArray[0].clone(true); // 쌔거(0번) -> 복사(1번)
+                $('#file').replaceWith(this.domEleArray[1]);
+                $("#file").change(function () {
+                    vue.imageChange()
+                });
+                this.oneClickData.isFile = false
+            },
+            oneClick_imageChange: function () {
+                var inputFile = document.getElementById('file')
+
+                var reader = new FileReader();
+                reader.onload = function () {
+                    // $('#uploaded-img').attr('src', reader.result);
+                    vue.oneClickData.imgSrc = reader.result;
+                    vue.oneClickData.dialog = true;
+                }
+                reader.readAsDataURL(inputFile.files[0]);
+                this.oneClickData.isFile = true
+            },
+            oneClick_uploadImage: function (e) {
+                vue.oneClickData.isProgress = true
+                var form = document.getElementById('image-form')
+                form.submit()
             }
         },
         mounted:[
