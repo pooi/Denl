@@ -72,6 +72,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             msgData:{
             },
             bottomTab: "manage",
+            oneClick: new OneClick(this),
             todayDate: null,
             customFilter (item, queryText, itemText) {
                 const hasValue = val => val != null ? val : ''

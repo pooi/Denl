@@ -18,6 +18,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             msgData:{
             },
             bottomTab: "lost",
+            oneClick: new OneClick(this),
             imgSrc: '',
             domEleArray: null,
             isFile: false,

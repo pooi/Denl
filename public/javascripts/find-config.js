@@ -18,6 +18,7 @@ function init(init_category) {
             msgData:{
             },
             bottomTab: "find",
+            oneClick: new OneClick(this),
             todayDate: null,
             categoryData: null,
             searchItems: [],

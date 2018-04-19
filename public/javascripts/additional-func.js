@@ -1,4 +1,132 @@
 
+
+class OneClick {
+    constructor(vue) {
+        this.vue = vue;
+        this.data = {
+            dialog: false,
+            imgSrc: null,
+            ifFile: false,
+            isTagProgress: false,
+            isRecognitionProgress: false,
+
+            tags: [],
+            selectedTags: []
+        };
+    }
+
+    reset () {
+        this.data = {
+            dialog: false,
+            imgSrc: null,
+            ifFile: false,
+            isTagProgress: false,
+            isRecognitionProgress: false,
+
+            tags: [],
+            selectedTags: []
+        }
+    }
+
+    browseClick () {
+        var inputFile = document.getElementById('file')
+        inputFile.click()
+    }
+
+    removeFile () {
+        var oneClick = this;
+        this.domEleArray[1] = this.domEleArray[0].clone(true); // 쌔거(0번) -> 복사(1번)
+        $('#file').replaceWith(this.domEleArray[1]);
+        $("#file").change(function () {
+            oneClick.imageChange()
+        });
+        this.data.isFile = false
+    }
+
+    imageChange () {
+        var inputFile = document.getElementById('file');
+
+        var reader = new FileReader();
+        var oneClick = this;
+        reader.onload = function () {
+            // $('#uploaded-img').attr('src', reader.result);
+            oneClick.data.imgSrc = reader.result;
+            oneClick.data.dialog = true;
+            oneClick.uploadImage();
+        };
+        reader.readAsDataURL(inputFile.files[0]);
+        this.data.isFile = true
+    }
+
+    uploadImage () {
+        var oneClick = this;
+        this.data.isTagProgress = true;
+        // var form = document.getElementById('image-form');
+        // form.submit()
+
+        let data = new FormData();
+
+        var inputFile = document.getElementById('file');
+        data.append('file', inputFile.files.item(0));
+
+        // for (var i = 0; i < inputFile.files.length; i++) {
+        //     let file = inputFile.files.item(i);
+        //     data.append('images[' + i + ']', file, file.name);
+        // }
+        data.append('data_only', '1');
+
+        const config = {
+            headers: { 'content-type': 'multipart/form-data' }
+        };
+
+        console.log(data);
+
+        axios.post(
+            '/lost',
+            data,
+            config
+        ).then(function (response) {
+            var data = response.data;
+            oneClick.data.tags = [];
+            oneClick.data.selectedTags = [];
+            for(var i=0; i<data.logos.length; i++){
+                oneClick.data.tags.push(data.logos[i]);
+                oneClick.data.selectedTags.push(data.logos[i]);
+            }
+            for(var i=0; i<data.labels.length; i++){
+                oneClick.data.tags.push(data.labels[i]);
+                oneClick.data.selectedTags.push(data.labels[i]);
+            }
+            for(var i=0; i<data.texts.length; i++){
+                oneClick.data.tags.push(data.texts[i]);
+                oneClick.data.selectedTags.push(data.texts[i]);
+            }
+            oneClick.data.isTagProgress = false;
+            oneClick.recognitionImage();
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+
+        // return axios.post('/api/images', data, config)
+
+    }
+
+    recognitionImage (){
+        this.data.isRecognitionProgress = true;
+        console.log("recognitionImage");
+    }
+
+    changeSelectedTags (tag){
+        if(this.data.selectedTags.includes(tag) > 0){
+            this.data.selectedTags.splice(this.data.selectedTags.indexOf(tag), 1);
+        }else{
+            this.data.selectedTags.push(tag);
+        }
+        // console.log(this.selectedSuggestTag);
+    }
+}
+
 function getTodayMs(){
     var d = new Date();
     return d.getTime();

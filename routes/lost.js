@@ -60,6 +60,14 @@ router.post('/', upload.single('file'), function(req, res) {
     // console.log(req.file); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
     //Build the request payloads
 
+    var data = req.body;
+
+    var justData = false;
+    if(data){
+        justData = true;
+    }
+
+
     var d = requtil.createRequests().addRequest(
         requtil.createRequest(__dirname + '/../uploads_temp/' + req.file.filename)
         .withFeature('LABEL_DETECTION', 4)
@@ -176,17 +184,27 @@ router.post('/', upload.single('file'), function(req, res) {
                         en: result.en
                     })
                 }
-                // console.log(category);
-                res.render('lost', {
-                    userData: JSON.stringify(req.session.userData),
-                    image: req.file.filename,
-                    labels: labels,
-                    texts: texts,
-                    logos: logos,
-                    colors: JSON.stringify(colors),
-                    category: JSON.stringify(category),
-                    sju_buildings : JSON.stringify(front_buildings)
-                });
+
+                if(justData){
+                    res.send({
+                        image: req.file.filename,
+                        labels: labels,
+                        texts: texts,
+                        logos: logos,
+                        colors: colors
+                    });
+                }else{
+                    res.render('lost', {
+                        userData: JSON.stringify(req.session.userData),
+                        image: req.file.filename,
+                        labels: labels,
+                        texts: texts,
+                        logos: logos,
+                        colors: JSON.stringify(colors),
+                        category: JSON.stringify(category),
+                        sju_buildings : JSON.stringify(front_buildings)
+                    });
+                }
             });
 
         });
