@@ -63,9 +63,12 @@ router.post('/', upload.single('file'), function(req, res) {
     var data = req.body;
 
     var justData = false;
-    if(data){
+    if("data_only" in data){
         justData = true;
     }
+    // if(data){
+    //     justData = true;
+    // }
 
 
     var d = requtil.createRequests().addRequest(
@@ -191,7 +194,9 @@ router.post('/', upload.single('file'), function(req, res) {
                         labels: labels,
                         texts: texts,
                         logos: logos,
-                        colors: colors
+                        colors: colors,
+                        category: category,
+                        buildings : front_buildings
                     });
                 }else{
                     res.render('lost', {

@@ -10,8 +10,28 @@ class OneClick {
             isTagProgress: false,
             isRecognitionProgress: false,
 
+            categoryDialog: false,
+            categoryData: {},
+            category: null,
+            subcategory: null,
+            subcategories: [],
+
+            buildingData: null,
+
             tags: [],
-            selectedTags: []
+            selectedTags: [],
+            recognitionData: null,
+            recognitionDataHeaders: [
+                {
+                    text: '카테고리',
+                    value: 'title'
+                },
+                {
+                    text: '정확도 (%)',
+                    align: 'right',
+                    value: 'accuracy'
+                }
+            ]
         };
     }
 
@@ -23,28 +43,48 @@ class OneClick {
             isTagProgress: false,
             isRecognitionProgress: false,
 
+            categoryDialog: false,
+            categoryData: {},
+            category: null,
+            subcategory: null,
+            subcategories: [],
+
+            buildingData: null,
+
             tags: [],
-            selectedTags: []
+            selectedTags: [],
+            recognitionData: null,
+            recognitionDataHeaders: [
+                {
+                    text: '카테고리',
+                    value: 'title'
+                },
+                {
+                    text: '정확도 (%)',
+                    align: 'right',
+                    value: 'accuracy'
+                }
+            ]
         }
     }
 
     browseClick () {
-        var inputFile = document.getElementById('file')
+        var inputFile = document.getElementById('oneClick_file')
         inputFile.click()
     }
 
     removeFile () {
         var oneClick = this;
         this.domEleArray[1] = this.domEleArray[0].clone(true); // 쌔거(0번) -> 복사(1번)
-        $('#file').replaceWith(this.domEleArray[1]);
-        $("#file").change(function () {
+        $('#oneClick_file').replaceWith(this.domEleArray[1]);
+        $("#oneClick_file").change(function () {
             oneClick.imageChange()
         });
         this.data.isFile = false
     }
 
     imageChange () {
-        var inputFile = document.getElementById('file');
+        var inputFile = document.getElementById('oneClick_file');
 
         var reader = new FileReader();
         var oneClick = this;
@@ -61,12 +101,13 @@ class OneClick {
     uploadImage () {
         var oneClick = this;
         this.data.isTagProgress = true;
+        this.data.isRecognitionProgress = true;
         // var form = document.getElementById('image-form');
         // form.submit()
 
         let data = new FormData();
 
-        var inputFile = document.getElementById('file');
+        var inputFile = document.getElementById('oneClick_file');
         data.append('file', inputFile.files.item(0));
 
         // for (var i = 0; i < inputFile.files.length; i++) {
@@ -87,6 +128,11 @@ class OneClick {
             config
         ).then(function (response) {
             var data = response.data;
+
+            oneClick.data.imgSrc = data.image;
+            oneClick.data.categoryData = data.category;
+            oneClick.data.buildingData = data.buildings;
+
             oneClick.data.tags = [];
             oneClick.data.selectedTags = [];
             for(var i=0; i<data.logos.length; i++){
@@ -113,8 +159,28 @@ class OneClick {
     }
 
     recognitionImage (){
+        var oneClick = this;
         this.data.isRecognitionProgress = true;
         console.log("recognitionImage");
+
+        var data = {
+            image: oneClick.data.imgSrc
+        };
+
+        axios.post(
+            '/lost/recognition',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            oneClick.data.isRecognitionProgress = false;
+            oneClick.data.recognitionData = data;
+            oneClick.changedCateogryFromResult(data[0]);
+            console.log("recognitionData: ", oneClick.data.recognitionData);
+        })
+            .catch(function (error) {
+                oneClick.data.isRecognitionProgress = false;
+                alert("이미지 인식에 실패하였습니다. 카테고리를 선택해주세요.");
+            });
     }
 
     changeSelectedTags (tag){
@@ -124,6 +190,72 @@ class OneClick {
             this.data.selectedTags.push(tag);
         }
         // console.log(this.selectedSuggestTag);
+    }
+
+    changedCateogryFromResult (item){
+        var title = item.title;
+        title = title.replace(" ", "_");
+        var keys = Object.keys(this.data.categoryData);
+        for(var i=0; i<keys.length; i++){
+            var key = keys[i];
+            var subcategories = this.data.categoryData[key]['subcategory'];
+            for(var j=0; j<subcategories.length; j++){
+                var subcategory = subcategories[j];
+                if(subcategory.name === title){
+                    this.data.subcategory = subcategory;
+                    this.data.subcategories = subcategories;
+                    this.data.category = this.data.categoryData[key];
+                    return;
+                }
+            }
+        }
+    }
+
+    getCategoryBreadcrumbs () {
+        var list = [];
+        if(this.data.category !== null){
+            list.push(this.data.category.ko);
+        }
+        if(this.data.subcategory !== null){
+            list.push(this.data.subcategory.ko);
+        }
+        return list;
+    }
+
+    getCategoryStringFromResult (title) {
+        title = title.replace(" ", "_");
+        var keys = Object.keys(this.data.categoryData);
+        for(var i=0; i<keys.length; i++){
+            var key = keys[i];
+            var subcategories = this.data.categoryData[key]['subcategory'];
+            for(var j=0; j<subcategories.length; j++){
+                var subcategory = subcategories[j];
+                if(subcategory.name === title){
+                    return this.data.categoryData[key].ko + " > " + subcategory.ko;
+                    // this.subcategory = subcategory;
+                    // this.subcategories = subcategories;
+                    // this.category = this.categoryData[key];
+                    // return;
+                }
+            }
+        }
+        return title;
+    }
+
+    changeSubCategories (key) {
+
+        if (this.data.categoryData.hasOwnProperty(key)) {
+            this.data.category = this.data.categoryData[key];
+            this.data.subcategory = null;
+            this.data.subcategories = this.data.category.subcategory;
+        }
+
+    }
+
+    isSameCategoryData (c1, c2) {
+        if(c1 === null ||c2 === null)
+            return false;
+        return c1.name == c2.name
     }
 }
 

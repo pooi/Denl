@@ -135,7 +135,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 this.isFile = true
             },
             uploadImage: function (e) {
-                vue.isProgress = true
+                vue.isProgress = true;
                 var form = document.getElementById('image-form')
                 form.submit()
             },

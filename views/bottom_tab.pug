@@ -17,28 +17,87 @@ v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync
             v-icon.ma-0 build
 
 
-v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='500px')
+v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', persistent)
     v-card
         v-card-text.subheading.deep-orange.darken-3.white--text.text-xs-center.py-2(icon) 간편 유실물 등록
         v-card-text.pa-2
-            form(action='/lost' method='post' enctype="multipart/form-data", id='image-form')
-                input(id='file', type='file', name='file', @change='oneClick.imageChange()', accept="image/*" style='display: none;')
+            //form(action='/lost' method='post' enctype="multipart/form-data", id='image-form')
+            input(id='oneClick_file', type='file', name='file', @change='oneClick.imageChange()', accept="image/*" style='display: none;')
             v-layout(xs12, align-center, wrap)
                 v-flex(xs12, text-xs-center)
                     img.dal-image-card(:src='oneClick.data.imgSrc', id='uploaded-img', width='50%', v-if='oneClick.data.isFile')
-                v-flex.text-xs-center.mt-3(xs12, v-if='oneClick.data.isTagProgress')
-                    .caption 관련된 태그를 인식 중입니다.
-                v-layout.mt-3(wrap, justify-center)
+                v-flex.mt-3(xs12)
+                    v-divider
+
+                v-flex.mt-3.text-xs-center(xs12, )
+                    .caption(v-if='oneClick.data.isTagProgress') 관련된 태그를 인식 중입니다.
+                    .caption(v-else) 연관태그
+                    v-progress-circular(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isTagProgress')
+                v-layout.mt-2(wrap, justify-center)
                     v-chip(v-for='tag in oneClick.data.tags', :class="oneClick.data.selectedTags.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='oneClick.data.selectedTags.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='oneClick.changeSelectedTags(tag)')
                         strong.title.mr-1 #
                         strong {{ tag }}
                     v-flex.text-xs-center(xs12, v-if='!oneClick.data.isTagProgress && oneClick.data.tags.length == 0')
                         .caption.grey--text 인식된 연관 태그가 없습니다.
-                v-flex.text-xs-center.mt-3(xs12, v-if='oneClick.data.isRecognitionProgress')
-                    .caption 카테고리를 인식 중입니다.
+                v-flex.mt-3(xs12)
+                    v-divider
+
                 v-flex.text-xs-center.mt-3(xs12)
-                    v-progress-circular(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isTagProgress || oneClick.data.isRecognitionProgress')
+                    .caption(v-if='oneClick.data.isRecognitionProgress') 카테고리를 인식 중입니다.
+                    .caption(v-else) 카테고리
+                    v-progress-circular(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isRecognitionProgress')
+                v-layout.mt-2(wrap, justify-center)
+                    v-breadcrumbs.pa-0.pr-2(v-if="oneClick.data.category != null", justify-center)
+                        v-icon(slot='divider') chevron_right
+                        v-breadcrumbs-item(v-for='item in oneClick.getCategoryBreadcrumbs()', :key='item')
+                            | {{ item }}
+                    v-flex.text-xs-center(xs12)
+                        v-btn(flat, small, color='grey', @click='oneClick.data.categoryDialog = true') 변경하기
+                    //v-flex.mt-2.rounded-expansion-panel(xs12)
+                    //    v-expansion-panel.elevation-0(v-if='oneClick.data.recognitionData != null', popout)
+                    //        v-expansion-panel-content
+                    //            div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
+                    //            v-data-table(:headers="oneClick.data.recognitionDataHeaders", :items='oneClick.data.recognitionData', hide-actions, disable-initial-sort)
+                    //                template(slot='items', slot-scope='props')
+                    //                    tr(@click="oneClick.changedCateogryFromResult(props.item);")
+                    //                        td {{oneClick.getCategoryStringFromResult(props.item.title)}}
+                    //                        td.text-xs-right {{props.item.accuracy}}%
+                v-flex.mt-3(xs12)
+                    v-divider
+
+
+
         v-card-actions
             v-spacer
             v-btn(color='success', flat, @click="oneClick.reset()") 취소
-            v-btn(color='info', flat, :disabled='!oneClick.data.isTagProgress && !oneClick.data.isRecognitionProgress') 제출
+            v-btn(color='info', flat, :disabled='oneClick.data.isTagProgress || oneClick.data.isRecognitionProgress') 제출
+
+v-dialog(v-model='oneClick.data.categoryDialog', max-width='500px')
+    v-card
+        v-card-title.headline 카테고리 선택
+        v-divider
+        v-card-text
+            v-layout(wrap)
+                v-layout.mr-1(xs6)
+                    v-flex(xs12)
+                        v-list(one-line)
+                            v-subheader Category 1
+                            template(v-for='(item, index) in Object.keys(oneClick.data.categoryData)')
+                                v-list-tile(avatar, @click='oneClick.changeSubCategories(item)', :key='item.name', :color="oneClick.isSameCategoryData(oneClick.data.category, oneClick.data.categoryData[item]) ? 'orange darken-2' : '' ")
+                                    v-list-tile-content
+                                        v-list-tile-title(v-html='oneClick.data.categoryData[item].ko', :class="oneClick.isSameCategoryData(oneClick.data.category, oneClick.data.categoryData[item]) ? 'title' : '' ")
+                                    v-list-tile-action
+                                        v-icon(:color="oneClick.isSameCategoryData(oneClick.data.category, oneClick.data.categoryData[item]) ? 'orange darken-2' : 'grey'") keyboard_arrow_right
+
+                v-layout.ml-1(xs6)
+                    v-flex(xs12)
+                        v-list(one-line)
+                            v-subheader Category 2
+                            template(v-for='(item, index) in oneClick.data.subcategories')
+                                v-list-tile(avatar, @click='oneClick.data.subcategory = item; oneClick.data.categoryDialog=false', :key='item.name', :color="oneClick.isSameCategoryData(oneClick.data.subcategory, item) ? 'orange darken-2' : '' ")
+                                    v-list-tile-content
+                                        v-list-tile-title(v-html='item.ko', :class="oneClick.isSameCategoryData(oneClick.data.subcategory, item) ? 'title' : '' ")
+        v-divider
+        v-card-actions
+            v-spacer
+            v-btn(color='error', flat='flat', @click.native="oneClick.data.categoryDialog = false") Ok
