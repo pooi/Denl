@@ -25,34 +25,22 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
             input(id='oneClick_file', type='file', name='file', @change='oneClick.imageChange()', accept="image/*" style='display: none;')
             v-layout(xs12, align-center, wrap)
                 v-flex(xs12, text-xs-center)
-                    img.dal-image-card(:src='oneClick.data.imgSrc', id='uploaded-img', width='50%', v-if='oneClick.data.isFile')
+                    img.dal-image-card(:src='oneClick.data.imgSrc', id='uploaded-img', width='80%', v-if='oneClick.data.isFile')
                 v-flex.mt-3(xs12)
                     v-divider
 
-                v-flex.mt-3.text-xs-center(xs12, )
-                    .caption(v-if='oneClick.data.isTagProgress') 관련된 태그를 인식 중입니다.
-                    .caption(v-else) 연관태그
-                    v-progress-circular(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isTagProgress')
-                v-layout.mt-2(wrap, justify-center)
-                    v-chip(v-for='tag in oneClick.data.tags', :class="oneClick.data.selectedTags.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='oneClick.data.selectedTags.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='oneClick.changeSelectedTags(tag)')
-                        strong.title.mr-1 #
-                        strong {{ tag }}
-                    v-flex.text-xs-center(xs12, v-if='!oneClick.data.isTagProgress && oneClick.data.tags.length == 0')
-                        .caption.grey--text 인식된 연관 태그가 없습니다.
-                v-flex.mt-3(xs12)
-                    v-divider
 
                 v-flex.text-xs-center.mt-3(xs12)
                     .caption(v-if='oneClick.data.isRecognitionProgress') 카테고리를 인식 중입니다.
                     .caption(v-else) 카테고리
-                    v-progress-circular(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isRecognitionProgress')
+                    v-progress-circular.mt-2(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isRecognitionProgress')
                 v-layout.mt-2(wrap, justify-center)
                     v-breadcrumbs.pa-0.pr-2(v-if="oneClick.data.category != null", justify-center)
                         v-icon(slot='divider') chevron_right
                         v-breadcrumbs-item(v-for='item in oneClick.getCategoryBreadcrumbs()', :key='item')
                             | {{ item }}
-                    v-flex.text-xs-center(xs12)
-                        v-btn(flat, small, color='grey', @click='oneClick.data.categoryDialog = true') 변경하기
+                v-flex.text-xs-center(xs12, v-if='!oneClick.data.isRecognitionProgress')
+                    v-btn(flat, small, color='grey', @click='oneClick.data.categoryDialog = true') 변경하기
                     //v-flex.mt-2.rounded-expansion-panel(xs12)
                     //    v-expansion-panel.elevation-0(v-if='oneClick.data.recognitionData != null', popout)
                     //        v-expansion-panel-content
@@ -66,11 +54,53 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                     v-divider
 
 
+                v-flex.mt-3.text-xs-center(xs12, )
+                    .caption(v-if='oneClick.data.isTagProgress') 관련된 태그를 인식 중입니다.
+                    .caption(v-else) 연관태그
+                    v-progress-circular.mt-2(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isTagProgress')
+                v-layout.mt-2(wrap, justify-center)
+                    v-chip(v-for='tag in oneClick.data.tags', :class="oneClick.data.selectedTags.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='oneClick.data.selectedTags.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='oneClick.changeSelectedTags(tag)')
+                        strong.title.mr-1 #
+                        strong {{ tag }}
+                    v-flex.text-xs-center(xs12, v-if='!oneClick.data.isTagProgress && oneClick.data.tags.length == 0')
+                        .caption.grey--text 인식된 연관 태그가 없습니다.
+                v-flex.text-xs-center.mt-2(xs12, v-if='oneClick.data.tags.length > 0')
+                    .caption.grey--text 클릭해서 비활성화
+                v-flex.mt-3(xs12)
+                    v-divider
+
+
+
+
+                v-flex.text-xs-center.mt-3(xs12)
+                    .caption(v-if='oneClick.data.locationProgress') 현재 위치를 인식 중입니다.
+                    .caption(v-else) 습득 장소
+                    v-progress-circular.mt-2(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.locationProgress')
+                v-flex.text-xs-center.mt-2(xs12, v-if="!oneClick.data.locationProgress && oneClick.data.locationFail")
+                    .caption 위치 인식에 실패하였습니다.
+                v-layout.mt-2.mx-3(wrap, justify-center, v-if='!oneClick.data.locationProgress')
+                    v-flex(xs12)
+                        v-select.xs12(color="orange darken-2", :items='oneClick.data.buildings', v-model='oneClick.data.selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete, dense)
+                v-flex.mt-3(xs12)
+                    v-divider
+
+
+                v-flex.text-xs-center.mt-3(xs12)
+                    .caption 습득일
+                v-layout.mt-2.mx-3(xs12, align-center, justify-center)
+                    v-dialog(ref='oneClick_date_dialog', persistent, v-model='oneClick.data.dateModal', lazy, full-width, width='330px', :return-value.sync='oneClick.data.date', style='width: 100%;')
+                        v-text-field(color="orange darken-2", slot='activator', label='습득일', v-model='oneClick.data.date', readonly)
+                        v-date-picker(v-model='oneClick.data.date', locale="ko-kr", scrollable, lazy, full-width, width='330px', color="brown darken-1", name='date')
+                            v-spacer
+                            v-btn(flat='', color='primary', @click='oneClick.data.dateModal = false') Cancel
+                            v-btn(flat='', color='primary', @click='$refs.oneClick_date_dialog.save(oneClick.data.date)') OK
+
+
 
         v-card-actions
             v-spacer
             v-btn(color='success', flat, @click="oneClick.reset()") 취소
-            v-btn(color='info', flat, :disabled='oneClick.data.isTagProgress || oneClick.data.isRecognitionProgress') 제출
+            v-btn(color='info', flat, :disabled='oneClick.data.isTagProgress || oneClick.data.isRecognitionProgress || oneClick.data.locationProgress') 제출
 
 v-dialog(v-model='oneClick.data.categoryDialog', max-width='500px')
     v-card

@@ -9,6 +9,8 @@ class OneClick {
             ifFile: false,
             isTagProgress: false,
             isRecognitionProgress: false,
+            locationProgress: false,
+            locationFail: false,
 
             categoryDialog: false,
             categoryData: {},
@@ -17,6 +19,15 @@ class OneClick {
             subcategories: [],
 
             buildingData: null,
+            selectedBuilding: null,
+            buildings: [
+                '고인돌 잔디밭', '광개토관', '군자관', '다산관', '대양홀', '모짜르트홀', '무방관', '박물관', '세종관',
+                '세종이노베이션센터', '아사달 연못', '애지헌', '영실관', '용덕관', '우정당', '율곡관', '이당관', '진관홀',
+                '집현관', '충무관', '학생회관', '학술정보원', '행복기숙사'
+            ],
+
+            dateModal: false,
+            date: getToday(),
 
             tags: [],
             selectedTags: [],
@@ -42,6 +53,8 @@ class OneClick {
             ifFile: false,
             isTagProgress: false,
             isRecognitionProgress: false,
+            locationProgress: false,
+            locationFail: false,
 
             categoryDialog: false,
             categoryData: {},
@@ -50,6 +63,15 @@ class OneClick {
             subcategories: [],
 
             buildingData: null,
+            selectedBuilding: null,
+            buildings: [
+                '고인돌 잔디밭', '광개토관', '군자관', '다산관', '대양홀', '모짜르트홀', '무방관', '박물관', '세종관',
+                '세종이노베이션센터', '아사달 연못', '애지헌', '영실관', '용덕관', '우정당', '율곡관', '이당관', '진관홀',
+                '집현관', '충무관', '학생회관', '학술정보원', '행복기숙사'
+            ],
+
+            dateModal: false,
+            date: getToday(),
 
             tags: [],
             selectedTags: [],
@@ -102,8 +124,13 @@ class OneClick {
         var oneClick = this;
         this.data.isTagProgress = true;
         this.data.isRecognitionProgress = true;
+        this.data.locationProgress = true;
         // var form = document.getElementById('image-form');
         // form.submit()
+
+        setTimeout(function() {
+            oneClick.getCurrentLocation();
+        }, 10);
 
         let data = new FormData();
 
@@ -148,7 +175,10 @@ class OneClick {
                 oneClick.data.selectedTags.push(data.texts[i]);
             }
             oneClick.data.isTagProgress = false;
-            oneClick.recognitionImage();
+            setTimeout(function() {
+                oneClick.recognitionImage();
+            }, 10);
+
         })
             .catch(function (error) {
                 alert(error);
@@ -182,6 +212,77 @@ class OneClick {
                 alert("이미지 인식에 실패하였습니다. 카테고리를 선택해주세요.");
             });
     }
+
+    getCurrentLocation () {
+        var oneClick = this;
+        if (navigator.geolocation) {
+            this.data.locationProgress = true;
+            //위치 정보를 얻기
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                var latitude = pos.coords.latitude;   // 적도의 북쪽 기준 각도인 위도
+                var longitude = pos.coords.longitude; // 그리니치 천문대의 동쪽 기준 각도인 경도
+                var accuracy = pos.coords.accuracy;   // 미터 단위의 정확도
+
+                var test = new Get_building_list(oneClick.data.buildingData, [longitude, latitude]);
+                test.Verify_in_out();
+
+                var temp_arr = test.Getnearlist();
+                var new_arr = [];
+                for(var temp_ar in temp_arr){
+                    new_arr.push(temp_arr[temp_ar].building);
+                }
+                if(new_arr.length > 0)
+                    oneClick.data.buildings = new_arr;
+
+                if(oneClick.data.buildings.length > 0)
+                    oneClick.data.selectedBuilding = oneClick.data.buildings[0];
+
+                test.Resetnearlist();
+                // vue.isShowMap = true;
+
+                // var uluru = {lat: latitude, lng: longitude};
+                // var map = new google.maps.Map(document.getElementById('div_map'), {
+                //     zoom: 17,
+                //     center: uluru
+                // });
+                // // console.log(map);
+                // var marker = new google.maps.Marker({
+                //     position: uluru,
+                //     map: map
+                // });
+
+                oneClick.data.locationProgress = false;
+
+                // var divMap = document.getElementById('div_map');
+                // divMap.appendChild("")
+            }, function (error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("User denied the request for Geolocation.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        alert("The request to get user location timed out.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        alert("An unknown error occurred.");
+                        break;
+                    default:
+                        alert("An unknown error occurred.");
+                        break;
+                }
+                oneClick.data.locationProgress = false;
+                oneClick.data.locationFail = true;
+            });
+        } else {
+            alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
+        }
+    }
+
+
+    /*Sub function*/
 
     changeSelectedTags (tag){
         if(this.data.selectedTags.includes(tag) > 0){
@@ -257,6 +358,22 @@ class OneClick {
             return false;
         return c1.name == c2.name
     }
+}
+
+function getToday() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
+    return today;
 }
 
 function getTodayMs(){
