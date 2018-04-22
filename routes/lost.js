@@ -135,11 +135,17 @@ router.post('/', upload.single('file'), function(req, res) {
 
             var data = JSON.parse(stdout);
             var result = data.result;
-            for(var i=0; i<result.label.length; i++){
-                labels.push(result.label[i]);
-            }
-            for(var i=0; i<result.label_kr.length; i++){
-                labels.push(result.label_kr[i]);
+            if(result != null){
+                if(result.label != null){
+                    for(var i=0; i<result.label.length; i++){
+                        labels.push(result.label[i]);
+                    }
+                }
+                if(result.label_kr != null){
+                    for(var i=0; i<result.label_kr.length; i++){
+                        labels.push(result.label_kr[i]);
+                    }
+                }
             }
 
             var sql = 'SELECT * FROM category; SELECT * FROM building;';

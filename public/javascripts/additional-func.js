@@ -31,6 +31,8 @@ class OneClick {
 
             tags: [],
             selectedTags: [],
+            brands: [],
+            selectedBrands: [],
             recognitionData: null,
             recognitionDataHeaders: [
                 {
@@ -75,6 +77,8 @@ class OneClick {
 
             tags: [],
             selectedTags: [],
+            brands: [],
+            selectedBrands: [],
             recognitionData: null,
             recognitionDataHeaders: [
                 {
@@ -162,17 +166,23 @@ class OneClick {
 
             oneClick.data.tags = [];
             oneClick.data.selectedTags = [];
+            oneClick.data.brands = [];
+            oneClick.data.selectedBrands = [];
             for(var i=0; i<data.logos.length; i++){
                 oneClick.data.tags.push(data.logos[i]);
                 oneClick.data.selectedTags.push(data.logos[i]);
+
+                oneClick.data.brands.push(data.logos[i]);
+                oneClick.data.selectedBrands.push(data.logos[i]);
             }
             for(var i=0; i<data.labels.length; i++){
                 oneClick.data.tags.push(data.labels[i]);
                 oneClick.data.selectedTags.push(data.labels[i]);
             }
-            for(var i=0; i<data.texts.length; i++){
-                oneClick.data.tags.push(data.texts[i]);
-                oneClick.data.selectedTags.push(data.texts[i]);
+            var uTexts = removeDuplicateUsingFilter(data.texts);
+            for(var i=0; i<uTexts.length; i++){
+                oneClick.data.tags.push(uTexts[i]);
+                oneClick.data.selectedTags.push(uTexts[i]);
             }
             oneClick.data.isTagProgress = false;
             setTimeout(function() {
@@ -291,6 +301,14 @@ class OneClick {
             this.data.selectedTags.push(tag);
         }
         // console.log(this.selectedSuggestTag);
+    }
+
+    chageSelectedBrand (tag){
+        if(this.data.selectedBrands.includes(tag) > 0){
+            this.data.selectedBrands.splice(this.data.selectedBrands.indexOf(tag), 1);
+        }else{
+            this.data.selectedBrands.push(tag);
+        }
     }
 
     changedCateogryFromResult (item){

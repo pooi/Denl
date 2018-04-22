@@ -54,6 +54,19 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                     v-divider
 
 
+                v-layout(wrap, v-if="oneClick.data.brands.length > 0")
+                    v-flex.text-xs-center.mt-3(xs12)
+                        .caption 브랜드
+                    v-layout.mt-2(wrap, justify-center)
+                        v-chip(v-for='tag in oneClick.data.brands', :class="oneClick.data.selectedBrands.includes(tag) > 0 ? 'elevation-2' : 'elevation-0'", :color='oneClick.data.selectedBrands.includes(tag) > 0 ? "orange darken-2" : "grey"', text-color='white', @click='oneClick.chageSelectedBrand(tag)')
+                            strong.title.mr-1 #
+                            strong {{ tag }}
+                    v-flex.text-xs-center.mt-2(xs12, v-if='oneClick.data.brands.length > 0')
+                        .caption.grey--text 클릭해서 비활성화
+                    v-flex.mt-3(xs12)
+                        v-divider
+
+
                 v-flex.mt-3.text-xs-center(xs12, )
                     .caption(v-if='oneClick.data.isTagProgress') 관련된 태그를 인식 중입니다.
                     .caption(v-else) 연관태그
@@ -68,8 +81,6 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                     .caption.grey--text 클릭해서 비활성화
                 v-flex.mt-3(xs12)
                     v-divider
-
-
 
 
                 v-flex.text-xs-center.mt-3(xs12)
