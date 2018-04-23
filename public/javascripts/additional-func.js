@@ -33,6 +33,7 @@ class OneClick {
             selectedTags: [],
             brands: [],
             selectedBrands: [],
+            colors: [],
             recognitionData: null,
             recognitionDataHeaders: [
                 {
@@ -79,6 +80,7 @@ class OneClick {
             selectedTags: [],
             brands: [],
             selectedBrands: [],
+            colors: [],
             recognitionData: null,
             recognitionDataHeaders: [
                 {
@@ -92,6 +94,13 @@ class OneClick {
                 }
             ]
         }
+    }
+
+    checkSubmit (){
+        if(this.data.category === null || this.data.subcategory === null)
+            return true;
+
+        return (this.data.isTagProgress || this.data.isRecognitionProgress || this.data.locationProgress);
     }
 
     browseClick () {
@@ -163,6 +172,7 @@ class OneClick {
             oneClick.data.imgSrc = data.image;
             oneClick.data.categoryData = data.category;
             oneClick.data.buildingData = data.buildings;
+            oneClick.data.colors = data.colors;
 
             oneClick.data.tags = [];
             oneClick.data.selectedTags = [];
@@ -289,6 +299,62 @@ class OneClick {
         } else {
             alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
         }
+    }
+
+    submit (){
+
+        if(this.vue.loginData.user === null){
+            console.log("in");
+            this.vue.loginData.dialog = true;
+            return;
+        }
+        var oneClick = this;
+
+        var image = this.data.imgSrc;
+        image = image.startsWith('/') ? image : '/' + image;
+
+        var data = {
+            photos: image,
+            category: this.data.category === null ? "" : this.data.category.name,
+            subcategory: this.data.subcategory === null ? "" : this.data.subcategory.name,
+            brand: this.data.brands.length > 0 ? JSON.stringify(this.data.brands) : "",
+            building: this.data.selectedBuilding === null ? "" : this.data.selectedBuilding,
+            room: "",
+            tags: "",
+            recognition_tags: this.data.selectedTags.length > 0 ? JSON.stringify(this.data.selectedTags) : "",
+            description: "",
+            color: this.data.colors.length > 0 ? JSON.stringify(this.data.colors) : "",
+            recognition_result: this.data.recognitionData === null ? "" : JSON.stringify(this.data.recognitionData),
+            status: "WFA",
+            dcv_date: dateToMs(this.data.date),
+            rgt_date: getTodayMs(),
+            rgt_user: this.vue.loginData.user.id,
+            location_code: "sju"
+        };
+
+        axios.post(
+            '/lost/submit',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            var insertId = data.insertId;
+            if (insertId != null) {
+                alert(insertId);
+                oneClick.reset();
+                // vue.resSuccessMsg = "성공적으로 등록하였습니다. 등록 번호 : ";
+                // vue.resSuccessCode = insertId;
+                // vue.resSuccessRedirectHref = "/items/" + insertId;
+                // vue.responseDialog = true;
+            } else {
+                // vue.responseErrorDialog = true;
+                alert("error");
+            }
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+
     }
 
 

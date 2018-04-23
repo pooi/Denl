@@ -72,7 +72,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             msgData:{
             },
             bottomTab: "manage",
-            oneClick: new OneClick(this),
+            oneClick: null,
             todayDate: null,
             customFilter (item, queryText, itemText) {
                 const hasValue = val => val != null ? val : ''
@@ -469,5 +469,6 @@ function init(WFA, WFRQ, init_category, WFL) {
             }
         }
     });
+    vue.oneClick = new OneClick(vue);
     return vue;
 }

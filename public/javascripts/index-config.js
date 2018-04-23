@@ -28,7 +28,7 @@ function init(init_category) {
             moreBtn: null,
             categoryData: null,
             bottomTab: "home",
-            oneClick: new OneClick(this),
+            oneClick: null,
 
             shareSheet: false,
             shareItem: null,
@@ -375,5 +375,7 @@ function init(init_category) {
             }
         ]
     });
+
+    vue.oneClick = new OneClick(vue);
     return vue;
 }

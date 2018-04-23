@@ -18,7 +18,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             msgData:{
             },
             bottomTab: "lost",
-            oneClick: new OneClick(this),
+            oneClick: null,
             imgSrc: '',
             domEleArray: null,
             isFile: false,
@@ -409,5 +409,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             }
         ]
     });
+    vue.oneClick = new OneClick(vue);
     return vue;
 }

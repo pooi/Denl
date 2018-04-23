@@ -111,7 +111,7 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
         v-card-actions
             v-spacer
             v-btn(color='success', flat, @click="oneClick.reset()") 취소
-            v-btn(color='info', flat, :disabled='oneClick.data.isTagProgress || oneClick.data.isRecognitionProgress || oneClick.data.locationProgress') 제출
+            v-btn(color='info', flat, :disabled='oneClick.checkSubmit()', @click="oneClick.submit()") 제출
 
 v-dialog(v-model='oneClick.data.categoryDialog', max-width='500px')
     v-card

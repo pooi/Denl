@@ -18,7 +18,7 @@ function init(init_category) {
             msgData:{
             },
             bottomTab: "find",
-            oneClick: new OneClick(this),
+            oneClick: null,
             todayDate: null,
             categoryData: null,
             searchItems: [],
@@ -403,5 +403,6 @@ function init(init_category) {
             }
         }
     });
+    vue.oneClick = new OneClick(vue);
     return vue;
 }
