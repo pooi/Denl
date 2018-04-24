@@ -45,7 +45,19 @@ class OneClick {
                     align: 'right',
                     value: 'accuracy'
                 }
-            ]
+            ],
+
+            responseDialog: false,
+            resSuccessMsg: null,
+            resSuccessCode: 0,
+            resSuccessRedirectHref: null,
+            responseErrorDialog: false,
+
+            detailDialog:false,
+            description: null,
+            hashtags: [],
+            submitDetailSuccessDialog: false,
+            requestErrorDialog: false
         };
     }
 
@@ -92,7 +104,19 @@ class OneClick {
                     align: 'right',
                     value: 'accuracy'
                 }
-            ]
+            ],
+
+            responseDialog: false,
+            resSuccessMsg: null,
+            resSuccessCode: 0,
+            resSuccessRedirectHref: null,
+            responseErrorDialog: false,
+
+            detailDialog:false,
+            description: null,
+            hashtags: [],
+            submitDetailSuccessDialog: false,
+            requestErrorDialog: false
         }
     }
 
@@ -339,14 +363,13 @@ class OneClick {
             var data = response.data;
             var insertId = data.insertId;
             if (insertId != null) {
-                alert(insertId);
-                oneClick.reset();
-                // vue.resSuccessMsg = "성공적으로 등록하였습니다. 등록 번호 : ";
-                // vue.resSuccessCode = insertId;
-                // vue.resSuccessRedirectHref = "/items/" + insertId;
-                // vue.responseDialog = true;
+                // alert(insertId);
+                oneClick.data.resSuccessMsg = "성공적으로 등록하였습니다. 등록 번호 : ";
+                oneClick.data.resSuccessCode = insertId;
+                oneClick.data.resSuccessRedirectHref = "/items/" + insertId;
+                oneClick.data.responseDialog = true;
             } else {
-                // vue.responseErrorDialog = true;
+                oneClick.data.responseErrorDialog = true;
                 alert("error");
             }
             // console.log(response);
@@ -355,6 +378,43 @@ class OneClick {
                 alert(error);
             });
 
+    }
+
+    submitDetail (){
+
+        if(this.vue.loginData.user === null){
+            console.log("in");
+            this.vue.loginData.dialog = true;
+            return;
+        }
+        var oneClick = this;
+
+        var data = {
+            lost_id: this.data.resSuccessCode,
+            brand: this.data.brands.length > 0 ? JSON.stringify(this.data.brands) : "",
+            tags: this.data.hashtags.length > 0 ? JSON.stringify(this.data.hashtags) : "",
+            description: this.data.description === null ? "" : this.data.description
+        };
+
+        axios.post(
+            '/lost/submitDetail',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            var affectedRows = data.affectedRows;
+            if (affectedRows > 0) {
+                oneClick.data.responseDialog = false;
+                oneClick.data.detailDialog = false;
+                oneClick.data.submitDetailSuccessDialog = true;
+                // vue.requestSuccessDialog = true;
+            } else {
+                oneClick.data.requestErrorDialog = true;
+                // vue.requestCancelErrorDialog = true;
+            }
+
+        }).catch(function (error) {
+            alert(error);
+        });
     }
 
 
