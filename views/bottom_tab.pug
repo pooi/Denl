@@ -39,8 +39,11 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                         v-icon(slot='divider') chevron_right
                         v-breadcrumbs-item(v-for='item in oneClick.getCategoryBreadcrumbs()', :key='item')
                             | {{ item }}
-                v-flex.text-xs-center(xs12, v-if='!oneClick.data.isRecognitionProgress')
-                    v-btn(flat, small, color='grey', @click='oneClick.data.categoryDialog = true') 변경하기
+                v-flex.text-xs-center.pt-2(xs12, v-if='!oneClick.data.isRecognitionProgress')
+                    v-btn.ma-0(flat, small, color='grey', @click='oneClick.data.categoryDialog = true') 변경하기
+                    v-btn.ma-0(flat, small, color='grey', @click='oneClick.data.recognitionDialog = true') 인식결과보기
+                //v-flex.text-xs-center(xs12, v-if='!oneClick.data.isRecognitionProgress')
+                //    v-btn(flat, small, color='grey', @click='oneClick.data.recognitionDialog = true') 인식결과보기
                     //v-flex.mt-2.rounded-expansion-panel(xs12)
                     //    v-expansion-panel.elevation-0(v-if='oneClick.data.recognitionData != null', popout)
                     //        v-expansion-panel-content
@@ -142,6 +145,21 @@ v-dialog(v-model='oneClick.data.categoryDialog', max-width='500px')
         v-card-actions
             v-spacer
             v-btn(color='error', flat='flat', @click.native="oneClick.data.categoryDialog = false") Ok
+
+v-dialog(v-model='oneClick.data.recognitionDialog', max-width='500px')
+    v-card
+        v-card-title.headline 이미지 인식 결과
+        v-card-text.pa-0
+            v-data-table(:headers="oneClick.data.recognitionDataHeaders", :items='oneClick.data.recognitionData', hide-actions, disable-initial-sort)
+                template(slot='items', slot-scope='props')
+                    tr(@click="oneClick.changedCateogryFromResult(props.item);")
+                        td {{oneClick.getCategoryStringFromResult(props.item.title)}}
+                        td.text-xs-right {{props.item.accuracy}}%
+        v-card-text
+            .caption.grey--text * 항목 클릭 시 카테고리 변경
+        v-card-actions
+            v-spacer
+            v-btn(color='error', flat='flat', @click.native="oneClick.data.recognitionDialog = false") Ok
 
 v-dialog.md6(v-model='oneClick.data.responseDialog', persistent, scrollable, max-width='500px')
     //v-layout( wrap, align-center='')

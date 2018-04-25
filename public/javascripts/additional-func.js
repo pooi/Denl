@@ -47,6 +47,8 @@ class OneClick {
                 }
             ],
 
+            recognitionDialog: false,
+
             responseDialog: false,
             resSuccessMsg: null,
             resSuccessCode: 0,
@@ -105,6 +107,8 @@ class OneClick {
                     value: 'accuracy'
                 }
             ],
+
+            recognitionDialog: false,
 
             responseDialog: false,
             resSuccessMsg: null,
