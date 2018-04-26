@@ -265,6 +265,7 @@ class OneClick {
         var oneClick = this;
         if (navigator.geolocation) {
             this.data.locationProgress = true;
+            oneClick.data.locationFail = false;
             //위치 정보를 얻기
             navigator.geolocation.getCurrentPosition(function (pos) {
                 var latitude = pos.coords.latitude;   // 적도의 북쪽 기준 각도인 위도

@@ -35,7 +35,7 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                     .caption(v-else) 카테고리
                     v-progress-circular.mt-2(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isRecognitionProgress')
                 v-layout.mt-2(wrap, justify-center)
-                    v-breadcrumbs.pa-0.pr-2(v-if="oneClick.data.category != null", justify-center)
+                    v-breadcrumbs.pa-0(v-if="oneClick.data.category != null", justify-center)
                         v-icon(slot='divider') chevron_right
                         v-breadcrumbs-item(v-for='item in oneClick.getCategoryBreadcrumbs()', :key='item')
                             | {{ item }}
@@ -95,6 +95,8 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                 v-layout.mt-2.mx-3(wrap, justify-center, v-if='!oneClick.data.locationProgress')
                     v-flex(xs12)
                         v-select.xs12(color="orange darken-2", :items='oneClick.data.buildings', v-model='oneClick.data.selectedBuilding', label='건물 선택', auto, append-icon='account_balance', autocomplete, dense)
+                v-flex.text-xs-center(xs12, v-if='!oneClick.data.locationProgress')
+                    v-btn.ma-0(flat, small, color='grey', @click='oneClick.getCurrentLocation()') 다시시도
                 v-flex.mt-3(xs12)
                     v-divider
 
@@ -148,16 +150,16 @@ v-dialog(v-model='oneClick.data.categoryDialog', max-width='500px')
 
 v-dialog(v-model='oneClick.data.recognitionDialog', max-width='500px')
     v-card
-        v-card-title.headline 이미지 인식 결과
+        v-card-title.headline.pb-0 이미지 인식 결과
         v-card-text.pa-0
             v-data-table(:headers="oneClick.data.recognitionDataHeaders", :items='oneClick.data.recognitionData', hide-actions, disable-initial-sort)
                 template(slot='items', slot-scope='props')
                     tr(@click="oneClick.changedCateogryFromResult(props.item);")
                         td {{oneClick.getCategoryStringFromResult(props.item.title)}}
                         td.text-xs-right {{props.item.accuracy}}%
-        v-card-text
+        v-card-text.py-2
             .caption.grey--text * 항목 클릭 시 카테고리 변경
-        v-card-actions
+        v-card-actions.pt-0
             v-spacer
             v-btn(color='error', flat='flat', @click.native="oneClick.data.recognitionDialog = false") Ok
 
