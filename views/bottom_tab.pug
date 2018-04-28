@@ -112,10 +112,10 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                             v-btn(flat='', color='primary', @click='$refs.oneClick_date_dialog.save(oneClick.data.date)') OK
 
 
-
+        v-divider
         v-card-actions
             v-spacer
-            v-btn(color='success', flat, @click="oneClick.reset()") 취소
+            v-btn(color='error', flat, @click="oneClick.reset()") 취소
             v-btn(color='info', flat, :disabled='oneClick.checkSubmit()', @click="oneClick.submit()") 제출
 
 v-dialog(v-model='oneClick.data.categoryDialog', max-width='500px')
@@ -194,7 +194,7 @@ v-dialog(v-model='oneClick.data.responseErrorDialog', max-width='500px')
             v-spacer
             v-btn(color='error', flat='flat', @click.native="oneClick.data.responseErrorDialog = false") Ok
 
-v-dialog(v-model='oneClick.data.detailDialog', :fullscreen='$vuetify.breakpoint.xsOnly', max-width='600px', persistent, transition='dialog-bottom-transition', :overlay='true')
+v-dialog(v-model='oneClick.data.detailDialog', flat, :fullscreen='$vuetify.breakpoint.xsOnly', max-width='600px', persistent, transition='dialog-bottom-transition', :overlay='true')
     v-card.white.elevation-10
         v-toolbar(dark='', color='deep-orange darken-3',  dense)
             v-btn(icon='',dark, @click="oneClick.data.detailDialog = false")
