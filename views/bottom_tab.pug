@@ -12,9 +12,13 @@ v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync
         v-btn.py-2(flat='', color='deep-orange darken-3', value='lost', href='/lost')
             //span.caption Nearby
             v-icon.ma-0 cloud_upload
-        v-btn.py-2(flat='', color='deep-orange darken-3', value='manage', href='/manage')
+        v-btn.py-2(flat='', color='deep-orange darken-3', value='manage', href='/manage', v-if="loginData.user !== null && loginData.user.admin == 1")
             //span.caption Nearby
             v-icon.ma-0 build
+        v-btn.py-2(flat='', color='deep-orange darken-3', :value='bottomTab', @click="loginData.dialog = true", v-else-if="loginData.user === null")
+            v-icon.ma-0 person
+        v-btn.py-2(flat='', color='deep-orange darken-3', :value='bottomTab', @click="loginData.dialog = true", v-else-if="loginData.user !== null")
+            v-icon.ma-0 person
 
 
 v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', persistent)
