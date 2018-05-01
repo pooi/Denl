@@ -15,10 +15,9 @@ function init(init_category) {
             },
             loginData:{
             },
-            msgData:{
-            },
-            bottomTab: "find",
             oneClick: null,
+            dalMessage: null,
+            bottomTab: "find",
             todayDate: null,
             categoryData: null,
             searchItems: [],
@@ -404,5 +403,6 @@ function init(init_category) {
         }
     });
     vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

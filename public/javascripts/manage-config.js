@@ -18,7 +18,8 @@ function init(WFA, WFRQ, init_category, WFL) {
             },
             loginData:{
             },
-            todayDate: null,
+            oneClick: null,
+            dalMessage: null,
             itemData: null,
             requestList: [],
             recognitionDataHeaders: [
@@ -72,7 +73,6 @@ function init(WFA, WFRQ, init_category, WFL) {
             msgData:{
             },
             bottomTab: "manage",
-            oneClick: null,
             todayDate: null,
             customFilter (item, queryText, itemText) {
                 const hasValue = val => val != null ? val : ''
@@ -470,5 +470,6 @@ function init(WFA, WFRQ, init_category, WFL) {
         }
     });
     vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

@@ -22,13 +22,11 @@ function init(init_category) {
             loginData:{
 
             },
-            msgData:{
-                newMsgCount: 0
-            },
+            oneClick: null,
+            dalMessage: null,
             moreBtn: null,
             categoryData: null,
             bottomTab: "home",
-            oneClick: null,
 
             shareSheet: false,
             shareItem: null,
@@ -377,5 +375,6 @@ function init(init_category) {
     });
 
     vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

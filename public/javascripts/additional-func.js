@@ -1,5 +1,3 @@
-
-
 class OneClick {
     constructor(vue) {
         this.vue = vue;
@@ -55,7 +53,7 @@ class OneClick {
             resSuccessRedirectHref: null,
             responseErrorDialog: false,
 
-            detailDialog:false,
+            detailDialog: false,
             description: null,
             hashtags: [],
             submitDetailSuccessDialog: false,
@@ -63,7 +61,7 @@ class OneClick {
         };
     }
 
-    reset () {
+    reset() {
         this.data = {
             dialog: false,
             imgSrc: null,
@@ -116,7 +114,7 @@ class OneClick {
             resSuccessRedirectHref: null,
             responseErrorDialog: false,
 
-            detailDialog:false,
+            detailDialog: false,
             description: null,
             hashtags: [],
             submitDetailSuccessDialog: false,
@@ -124,19 +122,19 @@ class OneClick {
         }
     }
 
-    checkSubmit (){
-        if(this.data.category === null || this.data.subcategory === null)
+    checkSubmit() {
+        if (this.data.category === null || this.data.subcategory === null)
             return true;
 
         return (this.data.isTagProgress || this.data.isRecognitionProgress || this.data.locationProgress);
     }
 
-    browseClick () {
+    browseClick() {
         var inputFile = document.getElementById('oneClick_file')
         inputFile.click()
     }
 
-    removeFile () {
+    removeFile() {
         var oneClick = this;
         this.domEleArray[1] = this.domEleArray[0].clone(true); // 쌔거(0번) -> 복사(1번)
         $('#oneClick_file').replaceWith(this.domEleArray[1]);
@@ -146,7 +144,7 @@ class OneClick {
         this.data.isFile = false
     }
 
-    imageChange () {
+    imageChange() {
         var inputFile = document.getElementById('oneClick_file');
 
         var reader = new FileReader();
@@ -161,7 +159,7 @@ class OneClick {
         this.data.isFile = true
     }
 
-    uploadImage () {
+    uploadImage() {
         var oneClick = this;
         this.data.isTagProgress = true;
         this.data.isRecognitionProgress = true;
@@ -169,7 +167,7 @@ class OneClick {
         // var form = document.getElementById('image-form');
         // form.submit()
 
-        setTimeout(function() {
+        setTimeout(function () {
             oneClick.getCurrentLocation();
         }, 10);
 
@@ -185,7 +183,7 @@ class OneClick {
         data.append('data_only', '1');
 
         const config = {
-            headers: { 'content-type': 'multipart/form-data' }
+            headers: {'content-type': 'multipart/form-data'}
         };
 
         console.log(data);
@@ -206,24 +204,24 @@ class OneClick {
             oneClick.data.selectedTags = [];
             oneClick.data.brands = [];
             oneClick.data.selectedBrands = [];
-            for(var i=0; i<data.logos.length; i++){
+            for (var i = 0; i < data.logos.length; i++) {
                 oneClick.data.tags.push(data.logos[i]);
                 oneClick.data.selectedTags.push(data.logos[i]);
 
                 oneClick.data.brands.push(data.logos[i]);
                 oneClick.data.selectedBrands.push(data.logos[i]);
             }
-            for(var i=0; i<data.labels.length; i++){
+            for (var i = 0; i < data.labels.length; i++) {
                 oneClick.data.tags.push(data.labels[i]);
                 oneClick.data.selectedTags.push(data.labels[i]);
             }
             var uTexts = removeDuplicateUsingFilter(data.texts);
-            for(var i=0; i<uTexts.length; i++){
+            for (var i = 0; i < uTexts.length; i++) {
                 oneClick.data.tags.push(uTexts[i]);
                 oneClick.data.selectedTags.push(uTexts[i]);
             }
             oneClick.data.isTagProgress = false;
-            setTimeout(function() {
+            setTimeout(function () {
                 oneClick.recognitionImage();
             }, 10);
 
@@ -236,7 +234,7 @@ class OneClick {
 
     }
 
-    recognitionImage (){
+    recognitionImage() {
         var oneClick = this;
         this.data.isRecognitionProgress = true;
         console.log("recognitionImage");
@@ -261,7 +259,7 @@ class OneClick {
             });
     }
 
-    getCurrentLocation () {
+    getCurrentLocation() {
         var oneClick = this;
         if (navigator.geolocation) {
             this.data.locationProgress = true;
@@ -277,13 +275,13 @@ class OneClick {
 
                 var temp_arr = test.Getnearlist();
                 var new_arr = [];
-                for(var temp_ar in temp_arr){
+                for (var temp_ar in temp_arr) {
                     new_arr.push(temp_arr[temp_ar].building);
                 }
-                if(new_arr.length > 0)
+                if (new_arr.length > 0)
                     oneClick.data.buildings = new_arr;
 
-                if(oneClick.data.buildings.length > 0)
+                if (oneClick.data.buildings.length > 0)
                     oneClick.data.selectedBuilding = oneClick.data.buildings[0];
 
                 test.Resetnearlist();
@@ -330,9 +328,9 @@ class OneClick {
         }
     }
 
-    submit (){
+    submit() {
 
-        if(this.vue.loginData.user === null){
+        if (this.vue.loginData.user === null) {
             console.log("in");
             this.vue.loginData.dialog = true;
             return;
@@ -385,9 +383,9 @@ class OneClick {
 
     }
 
-    submitDetail (){
+    submitDetail() {
 
-        if(this.vue.loginData.user === null){
+        if (this.vue.loginData.user === null) {
             console.log("in");
             this.vue.loginData.dialog = true;
             return;
@@ -425,33 +423,33 @@ class OneClick {
 
     /*Sub function*/
 
-    changeSelectedTags (tag){
-        if(this.data.selectedTags.includes(tag) > 0){
+    changeSelectedTags(tag) {
+        if (this.data.selectedTags.includes(tag) > 0) {
             this.data.selectedTags.splice(this.data.selectedTags.indexOf(tag), 1);
-        }else{
+        } else {
             this.data.selectedTags.push(tag);
         }
         // console.log(this.selectedSuggestTag);
     }
 
-    chageSelectedBrand (tag){
-        if(this.data.selectedBrands.includes(tag) > 0){
+    chageSelectedBrand(tag) {
+        if (this.data.selectedBrands.includes(tag) > 0) {
             this.data.selectedBrands.splice(this.data.selectedBrands.indexOf(tag), 1);
-        }else{
+        } else {
             this.data.selectedBrands.push(tag);
         }
     }
 
-    changedCateogryFromResult (item){
+    changedCateogryFromResult(item) {
         var title = item.title;
         title = title.replace(" ", "_");
         var keys = Object.keys(this.data.categoryData);
-        for(var i=0; i<keys.length; i++){
+        for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var subcategories = this.data.categoryData[key]['subcategory'];
-            for(var j=0; j<subcategories.length; j++){
+            for (var j = 0; j < subcategories.length; j++) {
                 var subcategory = subcategories[j];
-                if(subcategory.name === title){
+                if (subcategory.name === title) {
                     this.data.subcategory = subcategory;
                     this.data.subcategories = subcategories;
                     this.data.category = this.data.categoryData[key];
@@ -461,26 +459,26 @@ class OneClick {
         }
     }
 
-    getCategoryBreadcrumbs () {
+    getCategoryBreadcrumbs() {
         var list = [];
-        if(this.data.category !== null){
+        if (this.data.category !== null) {
             list.push(this.data.category.ko);
         }
-        if(this.data.subcategory !== null){
+        if (this.data.subcategory !== null) {
             list.push(this.data.subcategory.ko);
         }
         return list;
     }
 
-    getCategoryStringFromResult (title) {
+    getCategoryStringFromResult(title) {
         title = title.replace(" ", "_");
         var keys = Object.keys(this.data.categoryData);
-        for(var i=0; i<keys.length; i++){
+        for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var subcategories = this.data.categoryData[key]['subcategory'];
-            for(var j=0; j<subcategories.length; j++){
+            for (var j = 0; j < subcategories.length; j++) {
                 var subcategory = subcategories[j];
-                if(subcategory.name === title){
+                if (subcategory.name === title) {
                     return this.data.categoryData[key].ko + " > " + subcategory.ko;
                     // this.subcategory = subcategory;
                     // this.subcategories = subcategories;
@@ -492,7 +490,7 @@ class OneClick {
         return title;
     }
 
-    changeSubCategories (key) {
+    changeSubCategories(key) {
 
         if (this.data.categoryData.hasOwnProperty(key)) {
             this.data.category = this.data.categoryData[key];
@@ -502,10 +500,143 @@ class OneClick {
 
     }
 
-    isSameCategoryData (c1, c2) {
-        if(c1 === null ||c2 === null)
+    isSameCategoryData(c1, c2) {
+        if (c1 === null || c2 === null)
             return false;
         return c1.name == c2.name
+    }
+}
+
+class DalMessage {
+    constructor(vue) {
+        this.vue = vue;
+        this.data = {
+            menu: false,
+            currentPath: window.location.pathname,
+            msgTab: 'tab-New',
+            msgTagItems: [
+                'New', 'Read'
+            ],
+            newMsgCount: 0,
+            isFirstLoading: true,
+            msgDialog: false,
+            selectedMsg: null,
+            newMsgs: null,
+            readMsgs: null
+        };
+        var dalMessage = this;
+        $(document).ready(function () {
+            dalMessage.getNewMsgCount();
+        });
+    }
+
+    getNewMsgCount() {
+        var dalMessage = this;
+
+        if (this.vue.loginData.user === null) {
+            this.data.newMsgCount = 0;
+            return;
+        }
+
+        var data = {
+            user_id: this.vue.loginData.user.id
+        };
+
+        axios.post(
+            '/getMsgCount',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            // console.log("newMsg: ", data);
+            dalMessage.data.newMsgCount = parseInt(data);
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }
+
+    getMsg() {
+        var dalMessage = this;
+
+        if (this.vue.loginData.user === null) {
+            return;
+        }
+
+        if (this.data.isFirstLoading) {
+            this.data.isFirstLoading = false;
+        } else {
+            return;
+        }
+
+        var data = {
+            user_id: this.vue.loginData.user.id,
+            isNew: true
+        };
+
+        axios.post(
+            '/getMsg',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            dalMessage.data.newMsgs = [];
+            dalMessage.data.newMsgs = dalMessage.data.newMsgs.concat(data);
+        })
+            .catch(function (error) {
+                dalMessage.data.isFirstLoading = true;
+                alert(error);
+            });
+
+        data = {
+            user_id: this.vue.loginData.user.id,
+            isNew: false
+        };
+
+        axios.post(
+            '/getMsg',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            dalMessage.data.readMsgs = [];
+            dalMessage.data.readMsgs = dalMessage.data.readMsgs.concat(data);
+        })
+            .catch(function (error) {
+                dalMessage.data.isFirstLoading = true;
+                alert(error);
+            });
+
+
+    }
+
+    setMsgRead(msg) {
+        var dalMessage = this;
+
+        var data = {
+            msg: msg
+        };
+
+        axios.post(
+            '/setMsgRead',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            var insertId = data.insertId;
+            if (insertId != null) {
+                for (var i = 0; i < vue.msgData.newMsgs.length; i++) {
+                    if (dalMessage.data.newMsgs[i].id === msg.id) {
+                        dalMessage.data.newMsgs[i].is_read = 1;
+                        dalMessage.data.newMsgCount = Math.max(0, dalMessage.data.newMsgCount - 1);
+                        break;
+                    }
+                }
+            } else {
+                alert("error");
+            }
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
     }
 }
 
@@ -525,12 +656,12 @@ function getToday() {
     return today;
 }
 
-function getTodayMs(){
+function getTodayMs() {
     var d = new Date();
     return d.getTime();
 }
 
-function dateToMs(date){
+function dateToMs(date) {
     var temp = date.split('-');
     var year = parseInt(temp[0]);
     var month = parseInt(temp[1]);
@@ -582,44 +713,44 @@ function listToString(arr) {
     return result;
 }
 
-function removeDuplicateUsingFilter(arr){
-    let unique_array = arr.filter(function(elem, index, self) {
+function removeDuplicateUsingFilter(arr) {
+    let unique_array = arr.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
     });
     return unique_array
 }
 
-function isAdmin(){
-    if(vue === null)
+function isAdmin() {
+    if (vue === null)
         return false;
 
     return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
 }
 
-var Get_building_list = function(){
+var Get_building_list = function () {
     var buildings;
     var catch_point;
     var result = "";
     var status = {
-        1 : "near",
-        2 : "in",
-        3 : "out"
+        1: "near",
+        2: "in",
+        3: "out"
     };
     var near_building = [];
     var near_list = [];
 
-    var In_Out = function(ch_buildings, ch_catch_point) {
+    var In_Out = function (ch_buildings, ch_catch_point) {
         buildings = ch_buildings ? ch_buildings : "";
         catch_point = ch_catch_point ? ch_catch_point : "";
     }
 
     In_Out.prototype = {
-        Verify_in_out : function () {
-            for(var building in buildings) {
+        Verify_in_out: function () {
+            for (var building in buildings) {
                 var check = {
-                    building : "",
-                    distance : 100000,
-                    point : ""
+                    building: "",
+                    distance: 100000,
+                    point: ""
                     // low_x : 100000,
                     // high_x : -100000,
                     // low_y : 100000,
@@ -629,10 +760,10 @@ var Get_building_list = function(){
                 // console.log(building);
                 var equation = [];
                 var distance_to_point = 19999999999999999;
-                for(var line = 0; line < buildings[check["building"]].length; line++){
+                for (var line = 0; line < buildings[check["building"]].length; line++) {
                     var three_point = {};
                     var next = line + 1;
-                    if(line == buildings[check["building"]].length - 1){
+                    if (line == buildings[check["building"]].length - 1) {
                         next = 0;
                     }
                     var temp = buildings[check["building"]];
@@ -640,21 +771,21 @@ var Get_building_list = function(){
                     // if(temp[line]['point'][1] > check["high_y"]) check["high_y"] = temp[line]['point'][1]
                     // if(temp[line]['point'][0] < check["low_x"]) check["low_x"] = temp[line]['point'][0]
                     // if(temp[line]['point'][0] > check["high_x"]) check["high_x"] = temp[line]['point'][0]
-                    var incli = (temp[line]['point'][1] - temp[next]['point'][1])/(temp[line]['point'][0] - temp[next]['point'][0]);
-                    var y_ = temp[line]['point'][1] - incli*temp[line]['point'][0];
-                    var temp_arr = [incli,y_];
-                    var obj = {"line":temp_arr};
-                    var distance_right = Math.pow((catch_point[0]-temp[line]['point'][0]),2) + Math.pow((catch_point[1]-temp[line]['point'][1]),2);
-                    if(distance_to_point > distance_right) distance_to_point = distance_right;
-                    var distance_center = Math.pow((catch_point[0]-temp[next]['point'][0]),2) + Math.pow((catch_point[1]-temp[next]['point'][1]),2);
-                    if(distance_to_point > distance_left) distance_to_point = distance_left;
-                    var distance_left = Math.pow((catch_point[0]-((temp[line]['point'][0]+temp[next]['point'][0])/2),2)) + Math.pow((catch_point[1]-((temp[line]['point'][1]+temp[next]['point'][1])/2),2));
-                    if(distance_to_point > distance_center) distance_to_point = distance_center;
+                    var incli = (temp[line]['point'][1] - temp[next]['point'][1]) / (temp[line]['point'][0] - temp[next]['point'][0]);
+                    var y_ = temp[line]['point'][1] - incli * temp[line]['point'][0];
+                    var temp_arr = [incli, y_];
+                    var obj = {"line": temp_arr};
+                    var distance_right = Math.pow((catch_point[0] - temp[line]['point'][0]), 2) + Math.pow((catch_point[1] - temp[line]['point'][1]), 2);
+                    if (distance_to_point > distance_right) distance_to_point = distance_right;
+                    var distance_center = Math.pow((catch_point[0] - temp[next]['point'][0]), 2) + Math.pow((catch_point[1] - temp[next]['point'][1]), 2);
+                    if (distance_to_point > distance_left) distance_to_point = distance_left;
+                    var distance_left = Math.pow((catch_point[0] - ((temp[line]['point'][0] + temp[next]['point'][0]) / 2), 2)) + Math.pow((catch_point[1] - ((temp[line]['point'][1] + temp[next]['point'][1]) / 2), 2));
+                    if (distance_to_point > distance_center) distance_to_point = distance_center;
                     equation.push(obj);
                 }
                 var temp = {
-                    'building' : check['building'],
-                    'distance' : distance_to_point
+                    'building': check['building'],
+                    'distance': distance_to_point
                 };
                 near_list.push(temp);
                 // console.log(near_list);
@@ -665,20 +796,20 @@ var Get_building_list = function(){
                 //     continue;
                 // }
                 var count = 0;
-                for(var lc = 0; lc<equation.length; lc++){
+                for (var lc = 0; lc < equation.length; lc++) {
                     var temp_equ = equation[lc]['line'];
                     var next = lc + 1;
-                    if(lc == equation.length-1) next = 0;
-                    var temp_x = (catch_point[1]-temp_equ[1])/temp_equ[0];
-                    if(buildings[check["building"]][lc]["point"][0] >= buildings[check["building"]][next]["point"][0]){
-                        if(buildings[check["building"]][lc]["point"][0] < temp_x || catch_point[0] > temp_x){
+                    if (lc == equation.length - 1) next = 0;
+                    var temp_x = (catch_point[1] - temp_equ[1]) / temp_equ[0];
+                    if (buildings[check["building"]][lc]["point"][0] >= buildings[check["building"]][next]["point"][0]) {
+                        if (buildings[check["building"]][lc]["point"][0] < temp_x || catch_point[0] > temp_x) {
                             continue;
                         }
                         else {
                             count++;
                         }
-                    } else{
-                        if(buildings[check["building"]][next]["point"][0] < temp_x || catch_point[0] > temp_x){
+                    } else {
+                        if (buildings[check["building"]][next]["point"][0] < temp_x || catch_point[0] > temp_x) {
                             continue;
                         }
                         else {
@@ -702,30 +833,30 @@ var Get_building_list = function(){
                 // }
 
             }
-            near_list.sort(function(a,b){
-                if(a.distance > b.distance){
+            near_list.sort(function (a, b) {
+                if (a.distance > b.distance) {
                     return 1;
                 }
-                if(a.distance < b.distance){
+                if (a.distance < b.distance) {
                     return -1;
                 }
                 return 0;
             })
             // console.log(near_list);
         },
-        Setnewarea : function(newarea){
+        Setnewarea: function (newarea) {
             buildings = newarea;
         },
-        Getbuildinginfo : function(){
+        Getbuildinginfo: function () {
             return buildings;
         },
-        Setcatchpoint : function(newpoint){
+        Setcatchpoint: function (newpoint) {
             catch_point = newpoint;
         },
-        Getnearlist : function(){
+        Getnearlist: function () {
             return near_list;
         },
-        Resetnearlist : function(){
+        Resetnearlist: function () {
             near_list = [];
         }
     }
@@ -734,11 +865,11 @@ var Get_building_list = function(){
 }();
 
 function convertStatus(status) {
-    if(status === "WFA"){
+    if (status === "WFA") {
         return "수거전"
-    }else if(status == "WFR"){
+    } else if (status == "WFR") {
         return "수령전"
-    }else if(status == "COM"){
+    } else if (status == "COM") {
         return "완료"
     }
     return ""
@@ -752,9 +883,9 @@ function shuffle(a) {
     // return a;
     var input = a.slice();
 
-    for (var i = input.length-1; i >=0; i--) {
+    for (var i = input.length - 1; i >= 0; i--) {
 
-        var randomIndex = Math.floor(Math.random()*(i+1));
+        var randomIndex = Math.floor(Math.random() * (i + 1));
         var itemAtIndex = input[randomIndex];
 
         input[randomIndex] = input[i];
