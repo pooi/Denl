@@ -262,6 +262,14 @@ block content
                                                             v-card.ma-2.elevation-4.dal-small-card(hover, raised, :width="$vuetify.breakpoint.xsOnly ? '40' : '80' ", :height="$vuetify.breakpoint.xsOnly ? '30' : '40' ", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
 
 
+                                        v-flex(d-flex xs12)
+                                            v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 기타
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //.caption 직접 전달하겠습니까?
+                                                    v-checkbox.dal-checkbox(label="직접 주인에게 전달하겠습니다.", v-model="isDirect", color="orange darken-3")
+
+
                                         //v-flex(xs12)
                                         //    v-divider.mb-4
 

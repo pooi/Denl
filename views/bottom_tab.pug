@@ -114,6 +114,14 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                             v-spacer
                             v-btn(flat='', color='primary', @click='oneClick.data.dateModal = false') Cancel
                             v-btn(flat='', color='primary', @click='$refs.oneClick_date_dialog.save(oneClick.data.date)') OK
+                v-flex.mt-3(xs12)
+                    v-divider
+
+
+                v-flex.text-xs-center.mt-3(xs12)
+                    .caption 전달방식
+                v-layout.mt-2.mx-3(xs12, align-center, justify-center)
+                    v-checkbox(label="직접 주인에게 전달하겠습니다.", v-model="oneClick.isDirect", color="orange darken-3")
 
 
         v-divider

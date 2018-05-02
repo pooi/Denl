@@ -45,6 +45,8 @@ class OneClick {
                 }
             ],
 
+            isDirect:false,
+
             recognitionDialog: false,
 
             responseDialog: false,
@@ -105,6 +107,8 @@ class OneClick {
                     value: 'accuracy'
                 }
             ],
+
+            isDirect:false,
 
             recognitionDialog: false,
 
@@ -169,7 +173,7 @@ class OneClick {
 
         setTimeout(function () {
             oneClick.getCurrentLocation();
-        }, 10);
+        }, 1000);
 
         let data = new FormData();
 

@@ -70,6 +70,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             rooms: [
                 '101', '201', '301', '401'
             ],
+            isDirect: false,
             modal: false,
             responseDialog: false,
             resSuccessMsg: "This is temporary message.",
