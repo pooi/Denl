@@ -331,7 +331,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     description: this.description === null ? "" : this.description,
                     color: this.colors.length > 0 ? JSON.stringify(this.colors) : "",
                     recognition_result: this.recognitionData === null ? "" : JSON.stringify(this.recognitionData),
-                    status: "WFA",
+                    status: this.isDirect ? "P2P" : "WFA",
                     dcv_date: dateToMs(this.date),
                     rgt_date: getTodayMs(),
                     rgt_user: this.loginData.user.id,

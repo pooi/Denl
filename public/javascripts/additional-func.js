@@ -45,7 +45,7 @@ class OneClick {
                 }
             ],
 
-            isDirect:false,
+            isDirect: false,
 
             recognitionDialog: false,
 
@@ -356,7 +356,7 @@ class OneClick {
             description: "",
             color: this.data.colors.length > 0 ? JSON.stringify(this.data.colors) : "",
             recognition_result: this.data.recognitionData === null ? "" : JSON.stringify(this.data.recognitionData),
-            status: "WFA",
+            status: this.data.isDirect ? "P2P" : "WFA",
             dcv_date: dateToMs(this.data.date),
             rgt_date: getTodayMs(),
             rgt_user: this.vue.loginData.user.id,
@@ -871,10 +871,12 @@ var Get_building_list = function () {
 function convertStatus(status) {
     if (status === "WFA") {
         return "수거전"
-    } else if (status == "WFR") {
+    } else if (status === "WFR") {
         return "수령전"
-    } else if (status == "COM") {
+    } else if (status === "COM") {
         return "완료"
+    } else if (status === "P2P"){
+        return "개인거래"
     }
     return ""
 }
