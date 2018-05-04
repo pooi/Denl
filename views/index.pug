@@ -43,6 +43,8 @@ block content
                                     v-card-title.text-xs-center.pa-0
                                         v-btn(dark, small, flat, outline, round, v-if="moreBtn === 'lost'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
                                             span MORE
+                                        v-btn(dark, small, flat, outline, round, color="deep-orange darken-3", v-if="moreBtn === 'lost'", @click="oneClick.action()")
+                                            span 간편등록
                         // 관리
                         v-flex.dal-card-scale-white.py-4(xs12, sm3, v-if='loginData.user !== null && loginData.user.admin == 1', v-on:mouseover="moreBtn = 'manage';", v-on:mouseout="moreBtn = null;")
                             v-card.elevation-0.transparent
@@ -152,15 +154,17 @@ block content
                         h2.headline.black--text 통계
                         // style="color: #D84315;"
                         span.subheading 유실물들의 통계 그래프입니다
-                v-layout.px-3(xs12, wrap, justify-center, align-center)
+                v-layout.px-3(xs12, wrap, justify-center, align-center, v-observe-visibility='drawIndexChart')
                     v-flex.text-xs-center(xs12)
                         .subheading.my-3() 최근 30일 유실물 통계
-                    v-flex.pa-3.text-xs-center(xs12, sm6)
+                    v-flex.pa-3.text-xs-center(xs12, sm6, id="weekCategoryChartDiv")
                         .subheading.my-3 카테고리별
-                        canvas(id="weekCategoryChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekCategoryChart')
-                    v-flex.pa-3.text-xs-center(xs12, sm6)
+                        canvas(id="weekCategoryChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+                    v-flex.pa-3.text-xs-center(xs12, sm6, id="weekChartDiv")
                         .subheading.my-3 세부카테고리별 Top 5
-                        canvas(id="weekChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekChart')
+                        canvas(id="weekChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+                v-flex(xs12)
+                    v-btn.mt-4.grey--text(flat, small, color='grey', @click='drawIndexChart()') 다시 그리기
 
 
         // ######## 등록 설명 ########
@@ -256,7 +260,7 @@ block content
     v-bottom-sheet(v-model='shareSheet', inset, max-width='500px')
         v-list
             v-subheader 공유하기
-            v-list-tile(v-for='tile in shares', :key='tile', @click='shareTo(tile.title)')
+            v-list-tile(v-for='tile in shares', :key='tile.title', @click='shareTo(tile.title)')
                 v-list-tile-avatar
                     v-avatar(size='32px', tile)
                         img(:src="'/images/' + tile.img")
@@ -265,70 +269,6 @@ block content
     include footer
     include bottom_tab
 
-
-    script.
-        $(document).ready(function () {
-            // console.log("createChart");
-            // const ctx = document.getElementById("myChart");
-            const ctx2 = document.getElementById("myChart2");
-            // console.log("ctx:", ctx);
-            // const myChart = new Chart(ctx, {
-            //     type: 'pie',
-            //     data: {
-            //         labels: ["Red", "Blue", "Yellow"],
-            //         datasets: [{
-            //             label: '# of Votes',
-            //             data: [12, 19, 3],
-            //             backgroundColor: [
-            //                 'rgba(255, 99, 132, 1)',
-            //                 'rgba(54, 162, 235, 1)',
-            //                 'rgba(255, 206, 86, 1)',
-            //                 'rgba(75, 192, 192, 1)',
-            //                 'rgba(153, 102, 255, 1)',
-            //                 'rgba(255, 159, 64, 1)'
-            //             ],
-            //             borderColor: [
-            //                 'rgba(255,99,132,1)',
-            //                 'rgba(54, 162, 235, 1)',
-            //                 'rgba(255, 206, 86, 1)',
-            //                 'rgba(75, 192, 192, 1)',
-            //                 'rgba(153, 102, 255, 1)',
-            //                 'rgba(255, 159, 64, 1)'
-            //             ],
-            //             borderWidth: 1
-            //         }]
-            //     },
-            //     options: {}
-            // });
-
-            const myChart2 = new Chart(ctx2, {
-                type: 'line',
-                data: {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                }
-            });
-        });
 
     script.
         $(document).ready(function () {

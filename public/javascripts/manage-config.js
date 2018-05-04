@@ -18,7 +18,8 @@ function init(WFA, WFRQ, init_category, WFL) {
             },
             loginData:{
             },
-            todayDate: null,
+            oneClick: null,
+            dalMessage: null,
             itemData: null,
             requestList: [],
             recognitionDataHeaders: [
@@ -523,5 +524,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             }
         }
     });
+    vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

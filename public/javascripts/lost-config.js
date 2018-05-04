@@ -15,8 +15,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             loginData:{
             },
-            msgData:{
-            },
+            oneClick: null,
+            dalMessage: null,
             bottomTab: "lost",
             imgSrc: '',
             domEleArray: null,
@@ -408,5 +408,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             }
         ]
     });
+    vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

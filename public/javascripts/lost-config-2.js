@@ -15,8 +15,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             loginData:{
             },
-            msgData:{
-            },
+            oneClick: null,
+            dalMessage: null,
             bottomTab: "lost",
             imgSrc: '',
             domEleArray: null,
@@ -70,6 +70,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             rooms: [
                 '101', '201', '301', '401'
             ],
+            isDirect: false,
             modal: false,
             responseDialog: false,
             resSuccessMsg: "This is temporary message.",
@@ -134,7 +135,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 this.isFile = true
             },
             uploadImage: function (e) {
-                vue.isProgress = true
+                vue.isProgress = true;
                 var form = document.getElementById('image-form')
                 form.submit()
             },
@@ -330,7 +331,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     description: this.description === null ? "" : this.description,
                     color: this.colors.length > 0 ? JSON.stringify(this.colors) : "",
                     recognition_result: this.recognitionData === null ? "" : JSON.stringify(this.recognitionData),
-                    status: "WFA",
+                    status: this.isDirect ? "P2P" : "WFA",
                     dcv_date: dateToMs(this.date),
                     rgt_date: getTodayMs(),
                     rgt_user: this.loginData.user.id,
@@ -471,5 +472,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             }
         ]
     });
+    vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

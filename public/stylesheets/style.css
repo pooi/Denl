@@ -53,6 +53,14 @@
 }
 
 
+.dal-checkbox{
+
+}
+
+.dal-checkbox .input-group__details{
+    display: none;
+}
+
 
 .rounded-expansion-panel{
 

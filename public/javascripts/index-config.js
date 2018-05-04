@@ -22,9 +22,8 @@ function init(init_category) {
             loginData:{
 
             },
-            msgData:{
-                newMsgCount: 0
-            },
+            oneClick: null,
+            dalMessage: null,
             moreBtn: null,
             categoryData: null,
             bottomTab: "home",
@@ -43,20 +42,24 @@ function init(init_category) {
 
             statisticsData: {
                 weekChartData: {
+                    bg: null,
                     ctx: null,
                     chart: null,
                     item: {
                         labels: [],
                         data: []
-                    }
+                    },
+                    colors: null
                 },
                 weekCategoryChartData: {
+                    bg: null,
                     ctx: null,
                     chart: null,
                     item: {
                         labels: [],
                         data: []
-                    }
+                    },
+                    colors: null
                 }
 
             }
@@ -235,6 +238,7 @@ function init(init_category) {
                     var data = res.data;
                     vue.statisticsData.weekChartData.item = data;
                     vue.statisticsData.weekChartData.isDraw = false;
+                    vue.statisticsData.weekChartData.colors = shuffle(pastelColorsT);
                     vue.drawWeekChart();
                 }).catch(function (error) {
                     alert(error);
@@ -248,6 +252,7 @@ function init(init_category) {
                     var data = res.data;
                     vue.statisticsData.weekCategoryChartData.item = data;
                     vue.statisticsData.weekCategoryChartData.isDraw = false;
+                    vue.statisticsData.weekCategoryChartData.colors = shuffle(pastelColorsT);
                     vue.drawWeekCategoryChart();
                 }).catch(function (error) {
                     alert(error);
@@ -256,6 +261,7 @@ function init(init_category) {
             drawWeekChart: function () {
                 if(this.statisticsData.weekChartData.chart == null){
                     this.statisticsData.weekChartData.ctx = document.getElementById("weekChart");
+                    this.statisticsData.weekChartData.bg = document.getElementById("weekChartDiv");
                 }else{
                     this.statisticsData.weekChartData.chart.destroy();
                 }
@@ -276,15 +282,8 @@ function init(init_category) {
                         datasets: [{
                             label: 'Subcategory',
                             data: data,
-                            backgroundColor: pastelColors,
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            backgroundColor: vue.statisticsData.weekChartData.colors,
+                            borderColor: vue.statisticsData.weekChartData.colors,
                             borderWidth: 1
                         }]
                     },
@@ -309,6 +308,7 @@ function init(init_category) {
             drawWeekCategoryChart: function () {
                 if(this.statisticsData.weekCategoryChartData.chart == null){
                     this.statisticsData.weekCategoryChartData.ctx = document.getElementById("weekCategoryChart");
+                    this.statisticsData.weekCategoryChartData.bg = document.getElementById("weekCategoryChartDiv");
                 }else{
                     this.statisticsData.weekCategoryChartData.chart.destroy();
                 }
@@ -319,15 +319,8 @@ function init(init_category) {
                         datasets: [{
                             label: 'Category',
                             data: vue.statisticsData.weekCategoryChartData.item.data,
-                            backgroundColor: pastelColors,
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            backgroundColor: vue.statisticsData.weekCategoryChartData.colors,
+                            borderColor: vue.statisticsData.weekCategoryChartData.colors,
                             borderWidth: 1
                         }]
                     },
@@ -337,7 +330,19 @@ function init(init_category) {
                         }
                     }
                 });
+
             },
+            drawIndexChart: function () {
+                console.log("draw");
+                if(this.statisticsData.weekChartData.bg !== null)
+                    this.statisticsData.weekChartData.bg.style.visibility = 'hidden';
+                this.drawWeekCategoryChart();
+                setTimeout(function() {
+                    if(vue.statisticsData.weekChartData.bg !== null)
+                        vue.statisticsData.weekChartData.bg.style.visibility = 'visible';
+                    vue.drawWeekChart()
+                },1000);
+            }
         },
         mounted:[
             function () {
@@ -367,6 +372,12 @@ function init(init_category) {
                 });
             }
         ]
+        // beforeMount(){
+        //     this.getWeekData();
+        // }
     });
+
+    vue.oneClick = new OneClick(vue);
+    vue.dalMessage = new DalMessage(vue);
     return vue;
 }

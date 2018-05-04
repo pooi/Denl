@@ -46,6 +46,11 @@ block content
 
                                 .caption.grey--text.mt-3.mb-4(:class="$vuetify.breakpoint.xsOnly ? '' : 'ml-3' ") * JPG, PNG, GIF 파일만 업로드 가능합니다.
 
+                                v-flex(xs12)
+                                    v-divider
+                                v-flex.text-xs-center(xs12)
+                                    v-btn.mt-3(color="orange darken-3", dark, @click="oneClick.action()") 간편등록
+
                             else
                                 //hr.py-3
                                 v-divider.my-3
@@ -260,6 +265,14 @@ block content
                                                         //    strong {{color.red}}
                                                         v-flex(v-for='color in colors', d-inline-flex)
                                                             v-card.ma-2.elevation-4.dal-small-card(hover, raised, :width="$vuetify.breakpoint.xsOnly ? '40' : '80' ", :height="$vuetify.breakpoint.xsOnly ? '30' : '40' ", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
+
+
+                                        v-flex(d-flex xs12)
+                                            v-card.dal-card(hover, raised, style="width: 100%;", :class="$vuetify.breakpoint.xsOnly ? 'ma-2 mb-3' : 'ma-3' ")
+                                                v-card-text.text-xs-center.brown.darken-1.white--text.px-0.py-1.body-1 기타
+                                                v-layout(row, wrap, :class="$vuetify.breakpoint.xsOnly ? 'pa-2' : 'pa-3' ", align-center, justify-center)
+                                                    //.caption 직접 전달하겠습니까?
+                                                    v-checkbox.dal-checkbox(label="직접 주인에게 전달하겠습니다.", v-model="isDirect", color="orange darken-3")
 
 
                                         //v-flex(xs12)
