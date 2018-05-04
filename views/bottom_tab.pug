@@ -6,7 +6,7 @@ v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync
         v-btn.py-2(flat='', color='deep-orange darken-3', value='find', href='/find')
             //span.caption Favorites
             v-icon.ma-0 search
-        v-btn.py-2.btn--active.dal-small-card(color='deep-orange darken-3', :value='bottomTab', dark, style='background-color: #ff5722!important', @click='oneClick.browseClick()')
+        v-btn.py-2.btn--active.dal-small-card(color='deep-orange darken-3', :value='bottomTab', dark, style='background-color: #ff5722!important', @click='oneClick.action()')
             //span.caption Nearby
             v-icon.ma-0 camera_alt
         v-btn.py-2(flat='', color='deep-orange darken-3', value='lost', href='/lost')
@@ -15,9 +15,9 @@ v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync
         v-btn.py-2(flat='', color='deep-orange darken-3', value='manage', href='/manage', v-if="loginData.user !== null && loginData.user.admin == 1")
             //span.caption Nearby
             v-icon.ma-0 build
-        v-btn.py-2(flat='', color='deep-orange darken-3', :value='bottomTab', @click="loginData.dialog = true", v-else-if="loginData.user === null")
+        v-btn.py-2(flat='', color='deep-orange darken-3',  @click="loginData.dialog = true;", v-else-if="loginData.user === null")
             v-icon.ma-0 person
-        v-btn.py-2(flat='', color='deep-orange darken-3', :value='bottomTab', @click="loginData.dialog = true", v-else-if="loginData.user !== null")
+        v-btn.py-2(flat='', color='deep-orange darken-3',  @click="loginData.dialog = true;", v-else-if="loginData.user !== null")
             v-icon.ma-0 person
 
 

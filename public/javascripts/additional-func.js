@@ -126,6 +126,10 @@ class OneClick {
         }
     }
 
+    action(){
+        this.browseClick();
+    }
+
     checkSubmit() {
         if (this.data.category === null || this.data.subcategory === null)
             return true;

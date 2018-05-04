@@ -46,6 +46,11 @@ block content
 
                                 .caption.grey--text.mt-3.mb-4(:class="$vuetify.breakpoint.xsOnly ? '' : 'ml-3' ") * JPG, PNG, GIF 파일만 업로드 가능합니다.
 
+                                v-flex(xs12)
+                                    v-divider
+                                v-flex.text-xs-center(xs12)
+                                    v-btn.mt-3(color="orange darken-3", dark, @click="oneClick.action()") 간편등록
+
                             else
                                 //hr.py-3
                                 v-divider.my-3

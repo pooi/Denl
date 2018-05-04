@@ -372,6 +372,9 @@ function init(init_category) {
                 });
             }
         ]
+        // beforeMount(){
+        //     this.getWeekData();
+        // }
     });
 
     vue.oneClick = new OneClick(vue);

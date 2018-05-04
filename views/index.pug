@@ -43,7 +43,7 @@ block content
                                     v-card-title.text-xs-center.pa-0
                                         v-btn(dark, small, flat, outline, round, v-if="moreBtn === 'lost'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
                                             span MORE
-                                        v-btn(dark, small, flat, outline, round, color="deep-orange darken-3", v-if="moreBtn === 'lost'", @click="oneClick.browseClick()")
+                                        v-btn(dark, small, flat, outline, round, color="deep-orange darken-3", v-if="moreBtn === 'lost'", @click="oneClick.action()")
                                             span 간편등록
                         // 관리
                         v-flex.dal-card-scale-white.py-4(xs12, sm3, v-if='loginData.user !== null && loginData.user.admin == 1', v-on:mouseover="moreBtn = 'manage';", v-on:mouseout="moreBtn = null;")
