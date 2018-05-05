@@ -27,6 +27,7 @@
     "pug": "2.0.0-beta11",
     "request": "^2.83.0",
     "serve-favicon": "~2.4.5",
+    "socket.io": "^2.1.0",
     "vue": "^2.5.13",
     "vue-observe-visibility": "^0.3.1",
     "vuetify": "^1.0.13"

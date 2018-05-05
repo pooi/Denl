@@ -1,0 +1,41 @@
+extends layout
+block content
+
+    include toolbar
+
+    div(style="margin-top: 48px;")
+        v-app
+            v-layout(row='', justify-center='')
+                v-dialog(v-model='dialog', persistent='', max-width='500px')
+                    v-btn(slot='activator', color='primary', dark='') Open Dialog
+                    v-card
+                        v-card-title
+                            span.headline User Profile
+                        v-card-text
+                            v-container(grid-list-md='')
+                                v-layout(wrap='')
+                                    v-flex(xs12='', sm6='', md4='')
+                                        v-text-field(label='Room', required='', v-model="room")
+                                    v-flex(xs12='', sm6='', md4='')
+                                        v-text-field(label='Name', v-model="name")
+                                    v-flex(xs12='', sm6='', md4='')
+                                        v-text-field(label='Talk', hint='example of persistent helper text', persistent-hint='', required='', v-model="talk")
+                                    v-flex(xs12='')
+                                        textarea(:value="chatData")
+                            small *indicates required field
+                        v-card-actions
+                            v-spacer
+                            v-btn(color='blue darken-1', flat='', @click.native='connect()') Connect
+                            v-btn(color='blue darken-1', flat='', @click.native='out()') Close
+                            v-btn(color='blue darken-1', flat='', @click="send()") Send
+
+
+        include footer
+        include bottom_tab
+
+
+    script(type="text/javascript" src='/javascripts/chat-config.js')
+    script(src='socket.io/socket.io.js')
+    script.
+        var chat = io('http://localhost:30000/chat');
+        const vue = init();

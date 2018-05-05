@@ -13,10 +13,11 @@ var get_date = function(num){
 /* GET home page. */
 function manage (req, res) {
     var date_sentence = get_date(8);
-    var recent_period = get_date(30);
+    var recent_period = get_date(50);
     var sql = 'select * from lost where status="WFA";' +
         'select * from lost where id IN (select distinct lost_id from request where rgt_date > '+ recent_period + ');' +
-        'select * from lost where id IN (select lost_id from request where rgt_date < '+ date_sentence + ');SELECT * FROM category';
+        'select * from lost where id IN (select lost_id from request where rgt_date < '+ date_sentence + ');' + 'SELECT * FROM category';
+    console.log(sql);
     conn.query(sql, function (err, results) {
         if (err) {
             console.log(err);
@@ -55,6 +56,7 @@ function manage (req, res) {
                     result_arr.push(json);
                 }
             }
+            console.log(result_arr[1]);
             res.render('manage', {
                 userData: JSON.stringify(req.session.userData),
                 WFA: result_arr[0],
