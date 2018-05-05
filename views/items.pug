@@ -159,6 +159,8 @@ block content
                                                             .title.pa-0.black--text {{ vueMsToDateKo(itemData.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
+                                                v-layout
+                                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && (loginData.user === null || loginData.user.id !== itemData.rgt_user.id)", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="removeRequest(req.id)") 연락하기
 
 
 
@@ -212,6 +214,7 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && loginData.user !== null && loginData.user.id === itemData.rgt_user.id", block, color="error", style="border-radius: 0px;", dark, @click="changeStatusDialog=true") 전달방식변경
                                     v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="selectedRequest = null; requestReceiveDialog=true", v-if='vueIsAdmin() && requestList.length > 0 && itemData.status !== "WFR" && itemData.status !== "COM"') 수령승인
                                     v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
 
@@ -409,6 +412,21 @@ block content
                 v-card-actions
                     v-spacer
                     v-btn(color='success', flat, @click="reloadPage()") 확인
+
+
+        v-dialog.md6(v-model='changeStatusDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='error') error
+                    | 전달 방식 변경
+                v-card-text
+                    | 개인 전달에서 관리자 소관으로 변경하시겠습니까?
+                    br
+                    | 이 작업은 되돌릴 수 없습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click.native="changeStatusDialog = false") 취소
+                    v-btn(color='error', flat, @click="") 변경
 
         // confirmReceiveSuccessDialog
 

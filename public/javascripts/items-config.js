@@ -58,6 +58,7 @@ function init(init_data, init_category) {
             requestReceiveSuccessDialog: false,
             requestReceiveCancelSuccessDialog: false,
             confirmReceiveSuccessDialog: false,
+            changeStatusDialog: false,
 
             selectedRequest: null
         },
