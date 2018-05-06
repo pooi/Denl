@@ -305,5 +305,21 @@ router.post('/confirmReceive', function (req, res) {
     }
 });
 
+router.post('/changeP2PtoWFA', function (req, res) {
+    if(req.body){
+        var lostID = req.body.lost_id;
+        var sql = 'UPDATE lost SET status="WFA" WHERE id=?;';
+        conn.query(sql, [lostID], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.send(results);
+            }
+        });
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 module.exports = router;

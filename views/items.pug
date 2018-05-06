@@ -380,7 +380,7 @@ block content
                         v-btn(color='error', flat, @click="requestReceiveDialog = false") 취소
                         v-btn(color='success', flat, :disabled="selectedRequest === null", @click="requestReceive()") 확인
 
-        v-dialog.md6(v-model='requestReceiveSuccessDialog',  scrollable, max-width='500px')
+        v-dialog.md6(v-model='requestReceiveSuccessDialog', persistent, scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
@@ -391,7 +391,7 @@ block content
                     v-spacer
                     v-btn(color='success', flat, @click="reloadPage()") 확인
 
-        v-dialog.md6(v-model='requestReceiveCancelSuccessDialog',  scrollable, max-width='500px')
+        v-dialog.md6(v-model='requestReceiveCancelSuccessDialog', persistent, scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
@@ -402,7 +402,7 @@ block content
                     v-spacer
                     v-btn(color='success', flat, @click="reloadPage()") 확인
 
-        v-dialog.md6(v-model='confirmReceiveSuccessDialog',  scrollable, max-width='500px')
+        v-dialog.md6(v-model='confirmReceiveSuccessDialog', persistent, scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
@@ -426,7 +426,19 @@ block content
                 v-card-actions
                     v-spacer
                     v-btn(color='success', flat, @click.native="changeStatusDialog = false") 취소
-                    v-btn(color='error', flat, @click="") 변경
+                    v-btn(color='error', flat, @click="changeP2PtoWFA()") 변경
+
+
+        v-dialog.md6(v-model='successStatusChangeDialog', persistent, scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text.subheading
+                    | 성공적으로 전달방식을 변경하였습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click="reloadPage()") 확인
 
         // confirmReceiveSuccessDialog
 

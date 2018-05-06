@@ -1,6 +1,7 @@
 
 
 function init(init_data, init_category) {
+
     var vue = new Vue({
         el: '#app',
         data: {
@@ -59,6 +60,7 @@ function init(init_data, init_category) {
             requestReceiveCancelSuccessDialog: false,
             confirmReceiveSuccessDialog: false,
             changeStatusDialog: false,
+            successStatusChangeDialog: false,
 
             selectedRequest: null
         },
@@ -421,6 +423,28 @@ function init(init_data, init_category) {
                         });
 
                 }
+            },
+            changeP2PtoWFA: function () {
+                var data = {
+                    lost_id: this.itemData.id
+                };
+
+                axios.post(
+                    '/items/changeP2PtoWFA',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var insertId = data.insertId;
+                    if (insertId != null) {
+                        vue.successStatusChangeDialog = true;
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             }
         },
         mounted: [
