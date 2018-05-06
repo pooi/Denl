@@ -49,6 +49,8 @@ function init(WFA, WFRQ, init_category, WFL) {
             WFAs : null,
             WFRQs : null,
             WFLs : null,
+            WFA_id_list : [],
+            WFA_request_list : [],
             //필터데이터
             filter_keyword: false,
             filter_text: '전체 유실물 리스트',
@@ -436,21 +438,47 @@ function init(WFA, WFRQ, init_category, WFL) {
                         }
                     }
                 });
+            },
+            change_wfa_wfrq: function(){
+                var wfa_wfrq_data = "(";
+                for(item in this.WFA_request_list){
+                    wfa_wfrq_data += this.WFA_request_list[item]
+                    if(item != this.WFA_request_list.length-1) {
+                        wfa_wfrq_data += ","
+                    }
+                }
+                wfa_wfrq_data += ")"
+                console.log(wfa_wfrq_data);
+                axios({
+                    method: 'post',
+                    url: '/manage/wfa_wfrq',
+                    data : wfa_wfrq_data
+                }).then(function(response){
+                    console.log(response);
+                    alert("success");
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
             }
         },
         created : function(){
             this.WFAs = JSON.parse(WFA);
             this.WFRQs = JSON.parse(WFRQ);
-            // this.WFLs = JSON.parse(WFL);
-            // wfas.forEach(function (lost){
-            //     this.WFAs.push(lost)
-            // })
-            // var wfrqs = JSON.parse(WFRQ);
-            // wfrqs.forEach(function (lost){
-            //     this.WFRQs.push(lost)
-            // })
         },
         mounted: [
+            function() {
+                for(item in this.WFAs){
+                    this.WFA_id_list.push(this.WFAs[item].id);
+                }
+            },
             function () {
                 var today = new Date();
                 var dd = today.getDate();

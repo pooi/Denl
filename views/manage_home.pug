@@ -14,6 +14,7 @@ section(style="position: relative;")
                                         //v-flex(d-inline-flex)
                                         v-flex(v-for="(item, index) in array", :key='index', xs12, sm6, md4, lg3)
                                             include index_card_item
+        include group_process_dialog
     section.py-4
         v-layout.text-xs-center.py-4(column, align-center)
             v-flex(xs12, container, fill-height, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  '' : ''")
