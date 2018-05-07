@@ -5,8 +5,9 @@ function init() {
     var vue = new Vue({
         el: '#app',
         data: {
+            title_login: 'Login',
             dialog: false,
-            title: 'D&L manage',
+            title: 'D&L chat',
             scrollData: {
                 fab: false,
                 offsetTop: 0,
@@ -48,8 +49,34 @@ function init() {
             todayDate: null,
             name: "",
             room: "",
-            talk: "",
-            chatData: []
+            chatData: [],
+            //현수파트
+            dialog: false,
+            message: "",
+            chat_lists: [
+                {
+                    name : "유태우",
+                    msg : [
+                        { sentence: "연락드립니다", stamp: "유태우"},
+                        { sentence: "연락드", stamp: "정하민"},
+                        { sentence: "연락드립니", stamp: "유태우"}
+                    ],
+                    avatar : "/images/person.png"
+                },
+                {
+                    name: "유현수",
+                    msg: [
+                        { sentence: "연락드립니다", stamp: "유현수"},
+                        { sentence: "연락드", stamp: "정하민"},
+                        { sentence: "연락드립니", stamp: "유현수"}
+                    ],
+                    avatar : "/images/person.png"
+                }
+            ],
+            /*대화 창에서 상대방 메시지 데이터*/
+            chat_clicked : null,
+            my_name : "",
+            receiveuser : ""
         },
         created() {
             chat.on("user out", function (data) {
@@ -64,19 +91,34 @@ function init() {
             });
         },
         methods: {
+            //현수 파트
+            loginSejong: function () {
+                var id = document.getElementsByName('loginId');
+                var pw = document.getElementsByName('loginPw');
+                loginSejong(id, pw);
+            },
+            ChatSelect: function (item) {
+                var list = [];
+                var tmp = [];
+                this.chat_clicked = item.roomname;
+            },
             connect: function() {
                 chat.emit("user join", {
-                    name: this.name,
-                    room: this.room,
+                    name: this.loginData.user.name,
+                    room: "aaa"
                 });
             },
             send: function () {
-                chat.emit("chat message", {
-                    name: this.name,
-                    room: this.room,
-                    msg: this.talk
-                });
-                this.talk = "";
+                if(this.loginData.user != null){
+                    chat.emit("chat message", {
+                        name: this.loginData.user.name,
+                        room: this.room,
+                        msg: this.talk
+                    });
+                    this.talk = "";
+                }else{
+                    alert("please login");
+                }
             },
             out: function () {
                 chat.emit("user out", {
@@ -153,46 +195,15 @@ function init() {
                 var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
                 this.todayDate = today;
             },
-            // function () {
-            //     var json = init_data;
-            //     this.itemData = JSON.parse(json);
-            //     console.log(this.itemData);
-            // },
-            function () {
-                this.categoryData = JSON.parse(init_category);
-                //console.log("category: ", this.categoryData);
-                //필터 값 초기화 부분
-                for(item in this.categoryData){
-                    var obj = {"name":item};
-                    this.lost_filter_category_parent.push(obj);
-                    for(sub_item in this.categoryData[item].subcategory){
-                        var sub_obj = {"name" : this.categoryData[item].subcategory[sub_item].name}
-                        this.filter_child_item.push(sub_obj);
-                    }
-                }
-                this.lost_filter_category_child = this.filter_child_item;
-                for(item in this.WFAs){
-                    var obj = {"name": this.WFAs[item].id}
-                    this.lost_filter_num.push(obj)
-                }
-            },
-            function () {
-                var title = document.createElement('meta');
-                title.name = "og:title";
-                title.content = this.itemData.id;
-                document.getElementsByTagName('head')[0].appendChild(title);
-
-                var origin = window.location.origin;
-                var image = document.createElement('meta');
-                image.name = "og:image";
-                image.content = origin + "/" + this.itemData.photos;
-                document.getElementsByTagName('head')[0].appendChild(image);
-
-                console.log(document.getElementsByTagName('head')[0]);
+            //송신자 이름 설정
+            function() {
+                this.my_name = this.loginData.user.name
             }
         ],
-        watch:{
-
+        watch : {
+            chat_clicked: function(val){
+                this.receiveuser = val;
+            }
         }
     });
     vue.oneClick = new OneClick(vue);

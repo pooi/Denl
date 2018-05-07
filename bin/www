@@ -46,9 +46,10 @@ var chat = io.of('/chat').on('connection', function(socket) {
     socket.on('user join', function(data) {
         console.log('%s user join', data.name);
         room = data.room;
+        socket.username = data.name;
         var msg = data.name + "user join";
         socket.join(room);
-        chat.to(room).emit('user join', msg);
+        chat.to(room).emit('user join', socket.username);
     });
 
 });

@@ -3,31 +3,53 @@ block content
 
     include toolbar
 
-    div(style="margin-top: 48px;")
-        v-app
-            v-layout(row='', justify-center='')
-                v-dialog(v-model='dialog', persistent='', max-width='500px')
-                    v-btn(slot='activator', color='primary', dark='') Open Dialog
-                    v-card
-                        v-card-title
-                            span.headline User Profile
-                        v-card-text
-                            v-container(grid-list-md='')
-                                v-layout(wrap='')
-                                    v-flex(xs12='', sm6='', md4='')
-                                        v-text-field(label='Room', required='', v-model="room")
-                                    v-flex(xs12='', sm6='', md4='')
-                                        v-text-field(label='Name', v-model="name")
-                                    v-flex(xs12='', sm6='', md4='')
-                                        v-text-field(label='Talk', hint='example of persistent helper text', persistent-hint='', required='', v-model="talk")
-                                    v-flex(xs12='')
-                                        textarea(:value="chatData")
-                            small *indicates required field
-                        v-card-actions
-                            v-spacer
-                            v-btn(color='blue darken-1', flat='', @click.native='connect()') Connect
-                            v-btn(color='blue darken-1', flat='', @click.native='out()') Close
-                            v-btn(color='blue darken-1', flat='', @click="send()") Send
+    div(style='background-color: white; margin-top: 49px;')
+        section(style='height: 100vh;')
+            v-layout(wrap='', align-center='')
+                v-flex(xs3='', sm3='', style='height: 100vh;')
+                    v-list
+                        v-list-tile(v-for='item in chat_lists', :key='item.name', avatar='', v-on:click='ChatSelect(item), connect()')
+                            v-list-tile-action
+                                v-icon(color='pink') star
+                            v-list-tile-content
+                                v-list-tile-title(v-text='item.roomname')
+                            v-list-tile-avatar
+                                img(:src='item.avatar')
+                v-flex(xs9='', sm9='', style='height: 100vh; background-color: #f4f4f4;')
+                    v-layout(wrap='')
+                        // 채팅하고자 하는 사람
+                        v-flex(xs12='', sm12='', mt-3='', px-3='')
+                            template(v-for='item in chat_lists')
+                                v-list-tile(v-if='item.roomname == chat_clicked', avatar='', ripple='', :key='item.name')
+                                    v-list-tile-avatar
+                                        img(:src='item.avatar')
+                                    v-list-tile-content
+                                        v-list-tile-title {{item.name}}
+                        // 채팅창
+                        v-flex(xs12='', sm12='', mt-3='')
+                            v-container
+                                v-card.scroll-y.elevation-1(style='height: 90%;')
+                                    v-layout(wrap='')
+                                        v-flex(xs12='', sm12='', pr-4='', text-xs-right='', style='height: 71vh;')
+                                            v-list(subheader='', v-for='item in chat_lists', :key='item.title', v-if='item.roomname == chat_clicked')
+                                                v-list-tile(avatar='', v-for='msg in item.msg')
+                                                    v-list-tile-avatar
+                                                        img(:src='item.avatar')
+                                                    v-list-tile-content
+                                                        v-chip(text-color='black') {{ msg.sentence + " " + msg.stamp }}
+                                                // <v-list-title style="margin-left: 1.2%;">{{item.title}}</v-list-title>
+                                            v-chip(v-if="message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
+                                v-card.elevation-1(style='margin-top: 0.9px; border-top: 1px solid #e7e7e7;')
+                                    v-layout(wrap='')
+                                        // 채팅 입력란
+                                        v-flex(xs12='', sm12='', px-3='')
+                                            // <textarea name="" v-model="message" placeholder="내용을 입력해주세요" style="width: 90%; height: 70%;"></textarea>
+                                            v-form(v-model='valid', ref='form', lazy-validation='')
+                                                v-layout(wrap='')
+                                                    v-flex(xs9='', sm9='')
+                                                        v-text-field(flat='', label='내용을 입력해주세요.', v-model='message', solo='')
+                                                    v-flex(xs3='', sm3='', style='', text-xs-right='')
+                                                        v-btn.success(v-on:click ="send") submit
 
 
         include footer
