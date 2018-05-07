@@ -100,7 +100,7 @@ function init() {
             ChatSelect: function (item) {
                 var list = [];
                 var tmp = [];
-                this.chat_clicked = item.roomname;
+                this.chat_clicked = item.name;
             },
             connect: function() {
                 chat.emit("user join", {
