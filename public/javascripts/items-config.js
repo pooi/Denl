@@ -445,6 +445,15 @@ function init(init_data, init_category) {
                     .catch(function (error) {
                         alert(error);
                     });
+            },
+            contactUser: function (id) {
+
+                if(this.loginData.user === null){
+                    this.loginErrorDialog = true;
+                    return;
+                }
+
+                alert("TODO");
             }
         },
         mounted: [
