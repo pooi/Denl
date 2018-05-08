@@ -454,6 +454,28 @@ function init(init_data, init_category) {
                 }
 
                 alert("TODO");
+            },
+            acceptItem: function () {
+                var data = {
+                    lost_id: this.itemData.id
+                };
+
+                axios.post(
+                    '/items/acceptItem',
+                    data
+                ).then(function (response) {
+                    var data = response.data;
+                    var insertId = data.insertId;
+                    if (insertId != null) {
+                        vue.reloadPage();
+                    } else {
+                        vue.requestErrorDialog = true;
+                    }
+                    // console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             }
         },
         mounted: [

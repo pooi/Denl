@@ -11,6 +11,7 @@ v-card.dal-card-scale(flat='', tile='', hover, raised, :class="$vuetify.breakpoi
     v-card-text.py-0.text-xs-left(v-if="item.tags.length > 0 || item.recognition_tags.length > 0")
         span.caption.brown--text {{ hashTagsToString(item) }}
     v-card-actions
+        v-btn(flat, small, color='error', dark, v-if="loginData.user !== null && loginData.user.admin == 1 && item.status === 'WFA' ", @click="") Accept
         v-spacer
         v-btn(flat, small, slot='activator', color='orange', dark, @click="shareSheet=true; shareItem=item;") Share
         v-btn(flat,small, color='orange', :href="'/items/'+item.id") Detail

@@ -36,11 +36,15 @@ block content
 
                             v-card.pt-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
 
+
                                 code.mb-2.mx-3(v-if="convertStatus(itemData.status).length > 0") {{convertStatus(itemData.status)}}
                                 .headline.pa-0.mx-3 유실물 상세보기
 
                                 v-flex.my-3.mx-3(xs12)
                                     v-divider
+
+                                v-flex.px-4.pb-3(xs12)
+                                    v-btn(block, color="deep-orange darken-3", dark, v-if="vueIsAdmin() && itemData.status === 'WFA' ", @click="acceptItem()") 수거완료
 
                                 v-layout.px-3.pb-2(row, wrap)
                                     v-flex(sm2, xs12)
