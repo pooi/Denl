@@ -22,6 +22,7 @@ function init(init_category) {
             loginData:{
 
             },
+            supporter: null,
             oneClick: null,
             dalMessage: null,
             moreBtn: null,
@@ -95,52 +96,52 @@ function init(init_category) {
                     scrollTop: $('#recent').offset().top - offset
                 }, 500);
             },
-            vueIsAdmin: function () {
-                return isAdmin();
-            },
-            getMsg:function () {
-                getMsg();
-            },
-            setMsgRead: function (msg) {
-                setMsgRead(msg);
-            },
-            vueMsToDate: function (date) {
-                return msToDate(date);
-            },
-            vueMsToDateKo: function (date) {
-                return msToDateKo(date);
-            },
-            convertStatus: function (status) {
-                return convertStatus(status)
-            },
-            hashTagsToString: function (itemData) {
-                var list = [];
-                for (var i = 0; i < itemData.tags.length; i++) {
-                    list.push(itemData.tags[i]);
-                }
-                for (var i = 0; i < itemData.recognition_tags.length; i++) {
-                    list.push(itemData.recognition_tags[i]);
-                }
-
-                var tags = "";
-                for (var i = 0; i < Math.min(list.length, 5); i++) {
-                    var tag = list[i];
-                    if (tag !== "") {
-                        tags += "#" + tag + " ";
-                    }
-                }
-                if (list.length > 5)
-                    tags += "...";
-
-                return tags;
-            },
-            reduceString: function (str, len) {
-                var newStr = str.substring(0, len);
-                if (str.length > 100) {
-                    newStr += "...";
-                }
-                return newStr;
-            },
+            // vueIsAdmin: function () {
+            //     return isAdmin();
+            // },
+            // getMsg:function () {
+            //     getMsg();
+            // },
+            // setMsgRead: function (msg) {
+            //     setMsgRead(msg);
+            // },
+            // vueMsToDate: function (date) {
+            //     return msToDate(date);
+            // },
+            // vueMsToDateKo: function (date) {
+            //     return msToDateKo(date);
+            // },
+            // convertStatus: function (status) {
+            //     return convertStatus(status)
+            // },
+            // hashTagsToString: function (itemData) {
+            //     var list = [];
+            //     for (var i = 0; i < itemData.tags.length; i++) {
+            //         list.push(itemData.tags[i]);
+            //     }
+            //     for (var i = 0; i < itemData.recognition_tags.length; i++) {
+            //         list.push(itemData.recognition_tags[i]);
+            //     }
+            //
+            //     var tags = "";
+            //     for (var i = 0; i < Math.min(list.length, 5); i++) {
+            //         var tag = list[i];
+            //         if (tag !== "") {
+            //             tags += "#" + tag + " ";
+            //         }
+            //     }
+            //     if (list.length > 5)
+            //         tags += "...";
+            //
+            //     return tags;
+            // },
+            // reduceString: function (str, len) {
+            //     var newStr = str.substring(0, len);
+            //     if (str.length > 100) {
+            //         newStr += "...";
+            //     }
+            //     return newStr;
+            // },
             getCategoryStringFromResult: function (title) {
                 title = title.replace(" ", "_");
                 var keys = Object.keys(this.categoryData);
@@ -168,7 +169,7 @@ function init(init_category) {
 
                 if(title === "Kakao"){
 
-                    var tags = this.hashTagsToString(shareItem);
+                    var tags = DalSupporter.hashTagsToString(shareItem);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
@@ -349,9 +350,9 @@ function init(init_category) {
                 this.categoryData = JSON.parse(init_category);
                 console.log("category: ", this.categoryData);
             },
-            function () {
-                this.createChart();
-            },
+            // function () {
+            //     this.createChart();
+            // },
             function () {
                 var data = {};
 
@@ -377,6 +378,7 @@ function init(init_category) {
         // }
     });
 
+    vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     return vue;

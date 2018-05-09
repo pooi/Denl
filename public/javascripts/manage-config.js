@@ -18,6 +18,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             },
             loginData:{
             },
+            supporter: null,
             oneClick: null,
             dalMessage: null,
             itemData: null,
@@ -111,46 +112,46 @@ function init(WFA, WFRQ, init_category, WFL) {
             }
         },
         methods: {
-            hashTagsToString: function (itemData) {
-                var list = [];
-                for(var i=0; i<itemData.tags.length; i++){
-                    list.push(itemData.tags[i]);
-                }
-                for(var i=0; i<itemData.recognition_tags.length; i++){
-                    list.push(itemData.recognition_tags[i]);
-                }
-
-                var tags = "";
-                for(var i=0; i<Math.min(list.length, 5); i++){
-                    var tag = list[i];
-                    if(tag !== ""){
-                        tags += "#" + tag + " ";
-                    }
-                }
-                if(list.length > 5)
-                    tags += "...";
-
-                return tags;
-            },
-            reduceString: function (str, len) {
-                var newStr = str.substring(0, len);
-                if(str.length > 100){
-                    newStr += "...";
-                }
-                return newStr;
-            },
-            vueMsToDate: function (date) {
-                return msToDate(date);
-            },
-            vueMsToDateKo: function (date) {
-                return msToDateKo(date);
-            },
-            convertStatus: function (status) {
-                if(status === "WFA"){
-                    return "수거전"
-                }
-                return ""
-            },
+            // hashTagsToString: function (itemData) {
+            //     var list = [];
+            //     for(var i=0; i<itemData.tags.length; i++){
+            //         list.push(itemData.tags[i]);
+            //     }
+            //     for(var i=0; i<itemData.recognition_tags.length; i++){
+            //         list.push(itemData.recognition_tags[i]);
+            //     }
+            //
+            //     var tags = "";
+            //     for(var i=0; i<Math.min(list.length, 5); i++){
+            //         var tag = list[i];
+            //         if(tag !== ""){
+            //             tags += "#" + tag + " ";
+            //         }
+            //     }
+            //     if(list.length > 5)
+            //         tags += "...";
+            //
+            //     return tags;
+            // },
+            // reduceString: function (str, len) {
+            //     var newStr = str.substring(0, len);
+            //     if(str.length > 100){
+            //         newStr += "...";
+            //     }
+            //     return newStr;
+            // },
+            // vueMsToDate: function (date) {
+            //     return msToDate(date);
+            // },
+            // vueMsToDateKo: function (date) {
+            //     return msToDateKo(date);
+            // },
+            // convertStatus: function (status) {
+            //     if(status === "WFA"){
+            //         return "수거전"
+            //     }
+            //     return ""
+            // },
             getCategoryStringFromResult: function (title) {
                 title = title.replace(" ", "_");
                 var keys = Object.keys(this.categoryData);
@@ -218,12 +219,12 @@ function init(WFA, WFRQ, init_category, WFL) {
                     this.scrollData.offsetTop = 0;
                 }
             },
-            getMsg:function () {
-                getMsg();
-            },
-            setMsgRead: function (msg) {
-                setMsgRead(msg);
-            },
+            // getMsg:function () {
+            //     getMsg();
+            // },
+            // setMsgRead: function (msg) {
+            //     setMsgRead(msg);
+            // },
 
             // Statistics
             getWeekData: function () {
@@ -469,6 +470,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             }
         }
     });
+    vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     return vue;

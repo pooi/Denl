@@ -15,6 +15,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             loginData:{
             },
+            supporter: null,
             oneClick: null,
             dalMessage: null,
             bottomTab: "lost",
@@ -105,12 +106,12 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     this.scrollData.offsetTop = 0;
                 }
             },
-            getMsg:function () {
-                getMsg();
-            },
-            setMsgRead: function (msg) {
-                setMsgRead(msg);
-            },
+            // getMsg:function () {
+            //     getMsg();
+            // },
+            // setMsgRead: function (msg) {
+            //     setMsgRead(msg);
+            // },
             browseClick: function () {
                 var inputFile = document.getElementById('file')
                 inputFile.click()
@@ -472,6 +473,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             }
         ]
     });
+    vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     return vue;

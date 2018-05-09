@@ -648,6 +648,236 @@ class DalMessage {
     }
 }
 
+class DalSupporter {
+    constructor(vue) {
+        this.vue = vue;
+        this.data = {
+
+        }
+    }
+
+    isAdmin () {
+        if (vue === null)
+            return false;
+
+        return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
+    }
+
+    getToday() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
+        return today;
+    }
+
+    static getToday() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
+        return today;
+    }
+
+    getTodayMs () {
+        var d = new Date();
+        return d.getTime();
+    }
+
+    static getTodayMs () {
+        var d = new Date();
+        return d.getTime();
+    }
+
+    dateToMs (date) {
+        var temp = date.split('-');
+        var year = parseInt(temp[0]);
+        var month = parseInt(temp[1]);
+        var day = parseInt(temp[2]);
+        var k = Date.parse(date);
+        return k;
+    }
+
+    static dateToMs (date) {
+        var temp = date.split('-');
+        var year = parseInt(temp[0]);
+        var month = parseInt(temp[1]);
+        var day = parseInt(temp[2]);
+        var k = Date.parse(date);
+        return k;
+    }
+
+    msToDate (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "-" + mm + "-" + dd;
+        return dateString;
+    }
+
+    static msToDate (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "-" + mm + "-" + dd;
+        return dateString;
+    }
+
+    msToDateKo (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "년 " + mm + "월 " + dd + "일";
+        return dateString;
+    }
+
+    static msToDateKo (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "년 " + mm + "월 " + dd + "일";
+        return dateString;
+    }
+
+    convertStatus(status) {
+        if (status === "WFA") {
+            return "수거전"
+        } else if(status === "WFRQ"){
+            return "보관중"
+        } else if (status === "WFR") {
+            return "수령전"
+        } else if (status === "COM") {
+            return "완료"
+        } else if (status === "P2P"){
+            return "개인거래"
+        }
+        return ""
+    }
+
+    static convertStatus(status) {
+        if (status === "WFA") {
+            return "수거전"
+        } else if(status === "WFRQ"){
+            return "보관중"
+        } else if (status === "WFR") {
+            return "수령전"
+        } else if (status === "COM") {
+            return "완료"
+        } else if (status === "P2P"){
+            return "개인거래"
+        }
+        return ""
+    }
+
+    hashTagsToString (itemData) {
+        var list = [];
+        for (var i = 0; i < itemData.tags.length; i++) {
+            list.push(itemData.tags[i]);
+        }
+        for (var i = 0; i < itemData.recognition_tags.length; i++) {
+            list.push(itemData.recognition_tags[i]);
+        }
+
+        var tags = "";
+        for (var i = 0; i < Math.min(list.length, 5); i++) {
+            var tag = list[i];
+            if (tag !== "") {
+                tags += "#" + tag + " ";
+            }
+        }
+        if (list.length > 5)
+            tags += "...";
+
+        return tags;
+    }
+
+    static hashTagsToString (itemData) {
+        var list = [];
+        for (var i = 0; i < itemData.tags.length; i++) {
+            list.push(itemData.tags[i]);
+        }
+        for (var i = 0; i < itemData.recognition_tags.length; i++) {
+            list.push(itemData.recognition_tags[i]);
+        }
+
+        var tags = "";
+        for (var i = 0; i < Math.min(list.length, 5); i++) {
+            var tag = list[i];
+            if (tag !== "") {
+                tags += "#" + tag + " ";
+            }
+        }
+        if (list.length > 5)
+            tags += "...";
+
+        return tags;
+    }
+
+    reduceString (str, len) {
+        var newStr = str.substring(0, len);
+        if(str.length > 100){
+            newStr += "...";
+        }
+        return newStr;
+    }
+
+    static reduceString (str, len) {
+        var newStr = str.substring(0, len);
+        if(str.length > 100){
+            newStr += "...";
+        }
+        return newStr;
+    }
+}
+
 function getToday() {
     var today = new Date();
     var dd = today.getDate();
@@ -728,12 +958,12 @@ function removeDuplicateUsingFilter(arr) {
     return unique_array
 }
 
-function isAdmin() {
-    if (vue === null)
-        return false;
-
-    return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
-}
+// function isAdmin() {
+//     if (vue === null)
+//         return false;
+//
+//     return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
+// }
 
 var Get_building_list = function () {
     var buildings;
@@ -872,27 +1102,9 @@ var Get_building_list = function () {
     return In_Out;
 }();
 
-function convertStatus(status) {
-    if (status === "WFA") {
-        return "수거전"
-    } else if(status === "WFRQ"){
-        return "보관중"
-    } else if (status === "WFR") {
-        return "수령전"
-    } else if (status === "COM") {
-        return "완료"
-    } else if (status === "P2P"){
-        return "개인거래"
-    }
-    return ""
-}
+
 
 function shuffle(a) {
-    // for (let i = a.length - 1; i > 0; i--) {
-    //     const j = Math.floor(Math.random() * (i + 1));
-    //     [a[i], a[j]] = [a[j], a[i]];
-    // }
-    // return a;
     var input = a.slice();
 
     for (var i = input.length - 1; i >= 0; i--) {

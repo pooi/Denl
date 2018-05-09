@@ -16,6 +16,7 @@ function init(init_data, init_category) {
             },
             loginData:{
             },
+            supporter: null,
             oneClick: null,
             dalMessage: null,
             bottomTab: "find",
@@ -85,18 +86,18 @@ function init(init_data, init_category) {
                     this.scrollData.offsetTop = 0;
                 }
             },
-            getMsg:function () {
-                getMsg();
-            },
-            setMsgRead: function (msg) {
-                setMsgRead(msg);
-            },
+            // getMsg:function () {
+            //     getMsg();
+            // },
+            // setMsgRead: function (msg) {
+            //     setMsgRead(msg);
+            // },
             reloadPage: function () {
                 location.reload();
             },
-            vueIsAdmin: function () {
-                return isAdmin();
-            },
+            // vueIsAdmin: function () {
+            //     return isAdmin();
+            // },
             getCurrentUrl: function () {
                 return window.location.href;
             },
@@ -110,15 +111,15 @@ function init(init_data, init_category) {
                 }
                 return list;
             },
-            vueMsToDate: function (date) {
-                return msToDate(date);
-            },
-            vueMsToDateKo: function (date) {
-                return msToDateKo(date);
-            },
-            convertStatus: function (status) {
-                return convertStatus(status)
-            },
+            // vueMsToDate: function (date) {
+            //     return msToDate(date);
+            // },
+            // vueMsToDateKo: function (date) {
+            //     return msToDateKo(date);
+            // },
+            // convertStatus: function (status) {
+            //     return convertStatus(status)
+            // },
             getCategoryBreadcrumbs : function () {
 
                 var list = [];
@@ -524,6 +525,7 @@ function init(init_data, init_category) {
             }
         ]
     });
+    vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     return vue;
