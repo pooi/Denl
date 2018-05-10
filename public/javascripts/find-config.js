@@ -18,9 +18,11 @@ function init(init_category) {
             supporter: null,
             oneClick: null,
             dalMessage: null,
+            categoryManager: null,
             bottomTab: "find",
             todayDate: null,
-            categoryData: null,
+            // categoryData: null,
+            // subcategories: [],
             searchItems: [],
             searchSnackbar : false,
 
@@ -34,9 +36,9 @@ function init(init_category) {
             },
 
 
-            category: null,
-            subcategory: null,
-            categoryDialog: false,
+            // category: null,
+            // subcategory: null,
+            // categoryDialog: false,
             // Filter
             dcv_filter_item:{
                 isAllday: true,
@@ -151,49 +153,49 @@ function init(init_category) {
             //     }
             //     return newStr;
             // },
-            isSameCategoryData : function (c1, c2) {
-                if(c1 === null ||c2 === null)
-                    return false;
-                return c1.name == c2.name
-            },
-            changeSubCategories: function (key) {
-
-                if (vue.categoryData.hasOwnProperty(key)) {
-                    vue.category = vue.categoryData[key];
-                    vue.subcategory = null;
-                    vue.subcategories = vue.category.subcategory;
-                }
-
-            },
-            getCategoryBreadcrumbs : function () {
-                var list = [];
-                if(this.category !== null){
-                    list.push(this.category.ko);
-                }
-                if(this.subcategory !== null){
-                    list.push(this.subcategory.ko);
-                }
-                return list;
-            },
-            getCategoryStringFromResult: function (title) {
-                title = title.replace(" ", "_");
-                var keys = Object.keys(this.categoryData);
-                for(var i=0; i<keys.length; i++){
-                    var key = keys[i];
-                    var subcategories = this.categoryData[key]['subcategory'];
-                    for(var j=0; j<subcategories.length; j++){
-                        var subcategory = subcategories[j];
-                        if(subcategory.name === title){
-                            return this.categoryData[key].ko + " > " + subcategory.ko;
-                            // this.subcategory = subcategory;
-                            // this.subcategories = subcategories;
-                            // this.category = this.categoryData[key];
-                            // return;
-                        }
-                    }
-                }
-                return title;
-            },
+            // isSameCategoryData : function (c1, c2) {
+            //     if(c1 === null ||c2 === null)
+            //         return false;
+            //     return c1.name == c2.name
+            // },
+            // changeSubCategories: function (key) {
+            //
+            //     if (vue.categoryData.hasOwnProperty(key)) {
+            //         vue.category = vue.categoryData[key];
+            //         vue.subcategory = null;
+            //         vue.subcategories = vue.category.subcategory;
+            //     }
+            //
+            // },
+            // getCategoryBreadcrumbs : function () {
+            //     var list = [];
+            //     if(this.category !== null){
+            //         list.push(this.category.ko);
+            //     }
+            //     if(this.subcategory !== null){
+            //         list.push(this.subcategory.ko);
+            //     }
+            //     return list;
+            // },
+            // getCategoryStringFromResult: function (title) {
+            //     title = title.replace(" ", "_");
+            //     var keys = Object.keys(this.categoryData);
+            //     for(var i=0; i<keys.length; i++){
+            //         var key = keys[i];
+            //         var subcategories = this.categoryData[key]['subcategory'];
+            //         for(var j=0; j<subcategories.length; j++){
+            //             var subcategory = subcategories[j];
+            //             if(subcategory.name === title){
+            //                 return this.categoryData[key].ko + " > " + subcategory.ko;
+            //                 // this.subcategory = subcategory;
+            //                 // this.subcategories = subcategories;
+            //                 // this.category = this.categoryData[key];
+            //                 // return;
+            //             }
+            //         }
+            //     }
+            //     return title;
+            // },
             shareTo: function (title) {
 
                 var shareItem = this.shareItem;
@@ -207,7 +209,7 @@ function init(init_category) {
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
                         content: {
-                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.getCategoryStringFromResult(shareItem.subcategory) + ")",
+                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.categoryManager.getCategoryStringFromResult(shareItem.subcategory) + ")",
                             description: tags,
                             imageUrl: origin + "/" + shareItem.photos,
                             link: {
@@ -230,8 +232,8 @@ function init(init_category) {
 
             },
             resetFilterItem: function () {
-                this.category = null;
-                this.subcategory = null;
+                this.categoryManager.category = null;
+                this.categoryManager.subcategory = null;
                 this.selectedBuilding = null;
                 this.selectedRoom = null;
                 this.searchTags = [];
@@ -269,8 +271,8 @@ function init(init_category) {
                 this.searchSnackbar = false;
                 var data = {
                     page: this.loadMoreData.page,
-                    category: this.category === null ? "" : this.category,
-                    subcategory: this.subcategory === null ? "" : this.subcategory,
+                    category: this.categoryManager.category === null ? "" : this.categoryManager.category,
+                    subcategory: this.categoryManager.subcategory === null ? "" : this.categoryManager.subcategory,
                     dcv_filter_item: this.dcv_filter_item,
                     rgt_filter_item: this.rgt_filter_item,
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
@@ -306,8 +308,8 @@ function init(init_category) {
                 this.searchSnackbar = false;
                 var data = {
                     page: this.loadMoreData.page,
-                    category: this.category === null ? "" : this.category,
-                    subcategory: this.subcategory === null ? "" : this.subcategory,
+                    category: this.categoryManager.category === null ? "" : this.categoryManager.category,
+                    subcategory: this.categoryManager.subcategory === null ? "" : this.categoryManager.subcategory,
                     dcv_filter_item: this.dcv_filter_item,
                     rgt_filter_item: this.rgt_filter_item,
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
@@ -361,7 +363,7 @@ function init(init_category) {
                 this.todayDate = today;
             },
             function () {
-                this.categoryData = JSON.parse(init_category);
+                // this.categoryData = JSON.parse(init_category);
                 // console.log("category: ", this.categoryData);
             },
             function () {
@@ -406,5 +408,6 @@ function init(init_category) {
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
+    vue.categoryManager = new CategoryManager(vue, init_category);
     return vue;
 }

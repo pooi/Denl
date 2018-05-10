@@ -878,6 +878,83 @@ class DalSupporter {
     }
 }
 
+class CategoryManager {
+
+    constructor(vue, init_category) {
+        this.vue = vue;
+
+        this.categoryData = JSON.parse(init_category),
+        this.subcategories = [],
+
+        this.category = null,
+        this.subcategory = null,
+
+        this.categoryDialog = false
+
+    }
+
+    isSameCategoryData (c1, c2) {
+        if(c1 === null ||c2 === null)
+            return false;
+        return c1.name == c2.name
+    }
+
+    changeSubCategories (key) {
+        if (this.categoryData.hasOwnProperty(key)) {
+            this.category = this.categoryData[key];
+            this.subcategory = null;
+            this.subcategories = this.category.subcategory;
+        }
+    }
+
+    getCategoryBreadcrumbs () {
+        var list = [];
+        if(this.category !== null){
+            list.push(this.category.ko);
+        }
+        if(this.subcategory !== null){
+            list.push(this.subcategory.ko);
+        }
+        return list;
+    }
+
+    getCategoryStringFromResult (title) {
+        title = title.replace(" ", "_");
+        var keys = Object.keys(this.categoryData);
+        for(var i=0; i<keys.length; i++){
+            var key = keys[i];
+            var subcategories = this.categoryData[key]['subcategory'];
+            for(var j=0; j<subcategories.length; j++){
+                var subcategory = subcategories[j];
+                if(subcategory.name === title){
+                    return this.categoryData[key].ko + " > " + subcategory.ko;
+                }
+            }
+        }
+        return title;
+    }
+
+    changedCateogryFromResult (item){
+        var title = item.title;
+        title = title.replace(" ", "_");
+        var keys = Object.keys(this.categoryData);
+        for(var i=0; i<keys.length; i++){
+            var key = keys[i];
+            var subcategories = this.categoryData[key]['subcategory'];
+            for(var j=0; j<subcategories.length; j++){
+                var subcategory = subcategories[j];
+                if(subcategory.name === title){
+                    this.subcategory = subcategory;
+                    this.subcategories = subcategories;
+                    this.category = this.categoryData[key];
+                    return;
+                }
+            }
+        }
+    }
+
+}
+
 function getToday() {
     var today = new Date();
     var dd = today.getDate();
