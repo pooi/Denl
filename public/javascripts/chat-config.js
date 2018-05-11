@@ -47,12 +47,12 @@ function init() {
             requestCancelErrorDialog: false,
             msgData:{},
             todayDate: null,
-            name: "",
-            room: "",
             chatData: [],
-            //현수파트
             dialog: false,
             message: "",
+            sender: "",
+            roomnum: "",
+            messsage: "",
             chat_lists: [
                 {
                     name : "유태우",
@@ -75,18 +75,25 @@ function init() {
             ],
             /*대화 창에서 상대방 메시지 데이터*/
             chat_clicked : null,
-            my_name : "",
-            receiveuser : ""
+            my_name : ""
         },
         created() {
-            chat.on("user out", function (data) {
-                alert(data);
-            });
+            // chat.on("disconnect", function (data) {
+            //     alert(data.name);
+            // });
             chat.on("chat message", function (data) {
                 console.log(data);
-                vue.chatData.push(data);
+                var obj = {};
+                obj.sentence = data.msg;
+                obj.stamp = data.name;
+                for(item in vue.chat_lists){
+                    if(vue.chat_lists[item].name == data.room){
+                        vue.chat_lists[item].msg.push(obj);
+                    }
+                }
             });
-            chat.on("user join", function (data) {
+
+            chat.on("chat connect", function (data) {
                 console.log(data);
             });
         },
@@ -98,34 +105,34 @@ function init() {
                 loginSejong(id, pw);
             },
             ChatSelect: function (item) {
-                var list = [];
-                var tmp = [];
                 this.chat_clicked = item.name;
+                this.roomnum = item.name;
+                this.name = item.name;
             },
             connect: function() {
-                chat.emit("user join", {
-                    name: this.loginData.user.name,
-                    room: "aaa"
+                chat.emit("chat connect", {
+                    name: this.name,
+                    room: this.roomnum
                 });
             },
             send: function () {
-                if(this.loginData.user != null){
+                if(this.message == ""){
+                    alert("empty messaege");
+                }
+                else {
                     chat.emit("chat message", {
-                        name: this.loginData.user.name,
-                        room: this.room,
-                        msg: this.talk
+                        name: this.name,
+                        room: this.roomnum,
+                        msg: this.message
                     });
-                    this.talk = "";
-                }else{
-                    alert("please login");
+                    this.message = "";
                 }
             },
-            out: function () {
-                chat.emit("user out", {
-                    name: this.name,
-                    room: this.room
-                });
-            },
+            // disconnect: function () {
+            //     chat.emit("disconnect", {
+            //         room: this.roomnum
+            //     });
+            // },
             onScroll (e) {
                 var scroll = window.pageYOffset || document.documentElement.scrollTop;
                 this.scrollData.offsetTop = scroll;

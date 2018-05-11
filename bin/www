@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('denltest:server');
 var http = require('http');
+var moment = require("moment");
 
 /**
  * Get port from environment and store in Express.
@@ -25,31 +26,36 @@ var room = "";
 
 var chat = io.of('/chat').on('connection', function(socket) {
     socket.on('chat message', function(data) {
-        console.log('message from client: ', data);
-
+        console.log(data);
         var name = socket.name = data.name;
         room = data.room;
-        // room에 join한다
-        console.log("welcome", room);
-        // room에 join되어 있는 클라이언트에게 메시지를 전송한다
-        chat.to(room).emit('chat message', data.msg);
-    });
-
-    socket.on('user out', function(data) {
-        console.log('%s user out', data.name);
-        room = data.room;
-        var msg = data.name + "user is left";
-        chat.to(room).emit('user out', msg);
-        socket.leave(room);
-    });
-
-    socket.on('user join', function(data) {
-        console.log('%s user join', data.name);
-        room = data.room;
-        socket.username = data.name;
-        var msg = data.name + "user join";
+        var msg = data.msg;
+        var date = new Date();
         socket.join(room);
-        chat.to(room).emit('user join', socket.username);
+        var sendobj = {
+            name: name,
+            msg: msg,
+            room: room,
+            time: date.getTime()
+        }
+        chat.to(room).emit('chat message', sendobj);
+    });
+
+    // socket.on('disconnect', function(data) {
+    //     console.log('out', data);
+    //     var room = data.room;
+    //     var msg = data.name + "user is left";
+    //     chat.to(room).emit('disconnect', msg);
+    //     socket.leave(room);
+    // });
+    //
+    socket.on('chat connect', function(data) {
+        console.log(data);
+        var name = socket.name = data.name;
+        room = data.room;
+        socket.join(room);
+        var msg = data.name + "join" + data.room
+        chat.to(room).emit('chat connect', msg);
     });
 
 });

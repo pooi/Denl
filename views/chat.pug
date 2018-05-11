@@ -44,12 +44,12 @@ block content
                                         // 채팅 입력란
                                         v-flex(xs12='', sm12='', px-3='')
                                             // <textarea name="" v-model="message" placeholder="내용을 입력해주세요" style="width: 90%; height: 70%;"></textarea>
-                                            v-form(v-model='valid', ref='form', lazy-validation='')
-                                                v-layout(wrap='')
-                                                    v-flex(xs9='', sm9='')
-                                                        v-text-field(flat='', label='내용을 입력해주세요.', v-model='message', solo='')
-                                                    v-flex(xs3='', sm3='', style='', text-xs-right='')
-                                                        v-btn.success(v-on:click ="send") submit
+                                            //v-form(v-model='valid', ref='form', lazy-validation='', @submit="send()")
+                                            v-layout(wrap='')
+                                                v-flex(xs9='', sm9='')
+                                                    v-text-field(flat='', label='내용을 입력해주세요.', v-model='message', solo='', v-on:keyup.enter ='send()')
+                                                v-flex(xs3='', sm3='', style='', text-xs-right='')
+                                                    v-btn.success(v-on:click ="send") submit
 
 
         include footer
