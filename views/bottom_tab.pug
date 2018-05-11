@@ -54,7 +54,7 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                     //            div.pl-0.grey--text(slot='header') 이미지 인식 결과 보기
                     //            v-data-table(:headers="oneClick.data.recognitionDataHeaders", :items='oneClick.data.recognitionData', hide-actions, disable-initial-sort)
                     //                template(slot='items', slot-scope='props')
-                    //                    tr(@click="oneClick.changedCateogryFromResult(props.item);")
+                    //                    tr(@click="oneClick.changedCategoryFromResult(props.item);")
                     //                        td {{oneClick.getCategoryStringFromResult(props.item.title)}}
                     //                        td.text-xs-right {{props.item.accuracy}}%
                 v-flex.mt-3(xs12)
@@ -166,7 +166,7 @@ v-dialog(v-model='oneClick.data.recognitionDialog', max-width='500px')
         v-card-text.pa-0
             v-data-table(:headers="oneClick.data.recognitionDataHeaders", :items='oneClick.data.recognitionData', hide-actions, disable-initial-sort)
                 template(slot='items', slot-scope='props')
-                    tr(@click="oneClick.changedCateogryFromResult(props.item);")
+                    tr(@click="oneClick.changedCategoryFromResult(props.item);")
                         td {{oneClick.getCategoryStringFromResult(props.item.title)}}
                         td.text-xs-right {{props.item.accuracy}}%
         v-card-text.py-2

@@ -258,7 +258,7 @@ class OneClick {
             var data = response.data;
             oneClick.data.isRecognitionProgress = false;
             oneClick.data.recognitionData = data;
-            oneClick.changedCateogryFromResult(data[0]);
+            oneClick.changedCategoryFromResult(data[0]);
             console.log("recognitionData: ", oneClick.data.recognitionData);
         })
             .catch(function (error) {
@@ -448,7 +448,7 @@ class OneClick {
         }
     }
 
-    changedCateogryFromResult(item) {
+    changedCategoryFromResult(item) {
         var title = item.title;
         title = title.replace(" ", "_");
         var keys = Object.keys(this.data.categoryData);
@@ -883,13 +883,18 @@ class CategoryManager {
     constructor(vue, init_category) {
         this.vue = vue;
 
-        this.categoryData = JSON.parse(init_category),
-        this.subcategories = [],
+        try{
+            this.categoryData = JSON.parse(init_category);
+        }catch {
 
-        this.category = null,
-        this.subcategory = null,
+        }
+        // this.categoryData = JSON.parse(init_category);
+        this.subcategories = [];
 
-        this.categoryDialog = false
+        this.category = null;
+        this.subcategory = null;
+
+        this.categoryDialog = false;
 
     }
 
@@ -918,6 +923,30 @@ class CategoryManager {
         return list;
     }
 
+    getCategoryBreadcrumbs2 (itemData) {
+        var list = [];
+        if(itemData.subcategory !== null){
+            var title = itemData.subcategory;
+            title = title.replace(" ", "_");
+            var keys = Object.keys(this.categoryData);
+            for(var i=0; i<keys.length; i++){
+                var key = keys[i];
+                var subcategories = this.categoryData[key]['subcategory'];
+                for(var j=0; j<subcategories.length; j++){
+                    var subcategory = subcategories[j];
+                    if(subcategory.name === title){
+                        // this.category = this.categoryData[key];
+                        // this.subcategory = subcategory;
+                        list.push(this.categoryData[key].ko);
+                        list.push(subcategory.ko);
+                        return list;
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
     getCategoryStringFromResult (title) {
         title = title.replace(" ", "_");
         var keys = Object.keys(this.categoryData);
@@ -934,7 +963,7 @@ class CategoryManager {
         return title;
     }
 
-    changedCateogryFromResult (item){
+    changedCategoryFromResult (item){
         var title = item.title;
         title = title.replace(" ", "_");
         var keys = Object.keys(this.categoryData);

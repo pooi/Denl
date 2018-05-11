@@ -73,7 +73,7 @@ block content
                                         v-subheader.pa-0
                                             v-breadcrumbs.pa-0.pr-2
                                                 v-icon(slot='divider') chevron_right
-                                                v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
+                                                v-breadcrumbs-item(v-for='item in categoryManager.getCategoryBreadcrumbs2(itemData)', :key='item')
                                                     | {{ item }}
 
                                         v-flex.rounded-expansion-panel(sm8, xs12)
@@ -83,7 +83,7 @@ block content
                                                     v-data-table(:headers="recognitionDataHeaders", :items='itemData.recognition_result', hide-actions, disable-initial-sort)
                                                         template(slot='items', slot-scope='props')
                                                             tr
-                                                                td {{getCategoryStringFromResult(props.item.title)}}
+                                                                td {{categoryManager.getCategoryStringFromResult(props.item.title)}}
                                                                 td.text-xs-right {{props.item.accuracy}}%
 
 

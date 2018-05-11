@@ -19,6 +19,7 @@ function init(init_data, init_category) {
             supporter: null,
             oneClick: null,
             dalMessage: null,
+            categoryManager: null,
             bottomTab: "find",
             todayDate: null,
             itemData: null,
@@ -34,7 +35,7 @@ function init(init_data, init_category) {
                     value: 'accuracy'
                 }
             ],
-            categoryData: null,
+            // categoryData: null,
             shareSheet: false,
             shares: [
                 { img: 'kakao.png', title: 'Kakao' },
@@ -120,49 +121,49 @@ function init(init_data, init_category) {
             // convertStatus: function (status) {
             //     return convertStatus(status)
             // },
-            getCategoryBreadcrumbs : function () {
-
-                var list = [];
-                if(this.itemData.subcategory !== null){
-                    var title = this.itemData.subcategory;
-                    title = title.replace(" ", "_");
-                    var keys = Object.keys(this.categoryData);
-                    for(var i=0; i<keys.length; i++){
-                        var key = keys[i];
-                        var subcategories = this.categoryData[key]['subcategory'];
-                        for(var j=0; j<subcategories.length; j++){
-                            var subcategory = subcategories[j];
-                            if(subcategory.name === title){
-                                // this.category = this.categoryData[key];
-                                // this.subcategory = subcategory;
-                                list.push(this.categoryData[key].ko);
-                                list.push(subcategory.ko);
-                                return list;
-                            }
-                        }
-                    }
-                }
-                return list;
-            },
-            getCategoryStringFromResult: function (title) {
-                title = title.replace(" ", "_");
-                var keys = Object.keys(this.categoryData);
-                for(var i=0; i<keys.length; i++){
-                    var key = keys[i];
-                    var subcategories = this.categoryData[key]['subcategory'];
-                    for(var j=0; j<subcategories.length; j++){
-                        var subcategory = subcategories[j];
-                        if(subcategory.name === title){
-                            return this.categoryData[key].ko + " > " + subcategory.ko;
-                            // this.subcategory = subcategory;
-                            // this.subcategories = subcategories;
-                            // this.category = this.categoryData[key];
-                            // return;
-                        }
-                    }
-                }
-                return title;
-            },
+            // getCategoryBreadcrumbs : function () {
+            //
+            //     var list = [];
+            //     if(this.itemData.subcategory !== null){
+            //         var title = this.itemData.subcategory;
+            //         title = title.replace(" ", "_");
+            //         var keys = Object.keys(this.categoryData);
+            //         for(var i=0; i<keys.length; i++){
+            //             var key = keys[i];
+            //             var subcategories = this.categoryData[key]['subcategory'];
+            //             for(var j=0; j<subcategories.length; j++){
+            //                 var subcategory = subcategories[j];
+            //                 if(subcategory.name === title){
+            //                     // this.category = this.categoryData[key];
+            //                     // this.subcategory = subcategory;
+            //                     list.push(this.categoryData[key].ko);
+            //                     list.push(subcategory.ko);
+            //                     return list;
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     return list;
+            // },
+            // getCategoryStringFromResult: function (title) {
+            //     title = title.replace(" ", "_");
+            //     var keys = Object.keys(this.categoryData);
+            //     for(var i=0; i<keys.length; i++){
+            //         var key = keys[i];
+            //         var subcategories = this.categoryData[key]['subcategory'];
+            //         for(var j=0; j<subcategories.length; j++){
+            //             var subcategory = subcategories[j];
+            //             if(subcategory.name === title){
+            //                 return this.categoryData[key].ko + " > " + subcategory.ko;
+            //                 // this.subcategory = subcategory;
+            //                 // this.subcategories = subcategories;
+            //                 // this.category = this.categoryData[key];
+            //                 // return;
+            //             }
+            //         }
+            //     }
+            //     return title;
+            // },
             shareTo: function (title) {
                 var url = window.location.href;
                 var origin = window.location.origin;
@@ -184,7 +185,7 @@ function init(init_data, init_category) {
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
                         content: {
-                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.getCategoryStringFromResult(vue.itemData.subcategory) + ")",
+                            title: 'D&L 유실물' + " - " + shareItem.id + "(" + vue.categoryManager.getCategoryStringFromResult(vue.itemData.subcategory) + ")",
                             description: tags,
                             imageUrl: origin + "/" + shareItem.photos,
                             link: {
@@ -502,10 +503,10 @@ function init(init_data, init_category) {
                 this.itemData = JSON.parse(json);
                 console.log(this.itemData);
             },
-            function () {
-                this.categoryData = JSON.parse(init_category);
-                console.log("category: ", this.categoryData);
-            },
+            // function () {
+            //     this.categoryData = JSON.parse(init_category);
+            //     console.log("category: ", this.categoryData);
+            // },
             function () {
                 var title = document.createElement('meta');
                 title.name = "og:title";
@@ -528,5 +529,6 @@ function init(init_data, init_category) {
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
+    vue.categoryManager = new CategoryManager(vue, init_category);
     return vue;
 }

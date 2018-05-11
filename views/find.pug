@@ -183,6 +183,7 @@ block content
             | {{ searchItems.length }}개의 검색결과가 있습니다.
             v-btn(flat='', color='pink', @click.native='searchSnackbar = false') Close
 
+
         v-dialog(v-model='categoryManager.categoryDialog', max-width='500px')
             v-card
                 v-card-title.headline 카테고리 선택
