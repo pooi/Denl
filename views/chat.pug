@@ -12,7 +12,15 @@ block content
                             v-list-tile-action
                                 v-icon(color='pink') star
                             v-list-tile-content
-                                v-list-tile-title(v-text='item.name')
+                                v-list-tile-title(v-text='item.roomport')
+                            v-list-tile-avatar
+                                img(:src='item.avatar')
+                    v-list
+                        v-list-tile(v-for='item in chat_lists', :key='item.name', avatar='', v-on:click='ChatSelect(item), connect()')
+                            v-list-tile-action
+                                v-icon(color='pink') star
+                            v-list-tile-content
+                                v-list-tile-title(v-text='item.roomport')
                             v-list-tile-avatar
                                 img(:src='item.avatar')
                 v-flex(xs9='', sm9='', style='height: 100vh; background-color: #f4f4f4;')
@@ -20,18 +28,18 @@ block content
                         // 채팅하고자 하는 사람
                         v-flex(xs12='', sm12='', mt-3='', px-3='')
                             template(v-for='item in chat_lists')
-                                v-list-tile(v-if='item.name == chat_clicked', avatar='', ripple='', :key='item.name')
+                                v-list-tile(v-if='item.roomport == chat_clicked', avatar='', ripple='', :key='item.roomport')
                                     v-list-tile-avatar
                                         img(:src='item.avatar')
                                     v-list-tile-content
-                                        v-list-tile-title {{item.name}}
+                                        v-list-tile-title {{item.roomport}}
                         // 채팅창
                         v-flex(xs12='', sm12='', mt-3='')
                             v-container
                                 v-card.scroll-y.elevation-1(style='height: 90%;')
                                     v-layout(wrap='')
                                         v-flex(xs12='', sm12='', pr-4='', text-xs-right='', style='height: 71vh;')
-                                            v-list(subheader='', v-for='item in chat_lists', :key='item.title', v-if='item.name == chat_clicked')
+                                            v-list(subheader='', v-for='item in chat_lists', :key='item.roomport', v-if='item.roomport == chat_clicked')
                                                 v-list-tile(avatar='', v-for='msg in item.msg')
                                                     v-list-tile-avatar
                                                         img(:src='item.avatar')
@@ -60,4 +68,4 @@ block content
     script(src='socket.io/socket.io.js')
     script.
         var chat = io('http://localhost:30000/chat');
-        const vue = init();
+        const vue = init('!{ChatData}');

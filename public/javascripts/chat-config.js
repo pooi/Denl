@@ -1,7 +1,7 @@
-function init() {
+function init(chatData) {
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
-
+    console.log(chatData);
     var vue = new Vue({
         el: '#app',
         data: {
@@ -53,26 +53,27 @@ function init() {
             sender: "",
             roomnum: "",
             messsage: "",
-            chat_lists: [
-                {
-                    name : "유태우",
-                    msg : [
-                        { sentence: "연락드립니다", stamp: "유태우"},
-                        { sentence: "연락드", stamp: "정하민"},
-                        { sentence: "연락드립니", stamp: "유태우"}
-                    ],
-                    avatar : "/images/person.png"
-                },
-                {
-                    name: "유현수",
-                    msg: [
-                        { sentence: "연락드립니다", stamp: "유현수"},
-                        { sentence: "연락드", stamp: "정하민"},
-                        { sentence: "연락드립니", stamp: "유현수"}
-                    ],
-                    avatar : "/images/person.png"
-                }
-            ],
+            // chat_lists: [
+            //     {
+            //         name : "유태우",
+            //         msg : [
+            //             { sentence: "연락드립니다", stamp: "유태우"},
+            //             { sentence: "연락드", stamp: "정하민"},
+            //             { sentence: "연락드립니", stamp: "유태우"}
+            //         ],
+            //         avatar : "/images/person.png"
+            //     },
+            //     {
+            //         name: "유현수",
+            //         msg: [
+            //             { sentence: "연락드립니다", stamp: "유현수"},
+            //             { sentence: "연락드", stamp: "정하민"},
+            //             { sentence: "연락드립니", stamp: "유현수"}
+            //         ],
+            //         avatar : "/images/person.png"
+            //     }
+            // ],
+            chat_lists : null,
             /*대화 창에서 상대방 메시지 데이터*/
             chat_clicked : null,
             my_name : ""
@@ -85,9 +86,9 @@ function init() {
                 console.log(data);
                 var obj = {};
                 obj.sentence = data.msg;
-                obj.stamp = data.name;
+                obj.stamp = data.room;
                 for(item in vue.chat_lists){
-                    if(vue.chat_lists[item].name == data.room){
+                    if(vue.chat_lists[item].roomport == data.room){
                         vue.chat_lists[item].msg.push(obj);
                     }
                 }
@@ -96,6 +97,7 @@ function init() {
             chat.on("chat connect", function (data) {
                 console.log(data);
             });
+
         },
         methods: {
             //현수 파트
@@ -105,9 +107,9 @@ function init() {
                 loginSejong(id, pw);
             },
             ChatSelect: function (item) {
-                this.chat_clicked = item.name;
-                this.roomnum = item.name;
-                this.name = item.name;
+                this.chat_clicked = item.roomport;
+                this.roomnum = item.roomport;
+                this.name = item.roomport;
             },
             connect: function() {
                 chat.emit("chat connect", {
@@ -187,6 +189,10 @@ function init() {
             }
         },
         mounted: [
+            function () {
+                console.log(JSON.parse(chatData));
+                this.chat_lists = JSON.parse(chatData);
+            },
             function () {
                 var today = new Date();
                 var dd = today.getDate();
