@@ -4,35 +4,65 @@ var conn = require('../config/db')();
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    var sql = "select * from chat where user1 = '13011176';" + "select * from chat where user2 = '13011176';"
+    var login_user = req.body.id;
+    login_user = 5;
+    var sql = "SELECT c.name as name1, c.user1, d.name as name2, c.user2, c.roomport, c.message"
+    +" FROM (SELECT a.name, b.user1, b.user2, b.roomport, b.message"
+    +" FROM user a, chat b"
+    +" WHERE a.id = b.user1 AND (b.user1 = 5 OR b.user2 = 5)) c, user d"
+    +" WHERE d.id = c.user2;"
     conn.query(sql, function(err, results) {
         if(err) {
             console.log(err);
         }
         else {
+            console.log(results);
             var result_arr = [];
-            for(var i=0; i<results.length; i++){
-                var temp_result = results[i];
-                console.log(temp_result.length);
-                for(var j=0; j<temp_result.length; j++) {
-                    var temp_obj = {};
-                    temp_obj.std_id1 = temp_result[j].user1;
-                    temp_obj.std_id2 = temp_result[j].user2;
-                    temp_obj.roomport = temp_result[j].roomport;
-                    temp_obj.msg = temp_result[j].message;
-                    console.log("temp", j, temp_obj);
-                    result_arr.push(temp_obj);
+            for(var j=0; j<results.length; j++) {
+                var temp_obj = {};
+                if(login_user == results[j].user1){ //check 로그인한 유저 무조건 1번으로 만들기
+                    temp_obj.name1 = results[j].name1;
+                    temp_obj.id1 = results[j].user1;
+                    temp_obj.name2 = results[j].name2;
+                    temp_obj.id2 = results[j].user2;
+                }else{
+                    temp_obj.name1 = results[j].name2;
+                    temp_obj.id1 = results[j].user2;
+                    temp_obj.name2 = results[j].name1;
+                    temp_obj.id2 = results[j].user1;
                 }
+                temp_obj.roomport = results[j].roomport;
+                temp_obj.msg = results[j].message;
+                console.log("temp", j, temp_obj);
+                result_arr.push(temp_obj);
             }
-            console.log("result", result_arr);
-            var json = JSON.stringify(result_arr);
-            json = json.split('"[').join('[');
-            json = json.split(']"').join(']');
-            json = json.split('"{').join('{');
-            json = json.split('}"').join('}');
-            res.render('chat', {ChatData: json});
+                console.log(result_arr);
+        }
+        console.log("result", result_arr);
+        var json = JSON.stringify(result_arr);
+        json = json.split('"[').join('[');
+        json = json.split(']"').join(']');
+        json = json.split('"{').join('{');
+        json = json.split('}"').join('}');
+        if(req.session){
+            res.render('chat', {ChatData: json, userData: JSON.stringify(req.session.userData)});
+        }else{
+            res.render('chat', {ChatData: json, userData: ""});
         }
     });
+});
+
+router.post('/send', function (req, res) {
+   console.log(req.body);
+   var sql = "update chat set message = '" + req.body.json + "' where roomport = " + req.body.roomport + ";";
+   conn.query(sql, function(err, results){
+       if(err){
+           console.log(err);
+       }else{
+           console.log(results);
+           res.send(results);
+       }
+   })
 });
 
 module.exports = router;

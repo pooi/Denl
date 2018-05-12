@@ -47,12 +47,10 @@ function init(chatData) {
             requestCancelErrorDialog: false,
             msgData:{},
             todayDate: null,
-            chatData: [],
             dialog: false,
             message: "",
-            sender: "",
+            sender: "", //check 나중에 로그인 정보 이름으로 수정
             roomnum: "",
-            messsage: "",
             // chat_lists: [
             //     {
             //         name : "유태우",
@@ -86,12 +84,35 @@ function init(chatData) {
                 console.log(data);
                 var obj = {};
                 obj.sentence = data.msg;
-                obj.stamp = data.room;
+                obj.stamp = data.name;
+                var server_obj = {};
+                var json = "";
                 for(item in vue.chat_lists){
                     if(vue.chat_lists[item].roomport == data.room){
                         vue.chat_lists[item].msg.push(obj);
+                        json = JSON.stringify(vue.chat_lists[item].msg);
                     }
                 }
+                server_obj.roomport = data.room;
+                server_obj.json = json;
+                axios({
+                    method: 'post',
+                    url: '/chat/send',
+                    data: server_obj
+                }).then(function (response){
+                    var result_data = response.data;
+                    console.log(result_data);
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
             });
 
             chat.on("chat connect", function (data) {
@@ -109,11 +130,17 @@ function init(chatData) {
             ChatSelect: function (item) {
                 this.chat_clicked = item.roomport;
                 this.roomnum = item.roomport;
-                this.name = item.roomport;
+                if(this.sender == item.name2){
+                    this.name = item.name1;
+                }
+                else{
+                    this.name = item.name2;
+                }
             },
             connect: function() {
+                this.sender = this.loginData.user.id;
                 chat.emit("chat connect", {
-                    name: this.name,
+                    name: this.sender,
                     room: this.roomnum
                 });
             },
@@ -123,7 +150,7 @@ function init(chatData) {
                 }
                 else {
                     chat.emit("chat message", {
-                        name: this.name,
+                        name: this.sender,
                         room: this.roomnum,
                         msg: this.message
                     });
@@ -212,12 +239,7 @@ function init(chatData) {
             function() {
                 this.my_name = this.loginData.user.name
             }
-        ],
-        watch : {
-            chat_clicked: function(val){
-                this.receiveuser = val;
-            }
-        }
+        ]
     });
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);

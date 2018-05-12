@@ -12,27 +12,17 @@ block content
                             v-list-tile-action
                                 v-icon(color='pink') star
                             v-list-tile-content
-                                v-list-tile-title(v-text='item.roomport')
-                            v-list-tile-avatar
-                                img(:src='item.avatar')
-                    v-list
-                        v-list-tile(v-for='item in chat_lists', :key='item.name', avatar='', v-on:click='ChatSelect(item), connect()')
-                            v-list-tile-action
-                                v-icon(color='pink') star
-                            v-list-tile-content
-                                v-list-tile-title(v-text='item.roomport')
-                            v-list-tile-avatar
-                                img(:src='item.avatar')
+                                v-list-tile-title(v-text='item.name2')
                 v-flex(xs9='', sm9='', style='height: 100vh; background-color: #f4f4f4;')
                     v-layout(wrap='')
                         // 채팅하고자 하는 사람
                         v-flex(xs12='', sm12='', mt-3='', px-3='')
                             template(v-for='item in chat_lists')
                                 v-list-tile(v-if='item.roomport == chat_clicked', avatar='', ripple='', :key='item.roomport')
-                                    v-list-tile-avatar
-                                        img(:src='item.avatar')
+                                    v-list-tile-action
+                                        v-icon(color='yellow') star
                                     v-list-tile-content
-                                        v-list-tile-title {{item.roomport}}
+                                        v-list-tile-title {{item.name2}}
                         // 채팅창
                         v-flex(xs12='', sm12='', mt-3='')
                             v-container
@@ -41,10 +31,10 @@ block content
                                         v-flex(xs12='', sm12='', pr-4='', text-xs-right='', style='height: 71vh;')
                                             v-list(subheader='', v-for='item in chat_lists', :key='item.roomport', v-if='item.roomport == chat_clicked')
                                                 v-list-tile(avatar='', v-for='msg in item.msg')
-                                                    v-list-tile-avatar
-                                                        img(:src='item.avatar')
-                                                    v-list-tile-content
+                                                    v-list-tile-content(v-if="msg.stamp == sender")
                                                         v-chip(text-color='black') {{ msg.sentence + " " + msg.stamp }}
+                                                    v-list-tile-content(v-else)
+                                                        v-chip(text-color='red') {{ msg.sentence + " " + msg.stamp }}
                                                 // <v-list-title style="margin-left: 1.2%;">{{item.title}}</v-list-title>
                                             v-chip(v-if="message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
                                 v-card.elevation-1(style='margin-top: 0.9px; border-top: 1px solid #e7e7e7;')
