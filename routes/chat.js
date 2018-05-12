@@ -5,11 +5,12 @@ var conn = require('../config/db')();
 /* GET home page. */
 router.get('/', function (req, res) {
     var login_user = req.body.id;
-    login_user = 5;
+    console.log(req.session.userData);
+    login_user = req.session.userData.id;
     var sql = "SELECT c.name as name1, c.user1, d.name as name2, c.user2, c.roomport, c.message"
     +" FROM (SELECT a.name, b.user1, b.user2, b.roomport, b.message"
     +" FROM user a, chat b"
-    +" WHERE a.id = b.user1 AND (b.user1 = 5 OR b.user2 = 5)) c, user d"
+    +" WHERE a.id = b.user1 AND (b.user1 = "+ login_user + " OR b.user2 = "+ login_user + ")) c, user d"
     +" WHERE d.id = c.user2;"
     conn.query(sql, function(err, results) {
         if(err) {
@@ -63,6 +64,23 @@ router.post('/send', function (req, res) {
            res.send(results);
        }
    })
+});
+
+router.post('/update', function (req, res) {
+    console.log(req.body);
+    var sql = "select message from chat where roomport = " + req.body.roomport + ";";
+    conn.query(sql, function(err, results){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(results[0].message);
+            var send_obj = {};
+            send_obj.roomport = req.body.roomport;
+            send_obj.message = results[0].message;
+            console.log(typeof(results[0].message));
+            res.send(send_obj);
+        }
+    })
 });
 
 module.exports = router;

@@ -117,6 +117,32 @@ function init(chatData) {
 
             chat.on("chat connect", function (data) {
                 console.log(data);
+                var server_obj = {};
+                server_obj.roomport = data.room;
+                axios({
+                    method: 'post',
+                    url: '/chat/update',
+                    data: server_obj
+                }).then(function (response){
+                    var result_data = response.data;
+                    for(var item in vue.chat_lists){
+                        if(vue.chat_lists[item].roomport == result_data.roomport){
+                            vue.chat_lists[item].msg = JSON.parse(result_data.message);
+                        }else{
+                            continue;
+                        }
+                    }
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
             });
 
         },

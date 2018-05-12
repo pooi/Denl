@@ -54,8 +54,13 @@ var chat = io.of('/chat').on('connection', function(socket) {
         var name = socket.name = data.name;
         room = data.room;
         socket.join(room);
-        var msg = data.name + "join" + data.room
-        chat.to(room).emit('chat connect', msg);
+        var date = new Date();
+        var sendobj = {
+            name: name,
+            room: room,
+            time: date.getTime()
+        }
+        chat.to(room).emit('chat connect', sendobj);
     });
 
 });
