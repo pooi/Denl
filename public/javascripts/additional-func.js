@@ -876,6 +876,41 @@ class DalSupporter {
         }
         return newStr;
     }
+
+    reloadPage () {
+        location.reload();
+    }
+
+    acceptItem (item) {
+        var chk = confirm("수거 완료하겠습니까? 이 작업은 되돌릴 수 없습니다.");
+        if(!chk)
+            return;
+
+        var supporter = this;
+
+        var data = {
+            lost_id: item.id
+        };
+
+        axios.post(
+            '/items/acceptItem',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            var insertId = data.insertId;
+            if (insertId != null) {
+                item.status = "WFRQ";
+                // supporter.reloadPage();
+            } else {
+                alert("Error! Please retry.");
+                // vue.requestErrorDialog = true;
+            }
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }
 }
 
 class CategoryManager {

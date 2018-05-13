@@ -21,6 +21,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             supporter: null,
             oneClick: null,
             dalMessage: null,
+            categoryManager: null,
             itemData: null,
             requestList: [],
             recognitionDataHeaders: [
@@ -473,5 +474,6 @@ function init(WFA, WFRQ, init_category, WFL) {
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
+    vue.categoryManager = new CategoryManager(vue, init_category);
     return vue;
 }
