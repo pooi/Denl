@@ -258,7 +258,7 @@ class OneClick {
             var data = response.data;
             oneClick.data.isRecognitionProgress = false;
             oneClick.data.recognitionData = data;
-            oneClick.changedCateogryFromResult(data[0]);
+            oneClick.changedCategoryFromResult(data[0]);
             console.log("recognitionData: ", oneClick.data.recognitionData);
         })
             .catch(function (error) {
@@ -448,7 +448,7 @@ class OneClick {
         }
     }
 
-    changedCateogryFromResult(item) {
+    changedCategoryFromResult(item) {
         var title = item.title;
         title = title.replace(" ", "_");
         var keys = Object.keys(this.data.categoryData);
@@ -648,6 +648,377 @@ class DalMessage {
     }
 }
 
+class DalSupporter {
+    constructor(vue) {
+        this.vue = vue;
+        this.data = {
+
+        }
+    }
+
+    isAdmin () {
+        if (vue === null)
+            return false;
+
+        return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
+    }
+
+    getToday() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
+        return today;
+    }
+
+    static getToday() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
+        return today;
+    }
+
+    getTodayMs () {
+        var d = new Date();
+        return d.getTime();
+    }
+
+    static getTodayMs () {
+        var d = new Date();
+        return d.getTime();
+    }
+
+    dateToMs (date) {
+        var temp = date.split('-');
+        var year = parseInt(temp[0]);
+        var month = parseInt(temp[1]);
+        var day = parseInt(temp[2]);
+        var k = Date.parse(date);
+        return k;
+    }
+
+    static dateToMs (date) {
+        var temp = date.split('-');
+        var year = parseInt(temp[0]);
+        var month = parseInt(temp[1]);
+        var day = parseInt(temp[2]);
+        var k = Date.parse(date);
+        return k;
+    }
+
+    msToDate (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "-" + mm + "-" + dd;
+        return dateString;
+    }
+
+    static msToDate (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "-" + mm + "-" + dd;
+        return dateString;
+    }
+
+    msToDateKo (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "년 " + mm + "월 " + dd + "일";
+        return dateString;
+    }
+
+    static msToDateKo (ms) {
+        var date = new Date(ms);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var dateString = yyyy + "년 " + mm + "월 " + dd + "일";
+        return dateString;
+    }
+
+    convertStatus(status) {
+        if (status === "WFA") {
+            return "수거전"
+        } else if(status === "WFRQ"){
+            return "보관중"
+        } else if (status === "WFR") {
+            return "수령전"
+        } else if (status === "COM") {
+            return "완료"
+        } else if (status === "P2P"){
+            return "개인거래"
+        }
+        return ""
+    }
+
+    static convertStatus(status) {
+        if (status === "WFA") {
+            return "수거전"
+        } else if(status === "WFRQ"){
+            return "보관중"
+        } else if (status === "WFR") {
+            return "수령전"
+        } else if (status === "COM") {
+            return "완료"
+        } else if (status === "P2P"){
+            return "개인거래"
+        }
+        return ""
+    }
+
+    hashTagsToString (itemData) {
+        var list = [];
+        for (var i = 0; i < itemData.tags.length; i++) {
+            list.push(itemData.tags[i]);
+        }
+        for (var i = 0; i < itemData.recognition_tags.length; i++) {
+            list.push(itemData.recognition_tags[i]);
+        }
+
+        var tags = "";
+        for (var i = 0; i < Math.min(list.length, 5); i++) {
+            var tag = list[i];
+            if (tag !== "") {
+                tags += "#" + tag + " ";
+            }
+        }
+        if (list.length > 5)
+            tags += "...";
+
+        return tags;
+    }
+
+    static hashTagsToString (itemData) {
+        var list = [];
+        for (var i = 0; i < itemData.tags.length; i++) {
+            list.push(itemData.tags[i]);
+        }
+        for (var i = 0; i < itemData.recognition_tags.length; i++) {
+            list.push(itemData.recognition_tags[i]);
+        }
+
+        var tags = "";
+        for (var i = 0; i < Math.min(list.length, 5); i++) {
+            var tag = list[i];
+            if (tag !== "") {
+                tags += "#" + tag + " ";
+            }
+        }
+        if (list.length > 5)
+            tags += "...";
+
+        return tags;
+    }
+
+    reduceString (str, len) {
+        var newStr = str.substring(0, len);
+        if(str.length > 100){
+            newStr += "...";
+        }
+        return newStr;
+    }
+
+    static reduceString (str, len) {
+        var newStr = str.substring(0, len);
+        if(str.length > 100){
+            newStr += "...";
+        }
+        return newStr;
+    }
+
+    reloadPage () {
+        location.reload();
+    }
+
+    acceptItem (item) {
+        var chk = confirm("수거 완료하겠습니까? 이 작업은 되돌릴 수 없습니다.");
+        if(!chk)
+            return;
+
+        var supporter = this;
+
+        var data = {
+            lost_id: item.id
+        };
+
+        axios.post(
+            '/items/acceptItem',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            var insertId = data.insertId;
+            if (insertId != null) {
+                item.status = "WFRQ";
+                // supporter.reloadPage();
+            } else {
+                alert("Error! Please retry.");
+                // vue.requestErrorDialog = true;
+            }
+            // console.log(response);
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }
+}
+
+class CategoryManager {
+
+    constructor(vue, init_category) {
+        this.vue = vue;
+
+        try{
+            this.categoryData = JSON.parse(init_category);
+        }catch {
+
+        }
+        // this.categoryData = JSON.parse(init_category);
+        this.subcategories = [];
+
+        this.category = null;
+        this.subcategory = null;
+
+        this.categoryDialog = false;
+
+    }
+
+    isSameCategoryData (c1, c2) {
+        if(c1 === null ||c2 === null)
+            return false;
+        return c1.name == c2.name
+    }
+
+    changeSubCategories (key) {
+        if (this.categoryData.hasOwnProperty(key)) {
+            this.category = this.categoryData[key];
+            this.subcategory = null;
+            this.subcategories = this.category.subcategory;
+        }
+    }
+
+    getCategoryBreadcrumbs () {
+        var list = [];
+        if(this.category !== null){
+            list.push(this.category.ko);
+        }
+        if(this.subcategory !== null){
+            list.push(this.subcategory.ko);
+        }
+        return list;
+    }
+
+    getCategoryBreadcrumbs2 (itemData) {
+        var list = [];
+        if(itemData.subcategory !== null){
+            var title = itemData.subcategory;
+            title = title.replace(" ", "_");
+            var keys = Object.keys(this.categoryData);
+            for(var i=0; i<keys.length; i++){
+                var key = keys[i];
+                var subcategories = this.categoryData[key]['subcategory'];
+                for(var j=0; j<subcategories.length; j++){
+                    var subcategory = subcategories[j];
+                    if(subcategory.name === title){
+                        // this.category = this.categoryData[key];
+                        // this.subcategory = subcategory;
+                        list.push(this.categoryData[key].ko);
+                        list.push(subcategory.ko);
+                        return list;
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    getCategoryStringFromResult (title) {
+        title = title.replace(" ", "_");
+        var keys = Object.keys(this.categoryData);
+        for(var i=0; i<keys.length; i++){
+            var key = keys[i];
+            var subcategories = this.categoryData[key]['subcategory'];
+            for(var j=0; j<subcategories.length; j++){
+                var subcategory = subcategories[j];
+                if(subcategory.name === title){
+                    return this.categoryData[key].ko + " > " + subcategory.ko;
+                }
+            }
+        }
+        return title;
+    }
+
+    changedCategoryFromResult (item){
+        var title = item.title;
+        title = title.replace(" ", "_");
+        var keys = Object.keys(this.categoryData);
+        for(var i=0; i<keys.length; i++){
+            var key = keys[i];
+            var subcategories = this.categoryData[key]['subcategory'];
+            for(var j=0; j<subcategories.length; j++){
+                var subcategory = subcategories[j];
+                if(subcategory.name === title){
+                    this.subcategory = subcategory;
+                    this.subcategories = subcategories;
+                    this.category = this.categoryData[key];
+                    return;
+                }
+            }
+        }
+    }
+
+}
+
 function getToday() {
     var today = new Date();
     var dd = today.getDate();
@@ -728,12 +1099,12 @@ function removeDuplicateUsingFilter(arr) {
     return unique_array
 }
 
-function isAdmin() {
-    if (vue === null)
-        return false;
-
-    return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
-}
+// function isAdmin() {
+//     if (vue === null)
+//         return false;
+//
+//     return (vue.loginData.user !== null && vue.loginData.user.admin == 1);
+// }
 
 var Get_building_list = function () {
     var buildings;
@@ -872,25 +1243,9 @@ var Get_building_list = function () {
     return In_Out;
 }();
 
-function convertStatus(status) {
-    if (status === "WFA") {
-        return "수거전"
-    } else if (status === "WFR") {
-        return "수령전"
-    } else if (status === "COM") {
-        return "완료"
-    } else if (status === "P2P"){
-        return "개인거래"
-    }
-    return ""
-}
+
 
 function shuffle(a) {
-    // for (let i = a.length - 1; i > 0; i--) {
-    //     const j = Math.floor(Math.random() * (i + 1));
-    //     [a[i], a[j]] = [a[j], a[i]];
-    // }
-    // return a;
     var input = a.slice();
 
     for (var i = input.length - 1; i >= 0; i--) {

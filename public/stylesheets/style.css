@@ -52,6 +52,14 @@
     box-shadow: 0 2px 43px -4px rgba(0,0,0,.19) !important;
 }
 
+.dal-card-media-disable {
+    background: rgba(0,0,0,0.6) !important;
+}
+
+.dal-card-media-disable .card__media__content {
+    background: rgba(0,0,0,0.6);
+}
+
 
 .dal-checkbox{
 
@@ -93,6 +101,9 @@
     overflow: visible;
 }
 
+.bottom-nav .btn{
+    min-width: 50px !important;
+}
 
 /*=========*/
 

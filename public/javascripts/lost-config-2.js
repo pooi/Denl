@@ -15,8 +15,10 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             },
             loginData:{
             },
+            supporter: null,
             oneClick: null,
             dalMessage: null,
+            categoryManager: null,
             bottomTab: "lost",
             imgSrc: '',
             domEleArray: null,
@@ -36,17 +38,17 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     value: 'accuracy'
                 }
             ],
-            category: null,
-            tempCategory: null,
-            subcategory: null,
-            loadingSubCategory: false,
+            // category: null,
+            // tempCategory: null,
+            // subcategory: null,
+            // loadingSubCategory: false,
             categories: [
                 '가방', '귀금속'
             ],
-            subcategories: [],
-            categoryData: {
-
-            },
+            // subcategories: [],
+            // categoryData: {
+            //
+            // },
             hashtags: [],
             suggestTag: [],
             selectedSuggestTag: [],
@@ -77,7 +79,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             resSuccessCode: null,
             resSuccessRedirectHref: "/",
             responseErrorDialog: false,
-            categoryDialog: false,
+            // categoryDialog: false,
             loginErrorDialog: false,
             detailDialog: false,
             submitDetailSuccessDialog: false,
@@ -104,12 +106,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     this.scrollData.scrollT = 0;
                     this.scrollData.offsetTop = 0;
                 }
-            },
-            getMsg:function () {
-                getMsg();
-            },
-            setMsgRead: function (msg) {
-                setMsgRead(msg);
             },
             browseClick: function () {
                 var inputFile = document.getElementById('file')
@@ -240,67 +236,6 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
                 }
             },
-            changeSubCategories: function (key) {
-
-                if (vue.categoryData.hasOwnProperty(key)) {
-                    vue.category = vue.categoryData[key];
-                    vue.subcategory = null;
-                    vue.subcategories = vue.category.subcategory;
-                }
-
-            },
-            getCategoryBreadcrumbs : function () {
-                var list = [];
-                if(this.category !== null){
-                    list.push(this.category.ko);
-                }
-                if(this.subcategory !== null){
-                    list.push(this.subcategory.ko);
-                }
-                return list;
-            },
-            isSameCategoryData : function (c1, c2) {
-                if(c1 === null ||c2 === null)
-                    return false;
-                return c1.name == c2.name
-            },
-            changedCateogryFromResult: function(item){
-                var title = item.title;
-                title = title.replace(" ", "_");
-                var keys = Object.keys(this.categoryData);
-                for(var i=0; i<keys.length; i++){
-                    var key = keys[i];
-                    var subcategories = this.categoryData[key]['subcategory'];
-                    for(var j=0; j<subcategories.length; j++){
-                        var subcategory = subcategories[j];
-                        if(subcategory.name === title){
-                            this.subcategory = subcategory;
-                            this.subcategories = subcategories;
-                            this.category = this.categoryData[key];
-                            return;
-                        }
-                    }
-                }
-            },
-            getCategoryStringFromResult: function (title) {
-                title = title.replace(" ", "_");
-                var keys = Object.keys(this.categoryData);
-                for(var i=0; i<keys.length; i++){
-                    var key = keys[i];
-                    var subcategories = this.categoryData[key]['subcategory'];
-                    for(var j=0; j<subcategories.length; j++){
-                        var subcategory = subcategories[j];
-                        if(subcategory.name === title){
-                            return this.categoryData[key].ko + " > " + subcategory.ko;
-                            // this.subcategory = subcategory;
-                            // this.subcategories = subcategories;
-                            // this.category = this.categoryData[key];
-                            // return;
-                        }
-                    }
-                }
-                return title;
-            },
             changeSuggestTag: function(tag){
                 if(this.selectedSuggestTag.includes(tag) > 0){
                     this.selectedSuggestTag.splice(this.selectedSuggestTag.indexOf(tag), 1);
@@ -321,8 +256,8 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
 
                 var data = {
                     photos: image,
-                    category: this.category === null ? "" : this.category.name,
-                    subcategory: this.subcategory === null ? "" : this.subcategory.name,
+                    category: this.categoryManager.category === null ? "" : this.categoryManager.category.name,
+                    subcategory: this.categoryManager.subcategory === null ? "" : this.categoryManager.subcategory.name,
                     brand: this.logos.length > 0 ? JSON.stringify(this.logos) : "",
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
@@ -414,7 +349,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                     var data = response.data;
                     vue.isRecognitionProgress = false;
                     vue.recognitionData = data;
-                    vue.changedCateogryFromResult(data[0]);
+                    vue.categoryManager.changedCategoryFromResult(data[0]);
                     // console.log("recognitionData: ", vue.recognitionData);
                 })
                     .catch(function (error) {
@@ -437,23 +372,12 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 }
 
             },
-            // function () {
-            //     var text = init_logos;
-            //     var list = text.split(',');
-            //     if (list.length > 0 && (list[0] === '' || list[0] === ' ')) {
-            //         list.pop()
-            //     }
-            //     this.logos = list
-            // },
             function (){
                 var color = init_colors;
                 this.colors = JSON.parse(color);
             },
             function () {
                 this.buildingData = JSON.parse(init_buildings);
-            },
-            function () {
-                this.categoryData = JSON.parse(init_category);
             },
             function () {
                 var today = new Date();
@@ -472,7 +396,9 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             }
         ]
     });
+    vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
+    vue.categoryManager = new CategoryManager(vue, init_category);
     return vue;
 }

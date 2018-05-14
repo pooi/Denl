@@ -9,10 +9,10 @@ v-layout(wrap='')
                     code.mx-3.elevation-0.mt-3 수거전
                     v-card-title.title.mb-0.py-2.grey--text.text--darken-3 {{ "유실물 - " + item.id}}
                     v-card-text.py-0.subheading.grey--text.text--lighten-1 {{ getCategoryStringFromResult(item.subcategory) }}
-                    //v-card-text.py-3.grey--text.text--darken-2(v-if="item.description.length > 0") {{ reduceString(item.description, 100) }}
-                    v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ vueMsToDateKo(item.dcv_date) }}
+                    //v-card-text.py-3.grey--text.text--darken-2(v-if="item.description.length > 0") {{ supporter.reduceString(item.description, 100) }}
+                    v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ supporter.msToDateKo(item.dcv_date) }}
                     v-card-text.py-0.text-xs-left(v-if="item.tags.length > 0 || item.recognition_tags.length > 0")
-                        span.caption.brown--text {{ hashTagsToString(item) }}
+                        span.caption.brown--text {{ supporter.hashTagsToString(item) }}
                     // share / detail 버튼 가운데로 배치
                     v-card-actions
                         v-spacer

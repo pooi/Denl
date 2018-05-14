@@ -36,11 +36,15 @@ block content
 
                             v-card.pt-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
 
-                                code.mb-2.mx-3(v-if="convertStatus(itemData.status).length > 0") {{convertStatus(itemData.status)}}
+
+                                code.mb-2.mx-3(v-if="supporter.convertStatus(itemData.status).length > 0") {{supporter.convertStatus(itemData.status)}}
                                 .headline.pa-0.mx-3 유실물 상세보기
 
                                 v-flex.my-3.mx-3(xs12)
                                     v-divider
+
+                                v-flex.px-4.pb-3(xs12)
+                                    v-btn(block, color="deep-orange darken-3", dark, v-if="supporter.isAdmin() && itemData.status === 'WFA' ", @click="acceptItem()") 수거완료
 
                                 v-layout.px-3.pb-2(row, wrap)
                                     v-flex(sm2, xs12)
@@ -69,7 +73,7 @@ block content
                                         v-subheader.pa-0
                                             v-breadcrumbs.pa-0.pr-2
                                                 v-icon(slot='divider') chevron_right
-                                                v-breadcrumbs-item(v-for='item in getCategoryBreadcrumbs()', :key='item')
+                                                v-breadcrumbs-item(v-for='item in categoryManager.getCategoryBreadcrumbs2(itemData)', :key='item')
                                                     | {{ item }}
 
                                         v-flex.rounded-expansion-panel(sm8, xs12)
@@ -79,7 +83,7 @@ block content
                                                     v-data-table(:headers="recognitionDataHeaders", :items='itemData.recognition_result', hide-actions, disable-initial-sort)
                                                         template(slot='items', slot-scope='props')
                                                             tr
-                                                                td {{getCategoryStringFromResult(props.item.title)}}
+                                                                td {{categoryManager.getCategoryStringFromResult(props.item.title)}}
                                                                 td.text-xs-right {{props.item.accuracy}}%
 
 
@@ -138,7 +142,7 @@ block content
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         //v-date-picker.elevation-2.mb-3.mt-2.hidden-xs-only(:value='vueMsToDate(itemData.dcv_date)', :landscape='true', color="brown darken-1", name='date', readonly, show-current="false")
                                         //.body-1(:class="$vuetify.breakpoint.xsOnly ? '' : 'mt-3' ") {{ vueMsToDateKo(itemData.dcv_date) }}
-                                        v-subheader.pa-0.black--text {{ vueMsToDateKo(itemData.dcv_date) }}
+                                        v-subheader.pa-0.black--text {{ supporter.msToDateKo(itemData.dcv_date) }}
 
 
 
@@ -156,9 +160,11 @@ block content
                                                         img.pa-3(src="/images/profile.png", width="100%")
                                                     v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                                         div(style="margin:auto;")
-                                                            .title.pa-0.black--text {{ vueMsToDateKo(itemData.rgt_date) }}
+                                                            .title.pa-0.black--text {{ supporter.msToDateKo(itemData.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
+                                                v-layout
+                                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && (loginData.user === null || loginData.user.id !== itemData.rgt_user.id)", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="contactUser(itemData.rgt_user.id)") 연락하기
 
 
 
@@ -172,7 +178,7 @@ block content
                                                         img.pa-3(src="/images/profile.png", width="100%")
                                                     v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                                         div(style="margin:auto;")
-                                                            .title.pa-0.black--text {{ vueMsToDateKo(req.rgt_date) }}
+                                                            .title.pa-0.black--text {{ supporter.msToDateKo(req.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
                                                 v-layout
@@ -197,10 +203,10 @@ block content
                                                         div(style="margin:auto;")
                                                             code.mb-2.elevation-0(v-if="itemData.status === 'WFR'") 수령대기
                                                             code.mb-2.elevation-0(v-else-if="itemData.status === 'COM'") 수령완료
-                                                            .title.pa-0.black--text {{ vueMsToDateKo(itemData.rcv_date) }}
+                                                            .title.pa-0.black--text {{ supporter.msToDateKo(itemData.rcv_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
-                                                v-layout(v-if="vueIsAdmin() && itemData.status === 'WFR'")
+                                                v-layout(v-if="supporter.isAdmin() && itemData.status === 'WFR'")
                                                     v-btn.elevation-0.my-0(block, small, color='error', style="border-radius: 0px 0px 0px 20px;", @click="cancelRequestReceive()") 요청취소
                                                     v-btn.elevation-0.my-0(block, small, dark, color='cyan darken-1', style="border-radius: 0px 0px 20px 0px;", @click="confirmReceive()") 수령확인
 
@@ -212,8 +218,11 @@ block content
 
                                 v-layout(xs12)
                                     v-btn.elevation-0.my-0(block, color="blue darken-2", style="border-radius: 0px;", dark, @click="shareSheet=true") 공유하기
-                                    v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="selectedRequest = null; requestReceiveDialog=true", v-if='vueIsAdmin() && requestList.length > 0 && itemData.status !== "WFR" && itemData.status !== "COM"') 수령승인
-                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest()", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && loginData.user !== null && loginData.user.id === itemData.rgt_user.id", block, color="error", style="border-radius: 0px;", dark, @click="changeStatusDialog=true") 전달방식변경
+                                    v-btn.elevation-0.my-0(block, color="red darken-2", style="border-radius: 0px;", dark, @click="selectedRequest = null; requestReceiveDialog=true", v-if='supporter.isAdmin() && requestList.length > 0 && itemData.status !== "WFR" && itemData.status !== "COM"') 수령승인
+
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest() && itemData.status === 'P2P' ", block, color="cyan darken-1", style="border-radius: 0px;", dark, @click="contactUser(itemData.rgt_user.id)") 연락하기
+                                    v-btn.elevation-0.my-0(v-if="itemData.rcv_user === null && !isAlreadyRequest() && !isMyRequest() && itemData.status !== 'P2P'", block, color="orange darken-2", style="border-radius: 0px;", dark, @click="requestCheckDialog = true") 요청하기
 
 
 
@@ -360,7 +369,7 @@ block content
                                             img.pa-3(src="/images/profile.png", width="100%")
                                         v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                             div(style="margin:auto;")
-                                                .title.pa-0 {{ vueMsToDateKo(req.rgt_date) }}
+                                                .title.pa-0 {{ supporter.msToDateKo(req.rgt_date) }}
                                                 .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
                                                 .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
                                     v-layout
@@ -377,7 +386,7 @@ block content
                         v-btn(color='error', flat, @click="requestReceiveDialog = false") 취소
                         v-btn(color='success', flat, :disabled="selectedRequest === null", @click="requestReceive()") 확인
 
-        v-dialog.md6(v-model='requestReceiveSuccessDialog',  scrollable, max-width='500px')
+        v-dialog.md6(v-model='requestReceiveSuccessDialog', persistent, scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
@@ -388,7 +397,7 @@ block content
                     v-spacer
                     v-btn(color='success', flat, @click="reloadPage()") 확인
 
-        v-dialog.md6(v-model='requestReceiveCancelSuccessDialog',  scrollable, max-width='500px')
+        v-dialog.md6(v-model='requestReceiveCancelSuccessDialog', persistent, scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
@@ -399,13 +408,40 @@ block content
                     v-spacer
                     v-btn(color='success', flat, @click="reloadPage()") 확인
 
-        v-dialog.md6(v-model='confirmReceiveSuccessDialog',  scrollable, max-width='500px')
+        v-dialog.md6(v-model='confirmReceiveSuccessDialog', persistent, scrollable, max-width='500px')
             v-card
                 v-card-title.headline(icon)
                     v-icon.mr-2(color='success') check_circle
                     | 성공
                 v-card-text.subheading
                     | 성공적으로 수령 확인하였습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click="reloadPage()") 확인
+
+
+        v-dialog.md6(v-model='changeStatusDialog',  scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='error') error
+                    | 전달 방식 변경
+                v-card-text
+                    | 개인 전달에서 관리자 소관으로 변경하시겠습니까?
+                    br
+                    | 이 작업은 되돌릴 수 없습니다.
+                v-card-actions
+                    v-spacer
+                    v-btn(color='success', flat, @click.native="changeStatusDialog = false") 취소
+                    v-btn(color='error', flat, @click="changeP2PtoWFA()") 변경
+
+
+        v-dialog.md6(v-model='successStatusChangeDialog', persistent, scrollable, max-width='500px')
+            v-card
+                v-card-title.headline(icon)
+                    v-icon.mr-2(color='success') check_circle
+                    | 성공
+                v-card-text.subheading
+                    | 성공적으로 전달방식을 변경하였습니다.
                 v-card-actions
                     v-spacer
                     v-btn(color='success', flat, @click="reloadPage()") 확인

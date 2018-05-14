@@ -17,7 +17,7 @@ block content
                         div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'body-2 mt-0 pt-0 text-xs-center' : 'subheading mt-1 mb-3 text-xs-center'")
                             | Powered by _beat
                     // ######## 카드(찾기,등록,관리) ########
-                    v-layout.mt-5.pt-3.pl-0(wrap, align-center, :justify-center="!vueIsAdmin()", :justify-space-around="vueIsAdmin()", v-if="$vuetify.breakpoint.mdAndUp")
+                    v-layout.mt-5.pt-3.pl-0(wrap, align-center, :justify-center="!supporter.isAdmin()", :justify-space-around="supporter.isAdmin()", v-if="$vuetify.breakpoint.mdAndUp")
                         // 찾기
                         v-flex.dal-card-scale-white.py-4(xs12, sm3, v-on:mouseover="moreBtn = 'find';", v-on:mouseout="moreBtn = null;")
                             v-card.elevation-0.transparent
@@ -46,7 +46,7 @@ block content
                                         v-btn(dark, small, flat, outline, round, color="deep-orange darken-3", v-if="moreBtn === 'lost'", @click="oneClick.action()")
                                             span 간편등록
                         // 관리
-                        v-flex.dal-card-scale-white.py-4(xs12, sm3, v-if='loginData.user !== null && loginData.user.admin == 1', v-on:mouseover="moreBtn = 'manage';", v-on:mouseout="moreBtn = null;")
+                        v-flex.dal-card-scale-white.py-4(xs12, sm3, v-if='supporter.isAdmin()', v-on:mouseover="moreBtn = 'manage';", v-on:mouseout="moreBtn = null;")
                             v-card.elevation-0.transparent
                                 v-card-text.text-xs-center(onclick="window.location.href='/manage'")
                                     a(href='#')
