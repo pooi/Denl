@@ -149,6 +149,7 @@ block content
 
                             v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
                                 p.headline.deep-orange--text(style="font-weight: 500;") 유실물 목록
+                                v-switch.dal-checkbox.ml-2(label="완료된 항목 보기", v-model="isShowComplete", color="orange darken-3")
 
                             //v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
                             //    .headline.pa-0.mt4 유실물 목록
@@ -157,7 +158,7 @@ block content
                             vcard-title.pa-0(v-if="searchItems.length > 0")
                                 v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
                                     v-layout(wrap)
-                                        v-flex(xs12, sm6, md6, lg4 v-for="item in searchItems", :key="item.id", v-model='searchItems')
+                                        v-flex(xs12, sm6, md6, lg4 v-for="item in searchItems", :key="item.id", v-model='searchItems', v-if="isShowComplete || item.status !== 'COM'")
                                             include card_item
 
                                         v-flex.text-xs-center.mt-4(xs12, v-if="!loadMoreData.isLoadFinish")

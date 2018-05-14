@@ -34,11 +34,8 @@ function init(init_category) {
                 numOfItem: 10,
                 isLoadFinish: false
             },
+            isShowComplete: false,
 
-
-            // category: null,
-            // subcategory: null,
-            // categoryDialog: false,
             // Filter
             dcv_filter_item:{
                 isAllday: true,
@@ -258,6 +255,9 @@ function init(init_category) {
                 }).catch(function (error) {
                     alert(error);
                 });
+            },
+            showComplete: function () {
+                alert("hi");
             }
         },
         mounted: [
@@ -302,6 +302,9 @@ function init(init_category) {
             },
             'searchTags' : function () {
                 vue.search(true);
+            },
+            'isShowComplete' : function () {
+                vue.isShowComplete()
             }
         }
     });

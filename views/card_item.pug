@@ -1,15 +1,15 @@
-v-card.dal-card-scale(flat='', tile='', hover, raised, :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' ")
+v-card.dal-card-scale(flat='', tile='', hover, raised, :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' ", :dark="item.status==='COM'")
 
-    v-card-media(:src="item.photos", height='300px')
+    v-card-media(:src="item.photos", height='300px', :class="item.status === 'COM' ? 'dal-card-media-disable' : '' ")
 
     code.mx-3.elevation-0.mt-3(v-if="supporter.convertStatus(item.status).length > 0") {{supporter.convertStatus(item.status)}}
-    v-card-title.title.mb-0.py-2.grey--text.text--darken-3 {{ "유실물 - " + item.id}}
+    v-card-title.title.mb-0.py-2(:class="item.status === 'COM' ? '' : 'grey--text text--darken-3'") {{ "유실물 - " + item.id}}
     v-card-text.py-0.subheading.grey--text.text--lighten-1 {{ categoryManager.getCategoryStringFromResult(item.subcategory) }}
 
     v-card-text.py-3.grey--text.text--darken-2(v-if="item.description.length > 0") {{ supporter.reduceString(item.description, 100) }}
     v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ supporter.msToDateKo(item.dcv_date) }}
     v-card-text.py-0.text-xs-left(v-if="item.tags.length > 0 || item.recognition_tags.length > 0")
-        span.caption.brown--text {{ supporter.hashTagsToString(item) }}
+        span.caption(:class="item.status==='COM' ? '' : 'brown--text' ") {{ supporter.hashTagsToString(item) }}
     v-card-actions
         v-btn(flat, small, color='error', dark, v-if="supporter.isAdmin() && item.status === 'WFA' ", @click="supporter.acceptItem(item)") Accept
         v-spacer
