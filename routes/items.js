@@ -1,45 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var conn = require('../config/db')();
+var support = require('./support-func');
 
-function getTodayMs(){
-    var d = new Date();
-    return d.getTime();
-}
-
-function settingAnonymousUser(user, isHidden) {
-    if(isHidden && user !== null){
-        var userName = user.name;
-        var newName = "";
-        for(var i=0; i<userName.length; i++){
-            if(i == 0 || i == userName.length-1){
-                newName += userName.charAt(i);
-            }else{
-                newName += "*";
-            }
-        }
-        user.name = newName;
-
-        var userStudentID = user.studentID;
-        var newStudentID = "";
-        for(var i=0; i<userStudentID.length; i++){
-            if(i > userStudentID.length - 5){
-                newStudentID += userStudentID.charAt(i);
-            }else{
-                newStudentID += "*";
-            }
-        }
-        user.studentID = newStudentID;
-    }
-    return user;
-}
 
 var msgSQL = "INSERT INTO msg(user_id, title, content, date) VALUES({0}, '{1}', '{2}', '{3}');";
 
 /* GET home page. */
 router.get('/', function (req, res) {
-
-
 
     res.render('items', {userData: JSON.stringify(req.session.userData)});
 });
@@ -57,9 +25,13 @@ router.get('/:id', function (req, res) {
         'SELECT * FROM user \n' +
         'GROUP BY id) as C \n' +
         'ON (A.rcv_user = C.id) \n' +
-        'WHERE A.id = ?;';
+        'WHERE A.id = ?; ';
 
-    sql += "SELECT * FROM category;";
+    sql += 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+        'FROM category as A ' +
+        'LEFT OUTER JOIN ( ' +
+        'SELECT * FROM master_category ' +
+        ') as B on (A.master_category_id = B.id); ';
     conn.query(sql, [id], function (err, results, fields) {
         if (err) {
             console.log(err);
@@ -88,8 +60,8 @@ router.get('/:id', function (req, res) {
                 if(req.session.userData.hasOwnProperty('isAdmin') && req.session.userData.isAdmin == 1)
                     isHidden = false;
             }
-            rgtUser = settingAnonymousUser(rgtUser, isHidden);
-            rcvUser = settingAnonymousUser(rcvUser, isHidden);
+            rgtUser = support.settingAnonymousUser(rgtUser, isHidden);
+            rcvUser = support.settingAnonymousUser(rcvUser, isHidden);
 
             delete result['rgt_user'];
             delete result['rgtStudentID'];
@@ -109,23 +81,8 @@ router.get('/:id', function (req, res) {
             console.log(json);
             console.log(photos);
 
-            var category = {}
-            for (var i = 0; i < categoryResults.length; i++) {
-                var result = categoryResults[i];
-                if(! category.hasOwnProperty(result.category_name)){
-                    category[result.category_name] = {
-                        subcategory: [],
-                        name: result.category_name,
-                        ko: result.category_name_ko,
-                        en: result.category_name_en
-                    }
-                }
-                category[result.category_name].subcategory.push({
-                    name: result.name,
-                    ko: result.ko,
-                    en: result.en
-                })
-            }
+            var category = support.parseCategoryResult(categoryResults);
+
             console.log(photos);
             res.render('items', {userData: JSON.stringify(req.session.userData), data: json, category: JSON.stringify(category), tempImg: photos});
 
@@ -141,8 +98,8 @@ router.get('/:id', function (req, res) {
 router.post('/request', function (req, res) {
     if(req.body){
         var lostID = req.body.lost_id;
-        var rgtUserMsg = msgSQL.format("(SELECT rgt_user FROM lost WHERE id='{0}')".format(lostID), '요청 발생 - ' + lostID, '등록하신 유실물에 수령 요청이 들어왔습니다.', getTodayMs());
-        var requestUserMsg = msgSQL.format(req.body.user_id, '요청 등록 - ' + lostID, lostID + '번 유실물 수령을 성공적으로 요청하였습니다.', getTodayMs());
+        var rgtUserMsg = msgSQL.format("(SELECT rgt_user FROM lost WHERE id='{0}')".format(lostID), '요청 발생 - ' + lostID, '등록하신 유실물에 수령 요청이 들어왔습니다.', support.getTodayMs());
+        var requestUserMsg = msgSQL.format(req.body.user_id, '요청 등록 - ' + lostID, lostID + '번 유실물 수령을 성공적으로 요청하였습니다.', support.getTodayMs());
         var sql = 'INSERT INTO request SET ?';
         sql = rgtUserMsg + requestUserMsg + sql;
         conn.query(sql, req.body, function(err, results) {
@@ -163,7 +120,7 @@ router.post('/removeRequest', function (req, res) {
     if(req.body){
         var lostId = req.body.lost_id;
         var requestID = req.body.request_id;
-        var requestUserMsg = msgSQL.format("(SELECT user_id FROM request WHERE id={0})".format(requestID), '요청 취소 - ' + lostId, lostId + '번 유실물 수령 요청이 취소되었습니다.', getTodayMs());
+        var requestUserMsg = msgSQL.format("(SELECT user_id FROM request WHERE id={0})".format(requestID), '요청 취소 - ' + lostId, lostId + '번 유실물 수령 요청이 취소되었습니다.', support.getTodayMs());
 
         var sql = 'DELETE FROM request WHERE id=?;';
         sql = requestUserMsg + sql;
@@ -232,7 +189,7 @@ router.post('/requestList', function (req, res) {
                         if(req.session.userData.hasOwnProperty('isAdmin') && req.session.userData.isAdmin == 1)
                             isHidden = false;
                     }
-                    settingAnonymousUser(user, isHidden);
+                    support.settingAnonymousUser(user, isHidden);
                     delete result['user_id'];
                     delete result['studentID'];
                     delete result['name'];

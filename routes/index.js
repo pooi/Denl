@@ -1,101 +1,44 @@
 var express = require('express');
 var router = express.Router();
 var conn = require('../config/db')();
-
-function getTodayMs(){
-    var d = new Date();
-    return d.getTime();
-}
-
-function dateToMs(date){
-    var temp = date.split('-');
-    var year = parseInt(temp[0]);
-    var month = parseInt(temp[1]);
-    var day = parseInt(temp[2]);
-    var k = Date.parse(date);
-    return k;
-}
-
-function msToDate(ms) {
-    var date = new Date(ms);
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1; //January is 0!
-
-    var yyyy = date.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-    var dateString = yyyy + "-" + mm + "-" + dd;
-    return dateString;
-}
+var support = require('./support-func');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-    var sql = 'SELECT * FROM category';
+    var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+        'FROM category as A ' +
+        'LEFT OUTER JOIN ( ' +
+        'SELECT * FROM master_category ' +
+        ') as B on (A.master_category_id = B.id); ';
     conn.query(sql, [], function (err, results) {
         if (err) {
             console.log(err);
             res.status(500).send("Internal Server Error");
         }
-        var category = {};
-        for (var i = 0; i < results.length; i++) {
-            var result = results[i];
-            if(! category.hasOwnProperty(result.category_name)){
-                category[result.category_name] = {
-                    subcategory: [],
-                    name: result.category_name,
-                    ko: result.category_name_ko,
-                    en: result.category_name_en
-                }
-            }
-            category[result.category_name].subcategory.push({
-                name: result.name,
-                ko: result.ko,
-                en: result.en
-            })
-        }
+        var category = support.parseCategoryResult(results);
+
         if(req.session)
             res.render('index', {userData: JSON.stringify(req.session.userData), category: JSON.stringify(category)});
         else
             res.render('index', {userData: "", category: JSON.stringify(category)});
     });
 
-    // if(req.session)
-    //     res.render('index', {userData: JSON.stringify(req.session.userData)});
-    // else
-    //     res.render('index', {userData: ""});
-
 });
 
 router.post('/category', function (req, res) {
-    var sql = 'SELECT * FROM category;';
+    var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+        'FROM category as A ' +
+        'LEFT OUTER JOIN ( ' +
+        'SELECT * FROM master_category ' +
+        ') as B on (A.master_category_id = B.id); ';
     conn.query(sql, [], function (err, results) {
         if (err) {
             console.log(err);
             res.status(500).send("Internal Server Error");
         }
 
-        var category = {};
-        for (var i = 0; i < results.length; i++) {
-            var result = results[i];
-            if(! category.hasOwnProperty(result.category_name)){
-                category[result.category_name] = {
-                    subcategory: [],
-                    name: result.category_name,
-                    ko: result.category_name_ko,
-                    en: result.category_name_en
-                }
-            }
-            category[result.category_name].subcategory.push({
-                name: result.name,
-                ko: result.ko,
-                en: result.en
-            })
-        }
+        var category = support.parseCategoryResult(results);
 
         res.send({
             category: category
@@ -166,7 +109,7 @@ router.post('/setMsgRead', function (req, res) {
 });
 
 router.post('/recent', function (req, res) {
-    var sql = "SELECT * FROM lost ORDER BY id DESC limit 0, 12;";
+    var sql = "SELECT * FROM lost WHERE status <> 'COM' ORDER BY id DESC limit 0, 12;";
     console.log(sql);
     conn.query(sql, [], function(err, results) {
         if (err) {
@@ -238,16 +181,16 @@ router.post('/search', function (req, res) {
         if(item.isAllday){
             if(item.alldayDate !== null){
                 conditions.push(" dcv_date=?");
-                params.push(dateToMs(item.alldayDate));
+                params.push(support.dateToMs(item.alldayDate));
             }
         }else{
             if(item.startDate !== null){
                 conditions.push(" ?<=dcv_date");
-                params.push(dateToMs(item.startDate));
+                params.push(support.dateToMs(item.startDate));
             }
             if(item.finishDate !== null){
                 conditions.push(" dcv_date<=?");
-                params.push(dateToMs(item.finishDate));
+                params.push(support.dateToMs(item.finishDate));
             }
         }
     }
@@ -257,16 +200,16 @@ router.post('/search', function (req, res) {
         if(item.isAllday){
             if(item.alldayDate !== null){
                 conditions.push(" rgt_date=?");
-                params.push(dateToMs(item.alldayDate));
+                params.push(support.dateToMs(item.alldayDate));
             }
         }else{
             if(item.startDate !== null){
                 conditions.push(" ?<=rgt_date");
-                params.push(dateToMs(item.startDate));
+                params.push(support.dateToMs(item.startDate));
             }
             if(item.finishDate !== null){
                 conditions.push(" rgt_date<=?");
-                params.push(dateToMs(item.finishDate));
+                params.push(support.dateToMs(item.finishDate));
             }
         }
     }

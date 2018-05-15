@@ -19,7 +19,7 @@ block content
 
                             v-card-title.rounded-expansion-panel.ma-1(:class="$vuetify.breakpoint.xsOnly ? 'pa-1' : '' ")
                                 v-expansion-panel.elevation-0.ma-0(popout)
-                                    v-expansion-panel-content.ma-0(:value="true")
+                                    v-expansion-panel-content.ma-0(:value="false")
                                         div(slot="header", class="subheading grey--text") 검색 조건
                                         v-container(v-bind='{ [`grid-list-lg`]: true }')
                                             v-layout(wrap)

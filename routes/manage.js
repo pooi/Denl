@@ -2,6 +2,7 @@ var express = require('express');
 var async = require('async');
 var router = express.Router();
 var conn = require('../config/db')();
+var support = require('./support-func');
 var get_date = function(){
     var d = new Date(Date.now());
     var day = d.getDate();
