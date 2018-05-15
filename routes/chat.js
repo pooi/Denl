@@ -55,7 +55,7 @@ router.get('/', function (req, res) {
 
 router.post('/send', function (req, res) {
    console.log(req.body);
-   var sql = "update chat set message = '" + req.body.json + "' where roomport = " + req.body.roomport + ";";
+   var sql = "update chat set message = '" + req.body.json + "' where roomport = " + "'" + req.body.roomport + "'" + ";";
    conn.query(sql, function(err, results){
        if(err){
            console.log(err);
@@ -68,7 +68,7 @@ router.post('/send', function (req, res) {
 
 router.post('/update', function (req, res) {
     console.log(req.body);
-    var sql = "select message from chat where roomport = " + req.body.roomport + ";";
+    var sql = "select message from chat where roomport = " + "'" + req.body.roomport + "'" + ";";
     conn.query(sql, function(err, results){
         if(err){
             console.log(err);
@@ -79,6 +79,34 @@ router.post('/update', function (req, res) {
             send_obj.message = results[0].message;
             console.log(typeof(results[0].message));
             res.send(send_obj);
+        }
+    })
+});
+
+router.post('/make', function (req, res) {
+    console.log(req.body);
+    var sql = "select message from chat where roomport = " + req.body.makeroomport + ";";
+    var sentence = "(" + req.body.user1 + ", " + req.body.user2 + ", " + req.body.makeroomport + ");"
+    conn.query(sql, function(err, results){
+        if(err){
+            console.log(err);
+        }else{
+            if(results.length > 0){
+                var fail = "exist";
+                res.send(fail);
+            }else{
+                var sql2 = "insert into chat (user1, user2, roomport) values " + sentence;
+                conn.query(sql2, function(err, results){
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        console.log(results);
+                        var success = "makenewroom"
+                        res.send(success);
+                    }
+                })
+            }
         }
     })
 });

@@ -46,6 +46,7 @@ function init(chatData) {
             requestCancelDialog: false,
             requestCancelErrorDialog: false,
             msgData:{},
+            supporter: null,
             todayDate: null,
             dialog: false,
             message: "",
@@ -89,8 +90,15 @@ function init(chatData) {
                 var json = "";
                 for(item in vue.chat_lists){
                     if(vue.chat_lists[item].roomport == data.room){
-                        vue.chat_lists[item].msg.push(obj);
-                        json = JSON.stringify(vue.chat_lists[item].msg);
+                        if(vue.chat_lists[item].msg == null){
+                            vue.chat_lists[item].msg = [];
+                            vue.chat_lists[item].msg.push(obj);
+                            json = JSON.stringify(vue.chat_lists[item].msg);
+                        }
+                        else{
+                            vue.chat_lists[item].msg.push(obj);
+                            json = JSON.stringify(vue.chat_lists[item].msg);
+                        }
                     }
                 }
                 server_obj.roomport = data.room;
@@ -267,6 +275,7 @@ function init(chatData) {
             }
         ]
     });
+    vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     return vue;
