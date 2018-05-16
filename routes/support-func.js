@@ -1,3 +1,5 @@
+var conn = require('../config/db')();
+
 var oneDayMs = 86400000;
 
 exports.getTodayMs = function () {
@@ -113,4 +115,61 @@ exports.parseCategoryResult = function (results) {
     }
 
     return category;
+};
+
+exports.parseBuildingResult = function (db_buildings) {
+    var front_buildings = {};
+    for(db_building in db_buildings){
+        var real_lat = db_buildings[db_building].lat;
+        var temp_lat = real_lat.substring(1,real_lat.length-1);
+        var real_lng = db_buildings[db_building].lng;
+        var temp_lng = real_lng.substring(1,real_lng.length-1);
+        var arr_lat = temp_lat.split(",");
+        var arr_lng = temp_lng.split(",");
+        // console.log("lat",arr_lat);
+        // console.log("lng",arr_lng);
+        var up_arr = [];
+        for(var m = 0; m < arr_lat.length; m++){
+            var temp_arr = [];
+            temp_arr.push(arr_lng[m]);
+            temp_arr.push(arr_lat[m]);
+            var temp_obj = { "point" : temp_arr };
+            up_arr.push(temp_obj);
+        }
+        front_buildings[db_buildings[db_building].ko] = up_arr;
+    }
+    return front_buildings;
+};
+
+exports.hitMasterCategory = function (id) {
+    var sql = "UPDATE master_category SET hit=hit+1 WHERE id=?;";
+    conn.query(sql, [id], function(err, results) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(results);
+        }
+    });
+};
+
+exports.hitCategory = function (name) {
+    var sql = "UPDATE category SET hit=hit+1 WHERE name=?;";
+    conn.query(sql, [name], function(err, results) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(results);
+        }
+    });
+};
+
+exports.hitItem = function (id) {
+    var sql = "UPDATE lost SET hit=hit+1 WHERE id=?;";
+    conn.query(sql, [id], function(err, results) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(results);
+        }
+    });
 };

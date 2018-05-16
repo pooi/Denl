@@ -161,9 +161,11 @@ router.post('/search', function (req, res) {
         var subcategory = null;
         if(data.category !== ''){
             category = data.category;
+            support.hitMasterCategory(category.id);
         }
         if(data.subcategory !== ''){
             subcategory = data.subcategory;
+            support.hitCategory(subcategory.name);
         }
         // console.log(category, subcategory);
         if(category !== null && subcategory !== null){

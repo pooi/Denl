@@ -32,6 +32,7 @@ router.get('/:id', function (req, res) {
         'LEFT OUTER JOIN ( ' +
         'SELECT * FROM master_category ' +
         ') as B on (A.master_category_id = B.id); ';
+    support.hitItem(id);
     conn.query(sql, [id], function (err, results, fields) {
         if (err) {
             console.log(err);
