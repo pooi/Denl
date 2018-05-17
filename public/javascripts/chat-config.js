@@ -57,9 +57,13 @@ function init(chatData) {
             chat_clicked : null,
             my_name : "",
             menu: false,
-            chat_list: true
+            chat_list: true,
+            interval: undefined,
+            check_chat_lists: null
         },
         created() {
+            this.test();
+            this.interval = setInterval(this.get_chat, 5000);
             chat.on("chat message", function (data) {
                 console.log(data);
                 var obj = {};
@@ -134,6 +138,9 @@ function init(chatData) {
 
         },
         methods: {
+            test: function() {
+                console.log("data");
+            },
             loginSejong: function () {
                 var id = document.getElementsByName('loginId');
                 var pw = document.getElementsByName('loginPw');
@@ -175,7 +182,29 @@ function init(chatData) {
                     method: 'post',
                     url: '/chat/out',
                 }).then(function (response) {
-                        console.log(response.data);
+                        vue.check_chat_lists = response.data;
+                        for(item in vue.check_chat_lists){
+                            vue.check_chat_lists[item].msg = JSON.parse(vue.check_chat_lists[item].msg);
+                            var previously = 0;
+                            var current = 0;
+                            for(msg in vue.check_chat_lists[item].msg){
+                                if(msg.stamp == vue.loginData.user.id){
+                                    continue;
+                                }
+                                else{
+                                    current ++;
+                                }
+                            }
+                            for(msg in vue.chat_lists[item].msg){
+                                if(msg.stamp == vue.loginData.user.id){
+                                    continue;
+                                }
+                                else{
+                                    previously ++;
+                                }
+                            }
+                            vue.chat_lists[item].notread = current - previously;
+                        }
                 }).catch(function (error) {
                         console.log(error);
                 });
@@ -262,7 +291,13 @@ function init(chatData) {
             function() {
                 this.my_name = this.loginData.user.name
             }
-        ]
+        ],
+        beforeDestroy() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = undefined;
+            }
+        }
     });
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);

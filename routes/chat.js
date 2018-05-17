@@ -143,7 +143,7 @@ router.post('/out', function (req, res) {
         json = json.split('"{').join('{');
         json = json.split('}"').join('}');
         if(req.session){
-            res.send(json);
+            res.send(result_arr);
         }else{
             res.send("none");
         }
