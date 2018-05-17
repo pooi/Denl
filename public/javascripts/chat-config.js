@@ -52,35 +52,14 @@ function init(chatData) {
             message: "",
             sender: "", //check 나중에 로그인 정보 이름으로 수정
             roomnum: "",
-            // chat_lists: [
-            //     {
-            //         name : "유태우",
-            //         msg : [
-            //             { sentence: "연락드립니다", stamp: "유태우"},
-            //             { sentence: "연락드", stamp: "정하민"},
-            //             { sentence: "연락드립니", stamp: "유태우"}
-            //         ],
-            //         avatar : "/images/person.png"
-            //     },
-            //     {
-            //         name: "유현수",
-            //         msg: [
-            //             { sentence: "연락드립니다", stamp: "유현수"},
-            //             { sentence: "연락드", stamp: "정하민"},
-            //             { sentence: "연락드립니", stamp: "유현수"}
-            //         ],
-            //         avatar : "/images/person.png"
-            //     }
-            // ],
             chat_lists : null,
             /*대화 창에서 상대방 메시지 데이터*/
             chat_clicked : null,
-            my_name : ""
+            my_name : "",
+            menu: false,
+            chat_list: true
         },
         created() {
-            // chat.on("disconnect", function (data) {
-            //     alert(data.name);
-            // });
             chat.on("chat message", function (data) {
                 console.log(data);
                 var obj = {};
@@ -155,7 +134,6 @@ function init(chatData) {
 
         },
         methods: {
-            //현수 파트
             loginSejong: function () {
                 var id = document.getElementsByName('loginId');
                 var pw = document.getElementsByName('loginPw');
@@ -164,6 +142,7 @@ function init(chatData) {
             ChatSelect: function (item) {
                 this.chat_clicked = item.roomport;
                 this.roomnum = item.roomport;
+                this.chat_list = false;
                 if(this.sender == item.name2){
                     this.name = item.name1;
                 }
@@ -190,6 +169,16 @@ function init(chatData) {
                     });
                     this.message = "";
                 }
+            },
+            get_chat: function() {
+                axios({
+                    method: 'post',
+                    url: '/chat/out',
+                }).then(function (response) {
+                        console.log(response.data);
+                }).catch(function (error) {
+                        console.log(error);
+                });
             },
             // disconnect: function () {
             //     chat.emit("disconnect", {

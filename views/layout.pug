@@ -48,7 +48,9 @@ html(lang='en')
         // 사용할 앱의 JavaScript 키를 설정해 주세요.
         Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
         //]]>
-
+    script(src='socket.io/socket.io.js')
+    script.
+        var chat = io('http://localhost:30000/chat');
 
   body
     #app
