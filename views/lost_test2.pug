@@ -76,7 +76,7 @@ block content
                                                             .subheading.ml-2.mt-1(v-show='isRecognitionProgress') 이미지 인식 중입니다. 잠시만 기다려주세요.
 
                                                         v-flex.px-4.pb-2(xs12, v-if='!isRecognitionProgress', justify-center, align-center)
-                                                            v-breadcrumbs.pa-0.pr-2(v-if="categoryManager.category != null", justify-center)
+                                                            v-breadcrumbs.pa-0.pr-2.dal-breadcrumbs(v-if="categoryManager.category != null", justify-center)
                                                                 v-icon(slot='divider') chevron_right
                                                                 v-breadcrumbs-item(v-for='item in categoryManager.getCategoryBreadcrumbs()', :key='item')
                                                                     | {{ item }}

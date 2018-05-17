@@ -32,7 +32,7 @@ block content
                                                     v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : ''") 카테고리:
                                                 v-flex.pt-0(sm10, xs12)
                                                     v-flex(xs12, d-inline-flex)
-                                                        v-breadcrumbs.pa-0.pr-2(v-if="categoryManager.category != null")
+                                                        v-breadcrumbs.pa-0.pr-2.dal-breadcrumbs(v-if="categoryManager.category != null")
                                                             v-icon(slot='divider') chevron_right
                                                             v-breadcrumbs-item(v-for='item in categoryManager.getCategoryBreadcrumbs()', :key='item')
                                                                 | {{ item }}
