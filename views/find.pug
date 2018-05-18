@@ -149,7 +149,14 @@ block content
 
                             v-flex.text-xs-center.pb-1.pt-5(xs12='', justify-center='', align-center='')
                                 p.headline.deep-orange--text(style="font-weight: 500;") 유실물 목록
-                                v-switch.dal-checkbox.ml-2(label="완료된 항목 보기", v-model="isShowComplete", color="orange darken-3")
+                                v-layout(xs12)
+                                    v-flex(xs8)
+                                        v-switch.dal-checkbox.ml-2(label="완료된 항목 보기", v-model="isShowComplete", color="orange darken-3", style="height: fit-content; top: 20%;")
+                                    v-layout(xs4)
+                                        v-spacer
+                                        v-btn(flat, small, color="grey", @click="tempSort=sort; sortDialog = true;")
+                                            v-icon filter_list
+                                            | 정렬
 
                             //v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
                             //    .headline.pa-0.mt4 유실물 목록
@@ -215,6 +222,20 @@ block content
                 v-card-actions
                     v-spacer
                     v-btn(color='error', flat='flat', @click.native="categoryManager.categoryDialog = false; search(true)") Ok
+
+
+        v-dialog(v-model='sortDialog', max-width='500px')
+            v-card
+                v-card-title.headline 정렬 기준
+                v-card-text.py-0
+                    v-radio-group(v-model="tempSort")
+                        v-radio(label="추천", value="recommendation", color="orange darken-3")
+                        v-radio(label="최신", value="recent", color="orange darken-3")
+                v-card-actions
+                    v-spacer
+                    v-btn(color='error', flat='flat', @click.native="sortDialog = false; sort=tempSort;", v-if="sort !== tempSort") 변경
+                    v-btn(color='info', flat='flat', @click.native="sortDialog = false;", v-else) 닫기
+
 
         include footer
 

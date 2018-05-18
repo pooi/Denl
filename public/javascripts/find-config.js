@@ -35,6 +35,9 @@ function init(init_category) {
                 isLoadFinish: false
             },
             isShowComplete: false,
+            sortDialog: false,
+            sort: "recommendation",
+            tempSort: "recommendation",
 
             // Filter
             dcv_filter_item:{
