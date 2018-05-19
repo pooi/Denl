@@ -264,12 +264,24 @@ router.post('/search', function (req, res) {
         }
     }
 
+    if(data.hasOwnProperty('sort')){
+        var sort = req.body.sort;
+        if(sort === "recommendation"){
+            sql +=  " ORDER BY id DESC "
+        }else{
+            sql +=  " ORDER BY rcv_date DESC "
+        }
+    }
+
     if(isRequireLimit){
         var limit = " LIMIT " + (page * numOfItem) + ", " + numOfItem;
-        sql +=  " ORDER BY id DESC " + limit + ";";
+        sql +=  limit + ";";
     }else{
-        sql +=  " ORDER BY id DESC;";
+        sql += ";";
     }
+    // else{
+    //     sql +=  " ORDER BY id DESC;";
+    // }
 
     console.log(sql);
 

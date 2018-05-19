@@ -191,7 +191,8 @@ function init(init_category) {
                     rgt_filter_item: this.rgt_filter_item,
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
-                    tags: this.searchTags
+                    tags: this.searchTags,
+                    sort: this.sort
                 };
                 console.log(data);
 
@@ -228,7 +229,8 @@ function init(init_category) {
                     rgt_filter_item: this.rgt_filter_item,
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
-                    tags: this.searchTags
+                    tags: this.searchTags,
+                    sort: this.sort
                 };
 
                 axios.post(

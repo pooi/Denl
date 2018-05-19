@@ -44,7 +44,7 @@ block content
                                     v-divider
 
                                 v-flex.px-4.pb-3(xs12)
-                                    v-btn(block, color="deep-orange darken-3", dark, v-if="supporter.isAdmin() && itemData.status === 'WFA' ", @click="acceptItem()") 수거완료
+                                    v-btn(block, color="deep-orange darken-3", dark, v-if="supporter.isAdmin() && itemData.status === 'WFA' ", @click="supporter.acceptItem(itemData)") 수거완료
 
                                 v-layout.px-3.pb-2(row, wrap)
                                     v-flex(sm2, xs12)

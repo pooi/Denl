@@ -233,7 +233,7 @@ block content
                         v-radio(label="최신", value="recent", color="orange darken-3")
                 v-card-actions
                     v-spacer
-                    v-btn(color='error', flat='flat', @click.native="sortDialog = false; sort=tempSort;", v-if="sort !== tempSort") 변경
+                    v-btn(color='error', flat='flat', @click.native="sortDialog = false; sort=tempSort; search(true);", v-if="sort !== tempSort") 변경
                     v-btn(color='info', flat='flat', @click.native="sortDialog = false;", v-else) 닫기
 
 
