@@ -22,21 +22,22 @@ app.set('port', port);
 
 var server = http.createServer(app);
 var io = require("socket.io")(server);
-var room = "";
+var roomport = "";
 
 var chat = io.of('/chat').on('connection', function(socket) {
     socket.on('chat message', function(data) {
         console.log(data);
-        var name = socket.name = data.name;
-        room = data.room;
-        var msg = data.msg;
-        var date = new Date();
-        socket.join(room);
+        var sender = socket.name = data.sender;
+        roomport = data.roomport;
+        var message = data.message;
+        socket.join(roomport);
         var sendobj = {
-            name: name,
-            msg: msg,
-            room: room,
-            time: date.getTime()
+            sender: sender,
+            receiver: data.receiver,
+            message: message,
+            roomport: roomport,
+            sendtime: Date.now(),
+            chread: data.chread
         }
         chat.to(room).emit('chat message', sendobj);
     });

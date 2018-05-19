@@ -59,37 +59,27 @@ function init(chatData) {
             menu: false,
             chat_list: true,
             interval: undefined,
-            check_chat_lists: null
+            check_chat_lists: null,
+            receiver: null
         },
         created() {
-            this.test();
-            this.interval = setInterval(this.get_chat, 5000);
             chat.on("chat message", function (data) {
                 console.log(data);
-                var obj = {};
-                obj.sentence = data.msg;
-                obj.stamp = data.name;
-                var server_obj = {};
-                var json = "";
                 for(item in vue.chat_lists){
-                    if(vue.chat_lists[item].roomport == data.room){
+                    if(vue.chat_lists[item].roomport == data.roomport){
                         if(vue.chat_lists[item].msg == null){
                             vue.chat_lists[item].msg = [];
-                            vue.chat_lists[item].msg.push(obj);
-                            json = JSON.stringify(vue.chat_lists[item].msg);
+                            vue.chat_lists[item].msg.push({sentence: data.message, stamp: data.sender, time: data.sendtime, read: data.chread});
                         }
                         else{
-                            vue.chat_lists[item].msg.push(obj);
-                            json = JSON.stringify(vue.chat_lists[item].msg);
+                            vue.chat_lists[item].msg.push({sentence: data.message, stamp: data.sender, time: data.sendtime, read: data.chread});
                         }
                     }
                 }
-                server_obj.roomport = data.room;
-                server_obj.json = json;
                 axios({
                     method: 'post',
                     url: '/chat/send',
-                    data: server_obj
+                    data: data
                 }).then(function (response){
                     var result_data = response.data;
                     console.log(result_data);
@@ -150,6 +140,7 @@ function init(chatData) {
                 this.chat_clicked = item.roomport;
                 this.roomnum = item.roomport;
                 this.chat_list = false;
+                this.receiver = item.id2;
                 if(this.sender == item.name2){
                     this.name = item.name1;
                 }
@@ -170,9 +161,11 @@ function init(chatData) {
                 }
                 else {
                     chat.emit("chat message", {
-                        name: this.sender,
-                        room: this.roomnum,
-                        msg: this.message
+                        sender: this.sender,
+                        receiver: this.receiver,
+                        roomport: this.roomnum,
+                        message: this.message,
+                        chread: 1
                     });
                     this.message = "";
                 }
@@ -269,7 +262,6 @@ function init(chatData) {
         },
         mounted: [
             function () {
-                console.log(JSON.parse(chatData));
                 this.chat_lists = JSON.parse(chatData);
             },
             function () {

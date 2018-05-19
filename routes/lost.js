@@ -1,7 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var exec = require('child_process').exec;
-var KakaoAK = require('../config/kakao.js').KakaoAK();
+// var KakaoAK = require('../config/kakao.js').KakaoAK();
 var support = require('./support-func');
 var multer = require('multer');
 var _storage = multer.diskStorage({
