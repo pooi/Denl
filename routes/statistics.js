@@ -1,36 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var conn = require('../config/db')();
-
-var oneDayMs = 86400000;
-function getTodayMs(){
-    var d = new Date();
-    return d.getTime();
-}
-function dateToMs(date){
-    var temp = date.split('-');
-    var year = parseInt(temp[0]);
-    var month = parseInt(temp[1]);
-    var day = parseInt(temp[2]);
-    var k = Date.parse(date);
-    return k;
-}
-function getTodayMsWithoutTime(){
-    var date = new Date();
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1; //January is 0!
-
-    var yyyy = date.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-    var dateString = yyyy + "- " + mm + "- " + dd;
-    return dateToMs(dateString);
-}
-
+var support = require('./support-func');
 
 
 /* GET home page. */
@@ -94,7 +65,7 @@ router.post('/dailySubcategory', function (req, res) {
             period = data.period;
         }
 
-        var startDate = getTodayMsWithoutTime() - oneDayMs * period; // 일주일 전
+        var startDate = support.getTodayMsWithoutTime() - support.oneDayMs * period; // 일주일 전
         if(data.hasOwnProperty('start')){
             startDate = data.start;
         }
@@ -156,11 +127,11 @@ router.post('/dailyCategory', function (req, res) {
     if(req.body){
 
         var column = 'category';
-        var sql = "SELECT B.category_name_ko as label, count(*) as data " +
+        var sql = "SELECT B.ko as label, count(*) as data " +
             "FROM lost as A " +
             "LEFT OUTER JOIN (" +
-            "SELECT DISTINCT category_name, category_name_ko, category_name_en FROM category " +
-            ") as B on (A.category = B.category_name)";
+            "SELECT * FROM master_category " +
+            ") as B on (A.category = B.name)";
         var conditions = [];
         var params = [];
 
@@ -171,7 +142,7 @@ router.post('/dailyCategory', function (req, res) {
             period = data.period;
         }
 
-        var startDate = getTodayMsWithoutTime() - oneDayMs * period; // 일주일 전
+        var startDate = support.getTodayMsWithoutTime() - support.oneDayMs * period; // 일주일 전
         if(data.hasOwnProperty('start')){
             startDate = data.start;
         }

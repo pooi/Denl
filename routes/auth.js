@@ -21,6 +21,8 @@ module.exports = function (app) {
     var conn = require('../config/db')();
     var sessionData = require('../config/session')(session);
 
+    var support = require('./support-func');
+
     app.use(session(sessionData));
 
     var msgSQL = "INSERT INTO msg(user_id, title, content, date) VALUES({0}, '{1}', '{2}', '{3}');";

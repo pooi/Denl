@@ -2,6 +2,7 @@ var express = require('express');
 var async = require('async');
 var router = express.Router();
 var conn = require('../config/db')();
+var support = require('./support-func');
 var get_date = function(num){
     var d = new Date(Date.now());
     var day = d.getDate();
@@ -56,7 +57,6 @@ function manage (req, res) {
                     result_arr.push(json);
                 }
             }
-            console.log(result_arr[1]);
             res.render('manage', {
                 userData: JSON.stringify(req.session.userData),
                 WFA: result_arr[0],
@@ -200,4 +200,47 @@ router.post('/wfa_wfrq', status_change_wfa_wfrq)
 
 module.exports = router;
 
+// function manage_lost (req, res) {
+//     var sql = 'select * from lost where status="WFA";SELECT * FROM category';
+//     conn.query(sql, function (err, results) {
+//         if (err) {
+//             console.log(err);
+//         }
+//         else {
+//             var result_arr = [];
+//             for(var j=0; j<results.length; j++){
+//                 var temp_result = results[j];
+//                 if(j == results.length-1){
+//                     var category = {}
+//                     for (var i = 0; i < temp_result.length; i++) {
+//                         var result = temp_result[i];
+//                         if (!category.hasOwnProperty(result.category_name)) {
+//                             category[result.category_name] = {
+//                                 subcategory: [],
+//                                 name: result.category_name,
+//                                 ko: result.category_name_ko,
+//                                 en: result.category_name_en
+//                             }
+//                         }
+//                         category[result.category_name].subcategory.push({
+//                             name: result.name,
+//                             ko: result.ko,
+//                             en: result.en
+//                         })
+//                     }
+//                     result_arr.push(JSON.stringify(category));
+//                 }
+//                 else{
+//                     var json = JSON.stringify(temp_result);
+//                     json = json.split('"[').join('[');
+//                     json = json.split(']"').join(']');
+//                     json = json.split('"{').join('{');
+//                     json = json.split('}"').join('}');
+//                     result_arr.push(json);
+//                 }
+//             }
+//             res.send(result_arr);
+//         }
+//     })
+// }
 

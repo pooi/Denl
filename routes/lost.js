@@ -1,14 +1,15 @@
 var express = require('express');
 var fs = require('fs');
 var exec = require('child_process').exec;
-//var KakaoAK = require('../config/kakao.js').KakaoAK();
+var KakaoAK = require('../config/kakao.js').KakaoAK();
+var support = require('./support-func');
 var multer = require('multer');
 var _storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, 'uploads_temp/')
     },
     filename: function(req, file, cb) {
-        cb(null, Date.now() + makeRandomString(10) + getExt(file));
+        cb(null, Date.now() + support.makeRandomString(10) + getExt(file));
         // console.log(file);
     }
 });
@@ -66,9 +67,6 @@ router.post('/', upload.single('file'), function(req, res) {
     if("data_only" in data){
         justData = true;
     }
-    // if(data){
-    //     justData = true;
-    // }
 
 
     var d = requtil.createRequests().addRequest(
@@ -148,51 +146,22 @@ router.post('/', upload.single('file'), function(req, res) {
                 }
             }
 
-            var sql = 'SELECT * FROM category; SELECT * FROM building;';
+            var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+                'FROM category as A ' +
+                'LEFT OUTER JOIN ( ' +
+                'SELECT * FROM master_category ' +
+                ') as B on (A.master_category_id = B.id); ';
+            sql += 'SELECT * FROM building;';
+
             conn.query(sql, [], function (err, results) {
                 if (err) {
                     console.log(err);
                     res.status(500).send("Internal Server Error");
                 }
-                var db_buildings = results[1];
-                var front_buildings = {};
-                for(db_building in db_buildings){
-                    var real_lat = db_buildings[db_building].lat;
-                    var temp_lat = real_lat.substring(1,real_lat.length-1);
-                    var real_lng = db_buildings[db_building].lng;
-                    var temp_lng = real_lng.substring(1,real_lng.length-1);
-                    var arr_lat = temp_lat.split(",");
-                    var arr_lng = temp_lng.split(",");
-                    // console.log("lat",arr_lat);
-                    // console.log("lng",arr_lng);
-                    var up_arr = [];
-                    for(var m = 0; m < arr_lat.length; m++){
-                        var temp_arr = [];
-                        temp_arr.push(arr_lng[m]);
-                        temp_arr.push(arr_lat[m]);
-                        var temp_obj = { "point" : temp_arr };
-                        up_arr.push(temp_obj);
-                    }
-                    front_buildings[db_buildings[db_building].ko] = up_arr;
-                }
-                // console.log(front_buildings);
-                var category = {}
-                for (var i = 0; i < results[0].length; i++) {
-                    var result = results[0][i];
-                    if(! category.hasOwnProperty(result.category_name)){
-                        category[result.category_name] = {
-                            subcategory: [],
-                            name: result.category_name,
-                            ko: result.category_name_ko,
-                            en: result.category_name_en
-                        }
-                    }
-                    category[result.category_name].subcategory.push({
-                        name: result.name,
-                        ko: result.ko,
-                        en: result.en
-                    })
-                }
+
+                var front_buildings = support.parseBuildingResult(results[1]);
+                var category = support.parseCategoryResult(results[0]);
+
 
                 if(justData){
                     res.send({
@@ -341,89 +310,77 @@ router.post('/recognition', function(req, res) {
     });
 });
 
-router.get('/test', function(req, res) {
-    var filename = testImage;
-    var json = testJson;
-
-    var obj = JSON.parse(json);
-    var obj_response = obj.responses[0];
-    var labelAnnotations = obj_response.labelAnnotations;
-    var textAnnotations = obj_response.textAnnotations;
-    var logoAnnotations = obj_response.logoAnnotations;
-    var dominantColors = obj_response.imagePropertiesAnnotation.dominantColors.colors;
-
-    var labels = [];
-    var texts = [];
-    var logos = [];
-    var colors = [];
-
-    if (labelAnnotations != null) {
-        for (var i = 0; i < labelAnnotations.length; i++) {
-            labels[i] = labelAnnotations[i].description;
-        }
-    }
-
-    if (textAnnotations != null) {
-        var index = 0;
-        for (var i = 1; i < textAnnotations.length; i++) {
-            var t = textAnnotations[i].description;
-            if (t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
-                continue
-            texts[index] = textAnnotations[i].description;
-            index++;
-        }
-    }
-
-    if (logoAnnotations != null) {
-        for (var i = 0; i < logoAnnotations.length; i++) {
-            logos[i] = logoAnnotations[i].description;
-        }
-    }
-
-    if (dominantColors != null) {
-        for (var i = 0; i < dominantColors.length; i++) {
-            colors[i] = dominantColors[i].color;
-        }
-    }
-
-    var sql = 'SELECT * FROM category';
-    conn.query(sql, [], function(err, results) {
-        if (err) {
-            console.log(err);
-            res.status(500).send("Internal Server Error");
-        }
-        var category = {}
-        for (var i = 0; i < results.length; i++) {
-            var result = results[i];
-            if (!category.hasOwnProperty(result.category_name)) {
-                category[result.category_name] = {
-                    subcategory: [],
-                    name: result.category_name,
-                    ko: result.category_name_ko,
-                    en: result.category_name_en
-                }
-            }
-            category[result.category_name].subcategory.push({
-                name: result.name,
-                ko: result.ko,
-                en: result.en
-            })
-        }
-        // console.log(category);
-        res.render('lost_test', {
-            userData: JSON.stringify(req.session.userData),
-            image: filename,
-            labels: labels,
-            texts: texts,
-            logos: logos,
-            colors: JSON.stringify(colors),
-            category: JSON.stringify(category)
-        });
-    });
-
-
-
-});
+// router.get('/test', function(req, res) {
+//     var filename = testImage;
+//     var json = testJson;
+//
+//     var obj = JSON.parse(json);
+//     var obj_response = obj.responses[0];
+//     var labelAnnotations = obj_response.labelAnnotations;
+//     var textAnnotations = obj_response.textAnnotations;
+//     var logoAnnotations = obj_response.logoAnnotations;
+//     var dominantColors = obj_response.imagePropertiesAnnotation.dominantColors.colors;
+//
+//     var labels = [];
+//     var texts = [];
+//     var logos = [];
+//     var colors = [];
+//
+//     if (labelAnnotations != null) {
+//         for (var i = 0; i < labelAnnotations.length; i++) {
+//             labels[i] = labelAnnotations[i].description;
+//         }
+//     }
+//
+//     if (textAnnotations != null) {
+//         var index = 0;
+//         for (var i = 1; i < textAnnotations.length; i++) {
+//             var t = textAnnotations[i].description;
+//             if (t === "." || t === "!" || t === "," || t === "?" || t === " " || t === "/" || t === ":" || t === "-" || t === "·" || t === '"' || t === "'")
+//                 continue
+//             texts[index] = textAnnotations[i].description;
+//             index++;
+//         }
+//     }
+//
+//     if (logoAnnotations != null) {
+//         for (var i = 0; i < logoAnnotations.length; i++) {
+//             logos[i] = logoAnnotations[i].description;
+//         }
+//     }
+//
+//     if (dominantColors != null) {
+//         for (var i = 0; i < dominantColors.length; i++) {
+//             colors[i] = dominantColors[i].color;
+//         }
+//     }
+//
+//     var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+//         'FROM category as A ' +
+//         'LEFT OUTER JOIN ( ' +
+//         'SELECT * FROM master_category ' +
+//         ') as B on (A.master_category_id = B.id); ';
+//     conn.query(sql, [], function(err, results) {
+//         if (err) {
+//             console.log(err);
+//             res.status(500).send("Internal Server Error");
+//         }
+//         var category = support.parseCategoryResult(results);
+//
+//         res.render('lost_test', {
+//             userData: JSON.stringify(req.session.userData),
+//             image: filename,
+//             labels: labels,
+//             texts: texts,
+//             logos: logos,
+//             colors: JSON.stringify(colors),
+//             category: JSON.stringify(category)
+//         });
+//     });
+//
+//
+//
+// });
 
 router.get('/test2', function (req, res){
     var filename = testImage;
@@ -476,46 +433,10 @@ router.get('/test2', function (req, res){
             console.log(err);
             res.status(500).send("Internal Server Error");
         }
-        var db_buildings = results[1];
-        var front_buildings = {};
-        for(db_building in db_buildings){
-            var real_lat = db_buildings[db_building].lat;
-            var temp_lat = real_lat.substring(1,real_lat.length-1);
-            var real_lng = db_buildings[db_building].lng;
-            var temp_lng = real_lng.substring(1,real_lng.length-1);
-            var arr_lat = temp_lat.split(",");
-            var arr_lng = temp_lng.split(",");
-            // console.log("lat",arr_lat);
-            // console.log("lng",arr_lng);
-            var up_arr = [];
-            for(var m = 0; m < arr_lat.length; m++){
-                var temp_arr = [];
-                temp_arr.push(arr_lng[m]);
-                temp_arr.push(arr_lat[m]);
-                var temp_obj = { "point" : temp_arr };
-                up_arr.push(temp_obj);
-            }
-            front_buildings[db_buildings[db_building].ko] = up_arr;
-        }
-        // console.log(front_buildings);
-        var category = {}
-        for (var i = 0; i < results[0].length; i++) {
-            var result = results[0][i];
-            if(! category.hasOwnProperty(result.category_name)){
-                category[result.category_name] = {
-                    subcategory: [],
-                    name: result.category_name,
-                    ko: result.category_name_ko,
-                    en: result.category_name_en
-                }
-            }
-            category[result.category_name].subcategory.push({
-                name: result.name,
-                ko: result.ko,
-                en: result.en
-            })
-        }
-        // console.log(category);
+
+        var front_buildings = support.parseBuildingResult(results[1]);
+        var category = support.parseCategoryResult(results[0]);
+
         res.render('lost_test2', {
             userData: JSON.stringify(req.session.userData),
             image: filename,

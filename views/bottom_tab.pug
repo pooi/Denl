@@ -39,7 +39,7 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
                     .caption(v-else) 카테고리
                     v-progress-circular.mt-2(indeterminate, color="orange darken-3", width='2', v-if='oneClick.data.isRecognitionProgress')
                 v-layout.mt-2(wrap, justify-center)
-                    v-breadcrumbs.pa-0(v-if="oneClick.data.category != null", justify-center)
+                    v-breadcrumbs.pa-0.dal-breadcrumbs(v-if="oneClick.data.category != null", justify-center)
                         v-icon(slot='divider') chevron_right
                         v-breadcrumbs-item(v-for='item in oneClick.getCategoryBreadcrumbs()', :key='item')
                             | {{ item }}

@@ -34,7 +34,7 @@ block content
 
                         else
 
-                            v-card.pt-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+                            v-card.pt-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'", :dark="itemData.status === 'COM'")
 
 
                                 code.mb-2.mx-3(v-if="supporter.convertStatus(itemData.status).length > 0") {{supporter.convertStatus(itemData.status)}}
@@ -44,7 +44,7 @@ block content
                                     v-divider
 
                                 v-flex.px-4.pb-3(xs12)
-                                    v-btn(block, color="deep-orange darken-3", dark, v-if="supporter.isAdmin() && itemData.status === 'WFA' ", @click="acceptItem()") 수거완료
+                                    v-btn(block, color="deep-orange darken-3", dark, v-if="supporter.isAdmin() && itemData.status === 'WFA' ", @click="supporter.acceptItem(itemData)") 수거완료
 
                                 v-layout.px-3.pb-2(row, wrap)
                                     v-flex(sm2, xs12)
@@ -64,14 +64,14 @@ block content
                                     v-flex(sm2, xs12)
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") ID:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
-                                        v-subheader.pa-0.black--text {{ itemData.id }}
+                                        v-subheader.pa-0(:class="itemData.status === 'COM' ? '' : 'black--text' ") {{ itemData.id }}
 
 
                                     v-flex(sm2, xs12)
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 카테고리:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         v-subheader.pa-0
-                                            v-breadcrumbs.pa-0.pr-2
+                                            v-breadcrumbs.pa-0.pr-2.dal-breadcrumbs
                                                 v-icon(slot='divider') chevron_right
                                                 v-breadcrumbs-item(v-for='item in categoryManager.getCategoryBreadcrumbs2(itemData)', :key='item')
                                                     | {{ item }}
@@ -115,7 +115,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 상세설명:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         div(v-if="itemData.description.length > 0")
-                                            .pa-0.black--text.mt-2.pt-1 {{ itemData.description }}
+                                            .pa-0.mt-2.pt-1(:class="itemData.status === 'COM' ? '' : 'black--text' ") {{ itemData.description }}
                                         v-subheader.pa-0(v-else)
                                             .caption.grey--text 입력된 정보가 없습니다.
 
@@ -131,7 +131,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 습득장소:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         v-subheader.pa-0
-                                            v-breadcrumbs.pa-0.pr-2
+                                            v-breadcrumbs.pa-0.pr-2.dal-breadcrumbs
                                                 v-icon(slot='divider') chevron_right
                                                 v-breadcrumbs-item(v-for='item in [itemData.building, itemData.room]', :key='item')
                                                     | {{ item }}
@@ -142,7 +142,7 @@ block content
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         //v-date-picker.elevation-2.mb-3.mt-2.hidden-xs-only(:value='vueMsToDate(itemData.dcv_date)', :landscape='true', color="brown darken-1", name='date', readonly, show-current="false")
                                         //.body-1(:class="$vuetify.breakpoint.xsOnly ? '' : 'mt-3' ") {{ vueMsToDateKo(itemData.dcv_date) }}
-                                        v-subheader.pa-0.black--text {{ supporter.msToDateKo(itemData.dcv_date) }}
+                                        v-subheader.pa-0(:class="itemData.status === 'COM' ? '' : 'black--text' ") {{ supporter.msToDateKo(itemData.dcv_date) }}
 
 
 
@@ -160,7 +160,7 @@ block content
                                                         img.pa-3(src="/images/profile.png", width="100%")
                                                     v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                                         div(style="margin:auto;")
-                                                            .title.pa-0.black--text {{ supporter.msToDateKo(itemData.rgt_date) }}
+                                                            .title.pa-0(:class="itemData.status === 'COM' ? '' : 'black--text' ") {{ supporter.msToDateKo(itemData.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
                                                 v-layout
@@ -178,7 +178,7 @@ block content
                                                         img.pa-3(src="/images/profile.png", width="100%")
                                                     v-flex.pl-0.pr-2.pt-2.pb-2(xs7, align-content-center, d-inline-flex)
                                                         div(style="margin:auto;")
-                                                            .title.pa-0.black--text {{ supporter.msToDateKo(req.rgt_date) }}
+                                                            .title.pa-0(:class="itemData.status === 'COM' ? '' : 'black--text' ") {{ supporter.msToDateKo(req.rgt_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ req.user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ req.user.studentID }}
                                                 v-layout
@@ -203,7 +203,7 @@ block content
                                                         div(style="margin:auto;")
                                                             code.mb-2.elevation-0(v-if="itemData.status === 'WFR'") 수령대기
                                                             code.mb-2.elevation-0(v-else-if="itemData.status === 'COM'") 수령완료
-                                                            .title.pa-0.black--text {{ supporter.msToDateKo(itemData.rcv_date) }}
+                                                            .title.pa-0(:class="itemData.status === 'COM' ? '' : 'black--text' ") {{ supporter.msToDateKo(itemData.rcv_date) }}
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rcv_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rcv_user.studentID }}
                                                 v-layout(v-if="supporter.isAdmin() && itemData.status === 'WFR'")
