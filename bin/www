@@ -31,15 +31,16 @@ var chat = io.of('/chat').on('connection', function(socket) {
         roomport = data.roomport;
         var message = data.message;
         socket.join(roomport);
-        var sendobj = {
+        var user_count = Object.keys(chat.adapter.rooms[roomport].sockets).length;
+        var send_obj = {
             sender: sender,
             receiver: data.receiver,
             message: message,
             roomport: roomport,
             sendtime: Date.now(),
-            chread: data.chread
+            chread: (user_count % 2 == 0) ? 0:1
         }
-        chat.to(room).emit('chat message', sendobj);
+        chat.to(roomport).emit('chat message', send_obj);
     });
 
     // socket.on('disconnect', function(data) {

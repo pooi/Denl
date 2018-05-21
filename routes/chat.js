@@ -22,10 +22,10 @@ router.get('/', function (req, res) {
                 //결과 객체에 프로퍼티가 있는 경우
                 if(result_obj.hasOwnProperty(results[j].roomport)){
                     result_obj[results[j].roomport].msg.push({
-                        sentence: results[j].message,
-                        stamp: results[j].sender,
-                        time: results[j].sendtime,
-                        read: results[j].chread
+                        message: results[j].message,
+                        sender: results[j].sender,
+                        sendtime: results[j].sendtime,
+                        chread: results[j].chread
                     });
                 }
                 // 없는 경우 처음생성!!
@@ -51,10 +51,10 @@ router.get('/', function (req, res) {
                         id2: id2,
                         msg: [
                             {
-                                sentence: results[j].message,
-                                stamp: results[j].sender,
-                                time: results[j].sendtime,
-                                read: results[j].chread
+                                message: results[j].message,
+                                sender: results[j].sender,
+                                sendtime: results[j].sendtime,
+                                chread: results[j].chread
                             }
                         ],
                         name1: name1,
@@ -66,6 +66,15 @@ router.get('/', function (req, res) {
         }
         let result_arr = [];
         for(item in result_obj){
+            let count = 0;
+            for(msg in result_obj[item].msg){
+                if(result_obj[item].msg[msg].sender != login_user && result_obj[item].msg[msg].chread == 1){
+                    count++;
+                }else{
+                    continue;
+                }
+            }
+            result_obj[item].unreadcount = count;
             result_arr.push(result_obj[item]);
         }
         let json = JSON.stringify(result_arr);
@@ -93,7 +102,6 @@ router.post('/send', function (req, res) {
        }
        else{
            console.log(result);
-
            res.send("success");
        }
    })
@@ -101,17 +109,27 @@ router.post('/send', function (req, res) {
 
 router.post('/update', function (req, res) {
     console.log(req.body);
-    var sql = "select message from chat where roomport = " + "'" + req.body.roomport + "'" + ";";
+    var sql = "update chat set chread = 0 where roomport = " + "'" + req.body.roomport + "'" + "AND receiver = " + "'" + req.body.sender + "'" +"; "
+        +"select message, sender, sendtime, chread from chat where roomport = " + "'" + req.body.roomport + "'" + ";"
     conn.query(sql, function(err, results){
         if(err){
             console.log(err);
         }else{
-            console.log(results[0].message);
-            var send_obj = {};
-            send_obj.roomport = req.body.roomport;
-            send_obj.message = results[0].message;
-            console.log(typeof(results[0].message));
-            res.send(send_obj);
+            let count = 0;
+            for(item in results[1]){
+                if(results[1][item].chread == 1){
+                    count++;
+                }else{
+                    continue;
+                }
+            }
+            let server_obj = {
+                update_sign: results[0],
+                roomport: req.body.roomport,
+                msg: results[1],
+                unreadcount: count
+            }
+            res.send(server_obj);
         }
     })
 });
@@ -119,7 +137,7 @@ router.post('/update', function (req, res) {
 router.post('/make', function (req, res) {
     console.log(req.body);
     var sql = "select message from chat where roomport = " + req.body.makeroomport + ";";
-    var sentence = "(" + req.body.user1 + ", " + req.body.user2 + ", " + req.body.makeroomport + ");"
+    var sentence = "(" + req.body.user2 + ", " + req.body.user1 + ", " + req.body.makeroomport + ", " + Date.now() + ", "+ 1 + ");"
     conn.query(sql, function(err, results){
         if(err){
             console.log(err);
@@ -128,7 +146,7 @@ router.post('/make', function (req, res) {
                 var fail = "exist";
                 res.send(fail);
             }else{
-                var sql2 = "insert into chat (user1, user2, roomport) values " + sentence;
+                var sql2 = "insert into chat (sender, receiver, roomport, sendtime, chread) values " + sentence;
                 conn.query(sql2, function(err, results){
                     if(err){
                         console.log(err);
@@ -144,38 +162,81 @@ router.post('/make', function (req, res) {
     })
 });
 
-router.post('/out', function (req, res) {
-    console.log(req.body);
+router.post('/period', function (req, res) {
+    console.log("check", req);
     var login_user = req.session.userData.id;
-    var sql = "SELECT c.name as name1, c.user1, d.name as name2, c.user2, c.roomport, c.message"
-        +" FROM (SELECT a.name, b.user1, b.user2, b.roomport, b.message"
-        +" FROM user a, chat b"
-        +" WHERE a.id = b.user1 AND (b.user1 = "+ login_user + " OR b.user2 = "+ login_user + ")) c, user d"
-        +" WHERE d.id = c.user2;"
-    conn.query(sql, function(err, results){
-        if(err){
+    var sql = "SELECT c.name as sendername, c.sender, d.name as receivername, c.receiver, c.roomport, c.message, c.sendtime, c.chread"
+        +" FROM (SELECT a.name, b.sender, b.receiver, b.roomport, b.message, b.sendtime, b.chread"
+        +" FROM dal.user a, dal.chat b"
+        +" WHERE a.id = b.sender AND (b.sender = " + login_user + " OR b.receiver = " + login_user+ ")) c, dal.user d"
+        +" WHERE d.id = c.receiver;"
+    let result_obj = {};
+    conn.query(sql, function(err, results) {
+        if(err) {
             console.log(err);
-        }else{
-            var result_arr = [];
+        }
+        else {
             for(var j=0; j<results.length; j++) {
-                var temp_obj = {};
-                if(login_user == results[j].user1){ //check 로그인한 유저 무조건 1번으로 만들기
-                    temp_obj.name1 = results[j].name1;
-                    temp_obj.id1 = results[j].user1;
-                    temp_obj.name2 = results[j].name2;
-                    temp_obj.id2 = results[j].user2;
-                }else{
-                    temp_obj.name1 = results[j].name2;
-                    temp_obj.id1 = results[j].user2;
-                    temp_obj.name2 = results[j].name1;
-                    temp_obj.id2 = results[j].user1;
+                console.log(results[j]);
+                //결과 객체에 프로퍼티가 있는 경우
+                if(result_obj.hasOwnProperty(results[j].roomport)){
+                    result_obj[results[j].roomport].msg.push({
+                        message: results[j].message,
+                        sender: results[j].sender,
+                        sendtime: results[j].sendtime,
+                        chread: results[j].chread
+                    });
                 }
-                temp_obj.roomport = results[j].roomport;
-                temp_obj.msg = results[j].message;
-                result_arr.push(temp_obj);
+                // 없는 경우 처음생성!!
+                else{
+                    let id1 = null;
+                    let id2 = null;
+                    let name1 = null;
+                    let name2 = null;
+                    if(results[j].sender == login_user){
+                        id1 = results[j].sender;
+                        id2 = results[j].receiver;
+                        name1 = results[j].sendername;
+                        name2 = results[j].receivername;
+                    }
+                    else{
+                        id1 = results[j].receiver;
+                        id2 = results[j].sender;
+                        name1 = results[j].receivername;
+                        name2 = results[j].sendername;
+                    }
+                    result_obj[results[j].roomport] = {
+                        id1: id1,
+                        id2: id2,
+                        msg: [
+                            {
+                                message: results[j].message,
+                                sender: results[j].sender,
+                                sendtime: results[j].sendtime,
+                                chread: results[j].chread
+                            }
+                        ],
+                        name1: name1,
+                        name2: name2,
+                        roomport: results[j].roomport
+                    }
+                }
             }
         }
-        var json = JSON.stringify(result_arr);
+        let result_arr = [];
+        for(item in result_obj){
+            let count = 0;
+            for(msg in result_obj[item].msg){
+                if(result_obj[item].msg[msg].sender != login_user && result_obj[item].msg[msg].chread == 1){
+                    count++;
+                }else{
+                    continue;
+                }
+            }
+            result_obj[item].unreadcount = count;
+            result_arr.push(result_obj[item]);
+        }
+        let json = JSON.stringify(result_arr);
         json = json.split('"[').join('[');
         json = json.split(']"').join(']');
         json = json.split('"{').join('{');
@@ -185,7 +246,7 @@ router.post('/out', function (req, res) {
         }else{
             res.send("none");
         }
-    })
+    });
 });
 
 module.exports = router;

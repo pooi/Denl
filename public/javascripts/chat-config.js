@@ -60,55 +60,69 @@ function init(chatData) {
             chat_list: true,
             interval: undefined,
             check_chat_lists: null,
-            receiver: null
+            receiver: null,
         },
         created() {
+            this.interval = setInterval(this.get_chat, 3000);
             chat.on("chat message", function (data) {
                 console.log(data);
                 for(item in vue.chat_lists){
                     if(vue.chat_lists[item].roomport == data.roomport){
                         if(vue.chat_lists[item].msg == null){
                             vue.chat_lists[item].msg = [];
-                            vue.chat_lists[item].msg.push({sentence: data.message, stamp: data.sender, time: data.sendtime, read: data.chread});
+                            vue.chat_lists[item].msg.push({message: data.message, sender: data.sender, sendtime: data.sendtime, chread: data.chread});
                         }
                         else{
-                            vue.chat_lists[item].msg.push({sentence: data.message, stamp: data.sender, time: data.sendtime, read: data.chread});
+                            vue.chat_lists[item].msg.push({message: data.message, sender: data.sender, sendtime: data.sendtime, chread: data.chread});
                         }
                     }
                 }
-                axios({
-                    method: 'post',
-                    url: '/chat/send',
-                    data: data
-                }).then(function (response){
-                    var result_data = response.data;
-                    console.log(result_data);
-                }).catch(function (err){
-                    if(err.response){
-                        console.log(err.response);
-                    }
-                    else if(err.request){
-                        console.log(err.request);
-                    }
-                    else{
-                        console.log(err.message);
-                    }
-                })
+                if(vue.loginData.user.id == data.sender){
+                    axios({
+                        method: 'post',
+                        url: '/chat/send',
+                        data: data
+                    }).then(function (response) {
+                        var result_data = response.data;
+                        console.log(result_data);
+                        if (vue.loginData.user.id == data.receiver) {
+                            console.log("check message");
+                        } else {
+                            console.log("i'm not receiver");
+                        }
+                    }).catch(function (err) {
+                        if (err.response) {
+                            console.log(err.response);
+                        }
+                        else if (err.request) {
+                            console.log(err.request);
+                        }
+                        else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+                else {
+                    console.log("receive");
+                }
             });
 
             chat.on("chat connect", function (data) {
                 console.log(data);
                 var server_obj = {};
                 server_obj.roomport = data.room;
+                server_obj.sender =  data.name;
                 axios({
                     method: 'post',
                     url: '/chat/update',
                     data: server_obj
                 }).then(function (response){
-                    var result_data = response.data;
+                    let result_data = response.data;
+                    console.log(result_data.update_sign);
                     for(var item in vue.chat_lists){
                         if(vue.chat_lists[item].roomport == result_data.roomport){
-                            vue.chat_lists[item].msg = JSON.parse(result_data.message);
+                            vue.chat_lists[item].msg = result_data.msg;
+                            vue.chat_lists[item].unreadcount = result_data.unreadcount;
                         }else{
                             continue;
                         }
@@ -173,34 +187,22 @@ function init(chatData) {
             get_chat: function() {
                 axios({
                     method: 'post',
-                    url: '/chat/out',
-                }).then(function (response) {
-                        vue.check_chat_lists = response.data;
-                        for(item in vue.check_chat_lists){
-                            vue.check_chat_lists[item].msg = JSON.parse(vue.check_chat_lists[item].msg);
-                            var previously = 0;
-                            var current = 0;
-                            for(msg in vue.check_chat_lists[item].msg){
-                                if(msg.stamp == vue.loginData.user.id){
-                                    continue;
-                                }
-                                else{
-                                    current ++;
-                                }
-                            }
-                            for(msg in vue.chat_lists[item].msg){
-                                if(msg.stamp == vue.loginData.user.id){
-                                    continue;
-                                }
-                                else{
-                                    previously ++;
-                                }
-                            }
-                            vue.chat_lists[item].notread = current - previously;
-                        }
-                }).catch(function (error) {
-                        console.log(error);
-                });
+                    url: '/chat/period'
+                }).then(function (response){
+                    let result_data = response.data;
+                    console.log("period update");
+                    vue.chat_lists = result_data;
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
             },
             // disconnect: function () {
             //     chat.emit("disconnect", {

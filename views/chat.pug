@@ -14,6 +14,7 @@ block content
                                 v-icon account_circle
                             v-list-tile-content
                                 v-list-tile-title(v-text='item.name2')
+                                v-list-tile-title(v-text='item.unreadcount')
                             v-list-tile-action(v-if='item.roomport == chat_clicked')
                                 v-icon(color='teal') chat_bubble
                 v-flex(xs9='', sm9='', style='height: 100vh; background-color: #f4f4f4;')
@@ -34,12 +35,12 @@ block content
                                         v-flex(xs12='', sm12='', pr-4='', text-xs-right='', style='height: 71vh;')
                                             v-list(subheader='', v-for='item in chat_lists', :key='item.roomport', v-if='item.roomport == chat_clicked')
                                                 v-list-tile(avatar='', v-for='msg in item.msg')
-                                                    v-list-tile-content(v-if="msg.stamp == sender")
+                                                    v-list-tile-content(v-if="msg.sender == sender")
                                                         //v-chip(color='deep-orange darken-3', text-color='white') {{ msg.sentence + " " + msg.stamp }}
                                                     v-list-tile-content(v-else)
-                                                        v-chip(text-color='black') {{ msg.sentence }}
-                                                    v-list-tile-action(v-if="msg.stamp == sender")
-                                                        v-chip(color='deep-orange darken-3', text-color='white') {{ msg.sentence }}
+                                                        v-chip(text-color='black') {{ msg.message }}
+                                                    v-list-tile-action(v-if="msg.sender == sender")
+                                                        v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
                                             v-chip(v-if="message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
                                 v-card.elevation-2(style='margin-top: 0.5px; border-top: 1px solid #e7e7e7;')
                                     v-layout(wrap='')
