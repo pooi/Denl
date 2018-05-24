@@ -77,6 +77,15 @@
     color: inherit !important;
 }
 
+.dal-big-button {
+
+}
+
+.dal-big-button .btn--floating.btn--large{
+    height: 100px;
+    width: 100px;
+}
+
 .rounded-expansion-panel{
 
 }

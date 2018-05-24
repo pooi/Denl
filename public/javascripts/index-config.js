@@ -64,7 +64,11 @@ function init(init_category) {
                     colors: null
                 }
 
-            }
+            },
+
+            infoFind: false,
+            infoLost: false,
+            infoManage: false
 
         },
         methods:{

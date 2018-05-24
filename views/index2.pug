@@ -8,85 +8,95 @@ block content
 
     div(style='background-color: white;')
         section(style="position: relative;")
-            v-layout#main_first_section(wrap, align-center, justify-space-around, style='height: 100vh; background: url(../images/picture/main3.jpg) center center / cover no-repeat;', :class=" $vuetify.breakpoint.smAndDown ? 'mobile-full-section-height' : '' ")
-                v-card.pa-0.ma-0#main_top(row, wrap, flat, style='width:100%; height: fit-content; background: transparent; visibility: invisible;')
+            v-layout#main_first_section(wrap, align-center, justify-space-around, style='height: 100vh; background: url(../images/picture/main4.jpg) center center / cover no-repeat;', :class=" $vuetify.breakpoint.smAndDown ? 'mobile-full-section-height' : '' ")
+                v-flex.pa-5.hidden-sm-and-down(md5)
+                v-flex.pa-3(md7, sm12)
+                    v-card-text.white--text(:class=" $vuetify.breakpoint.smAndDown ? 'display-1' : 'display-3' ") Discovery and Lost
+                    v-card-text.title.grey--text.lighten-1.md4 딥 러닝 유실물 통합 관리 시스템 D&L입니다.
+                    v-layout.mt-3.dal-big-button.hidden-sm-and-down(xs12)
+
+                        v-menu(min-width="300", max-width="300", v-model='infoFind', bottom, offset-y, open-on-hover, :close-on-content-click="false")
+                            v-btn(slot='activator', outline, dark, large, fab, color="white") 조회
+                            v-card
+                                v-card-title.title 조회
+                                v-divider
+                                v-card-text 유실물을 잃어버리셨나요? 지금 조회 버튼을 통해 유실물을 찾아보세요!
+
+                        v-menu(min-width="300", max-width="300", v-model='infoLost', bottom, offset-y, open-on-hover, :close-on-content-click="false")
+                            v-btn(slot='activator', outline, dark, large, fab, color="white") 등록
+                            v-card
+                                v-card-title.title 등록
+                                v-divider
+                                v-card-text 유실물을 습득하셨나요? 지금 등록 버튼을 통해 유실물을 등록해주세요!
+
+                        v-menu(min-width="300", max-width="300", v-model='infoManage', bottom, offset-y, open-on-hover, :close-on-content-click="false")
+                            v-btn(slot='activator', outline, dark, large, fab, color="white") 관리
+                            v-card
+                                v-card-title.title 관리
+                                v-divider
+                                v-card-text 유실물을 관리할 수 있는 페이지입니다.
+
+                    //v-layout.mt-3.dal-big-button.hidden-md-and-up(xs12)
+                    //    v-btn(round, outline, dark, large, color="white", width="100%")
+                    //        | 등록
+                    //        | 유실물을 습득하셨나요? 지금 등록 버튼을 통해 유실물을 등록해주세요!
+
+
+
+                //v-flex.hidden-sm-and-down(md4)
+                //    img(src='/images/logo/logo_color.svg', width="60%")
+
+
+
+                //v-card.pa-0.ma-0#main_top(row, wrap, flat, style='width:100%; height: fit-content; background: transparent; visibility: invisible;')
                     // ######## 로고 ########
-                    v-layout(column, align-center, justify-center, text-xs-center, :class=" $vuetify.breakpoint.smAndDown ? 'white--text' : '' ")
-                        img#main_top_logo(src='https://beta.denl.xyz/images/logo/logo_color.svg', width='120', style='margin-top: 75px;')
-                        h1(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'headline text-xs-center' : 'display-1 text-xs-center'", style='margin-top: 12px;') Discovery and Lost
-                        div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'body-2 mt-0 pt-0 text-xs-center' : 'subheading mt-1 mb-3 text-xs-center'")
-                            | Powered by _beat
+                    //v-layout(column, align-center, justify-center, text-xs-center, :class=" $vuetify.breakpoint.smAndDown ? 'white--text' : '' ")
+                    //    img#main_top_logo(src='https://beta.denl.xyz/images/logo/logo_color.svg', width='120', style='margin-top: 75px;')
+                    //    h1(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'headline text-xs-center' : 'display-1 text-xs-center'", style='margin-top: 12px;') Discovery and Lost
+                    //    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'body-2 mt-0 pt-0 text-xs-center' : 'subheading mt-1 mb-3 text-xs-center'")
+                    //        | Powered by _beat
                     // ######## 카드(찾기,등록,관리) ########
-                    v-layout.mt-5.pt-3.pl-0(wrap, align-center, :justify-center="!supporter.isAdmin()", :justify-space-around="supporter.isAdmin()", v-if="$vuetify.breakpoint.mdAndUp")
-                        // 찾기
-                        v-flex.dal-card-scale-white.py-4(xs12, sm3, v-on:mouseover="moreBtn = 'find'; infoFind=true;", v-on:mouseout="moreBtn = null; infoFind=false")
-                            v-card.elevation-0.transparent
-                                v-card-text.text-xs-center(onclick="window.location.href='/find'")
-                                    //a(href='#')
-                                    img(src='../images/picture/find.png', style='height: 80px; margin-top: 12px;')
-                                v-card-title(primary-title, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -8px;')
-                                    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'") 찾기
-                                v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
-                                    v-card-title.text-xs-center.pa-0
-                                        v-btn#find_btn(dark, small, flat, outline, round, v-if="moreBtn === 'find'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
-                                            span MORE
-                        // 등록
-                        v-flex.dal-card-scale-white.py-4(xs12, sm3, v-on:mouseover="moreBtn = 'lost'; infoLost=true;", v-on:mouseout="moreBtn = null; infoLost=false;")
-                            // onmouseover="document.getElementById('register_btn').style.display = 'block';" onmouseout="document.getElementById('register_btn').style.display = 'none';"
-                            v-card.elevation-0.transparent
-                                v-card-text.text-xs-center(onclick="window.location.href='/lost'")
-                                    a(href='#')
-                                        img(src='../images/picture/register.png', style='height: 80px; margin-top: 20px;')
-                                v-card-title(primary-title, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
-                                    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'") 등록
-                                v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
-                                    v-card-title.text-xs-center.pa-0
-                                        v-btn(dark, small, flat, outline, round, v-if="moreBtn === 'lost'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
-                                            span MORE
-                                        v-btn(dark, small, flat, outline, round, color="deep-orange darken-3", v-if="moreBtn === 'lost'", @click="oneClick.action()")
-                                            span 간편등록
-                        // 관리
-                        v-flex.dal-card-scale-white.py-4(xs12, sm3, v-if='supporter.isAdmin()', v-on:mouseover="moreBtn = 'manage'; infoManage=true;", v-on:mouseout="moreBtn = null; infoManage=false")
-                            v-card.elevation-0.transparent
-                                v-card-text.text-xs-center(onclick="window.location.href='/manage'")
-                                    a(href='#')
-                                        img(src='../images/picture/manage.png', style='height: 74px; margin-top: 21px;')
-                                v-card-title(primary-title, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
-                                    div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-1'") 관리
-                                v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
-                                    v-card-title.text-xs-center.pa-0
-
-            v-menu(min-width="500", max-width="500", v-model='infoFind', top, left, offset-y, open-on-hover, :close-on-content-click="false", transition="slide-x-transition")
-                //v-btn(slot='activator', outline, dark, large, fab, color="white") 조회
-                v-card
-                    v-card-title.title 조회
-                    v-divider
-                    v-card-text 유실물을 잃어버리셨나요? 지금 조회 버튼을 통해 유실물을 찾아보세요!
-
-            v-menu(min-width="500", max-width="500", v-model='infoLost', top, left, offset-y, open-on-hover, :close-on-content-click="false", transition="slide-x-transition")
-                //v-btn(slot='activator', outline, dark, large, fab, color="white") 등록
-                v-card
-                    v-card-title.title 등록
-                    v-divider
-                    v-card-text 유실물을 습득하셨나요? 지금 등록 버튼을 통해 유실물을 등록해주세요!
-
-            v-menu(min-width="500", max-width="500", v-model='infoManage', top, left, offset-y, open-on-hover, :close-on-content-click="false", transition="slide-x-transition")
-                //v-btn(slot='activator', outline, dark, large, fab, color="white") 관리
-                v-card
-                    v-card-title.title 관리
-                    v-divider
-                    v-card-text 유실물을 관리할 수 있는 페이지입니다.
+                    //v-layout.mt-5.pt-3.pl-0(wrap, align-center, :justify-center="!supporter.isAdmin()", :justify-space-around="supporter.isAdmin()", v-if="$vuetify.breakpoint.mdAndUp")
+                    //    // 찾기
+                    //    v-flex.dal-card-scale-white.py-4(xs12, sm3, v-on:mouseover="moreBtn = 'find';", v-on:mouseout="moreBtn = null;")
+                    //        v-card.elevation-0.transparent
+                    //            v-card-text.text-xs-center(onclick="window.location.href='/find'")
+                    //                //a(href='#')
+                    //                img(src='../images/picture/find.png', style='height: 80px; margin-top: 12px;')
+                    //            v-card-title(primary-title, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -8px;')
+                    //                div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center'") 찾기
+                    //            v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
+                    //                v-card-title.text-xs-center.pa-0
+                    //                    v-btn#find_btn(dark, small, flat, outline, round, v-if="moreBtn === 'find'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
+                    //                        span MORE
+                    //    // 등록
+                    //    v-flex.dal-card-scale-white.py-4(xs12, sm3, v-on:mouseover="moreBtn = 'lost';", v-on:mouseout="moreBtn = null;")
+                    //        // onmouseover="document.getElementById('register_btn').style.display = 'block';" onmouseout="document.getElementById('register_btn').style.display = 'none';"
+                    //        v-card.elevation-0.transparent
+                    //            v-card-text.text-xs-center(onclick="window.location.href='/lost'")
+                    //                a(href='#')
+                    //                    img(src='../images/picture/register.png', style='height: 80px; margin-top: 20px;')
+                    //            v-card-title(primary-title, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
+                    //                div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ?  'title text-xs-center' : 'title text-xs-center'") 등록
+                    //            v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
+                    //                v-card-title.text-xs-center.pa-0
+                    //                    v-btn(dark, small, flat, outline, round, v-if="moreBtn === 'lost'", onclick="$('html, body').animate({scrollTop: $('#introduce_register').offset().top - 50}, 800);")
+                    //                        span MORE
+                    //                    v-btn(dark, small, flat, outline, round, color="deep-orange darken-3", v-if="moreBtn === 'lost'", @click="oneClick.action()")
+                    //                        span 간편등록
+                    //    // 관리
+                    //    v-flex.dal-card-scale-white.py-4(xs12, sm3, v-if='supporter.isAdmin()', v-on:mouseover="moreBtn = 'manage';", v-on:mouseout="moreBtn = null;")
+                    //        v-card.elevation-0.transparent
+                    //            v-card-text.text-xs-center(onclick="window.location.href='/manage'")
+                    //                a(href='#')
+                    //                    img(src='../images/picture/manage.png', style='height: 74px; margin-top: 21px;')
+                    //            v-card-title(primary-title, :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'layout justify-center white--text pt-0' : 'layout justify-center white--text pt-0'", style='margin-top: -12px;')
+                    //                div(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'title text-xs-center' : 'title text-xs-center pt-1'") 관리
+                    //            v-layout(wrap, align-center, justify-center, style="min-height: 60px;")
+                    //                v-card-title.text-xs-center.pa-0
 
 
-                    // 모바일 버전에서 스크롤 다운 표시
-                    //v-layout.pt-5.mt-5(wrap, v-if="$vuetify.breakpoint.smAndDown")
-                    //    v-flex(xs12, text-xs-center)
-                    //        //v-text.caption.white--text Scroll Down
-                    //        v-btn(flat, color="white", onclick="$('html, body').animate({scrollTop: $('#recent').offset().top - 40}, 500);") Scroll Down
-                    //        br
-                    //        v-btn(flat, icon, color="white", onclick="$('html, body').animate({scrollTop: $('#recent').offset().top - 40}, 500);")
-                    //            v-icon(color='white') keyboard_arrow_down
-                    //        br
+
             v-layout.pb-5.jump(wrap, column, style="position: absolute; bottom: 0; width:100%; ", align-center, justify-center, @click="goRecent()")
                 .body-1.white--text Get More
                 v-icon(color="white") keyboard_arrow_down

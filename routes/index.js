@@ -26,6 +26,28 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.get('/index2', function(req, res, next) {
+
+    var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+        'FROM category as A ' +
+        'LEFT OUTER JOIN ( ' +
+        'SELECT * FROM master_category ' +
+        ') as B on (A.master_category_id = B.id); ';
+    conn.query(sql, [], function (err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }
+        var category = support.parseCategoryResult(results);
+
+        if(req.session)
+            res.render('index2', {userData: JSON.stringify(req.session.userData), category: JSON.stringify(category)});
+        else
+            res.render('index2', {userData: "", category: JSON.stringify(category)});
+    });
+
+});
+
 router.post('/category', function (req, res) {
     var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
         'FROM category as A ' +
