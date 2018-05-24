@@ -52,6 +52,7 @@ function init(chatData) {
             message: "",
             sender: "", //check 나중에 로그인 정보 이름으로 수정
             roomnum: "",
+            out_roomnum: "",
             chat_lists : null,
             /*대화 창에서 상대방 메시지 데이터*/
             chat_clicked : null,
@@ -111,6 +112,7 @@ function init(chatData) {
                 console.log(data);
                 var server_obj = {};
                 server_obj.roomport = data.room;
+                console.log(server_obj.roomport);
                 server_obj.sender =  data.name;
                 axios({
                     method: 'post',
@@ -122,7 +124,7 @@ function init(chatData) {
                     for(var item in vue.chat_lists){
                         if(vue.chat_lists[item].roomport == result_data.roomport){
                             vue.chat_lists[item].msg = result_data.msg;
-                            vue.chat_lists[item].unreadcount = result_data.unreadcount;
+                            // vue.chat_lists[item].unreadcount = result_data.unreadcount;
                         }else{
                             continue;
                         }
@@ -152,6 +154,7 @@ function init(chatData) {
             },
             ChatSelect: function (item) {
                 this.chat_clicked = item.roomport;
+                this.out_roomnum = this.roomnum;
                 this.roomnum = item.roomport;
                 this.chat_list = false;
                 this.receiver = item.id2;
@@ -166,7 +169,8 @@ function init(chatData) {
                 this.sender = this.loginData.user.id;
                 chat.emit("chat connect", {
                     name: this.sender,
-                    room: this.roomnum
+                    room: this.roomnum,
+                    out_room: this.out_roomnum
                 });
             },
             send: function () {
