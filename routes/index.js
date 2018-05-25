@@ -174,9 +174,27 @@ router.post('/search', function (req, res) {
         isRequireLimit = true;
     }
 
-    var sql = "SELECT * FROM lost";
+    // var sql = "SELECT * FROM lost";
+    var sql = "" +
+        "SELECT A.*, ( (( ((1/3) * (MC.hit/(MC.hit + MC.ca_sum))) + ((2/3) * (0/(MC.hit + MC.ca_sum))) + ((2/3) * (MC.ca_sum/(MC.hit + MC.ca_sum))) )) + (( ((1/3) * (C.hit/(C.hit + C.sca_sum))) + ((2/3) * (0/(C.hit + C.sca_sum))) + ((2/3) * (C.sca_sum/(C.hit + C.sca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+        "from master_category mc " +
+        "left join lost t on t.category = mc.name " +
+        "group by mc.id " +
+        ") as MC on (A.category = MC.name) " +
+        "LEFT OUTER JOIN ( " +
+        "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+        "from category c " +
+        "left join lost t on t.subcategory = c.name " +
+        "group by c.name " +
+        ") as C on (A.subcategory = C.name) ";
     var conditions = [];
     var params = [];
+
+    params.push(support.getTodayMs());
+    params.push(support.getTodayMs());
 
     if(data.hasOwnProperty('category')){
         var category = null;
@@ -289,9 +307,9 @@ router.post('/search', function (req, res) {
     if(data.hasOwnProperty('sort')){
         var sort = req.body.sort;
         if(sort === "recommendation"){
-            sql +=  " ORDER BY id DESC "
+            sql +=  " ORDER BY weight DESC "
         }else{
-            sql +=  " ORDER BY rcv_date DESC "
+            sql +=  " ORDER BY id DESC "
         }
     }
 
