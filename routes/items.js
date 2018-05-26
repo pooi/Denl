@@ -96,6 +96,12 @@ router.get('/:id', function (req, res) {
     });
 });
 
+router.post('/hit', function (req, res) {
+    if(req.body){
+        support.hitItem(req.body.id);
+    }
+});
+
 router.post('/request', function (req, res) {
     if(req.body){
         var lostID = req.body.lost_id;

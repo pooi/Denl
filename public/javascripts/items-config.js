@@ -20,6 +20,8 @@ function init(init_data, init_category) {
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            viewer: null,
+            isHit: false,
             bottomTab: "find",
             todayDate: null,
             itemData: null,
@@ -417,6 +419,23 @@ function init(init_data, init_category) {
                     .catch(function (error) {
                         alert(error);
                     });
+            },
+            viewedImage: function () {
+                if(!this.isHit) {
+                    var data = {
+                        id: this.itemData.id
+                    };
+                    axios.post(
+                        '/items/hit',
+                        data
+                    ).then(function (response) {
+                        vue.isHit = true;
+                        // console.log(response);
+                    }).catch(function (error) {
+                        // alert(error);
+                    });
+                    this.isHit = true;
+                }
             }
         },
         mounted: [
@@ -444,6 +463,9 @@ function init(init_data, init_category) {
             },
             function () {
                 this.getRequestUser();
+            },
+            function () {
+
             }
         ]
     });

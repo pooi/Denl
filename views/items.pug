@@ -51,7 +51,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 이미지:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
-                                        img.dal-image-card(:src="itemData.photos", :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
+                                        img.dal-image-card#main_image(:src="itemData.photos", :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
 
                                         //v-card.dal-card(:style='$vuetify.breakpoint.xsOnly ? "width : 100%;" : "width : 60%;"', hover, raised)
                                         //    img(src= image, width="100%")
@@ -463,6 +463,18 @@ block content
         include footer
         include bottom_tab
 
+    script.
+        $(document).ready(function () {
+            if (vue.viewer == null) {
+                vue.viewer = new Viewer(document.getElementById('main_image'), {
+                    inline: false,
+                    viewed: function() {
+                        vue.viewedImage();
+
+                    }
+                });
+            }
+        });
 
     script(type="text/javascript" src='/javascripts/items-config.js')
     script.
