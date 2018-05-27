@@ -1,4 +1,4 @@
-v-card.dal-card-scale(flat='', tile='', hover, raised, :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' ", :dark="item.status==='COM'")
+v-card.dal-card-scale(flat='', tile='', hover, raised, :class="$vuetify.breakpoint.xsOnly ? 'mb-3' : 'ma-2' ", :dark="item.status==='COM'", v-if="item !== null")
 
     v-card-media(:src="item.photos", height='300px', :class="item.status === 'COM' ? 'dal-card-media-disable' : '' ")
 

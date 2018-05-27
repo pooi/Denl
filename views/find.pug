@@ -8,10 +8,12 @@ block content
     div(:style="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly ? 'margin-top: 48px;' : 'margin-top: 48px;' ")
         v-app
             v-content.brown.lighten-5
-                v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
+                //v-container.pa-0(:fluid="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly")
+                v-container.pa-0(fluid)
 
                     v-flex(md12='')
-                        v-card.pa-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+                        //v-card.pa-3.safe-area-inset(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 mb-4 pt-4' : 'elevation-10 my-4'")
+                        v-card.pa-3.safe-area-inset.elevation-0.mb-4
 
                             v-card-title.headline.pa-0 유실물 찾기
 
@@ -154,25 +156,64 @@ block content
                                         v-switch.dal-checkbox.ml-2(label="완료된 항목 보기", v-model="isShowComplete", color="orange darken-3", style="height: fit-content; top: 20%;")
                                     v-layout(xs4)
                                         v-spacer
-                                        v-btn(flat, small, color="grey", @click="tempSort=sort; sortDialog = true;")
+                                        v-btn(:icon="$vuetify.breakpoint.xsOnly", flat, small, color="grey", @click="isViewExpanded = !isViewExpanded;")
+                                            v-icon(v-if="!isViewExpanded")
+                                                | view_module
+                                            v-icon(v-else)
+                                                | horizontal_split
+                                            div(v-if="!$vuetify.breakpoint.xsOnly && !isViewExpanded") 펼쳐보기
+                                            div(v-else-if="!$vuetify.breakpoint.xsOnly && isViewExpanded") 모아보기
+                                        v-btn(:icon="$vuetify.breakpoint.xsOnly", flat, small, color="grey", @click="tempSort=sort; sortDialog = true;")
                                             v-icon filter_list
-                                            | 정렬
+                                            div(v-if="!$vuetify.breakpoint.xsOnly") 정렬
 
                             //v-flex.mt-4(xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
                             //    .headline.pa-0.mt4 유실물 목록
                             //    v-divider.mb-1.mt-3
 
-                            vcard-title.pa-0(v-if="searchItems.length > 0")
-                                v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
-                                    v-layout(wrap)
-                                        v-flex(xs12, sm6, md6, lg4 v-for="item in searchItems", :key="item.id", v-model='searchItems', v-if="isShowComplete || item.status !== 'COM'")
-                                            include card_item
+                            v-flex(v-if="!isViewExpanded")
+                                v-card-title.pa-0(v-for="(gItem, gindex) in groupItems", :key="gindex")
+                                    v-flex.pt-3.mt-3(xs12, container, style="overflow:visible", :class="$vuetify.breakpoint.xsOnly ? '' : 'mx-3' ")
+                                        p.headline.deep-orange--text.text-xs-center(style="font-weight: 400;") {{gItem.key}}
+                                        v-layout.mb-2(xs12)
+                                            v-spacer
+                                            v-btn(:icon="$vuetify.breakpoint.xsOnly", flat, small, color="grey", @click="gItem.isViewExpanded = !gItem.isViewExpanded")
+                                                v-icon(v-if="!gItem.isViewExpanded")
+                                                    | view_module
+                                                v-icon(v-else)
+                                                    | horizontal_split
+                                                div(v-if="!$vuetify.breakpoint.xsOnly && !gItem.isViewExpanded") 펼쳐보기
+                                                div(v-else-if="!$vuetify.breakpoint.xsOnly && gItem.isViewExpanded") 모아보기
+                                        v-carousel.elevation-0.jumbotron-overlay(hide-delimiters, style="overflow:visible", dark, v-if="!gItem.isViewExpanded")
+                                            v-carousel-item.elevation-0(v-for='(array,i) in supporter.splitArray(gItem.itemData)', :key='i', style="overflow:visible")
+                                                v-layout
+                                                    //v-flex(d-inline-flex)
+                                                    v-flex(v-for="(item, index) in array", :key='index', xs12, sm6, md4, lg3, v-if="item !== null && (isShowComplete || item.status !== 'COM')")
+                                                        //| {{item}}
+                                                        include card_item
 
-                                        v-flex.text-xs-center.mt-4(xs12, v-if="!loadMoreData.isLoadFinish")
-                                            v-progress-circular.py-0.my-0(:indeterminate="true", color='deep-orange darken-3', :size="50", v-show='loadMoreData.isLoadMore')
-                                            v-btn(dark, color='deep-orange darken-3', v-if='loadMoreData.isBtnLoadMore', @click='loadMore()') Load More
 
-                            v-card-text.text-xs-center.my-4.grey--text(v-else) 검색 결과가 없습니다.
+                                        v-layout(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ", v-else)
+                                            v-layout(wrap)
+                                                //v-flex(xs12, sm6, md6, lg4 v-for="item in searchItems", :key="item.id", v-model='searchItems', v-if="isShowComplete || item.status !== 'COM'")
+                                                v-flex(xs12, sm6, md4, lg3 v-for="item in gItem.itemData", :key="item.id", v-model='searchItems', v-if="isShowComplete || item.status !== 'COM'")
+                                                    include card_item
+
+
+                            v-flex(v-else)
+                                v-card-title.pa-0(v-if="searchItems.length > 0")
+                                    //v-container(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
+                                    v-layout(v-bind='{ [`grid-list-lg`]: true }', :class="$vuetify.breakpoint.xsOnly ? 'pa-2 pt-4' : '' ")
+                                        v-layout(wrap)
+                                            //v-flex(xs12, sm6, md6, lg4 v-for="item in searchItems", :key="item.id", v-model='searchItems', v-if="isShowComplete || item.status !== 'COM'")
+                                            v-flex(xs12, sm6, md4, lg3 v-for="item in searchItems", :key="item.id", v-model='searchItems', v-if="isShowComplete || item.status !== 'COM'")
+                                                include card_item
+
+                                            v-flex.text-xs-center.mt-4(xs12, v-if="!loadMoreData.isLoadFinish")
+                                                v-progress-circular.py-0.my-0(:indeterminate="true", color='deep-orange darken-3', :size="50", v-show='loadMoreData.isLoadMore')
+                                                v-btn(dark, color='deep-orange darken-3', v-if='loadMoreData.isBtnLoadMore', @click='loadMore()') Load More
+
+                            v-card-text.text-xs-center.my-4.grey--text(v-if="groupItems.length <= 0") 검색 결과가 없습니다.
 
 
 

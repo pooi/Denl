@@ -23,6 +23,7 @@ function init(init_category) {
             todayDate: null,
             // categoryData: null,
             // subcategories: [],
+            groupItems: [],
             searchItems: [],
             searchSnackbar : false,
 
@@ -35,6 +36,7 @@ function init(init_category) {
                 isLoadFinish: false
             },
             isShowComplete: false,
+            isViewExpanded: false,
             sortDialog: false,
             sort: "recommendation",
             tempSort: "recommendation",
@@ -145,6 +147,12 @@ function init(init_category) {
                 this.shareSheet = false;
 
             },
+            expandAllGroup: function () {
+                this.isViewExpanded = !this.isViewExpanded;
+                for(var i=0; i<this.groupItems.length; i++){
+                    this.groupItems[i].isViewExpanded = this.isViewExpanded;
+                }
+            },
             resetFilterItem: function () {
                 this.categoryManager.category = null;
                 this.categoryManager.subcategory = null;
@@ -168,6 +176,38 @@ function init(init_category) {
                     finishDate: null,
                     alldayModal: false,
                     alldayDate: null
+                }
+            },
+            groupingItem: function (newItems, isAdded) {
+                if(!isAdded){
+                    this.groupItems = [];
+                }
+
+                for(var i=0; i<newItems.length; i++){
+                    var item = newItems[i];
+                    var itemKey = item.category;
+
+                    var keyIndex = -1;
+                    for(var k=0; k<this.groupItems.length; k++){
+                        if(this.groupItems[k].key === itemKey){
+                            keyIndex = k;
+                            break;
+                        }
+                    }
+
+                    if(keyIndex < 0){ // key is not exist.
+
+                        var list = [];
+                        list.push(item);
+
+                        this.groupItems.push(new GroupItem(itemKey, list));
+
+                    }else{
+
+                        this.groupItems[keyIndex].itemData.push(item);
+
+                    }
+
                 }
             },
             search: function(showSnackbar){
@@ -203,6 +243,7 @@ function init(init_category) {
                     var res = response;
                     var data = res.data;
                     // console.log("data: ", data);
+                    vue.groupingItem(data, false);
                     vue.searchItems = [];
                     vue.searchItems = vue.searchItems.concat(data);
                     vue.searchSnackbar = showSnackbar;
@@ -239,6 +280,7 @@ function init(init_category) {
                 ).then(function (response) {
                     var res = response;
                     var data = res.data;
+                    vue.groupingItem(data, true);
                     vue.searchItems = vue.searchItems.concat(data);
 
                     if(data.length == 0){
