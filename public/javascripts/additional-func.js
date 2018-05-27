@@ -949,7 +949,7 @@ class CategoryManager {
 
         try{
             this.categoryData = JSON.parse(init_category);
-        }catch {
+        }catch (e) {
 
         }
         // this.categoryData = JSON.parse(init_category);
@@ -966,6 +966,31 @@ class CategoryManager {
         if(c1 === null ||c2 === null)
             return false;
         return c1.name == c2.name
+    }
+
+    changeMasterCategoryString(key){
+        try{
+            var str = this.categoryData[key].ko;
+            return str;
+        }catch (e){
+            return ""
+        }
+    }
+
+    changeCategoryString(key){
+        try{
+            var str = "";
+            for(var i=0; i<this.category.subcategory.length; i++){
+                var sub = this.category.subcategory[i];
+                if(sub.name === key){
+                    str = sub.ko;
+                    break;
+                }
+            }
+            return str;
+        }catch (e){
+            return ""
+        }
     }
 
     changeSubCategories (key) {
