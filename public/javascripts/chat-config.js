@@ -300,5 +300,6 @@ function init(chatData) {
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
+    vue.chatManager = new ChatManager(vue);
     return vue;
 }

@@ -18,7 +18,6 @@ router.get('/', function (req, res) {
         }
         else {
             for(var j=0; j<results.length; j++) {
-                console.log(results[j]);
                 //결과 객체에 프로퍼티가 있는 경우
                 if(result_obj.hasOwnProperty(results[j].roomport)){
                     result_obj[results[j].roomport].msg.push({
@@ -83,9 +82,9 @@ router.get('/', function (req, res) {
         json = json.split('"{').join('{');
         json = json.split('}"').join('}');
         if(req.session){
-                res.render('chat', {ChatData: json, userData: JSON.stringify(req.session.userData)});
+                res.render('chat2', {ChatData: json, userData: JSON.stringify(req.session.userData)});
         }else{
-                res.render('chat', {ChatData: json, userData: ""});
+                res.render('chat2', {ChatData: json, userData: ""});
         }
     });
 });
@@ -108,8 +107,9 @@ router.post('/send', function (req, res) {
 });
 
 router.post('/update', function (req, res) {
+    var login_user = req.session.userData.id;
     console.log(req.body);
-    var sql = "update chat set chread = 0 where roomport = " + "'" + req.body.roomport + "'" + "AND receiver = " + "'" + req.body.sender + "'" +"; "
+    var sql = "update chat set chread = 0 where roomport = " + "'" + req.body.roomport + "'" + "AND receiver = " + "'" + login_user + "'" +"; "
         +"select message, sender, sendtime, chread from chat where roomport = " + "'" + req.body.roomport + "'" + ";"
     conn.query(sql, function(err, results){
         if(err){
@@ -163,7 +163,6 @@ router.post('/make', function (req, res) {
 });
 
 router.post('/period', function (req, res) {
-    console.log("check", req);
     var login_user = req.session.userData.id;
     var sql = "SELECT c.name as sendername, c.sender, d.name as receivername, c.receiver, c.roomport, c.message, c.sendtime, c.chread"
         +" FROM (SELECT a.name, b.sender, b.receiver, b.roomport, b.message, b.sendtime, b.chread"
@@ -177,7 +176,6 @@ router.post('/period', function (req, res) {
         }
         else {
             for(var j=0; j<results.length; j++) {
-                console.log(results[j]);
                 //결과 객체에 프로퍼티가 있는 경우
                 if(result_obj.hasOwnProperty(results[j].roomport)){
                     result_obj[results[j].roomport].msg.push({

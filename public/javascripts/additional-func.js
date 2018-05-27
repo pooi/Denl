@@ -911,6 +911,35 @@ class DalSupporter {
                 alert(error);
             });
     }
+
+    splitArray (array) {
+        var chunk = 1;
+        var breakpoint = this.vue.__proto__.$vuetify.breakpoint;
+        if(breakpoint.xs || breakpoint.xl)
+            chunk = 1;
+        else if(breakpoint.sm)
+            chunk = 2;
+        else if(breakpoint.md)
+            chunk = 3;
+        else
+            chunk = 4;
+        // console.log(this.__proto__.$vuetify.breakpoint);
+        // console.log("chunk", chunk);
+
+        var i,j,temparray;
+        var newArray = [];
+        for (i=0,j=array.length; i<j; i+=chunk) {
+            temparray = array.slice(i,i+chunk);
+
+            while(temparray.length < chunk){
+                temparray.push(null);
+            }
+
+            newArray.push(temparray);
+        }
+        // console.log(newArray);
+        return newArray;
+    }
 }
 
 class CategoryManager {
@@ -1018,6 +1047,15 @@ class CategoryManager {
     }
 
 }
+
+class GroupItem{
+    constructor(key, itemData) {
+        this.key = key;
+        this.itemData = itemData; // list
+        this.isViewExpanded = false;
+    }
+}
+
 
 function getToday() {
     var today = new Date();
