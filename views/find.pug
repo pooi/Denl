@@ -172,9 +172,10 @@ block content
                             //    v-divider.mb-1.mt-3
 
                             v-flex(v-if="!isViewExpanded")
-                                v-card-title.pa-0(v-for="(gItem, gindex) in groupItems", :key="gindex")
+                                v-card-title.pa-0.mb-4(v-for="(gItem, gindex) in groupItems", :key="gindex")
                                     v-flex.pt-3.mt-3(xs12, container, style="overflow:visible", :class="$vuetify.breakpoint.xsOnly ? '' : 'mx-3' ")
-                                        p.headline.deep-orange--text.text-xs-center(style="font-weight: 400;") {{gItem.key}}
+                                        p.headline.deep-orange--text.text-xs-center(style="font-weight: 400;", v-if="categoryManager.category === null") {{categoryManager.changeMasterCategoryString(gItem.key)}}
+                                        p.headline.deep-orange--text.text-xs-center(style="font-weight: 400;", v-else) {{categoryManager.changeCategoryString(gItem.key)}}
                                         v-layout.mb-2(xs12)
                                             v-spacer
                                             v-btn(:icon="$vuetify.breakpoint.xsOnly", flat, small, color="grey", @click="gItem.isViewExpanded = !gItem.isViewExpanded")

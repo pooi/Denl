@@ -175,7 +175,7 @@ router.post('/search', function (req, res) {
     }
 
     // var sql = "SELECT * FROM lost";
-    var sql = "" +
+    var wholeSQL = "" +
         "SELECT A.*, ( (( ((1/3) * (MC.hit/(MC.hit + MC.ca_sum))) + ((2/3) * (0/(MC.hit + MC.ca_sum))) + ((2/3) * (MC.ca_sum/(MC.hit + MC.ca_sum))) )) + (( ((1/3) * (C.hit/(C.hit + C.sca_sum))) + ((2/3) * (0/(C.hit + C.sca_sum))) + ((2/3) * (C.sca_sum/(C.hit + C.sca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
         "FROM lost as A " +
         "LEFT OUTER JOIN ( " +
@@ -190,6 +190,41 @@ router.post('/search', function (req, res) {
         "left join lost t on t.subcategory = c.name " +
         "group by c.name " +
         ") as C on (A.subcategory = C.name) ";
+
+    var masterCategorySQL = "" +
+        "SELECT A.*, ( (( ((1/3) * (MC.hit/(MC.hit + MC.ca_sum))) + ((2/3) * (0/(MC.hit + MC.ca_sum))) + ((2/3) * (MC.ca_sum/(MC.hit + MC.ca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+        "from master_category mc " +
+        "left join lost t on t.category = mc.name " +
+        "group by mc.id " +
+        ") as MC on (A.category = MC.name) " +
+        "LEFT OUTER JOIN ( " +
+        "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+        "from category c " +
+        "left join lost t on t.subcategory = c.name " +
+        "group by c.name " +
+        ") as C on (A.subcategory = C.name)";
+
+    var categorySQL = "" +
+        "SELECT A.*, ( (( ((1/3) * (C.hit/(C.hit + C.sca_sum))) + ((2/3) * (0/(C.hit + C.sca_sum))) + ((2/3) * (C.sca_sum/(C.hit + C.sca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+        "from master_category mc " +
+        "left join lost t on t.category = mc.name " +
+        "group by mc.id " +
+        ") as MC on (A.category = MC.name) " +
+        "LEFT OUTER JOIN ( " +
+        "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+        "from category c " +
+        "left join lost t on t.subcategory = c.name " +
+        "group by c.name " +
+        ") as C on (A.subcategory = C.name)";
+
+    var sql = wholeSQL;
+
     var conditions = [];
     var params = [];
 
@@ -200,20 +235,22 @@ router.post('/search', function (req, res) {
         var category = null;
         var subcategory = null;
         if(data.category !== ''){
+            sql = masterCategorySQL;
             category = data.category;
             support.hitMasterCategory(category.id);
         }
         if(data.subcategory !== ''){
+            sql = categorySQL;
             subcategory = data.subcategory;
             support.hitCategory(subcategory.name);
         }
         // console.log(category, subcategory);
         if(category !== null && subcategory !== null){
-            conditions.push(" category=? AND subcategory=?");
+            conditions.push(" A.category=? AND A.subcategory=?");
             params.push(category.name);
             params.push(subcategory.name);
         }else if(category !== null){
-            conditions.push(" category=?");
+            conditions.push(" A.category=?");
             params.push(category.name);
         }
     }
@@ -222,16 +259,16 @@ router.post('/search', function (req, res) {
         item = data.dcv_filter_item;
         if(item.isAllday){
             if(item.alldayDate !== null){
-                conditions.push(" dcv_date=?");
+                conditions.push(" A.dcv_date=?");
                 params.push(support.dateToMs(item.alldayDate));
             }
         }else{
             if(item.startDate !== null){
-                conditions.push(" ?<=dcv_date");
+                conditions.push(" ?<=A.dcv_date");
                 params.push(support.dateToMs(item.startDate));
             }
             if(item.finishDate !== null){
-                conditions.push(" dcv_date<=?");
+                conditions.push(" A.dcv_date<=?");
                 params.push(support.dateToMs(item.finishDate));
             }
         }
@@ -241,16 +278,16 @@ router.post('/search', function (req, res) {
         item = data.rgt_filter_item;
         if(item.isAllday){
             if(item.alldayDate !== null){
-                conditions.push(" rgt_date=?");
+                conditions.push(" A.rgt_date=?");
                 params.push(support.dateToMs(item.alldayDate));
             }
         }else{
             if(item.startDate !== null){
-                conditions.push(" ?<=rgt_date");
+                conditions.push(" ?<=A.rgt_date");
                 params.push(support.dateToMs(item.startDate));
             }
             if(item.finishDate !== null){
-                conditions.push(" rgt_date<=?");
+                conditions.push(" A.rgt_date<=?");
                 params.push(support.dateToMs(item.finishDate));
             }
         }
@@ -259,7 +296,7 @@ router.post('/search', function (req, res) {
     if(data.hasOwnProperty('building')){
         var building = data.building;
         if(building.length > 0){
-            conditions.push(" building=?");
+            conditions.push(" A.building=?");
             params.push(building);
         }
     }
@@ -267,7 +304,7 @@ router.post('/search', function (req, res) {
     if(data.hasOwnProperty('room')){
         var room = data.room;
         if(room.length > 0){
-            conditions.push(" room=?");
+            conditions.push(" A.room=?");
             params.push(room);
         }
     }
@@ -279,7 +316,7 @@ router.post('/search', function (req, res) {
         for(var i=0; i<tags.length; i++){
             var tag = tags[i];
             tag = tag.trim();
-            tagCond += " brand LIKE ? OR tags LIKE ? OR recognition_tags LIKE ?";
+            tagCond += " A.brand LIKE ? OR A.tags LIKE ? OR A.recognition_tags LIKE ?";
             params.push("%" + tag + "%");
             params.push("%" + tag + "%");
             params.push("%" + tag + "%");
@@ -292,7 +329,6 @@ router.post('/search', function (req, res) {
             conditions.push(tagCond);
         }
     }
-
 
     if(conditions.length > 0){
         sql += " WHERE";

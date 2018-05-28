@@ -147,12 +147,6 @@ function init(init_category) {
                 this.shareSheet = false;
 
             },
-            expandAllGroup: function () {
-                this.isViewExpanded = !this.isViewExpanded;
-                for(var i=0; i<this.groupItems.length; i++){
-                    this.groupItems[i].isViewExpanded = this.isViewExpanded;
-                }
-            },
             resetFilterItem: function () {
                 this.categoryManager.category = null;
                 this.categoryManager.subcategory = null;
@@ -185,7 +179,13 @@ function init(init_category) {
 
                 for(var i=0; i<newItems.length; i++){
                     var item = newItems[i];
-                    var itemKey = item.category;
+                    var itemKey = "";
+                    if(this.categoryManager.category === null){
+                        itemKey = item.category;
+                    }else{
+                        itemKey = item.subcategory;
+                    }
+                    // var itemKey = item.category;
 
                     var keyIndex = -1;
                     for(var k=0; k<this.groupItems.length; k++){
