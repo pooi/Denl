@@ -26,6 +26,8 @@ function init(init_category) {
             groupItems: [],
             searchItems: [],
             searchSnackbar : false,
+            loadMoreSnackbar : false,
+            loadMoreSnackbarCount: 0,
 
             loadMoreData: {
                 loadStep: 3,
@@ -37,6 +39,7 @@ function init(init_category) {
             },
             isShowComplete: false,
             isViewExpanded: false,
+            loadMoreMenu: false,
             sortDialog: false,
             sort: "recommendation",
             tempSort: "recommendation",
@@ -102,11 +105,14 @@ function init(init_category) {
                     this.scrollData.offsetTop = 0;
                 }
 
-                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 400 && !this.loadMoreData.isLoadFinish && !this.loadMoreData.isLoadMore && this.loadMoreData.page % this.loadMoreData.loadStep != 0) {
-                    // console.log('load more2');
-                    this.loadMoreData.isLoadMore = true;
-                    this.loadMore();
+                if (this.isViewExpanded){
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 400 && !this.loadMoreData.isLoadFinish && !this.loadMoreData.isLoadMore && this.loadMoreData.page % this.loadMoreData.loadStep != 0) {
+                        // console.log('load more2');
+                        this.loadMoreData.isLoadMore = true;
+                        this.loadMore(true);
+                    }
                 }
+
             },
             removeHashtag: function(item){
                 this.searchTags.splice(this.searchTags(item), 1);
@@ -223,6 +229,7 @@ function init(init_category) {
                 };
 
                 this.searchSnackbar = false;
+                this.loadMoreSnackbar = false;
                 var data = {
                     page: this.loadMoreData.page,
                     category: this.categoryManager === null ? "" : (this.categoryManager.category === null ? "" : this.categoryManager.category),
@@ -254,7 +261,7 @@ function init(init_category) {
                 });
 
             },
-            loadMore: function () {
+            loadMore: function (loadMoreSnackbar) {
                 console.log("load more");
 
                 this.loadMoreData.isLoadMore = true;
@@ -262,6 +269,7 @@ function init(init_category) {
                 this.loadMoreData.page += 1;
 
                 this.searchSnackbar = false;
+                this.loadMoreSnackbar = false;
                 var data = {
                     page: this.loadMoreData.page,
                     category: this.categoryManager.category === null ? "" : this.categoryManager.category,
@@ -292,6 +300,9 @@ function init(init_category) {
                         // console.log("data.length false");
                         vue.loadMoreData.isLoadMore = false;
                         vue.loadMoreData.isBtnLoadMore = (vue.loadMoreData.page % vue.loadMoreData.loadStep == 0);
+                        vue.loadMoreSnackbarCount = data.length;
+                        vue.loadMoreSnackbar = loadMoreSnackbar;
+
                     }
 
                     // if(vue.page % vue.loadStep == 0){
