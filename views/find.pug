@@ -284,9 +284,14 @@ block content
                     v-radio-group(v-model="tempSort")
                         v-radio(label="추천", value="recommendation", color="orange darken-3")
                         v-radio(label="최신", value="recent", color="orange darken-3")
+                v-divider
+                v-card-text.py-0
+                    v-radio-group(v-model="tempOrder")
+                        v-radio(label="내림차순", value="desc", color="orange darken-3")
+                        v-radio(label="오름차순", value="asc", color="orange darken-3")
                 v-card-actions
                     v-spacer
-                    v-btn(color='error', flat='flat', @click.native="sortDialog = false; sort=tempSort; search(true);", v-if="sort !== tempSort") 변경
+                    v-btn(color='error', flat='flat', @click.native="sortDialog = false; sort=tempSort; order=tempOrder; search(true);", v-if="sort !== tempSort || order !== tempOrder") 변경
                     v-btn(color='info', flat='flat', @click.native="sortDialog = false;", v-else) 닫기
 
 

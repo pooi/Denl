@@ -340,12 +340,23 @@ router.post('/search', function (req, res) {
         }
     }
 
+    var order = "DESC";
+
+    if(data.hasOwnProperty('order')){
+        var o = req.body.order;
+        if(o.toLowerCase() === "asc"){
+            order = "ASC";
+        }else{
+            order = "DESC";
+        }
+    }
+
     if(data.hasOwnProperty('sort')){
         var sort = req.body.sort;
         if(sort === "recommendation"){
-            sql +=  " ORDER BY weight DESC "
+            sql +=  " ORDER BY weight " + order + " "
         }else{
-            sql +=  " ORDER BY id DESC "
+            sql +=  " ORDER BY id " + order + " "
         }
     }
 

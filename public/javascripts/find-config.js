@@ -43,6 +43,8 @@ function init(init_category) {
             sortDialog: false,
             sort: "recommendation",
             tempSort: "recommendation",
+            order: "desc",
+            tempOrder: "desc",
 
             // Filter
             dcv_filter_item:{
@@ -239,7 +241,8 @@ function init(init_category) {
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
                     tags: this.searchTags,
-                    sort: this.sort
+                    sort: this.sort,
+                    order: this.order
                 };
                 console.log(data);
 
