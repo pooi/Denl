@@ -403,4 +403,55 @@ router.post('/search', function (req, res) {
 
 });
 
+
+router.post('/registRoomBluetooth', function (req, res) {
+
+    if(req.body){
+
+        var building = req.body.building;
+        var room = req.body.room;
+        var bluetooth = req.body.bluetooth;
+
+        var sql = "SELECT * FROM room WHERE building_id=(SELECT id FROM building WHERE ko=?) AND name=?";
+        conn.query(sql, [building, room], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.send("fail");
+            } else {
+
+                if(results !== null && results.length > 0){
+
+                    var sql2 = "UPDATE room SET bluetooth=? WHERE id=?";
+                    conn.query(sql2, [bluetooth, results[0].id], function (err, result) {
+                        if(err){
+                            console.log(err);
+                            res.send("fail");
+                        }else{
+                            res.send("success");
+                        }
+                    })
+
+                }else{
+
+                    var sql2 = "INSERT INTO room(building_id, name, bluetooth) VALUES((SELECT id from building where ko=?), ?, ?)";
+                    conn.query(sql2, [building, room, bluetooth], function (err, result) {
+                        if(err){
+                            console.log(err);
+                            res.send("fail");
+                        }else{
+                            res.send("success");
+                        }
+                    })
+
+                }
+            }
+        });
+
+
+    }else{
+        res.send("fail");
+    }
+
+});
+
 module.exports = router;

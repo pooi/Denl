@@ -106,6 +106,7 @@ function init(init_data, init_category) {
                 return list;
             },
             shareTo: function (title) {
+
                 var url = window.location.href;
                 var origin = window.location.origin;
 
@@ -122,6 +123,10 @@ function init(init_data, init_category) {
                     }
                     if(tagList.length > 5)
                         tags += "...";
+
+                    // alert(tags);
+
+                    // alert(Kakao.Link.sendDefault);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
