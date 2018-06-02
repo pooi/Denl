@@ -1,12 +1,16 @@
 v-toolbar.safe-area-inset-padding(fixed, flat, dark,  dense, color='deep-orange darken-3')
     //v-toolbar-side-icon
     //v-toolbar-title(v-text='title', onclick="window.location.href='/'")
+    v-btn.white--text.mr-3.ml-2(icon, v-if="supporter.isHaveHistory() && supporter.data.isShowBackBtn", @click="supporter.goBack()")
+        v-icon(size="30px") keyboard_arrow_left
     img(src='/images/logo/logo_white.svg', height='20px', onclick="window.location.href='/'")
     v-toolbar-title.ml-2(v-text='title', onclick="window.location.href='/'")
     v-spacer
     code.elevation-0.mr-2(v-if='supporter.isAdmin()') 관리자
     v-toolbar-items
-        v-btn(flat, style='height: auto;', @click.native="loginData.dialog = true", v-if='loginData.user === null') Login
+        v-progress-circular(indeterminate, color="white", v-if="loginData.isProgress", style="margin: auto;", size="20")
+        v-btn(flat, style='height: auto;', v-if='loginData.user === null && loginData.isProgress') 로그인 중...
+        v-btn(flat, style='height: auto;', @click.native="loginData.dialog = true", v-if='loginData.user === null && !loginData.isProgress') Login
         v-btn(flat, style='height: auto;', @click.native="loginData.infoDialog = true", v-if='loginData.user !== null') {{ loginData.user.name }}님
     //v-btn.ma-0.mr-2(flat, icon, v-if="loginData.user !== null", color="white")
     //    v-icon.subheading {{ msgData.newMsgCount > 0 ? 'notifications_active' : 'notifications_none'}}

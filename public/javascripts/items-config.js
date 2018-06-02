@@ -478,5 +478,7 @@ function init(init_data, init_category) {
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+
+    vue.supporter.data.isShowBackBtn = true;
     return vue;
 }

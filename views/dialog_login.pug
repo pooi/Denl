@@ -12,6 +12,8 @@ v-dialog(v-model='loginData.dialog', :persistent='loginData.isProgress', max-wid
                         v-text-field(label='Student ID', id='loginId', required, :disabled='loginData.isProgress', v-model="loginData.id", ref="loginData.id", :rules="[() => !!loginData.id || 'This field is required']")
                     v-flex(xs12='')
                         v-text-field(label='Password', id='loginPw', type='password', required, :disabled='loginData.isProgress', :append-icon="loginData.isHidePw ? 'visibility' : 'visibility_off'", :append-icon-cb="() => (loginData.isHidePw = !loginData.isHidePw)", :type="loginData.isHidePw ? 'password' : 'text'", v-model="loginData.pw", ref="loginData.pw", :rules="[() => !!loginData.pw || 'This field is required']")
+                    v-flex(xs12, v-if="supporter.isWebkit()")
+                        v-checkbox.dal-checkbox(label="자동 로그인", v-model="loginData.isAutoLogin", color="orange darken-3")
             v-flex(xs12='')
                 small * indicates required field
             v-flex(xs12='')
@@ -154,6 +156,7 @@ script.
             id: null,
             pw: null,
             isHidePw: true,
+            isAutoLogin: false,
             user: userData
         };
 
@@ -165,6 +168,13 @@ script.
     }
 
     function logout() {
+
+        try{
+            webkit.messageHandlers.logout.postMessage("logout");
+        }catch (e){
+
+        }
+
         axios.get('/auth/logout')
             .then(function (response) {
                 // console.log(response);
@@ -172,6 +182,57 @@ script.
             })
             .catch(function (error) {
                 console.log(error);
+            });
+    }
+
+    function loginSejoingWithWebkit(id, pw){
+        var data = {
+            id: id,
+            password: pw
+        };
+
+        vue.loginData.isProgress = true;
+        vue.scrollData.isShowFabTop = false;
+
+        axios.post(
+            '/auth/sejong',
+            data
+        ).then(function (response) {
+            var data = response.data;
+            // console.log(data);
+            if (data.status === 'success') {
+                // alert(data);
+                vue.loginData.dialog = false;
+                vue.loginData.user = data;
+                vue.loginData.id = null;
+                vue.loginData.pw = null;
+
+                vue.loginData.snackbar = true;
+                vue.loginData.snackColor = 'success';
+                vue.loginData.snackMsg = 'Hello, ' + data.name + "!";
+                vue.dalMessage.getNewMsgCount();
+                // id.value = "";
+                // id.placeholder = "Student ID";
+                // pw.value = "";
+                // pw.placeholder = "Password";
+            } else {
+                // alert(data.err);
+                vue.loginData.snackbar = true;
+                vue.loginData.snackColor = 'error';
+                vue.loginData.snackMsg = data.err;
+            }
+            vue.loginData.isProgress = false;
+        })
+            .catch(function (error) {
+                // alert(error);
+                vue.loginData.isProgress = false;
+                vue.loginData.user = null;
+                vue.loginData.id = null;
+                vue.loginData.pw = null;
+
+                vue.loginData.snackbar = true;
+                vue.loginData.snackColor = 'error';
+                vue.loginData.snackMsg = error;
             });
     }
 
@@ -204,6 +265,14 @@ script.
             id: vue.loginData.id === null ? '' : vue.loginData.id,
             password: vue.loginData.pw === null ? '' : vue.loginData.pw
         };
+
+        if(vue.loginData.isAutoLogin){
+            try {
+                webkit.messageHandlers.savePassword.postMessage(data);
+            } catch (e) {
+
+            }
+        }
 
         axios.post(
             '/auth/sejong',

@@ -652,8 +652,25 @@ class DalSupporter {
     constructor(vue) {
         this.vue = vue;
         this.data = {
-
+            isShowBackBtn: false
         }
+    }
+
+    isWebkit(){
+        try{
+            webkit.messageHandlers.checkWebkit.postMessage("");
+            return true;
+        }catch (e){
+            return false;
+        }
+    }
+
+    goBack () {
+        window.history.back();
+    }
+
+    isHaveHistory(){
+        return window.history.length > 0
     }
 
     isAdmin () {
