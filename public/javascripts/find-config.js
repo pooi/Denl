@@ -34,7 +34,7 @@ function init(init_category) {
                 page: 1,
                 isLoadMore: false,
                 isBtnLoadMore: false,
-                numOfItem: 10,
+                numOfItem: 30,
                 isLoadFinish: false
             },
             isShowComplete: false,
@@ -226,7 +226,7 @@ function init(init_category) {
                     page: 1,
                     isLoadMore: false,
                     isBtnLoadMore: false,
-                    numOfItem: 10,
+                    numOfItem: 30,
                     isLoadFinish: false
                 };
 
@@ -305,6 +305,12 @@ function init(init_category) {
                         vue.loadMoreData.isBtnLoadMore = (vue.loadMoreData.page % vue.loadMoreData.loadStep == 0);
                         vue.loadMoreSnackbarCount = data.length;
                         vue.loadMoreSnackbar = loadMoreSnackbar;
+
+                        if(data.length < vue.loadMoreData.numOfItem){
+                            vue.loadMoreData.isLoadFinish = true;
+                            vue.loadMoreData.isLoadMore = false;
+                            vue.loadMoreData.isBtnLoadMore = false;
+                        }
 
                     }
 

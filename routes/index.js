@@ -167,7 +167,7 @@ router.post('/search', function (req, res) {
     var data = req.body;
 
     var isRequireLimit = false;
-    var numOfItem = 10;
+    var numOfItem = 30;
     var page = 0;
     if(data.hasOwnProperty('page')){
         page = data.page - 1;

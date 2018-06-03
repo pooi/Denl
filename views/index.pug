@@ -281,6 +281,14 @@ block content
     v-bottom-sheet(v-model='shareSheet', inset, max-width='500px')
         v-list
             v-subheader 공유하기
+            v-card.dal-card.mx-4.mb-4.mt-2(v-if="shareItem !== null")
+                v-card-media.my-2(:src="shareItem.photos", height='200px')
+                code.mx-3.elevation-0.mt-3(v-if="supporter.convertStatus(shareItem.status).length > 0") {{supporter.convertStatus(shareItem.status)}}
+                v-card-title.title.mb-0.py-2 {{ "유실물 - " + shareItem.id}}
+                v-card-text.py-0.subheading.grey--text.text--lighten-1 {{ categoryManager.getCategoryStringFromResult(shareItem.subcategory) }}
+                v-card-actions
+                    v-spacer
+                    v-btn(flat,small, color='orange', :href="'/items/'+shareItem.id") Detail
             v-list-tile(v-for='tile in shares', :key='tile.title', @click='shareTo(tile.title)')
                 v-list-tile-avatar
                     v-avatar(size='32px', tile)
