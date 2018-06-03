@@ -1,6 +1,7 @@
 
-function init(WFA, WFRQ, init_category, WFL) {
-
+function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
+    console.log(init_category);
+    console.log(init_subcategory);
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
 
@@ -51,6 +52,7 @@ function init(WFA, WFRQ, init_category, WFL) {
             WFAs : null,
             WFRQs : null,
             WFLs : null,
+            Lost : null,
             WFA_id_list : [],
             WFA_request_list : [],
             //필터데이터
@@ -272,9 +274,12 @@ function init(WFA, WFRQ, init_category, WFL) {
                     data : filterdata
                 }).then(function(response){
                     var result_data = response.data;
+                    console.log(result_data);
                     if(result_data.length > 0){
                         vue.WFAs = null;
                         vue.WFAs = result_data;
+                    }else{
+                        vue.WFAs = [];
                     }
                 }).catch(function (err){
                     if(err.response){
@@ -473,6 +478,7 @@ function init(WFA, WFRQ, init_category, WFL) {
         },
         created : function(){
             this.WFAs = JSON.parse(WFA);
+            this.Lost = this.WFAs;
             this.WFRQs = JSON.parse(WFRQ);
         },
         mounted: [
@@ -502,54 +508,37 @@ function init(WFA, WFRQ, init_category, WFL) {
             //     console.log(this.itemData);
             // },
             function () {
-                this.categoryData = JSON.parse(init_category);
-                //console.log("category: ", this.categoryData);
-                //필터 값 초기화 부분
-                for(item in this.categoryData){
-                    var obj = {"name":item};
-                    this.lost_filter_category_parent.push(obj);
-                    for(sub_item in this.categoryData[item].subcategory){
-                        var sub_obj = {"name" : this.categoryData[item].subcategory[sub_item].name}
-                        this.filter_child_item.push(sub_obj);
-                    }
+                var subcategory = JSON.parse(init_subcategory);
+                this.subcategory = [];
+                for(item in subcategory){
+                    this.lost_filter_category_child.push(subcategory[item].name);
                 }
-                this.lost_filter_category_child = this.filter_child_item;
                 for(item in this.WFAs){
                     var obj = {"name": this.WFAs[item].id}
                     this.lost_filter_num.push(obj)
                 }
             },
-            function () {
-                var title = document.createElement('meta');
-                title.name = "og:title";
-                title.content = this.itemData.id;
-                document.getElementsByTagName('head')[0].appendChild(title);
-
-                var origin = window.location.origin;
-                var image = document.createElement('meta');
-                image.name = "og:image";
-                image.content = origin + "/" + this.itemData.photos;
-                document.getElementsByTagName('head')[0].appendChild(image);
-
-                console.log(document.getElementsByTagName('head')[0]);
-            }
+            // function () {
+            //     var title = document.createElement('meta');
+            //     title.name = "og:title";
+            //     title.content = this.itemData.id;
+            //     document.getElementsByTagName('head')[0].appendChild(title);
+            //
+            //     var origin = window.location.origin;
+            //     var image = document.createElement('meta');
+            //     image.name = "og:image";
+            //     image.content = origin + "/" + this.itemData.photos;
+            //     document.getElementsByTagName('head')[0].appendChild(image);
+            //
+            //     console.log(document.getElementsByTagName('head')[0]);
+            // }
         ],
-        // 대분류 카테고리 선정 완료시 소분류 카테고리 자동 변형
-        watch:{
-            category: function(val){
-                //세부카테고리 초기화
-                this.subcategory = null;
-                //세부카테고리 선택창 초기화
-                if(this.category === null){
-                    this.lost_filter_category_child = this.filter_child_item
-                }
-                //큰 카테고리 선택시 목록 렌더링
-                else {
-                    this.lost_filter_category_child = [];
-                    for (item in this.categoryData[val.name].subcategory) {
-                        var obj = {"name": this.categoryData[val.name].subcategory[item].name}
-                        this.lost_filter_category_child.push(obj);
-                    }
+        watch: {
+            category : function(val) {
+                this.lost_filter_category_child = [];
+                var sub = this.categoryManager.categoryData[val].subcategory;
+                for(item in sub){
+                    this.lost_filter_category_child.push(sub[item].name);
                 }
             }
         }

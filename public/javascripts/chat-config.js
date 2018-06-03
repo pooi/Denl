@@ -67,15 +67,28 @@ function init(chatData) {
             this.interval = setInterval(this.get_chat, 3000);
             chat.on("chat message", function (data) {
                 console.log(data);
-                for(item in vue.chat_lists){
-                    if(vue.chat_lists[item].roomport == data.roomport){
-                        if(vue.chat_lists[item].msg == null){
+                for(item in vue.chat_lists) {
+                    if (vue.chat_lists[item].roomport == data.roomport) {
+                        if (vue.chat_lists[item].msg == null) {
                             vue.chat_lists[item].msg = [];
-                            vue.chat_lists[item].msg.push({message: data.message, sender: data.sender, sendtime: data.sendtime, chread: data.chread});
+                            vue.chat_lists[item].msg.push({
+                                message: data.message,
+                                sender: data.sender,
+                                sendtime: data.sendtime,
+                                chread: data.chread
+                            });
+                            vue.scrollToEnd();
                         }
-                        else{
-                            vue.chat_lists[item].msg.push({message: data.message, sender: data.sender, sendtime: data.sendtime, chread: data.chread});
+                        else {
+                            vue.chat_lists[item].msg.push({
+                                message: data.message,
+                                sender: data.sender,
+                                sendtime: data.sendtime,
+                                chread: data.chread
+                            });
+                            vue.scrollToEnd();
                         }
+
                     }
                 }
                 if(vue.loginData.user.id == data.sender){
@@ -207,6 +220,10 @@ function init(chatData) {
                         console.log(err.message);
                     }
                 })
+            },
+            scrollToEnd: function() {
+                var container = this.$el.querySelector("#container");
+                container.scrollTop = container.scrollHeight*2;
             },
             // disconnect: function () {
             //     chat.emit("disconnect", {

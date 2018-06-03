@@ -1,7 +1,6 @@
 function init(chatData) {
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
-    console.log(chatData);
     var vue = new Vue({
         el: '#app',
         data: {
@@ -20,6 +19,7 @@ function init(chatData) {
             },
             oneClick: null,
             dalMessage: null,
+            chatManger: null,
             itemData: null,
             requestList: [],
             recognitionDataHeaders: [
@@ -49,9 +49,10 @@ function init(chatData) {
             supporter: null,
             todayDate: null
         },
-        created: function(){
-            this.chatManager.created()
-        },
+        created: function() {
+            this.chatManager = new ChatManager(this.loginData, chatData);
+            console.log("created");
+            this.chatManager.created()},
         methods: {
             loginSejong: function () {
                 var id = document.getElementsByName('loginId');
@@ -147,6 +148,7 @@ function init(chatData) {
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
-    vue.chatManager = new ChatManager(vue, chatData);
+    vue.chatManager.set_vue(vue);
+    console.log("chatManager");
     return vue;
 }

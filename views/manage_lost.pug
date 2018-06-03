@@ -21,7 +21,7 @@ v-flex.mt-4(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' ")
                         v-select(required='', label='유실물 번호', :items='lost_filter_num', :filter='customFilter', v-model='id', item-text='name', autocomplete='', color='orange darken-1')
                         // append-icon="format_list_numbered"(아이콘)
                     v-card-text.pb-0
-                        v-select(required='', label='상위 카테고리', :items='lost_filter_category_parent', :filter='customFilter', v-model='category', item-text='name', autocomplete='', color='orange darken-1')
+                        v-select(required='', label='상위 카테고리', :items='Object.keys(categoryManager.categoryData)', :filter='customFilter', v-model='category', item-text='name', autocomplete='', color='orange darken-1')
                     v-card-text.pb-0
                         v-select(required='', label='상세 카테고리', :items='lost_filter_category_child', :filter='customFilter', v-model='subcategory', item-text='name', autocomplete='', color='orange darken-1')
                     v-card-text.pb-0
