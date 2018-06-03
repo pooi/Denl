@@ -108,6 +108,11 @@ function init(init_category) {
                 } catch (error) {
 
                 }
+                try{
+                    window.Denl.changeStatusBarBGColor(color);
+                }catch (e){
+
+                }
             },
             goRecent: function () {
                 var offset = 40;
