@@ -51,7 +51,7 @@ block content
                                         v-subheader(:class="$vuetify.breakpoint.xsOnly ? 'pa-0' : 'right'") 이미지:
                                     v-flex.mb-4(sm10, xs12, :class="$vuetify.breakpoint.xsOnly ? '' : 'pl-4'")
                                         //.dal-card(:style='$vuetify.breakpoint.xsOnly ? "overflow: hidden; width : 100%;" : "overflow: hidden; width : 50%;"')
-                                        img.dal-image-card(:src="itemData.photos", :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
+                                        img.dal-image-card#main_image(:src="itemData.photos", :width='$vuetify.breakpoint.xsOnly ? "100%;" : "60%;"')
 
                                         //v-card.dal-card(:style='$vuetify.breakpoint.xsOnly ? "width : 100%;" : "width : 60%;"', hover, raised)
                                         //    img(src= image, width="100%")
@@ -164,8 +164,9 @@ block content
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
                                                 v-layout
-                                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && (loginData.user === null || loginData.user.id !== itemData.rgt_user.id)", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="contactUser(itemData.rgt_user.id)") 연락하기
-
+                                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && (loginData.user === null || loginData.user.id !== itemData.rgt_user.id)", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="contactUser(itemData.rgt_user.id)", href="/chat") 연락하기
+                                                    v-btn.elevation-0.my-0(v-if="(loginData.user === null) || (loginData.user.id !== itemData.rgt_user.id) && itemData.status !== 'P2P'", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="itemData.status = 'P2P'") 개별연락전환
+                                                    //check_chat
 
 
                                     v-flex(sm2, xs12)
@@ -463,6 +464,18 @@ block content
         include footer
         include bottom_tab
 
+    script.
+        $(document).ready(function () {
+            if (vue.viewer == null) {
+                vue.viewer = new Viewer(document.getElementById('main_image'), {
+                    inline: false,
+                    viewed: function() {
+                        vue.viewedImage();
+
+                    }
+                });
+            }
+        });
 
     script(type="text/javascript" src='/javascripts/items-config.js')
     script.

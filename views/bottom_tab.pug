@@ -17,7 +17,7 @@ v-bottom-nav.bottom-tab-height(fixed, :value='true', height="48px", :active.sync
             v-icon.ma-0 build
         v-btn.py-2(flat='', color='deep-orange darken-3',  @click="loginData.dialog = true;", v-else-if="loginData.user === null")
             v-icon.ma-0 person
-        v-btn.py-2(flat='', color='deep-orange darken-3',  @click="loginData.dialog = true;", v-else-if="loginData.user !== null")
+        v-btn.py-2(flat='', color='deep-orange darken-3',  @click="loginData.infoDialog = true;", v-else-if="loginData.user !== null")
             v-icon.ma-0 person
 
 

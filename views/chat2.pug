@@ -53,11 +53,11 @@ block content
                                                     v-text-field.transparent(flat='', solo='', label='내용을 입력해주세요.', v-model='chatManager.data.message', v-on:keyup.enter='chatManager.send()')
                                                 v-flex(xs3='', sm1='', style='padding-top: 2px;')
                                                     v-btn.success(round='', v-on:click='chatManager.send()', style='min-width: 5%;') 전송
-
+                include chat_pop_over
         include footer
         include bottom_tab
 
 
     script(type="text/javascript" src='/javascripts/chat-config2.js')
     script.
-        const vue = init('!{ChatData}');
+        const vue = init('!{ChatData}', '!{userData}');

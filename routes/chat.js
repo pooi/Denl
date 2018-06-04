@@ -82,9 +82,9 @@ router.get('/', function (req, res) {
         json = json.split('"{').join('{');
         json = json.split('}"').join('}');
         if(req.session){
-                res.render('chat', {ChatData: json, userData: JSON.stringify(req.session.userData)});
+                res.render('chat2', {ChatData: json, userData: JSON.stringify(req.session.userData)});
         }else{
-                res.render('chat', {ChatData: json, userData: ""});
+                res.render('chat2', {ChatData: json, userData: ""});
         }
     });
 });

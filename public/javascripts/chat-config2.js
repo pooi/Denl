@@ -1,4 +1,5 @@
-function init(chatData) {
+function init(chatData, userData) {
+    let userData_out = JSON.parse(userData); //chat check
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
     var vue = new Vue({
@@ -50,9 +51,10 @@ function init(chatData) {
             todayDate: null
         },
         created: function() {
-            this.chatManager = new ChatManager(this.loginData, chatData);
-            console.log("created");
-            this.chatManager.created()},
+            this.chatManager = new ChatManager(userData_out);
+            console.log("created", this.chatManager.loginData);
+            this.chatManager.created()
+        },
         methods: {
             loginSejong: function () {
                 var id = document.getElementsByName('loginId');
@@ -134,14 +136,19 @@ function init(chatData) {
                 this.todayDate = today;
             },
             //송신자 이름 설정
-            function() {
-                this.my_name = this.loginData.user.name
-            }
+            function () {
+                this.chatManager.get_chat();
+            }//chat check
         ],
         beforeDestroy() {
             if (this.chatManager.data.interval) {
                 clearInterval(this.chatManager.data.interval);
                 this.chatManager.data.interval = undefined;
+            }
+        },
+        watch : {
+            chatManager : function(){
+                console.log("chatManager change");
             }
         }
     });
@@ -149,6 +156,5 @@ function init(chatData) {
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.chatManager.set_vue(vue);
-    console.log("chatManager");
     return vue;
 }

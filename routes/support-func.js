@@ -164,12 +164,17 @@ exports.hitCategory = function (name) {
 };
 
 exports.hitItem = function (id) {
-    var sql = "UPDATE lost SET hit=hit+1 WHERE id=?;";
-    conn.query(sql, [id], function(err, results) {
-        if (err) {
-            console.log(err);
-        } else {
-            // console.log(results);
-        }
-    });
+    try{
+        var sql = "UPDATE lost SET hit=hit+1 WHERE id=?;";
+        conn.query(sql, [id], function(err, results) {
+            if (err) {
+                console.log(err);
+            } else {
+                // console.log(results);
+            }
+        });
+    }catch (e){
+
+    }
+
 };

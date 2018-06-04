@@ -26,6 +26,28 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.get('/index2', function(req, res, next) {
+
+    var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
+        'FROM category as A ' +
+        'LEFT OUTER JOIN ( ' +
+        'SELECT * FROM master_category ' +
+        ') as B on (A.master_category_id = B.id); ';
+    conn.query(sql, [], function (err, results) {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }
+        var category = support.parseCategoryResult(results);
+
+        if(req.session)
+            res.render('index2', {userData: JSON.stringify(req.session.userData), category: JSON.stringify(category)});
+        else
+            res.render('index2', {userData: "", category: JSON.stringify(category)});
+    });
+
+});
+
 router.post('/category', function (req, res) {
     var sql = 'SELECT A.*, B.name as category_name, B.ko as category_name_ko, B.en as category_name_en ' +
         'FROM category as A ' +
@@ -145,35 +167,90 @@ router.post('/search', function (req, res) {
     var data = req.body;
 
     var isRequireLimit = false;
-    var numOfItem = 10;
+    var numOfItem = 30;
     var page = 0;
     if(data.hasOwnProperty('page')){
         page = data.page - 1;
         isRequireLimit = true;
     }
 
-    var sql = "SELECT * FROM lost";
+    // var sql = "SELECT * FROM lost";
+    var wholeSQL = "" +
+        "SELECT A.*, ( (( ((1/3) * (MC.hit/(MC.hit + MC.ca_sum))) + ((2/3) * (0/(MC.hit + MC.ca_sum))) + ((2/3) * (MC.ca_sum/(MC.hit + MC.ca_sum))) )) + (( ((1/3) * (C.hit/(C.hit + C.sca_sum))) + ((2/3) * (0/(C.hit + C.sca_sum))) + ((2/3) * (C.sca_sum/(C.hit + C.sca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+        "from master_category mc " +
+        "left join lost t on t.category = mc.name " +
+        "group by mc.id " +
+        ") as MC on (A.category = MC.name) " +
+        "LEFT OUTER JOIN ( " +
+        "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+        "from category c " +
+        "left join lost t on t.subcategory = c.name " +
+        "group by c.name " +
+        ") as C on (A.subcategory = C.name) ";
+
+    var masterCategorySQL = "" +
+        "SELECT A.*, ( (( ((1/3) * (MC.hit/(MC.hit + MC.ca_sum))) + ((2/3) * (0/(MC.hit + MC.ca_sum))) + ((2/3) * (MC.ca_sum/(MC.hit + MC.ca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+        "from master_category mc " +
+        "left join lost t on t.category = mc.name " +
+        "group by mc.id " +
+        ") as MC on (A.category = MC.name) " +
+        "LEFT OUTER JOIN ( " +
+        "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+        "from category c " +
+        "left join lost t on t.subcategory = c.name " +
+        "group by c.name " +
+        ") as C on (A.subcategory = C.name)";
+
+    var categorySQL = "" +
+        "SELECT A.*, ( (( ((1/3) * (C.hit/(C.hit + C.sca_sum))) + ((2/3) * (0/(C.hit + C.sca_sum))) + ((2/3) * (C.sca_sum/(C.hit + C.sca_sum))) )) + (( (((MOD(FLOOR((?-A.rgt_date)/86400000),7)+1) + 1)/(MOD(FLOOR((?-A.rgt_date)/86400000),7)+1))*2 )) ) as weight " +
+        "FROM lost as A " +
+        "LEFT OUTER JOIN ( " +
+        "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+        "from master_category mc " +
+        "left join lost t on t.category = mc.name " +
+        "group by mc.id " +
+        ") as MC on (A.category = MC.name) " +
+        "LEFT OUTER JOIN ( " +
+        "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+        "from category c " +
+        "left join lost t on t.subcategory = c.name " +
+        "group by c.name " +
+        ") as C on (A.subcategory = C.name)";
+
+    var sql = wholeSQL;
+
     var conditions = [];
     var params = [];
+
+    params.push(support.getTodayMs());
+    params.push(support.getTodayMs());
 
     if(data.hasOwnProperty('category')){
         var category = null;
         var subcategory = null;
         if(data.category !== ''){
+            sql = masterCategorySQL;
             category = data.category;
             support.hitMasterCategory(category.id);
         }
         if(data.subcategory !== ''){
+            sql = categorySQL;
             subcategory = data.subcategory;
             support.hitCategory(subcategory.name);
         }
         // console.log(category, subcategory);
         if(category !== null && subcategory !== null){
-            conditions.push(" category=? AND subcategory=?");
+            conditions.push(" A.category=? AND A.subcategory=?");
             params.push(category.name);
             params.push(subcategory.name);
         }else if(category !== null){
-            conditions.push(" category=?");
+            conditions.push(" A.category=?");
             params.push(category.name);
         }
     }
@@ -182,16 +259,16 @@ router.post('/search', function (req, res) {
         item = data.dcv_filter_item;
         if(item.isAllday){
             if(item.alldayDate !== null){
-                conditions.push(" dcv_date=?");
+                conditions.push(" A.dcv_date=?");
                 params.push(support.dateToMs(item.alldayDate));
             }
         }else{
             if(item.startDate !== null){
-                conditions.push(" ?<=dcv_date");
+                conditions.push(" ?<=A.dcv_date");
                 params.push(support.dateToMs(item.startDate));
             }
             if(item.finishDate !== null){
-                conditions.push(" dcv_date<=?");
+                conditions.push(" A.dcv_date<=?");
                 params.push(support.dateToMs(item.finishDate));
             }
         }
@@ -201,16 +278,16 @@ router.post('/search', function (req, res) {
         item = data.rgt_filter_item;
         if(item.isAllday){
             if(item.alldayDate !== null){
-                conditions.push(" rgt_date=?");
+                conditions.push(" A.rgt_date=?");
                 params.push(support.dateToMs(item.alldayDate));
             }
         }else{
             if(item.startDate !== null){
-                conditions.push(" ?<=rgt_date");
+                conditions.push(" ?<=A.rgt_date");
                 params.push(support.dateToMs(item.startDate));
             }
             if(item.finishDate !== null){
-                conditions.push(" rgt_date<=?");
+                conditions.push(" A.rgt_date<=?");
                 params.push(support.dateToMs(item.finishDate));
             }
         }
@@ -219,7 +296,7 @@ router.post('/search', function (req, res) {
     if(data.hasOwnProperty('building')){
         var building = data.building;
         if(building.length > 0){
-            conditions.push(" building=?");
+            conditions.push(" A.building=?");
             params.push(building);
         }
     }
@@ -227,7 +304,7 @@ router.post('/search', function (req, res) {
     if(data.hasOwnProperty('room')){
         var room = data.room;
         if(room.length > 0){
-            conditions.push(" room=?");
+            conditions.push(" A.room=?");
             params.push(room);
         }
     }
@@ -239,7 +316,7 @@ router.post('/search', function (req, res) {
         for(var i=0; i<tags.length; i++){
             var tag = tags[i];
             tag = tag.trim();
-            tagCond += " brand LIKE ? OR tags LIKE ? OR recognition_tags LIKE ?";
+            tagCond += " A.brand LIKE ? OR A.tags LIKE ? OR A.recognition_tags LIKE ?";
             params.push("%" + tag + "%");
             params.push("%" + tag + "%");
             params.push("%" + tag + "%");
@@ -253,7 +330,6 @@ router.post('/search', function (req, res) {
         }
     }
 
-
     if(conditions.length > 0){
         sql += " WHERE";
     }
@@ -264,12 +340,23 @@ router.post('/search', function (req, res) {
         }
     }
 
+    var order = "DESC";
+
+    if(data.hasOwnProperty('order')){
+        var o = req.body.order;
+        if(o.toLowerCase() === "asc"){
+            order = "ASC";
+        }else{
+            order = "DESC";
+        }
+    }
+
     if(data.hasOwnProperty('sort')){
         var sort = req.body.sort;
         if(sort === "recommendation"){
-            sql +=  " ORDER BY id DESC "
+            sql +=  " ORDER BY weight " + order + " "
         }else{
-            sql +=  " ORDER BY rcv_date DESC "
+            sql +=  " ORDER BY id " + order + " "
         }
     }
 
@@ -313,6 +400,57 @@ router.post('/search', function (req, res) {
             res.send(newResults);
         }
     });
+
+});
+
+
+router.post('/registRoomBluetooth', function (req, res) {
+
+    if(req.body){
+
+        var building = req.body.building;
+        var room = req.body.room;
+        var bluetooth = req.body.bluetooth;
+
+        var sql = "SELECT * FROM room WHERE building_id=(SELECT id FROM building WHERE ko=?) AND name=?";
+        conn.query(sql, [building, room], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.send("fail");
+            } else {
+
+                if(results !== null && results.length > 0){
+
+                    var sql2 = "UPDATE room SET bluetooth=? WHERE id=?";
+                    conn.query(sql2, [bluetooth, results[0].id], function (err, result) {
+                        if(err){
+                            console.log(err);
+                            res.send("fail");
+                        }else{
+                            res.send("success");
+                        }
+                    })
+
+                }else{
+
+                    var sql2 = "INSERT INTO room(building_id, name, bluetooth) VALUES((SELECT id from building where ko=?), ?, ?)";
+                    conn.query(sql2, [building, room, bluetooth], function (err, result) {
+                        if(err){
+                            console.log(err);
+                            res.send("fail");
+                        }else{
+                            res.send("success");
+                        }
+                    })
+
+                }
+            }
+        });
+
+
+    }else{
+        res.send("fail");
+    }
 
 });
 

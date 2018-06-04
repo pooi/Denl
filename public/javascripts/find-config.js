@@ -23,21 +23,28 @@ function init(init_category) {
             todayDate: null,
             // categoryData: null,
             // subcategories: [],
+            groupItems: [],
             searchItems: [],
             searchSnackbar : false,
+            loadMoreSnackbar : false,
+            loadMoreSnackbarCount: 0,
 
             loadMoreData: {
                 loadStep: 3,
                 page: 1,
                 isLoadMore: false,
                 isBtnLoadMore: false,
-                numOfItem: 10,
+                numOfItem: 30,
                 isLoadFinish: false
             },
             isShowComplete: false,
+            isViewExpanded: false,
+            loadMoreMenu: false,
             sortDialog: false,
             sort: "recommendation",
             tempSort: "recommendation",
+            order: "desc",
+            tempOrder: "desc",
 
             // Filter
             dcv_filter_item:{
@@ -100,11 +107,14 @@ function init(init_category) {
                     this.scrollData.offsetTop = 0;
                 }
 
-                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 400 && !this.loadMoreData.isLoadFinish && !this.loadMoreData.isLoadMore && this.loadMoreData.page % this.loadMoreData.loadStep != 0) {
-                    // console.log('load more2');
-                    this.loadMoreData.isLoadMore = true;
-                    this.loadMore();
+                if (this.isViewExpanded){
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 400 && !this.loadMoreData.isLoadFinish && !this.loadMoreData.isLoadMore && this.loadMoreData.page % this.loadMoreData.loadStep != 0) {
+                        // console.log('load more2');
+                        this.loadMoreData.isLoadMore = true;
+                        this.loadMore(true);
+                    }
                 }
+
             },
             removeHashtag: function(item){
                 this.searchTags.splice(this.searchTags(item), 1);
@@ -170,6 +180,44 @@ function init(init_category) {
                     alldayDate: null
                 }
             },
+            groupingItem: function (newItems, isAdded) {
+                if(!isAdded){
+                    this.groupItems = [];
+                }
+
+                for(var i=0; i<newItems.length; i++){
+                    var item = newItems[i];
+                    var itemKey = "";
+                    if(this.categoryManager.category === null){
+                        itemKey = item.category;
+                    }else{
+                        itemKey = item.subcategory;
+                    }
+                    // var itemKey = item.category;
+
+                    var keyIndex = -1;
+                    for(var k=0; k<this.groupItems.length; k++){
+                        if(this.groupItems[k].key === itemKey){
+                            keyIndex = k;
+                            break;
+                        }
+                    }
+
+                    if(keyIndex < 0){ // key is not exist.
+
+                        var list = [];
+                        list.push(item);
+
+                        this.groupItems.push(new GroupItem(itemKey, list));
+
+                    }else{
+
+                        this.groupItems[keyIndex].itemData.push(item);
+
+                    }
+
+                }
+            },
             search: function(showSnackbar){
                 console.log("search");
 
@@ -178,11 +226,12 @@ function init(init_category) {
                     page: 1,
                     isLoadMore: false,
                     isBtnLoadMore: false,
-                    numOfItem: 10,
+                    numOfItem: 30,
                     isLoadFinish: false
                 };
 
                 this.searchSnackbar = false;
+                this.loadMoreSnackbar = false;
                 var data = {
                     page: this.loadMoreData.page,
                     category: this.categoryManager === null ? "" : (this.categoryManager.category === null ? "" : this.categoryManager.category),
@@ -192,7 +241,8 @@ function init(init_category) {
                     building: this.selectedBuilding === null ? "" : this.selectedBuilding,
                     room: this.selectedRoom === null ? "" : this.selectedRoom,
                     tags: this.searchTags,
-                    sort: this.sort
+                    sort: this.sort,
+                    order: this.order
                 };
                 console.log(data);
 
@@ -203,6 +253,7 @@ function init(init_category) {
                     var res = response;
                     var data = res.data;
                     // console.log("data: ", data);
+                    vue.groupingItem(data, false);
                     vue.searchItems = [];
                     vue.searchItems = vue.searchItems.concat(data);
                     vue.searchSnackbar = showSnackbar;
@@ -213,7 +264,7 @@ function init(init_category) {
                 });
 
             },
-            loadMore: function () {
+            loadMore: function (loadMoreSnackbar) {
                 console.log("load more");
 
                 this.loadMoreData.isLoadMore = true;
@@ -221,6 +272,7 @@ function init(init_category) {
                 this.loadMoreData.page += 1;
 
                 this.searchSnackbar = false;
+                this.loadMoreSnackbar = false;
                 var data = {
                     page: this.loadMoreData.page,
                     category: this.categoryManager.category === null ? "" : this.categoryManager.category,
@@ -239,6 +291,7 @@ function init(init_category) {
                 ).then(function (response) {
                     var res = response;
                     var data = res.data;
+                    vue.groupingItem(data, true);
                     vue.searchItems = vue.searchItems.concat(data);
 
                     if(data.length == 0){
@@ -250,6 +303,15 @@ function init(init_category) {
                         // console.log("data.length false");
                         vue.loadMoreData.isLoadMore = false;
                         vue.loadMoreData.isBtnLoadMore = (vue.loadMoreData.page % vue.loadMoreData.loadStep == 0);
+                        vue.loadMoreSnackbarCount = data.length;
+                        vue.loadMoreSnackbar = loadMoreSnackbar;
+
+                        if(data.length < vue.loadMoreData.numOfItem){
+                            vue.loadMoreData.isLoadFinish = true;
+                            vue.loadMoreData.isLoadMore = false;
+                            vue.loadMoreData.isBtnLoadMore = false;
+                        }
+
                     }
 
                     // if(vue.page % vue.loadStep == 0){

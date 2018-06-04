@@ -77,6 +77,15 @@
     color: inherit !important;
 }
 
+.dal-big-button {
+
+}
+
+.dal-big-button .btn--floating.btn--large{
+    height: 100px;
+    width: 100px;
+}
+
 .rounded-expansion-panel{
 
 }
@@ -237,6 +246,15 @@
     transition: all 0.3s ease-in-out;
 }
 
+.dal-center{
+    left: 0;
+    right: 0;
+    margin-left: auto !important;;
+    margin-right: auto !important;;
+    position: fixed !important;
+    width: fit-content !important;;
+}
+
 
 #bg {
     position: fixed;
@@ -330,6 +348,11 @@
     height: calc(100vh - (48px + constant(safe-area-inset-bottom))) !important;
 }
 
+.btn-bottom-safe-area{
+    bottom: 52px !important;
+    margin-bottom: env(safe-area-inset-bottom) !important;
+    margin-bottom: constant(safe-area-inset-bottom) !important;
+}
 
 /* Animation */
 

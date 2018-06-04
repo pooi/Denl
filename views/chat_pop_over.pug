@@ -1,55 +1,61 @@
 v-fab-transition
-    v-menu(:close-on-content-click='false', :nudge-width='300', v-model='menu', offset-x='', left='')
+    v-menu(:close-on-content-click='false', :nudge-width='300', v-model='chatManager.data.menu', offset-x='', left='')
         v-btn(slot='activator', medium='', dark='', fab='', right='', top='', fixed='', color='blue darken-2', style='margin-top: 60px;')
             v-icon(medium='', style='height: auto; width: auto;') chat
         //채팅 목록
-        v-card(v-if='chat_list == true', style='height: fit-content;')
+        v-card(v-if='chatManager.data.chat_list == true', style='height: fit-content;')
             v-list
                 v-subheader 채팅 목록
-                v-list-tile(v-for='item in chat_lists', :key='item.name', avatar='', v-on:click='ChatSelect(item), connect()')
+                v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', v-on:click='chatManager.ChatSelect(item), chatManager.connect()')
                     v-list-tile-avatar
                         v-icon account_circle
                     v-list-tile-content
                         v-list-tile-title(v-text='item.name2')
-                    v-list-tile-action(v-if='item.roomport == chat_clicked')
+                    v-list-tile-action(v-if='item.roomport == chatManager.data.chat_clicked')
                         // <v-icon color="teal">chat_bubble</v-icon>
             v-card-actions
                 v-spacer
-                v-btn(color='primary', flat='', @click='menu = false') 나가기
+                v-btn(color='primary', flat='', @click='chatManager.data.menu = false') 나가기
         // 대화 상대 클릭 후
-        v-card(v-if='chat_clicked && chat_list == false', style='height: fit-content;')
+        v-card(v-if='chatManager.data.chat_clicked && chatManager.data.chat_list == false', style='height: fit-content;')
             v-layout(wrap='')
-                v-flex(xs9='', sm9='', mt-3='', px-3='')
-                    template(v-for='item in chat_lists')
-                        v-list-tile(v-if='item.roomport == chat_clicked', avatar='', ripple='', :key='item.roomport')
-                            v-list-tile-avatar
+                v-flex(xs12='', sm12='', mt-1='', px-0='', pl-2)
+                    v-list(v-for='item in chatManager.data.chat_lists', :key='item.roomport')
+                        v-list-tile(v-if='item.roomport == chatManager.data.chat_clicked', avatar='', ripple='', :key='item.roomport')
+                            v-list-tile-action
+                                v-btn(small='', fab='', flat='', absolute='', v-on:click='chatManager.data.chat_list = true')
+                                    v-icon(medium='', color='grey darken-3', style='weight: auto; height:auto;') arrow_back
+                            v-list-tile-avatar(style='margin-left: -4%')
                                 v-icon(large='') account_circle
                             v-list-tile-content
                                 v-list-tile-title {{item.name2}}
-                v-flex(xs3='', sm3='', mt-3='', pl-5='', pt-2='')
-                    v-btn(small='', fab='', flat='', absolute='', v-on:click='chat_list = true')
-                        v-icon(medium='', color='blue darken-2') chevron_left
+
+                                    //chevron_left
+                //v-flex(xs3='', sm3='', mt-3='', pl-5='', pt-2='')
+                //    v-btn(small='', fab='', flat='', absolute='', v-on:click='chat_list = true')
+                //        v-icon(medium='', color='blue darken-2') chevron_left
             // 채팅창
-            v-flex(xs12='', sm12='', mt-2='')
+            v-flex(xs12='', sm12='', mt-0='')
                 v-container
-                    v-card.scroll-y.elevation-0(style='height: 50vh;')
+                    v-card.scroll-y.elevation-0(id='container', style='height: 50vh; overflow-y: auto; border-bottom: 1px solid #e7e7e7; margin-left: 3%; margin-right: 2%;')
                         v-layout(wrap='')
-                            v-flex(xs12='', sm12='', pr-0='', text-xs-right='', style='height: 71vh;')
-                                v-list(subheader='', v-for='item in chat_lists', :key='item.roomport', v-if='item.roomport == chat_clicked')
-                                    v-list-tile(avatar='', v-for='msg in item.msg', algin-right='')
+                            v-flex(xs12='', sm12='', px-0='', text-xs-right='', style='height: 71vh;')
+                                v-list(subheader='', v-for='item in chatManager.data.chat_lists', :key='item.roomport', v-if='item.roomport == chatManager.data.chat_clicked', dense='')
+                                    v-list-tile(avatar='', v-for='msg in item.msg')
                                         // <v-list-tile-avatar><img :src="item.avatar"/></v-list-tile-avatar>
-                                        v-list-tile-content(v-if="msg.stamp == sender")
+                                        v-list-tile-content(v-if="msg.sender == chatManager.data.sender")
                                             //v-chip(color='deep-orange darken-3', text-color='white') {{ msg.sentence + " " + msg.stamp }}
                                         v-list-tile-content(v-else)
-                                            v-chip(text-color='black') {{ msg.sentence + " " + msg.stamp }}
-                                        v-list-tile-action(v-if="msg.stamp == sender")
-                                            v-chip(color='deep-orange darken-3', text-color='white') {{ msg.sentence + " " + msg.stamp }}
-                                v-chip(v-if="message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
+                                            v-chip(text-color='black') {{ msg.message }}
+                                        v-list-tile-action(v-if="msg.sender == chatManager.data.sender")
+                                            v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
+                                v-chip(v-if="chatManager.data.message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
                     // ver.2 채팅 입력란
-                    v-layout(wrap='')
-                        v-flex(xs12='', sm12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-3'")
+                    v-layout(wrap='', mt-2)
+                        //style='border-top: 1px solid #e7e7e7;' :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-3'"
+                        v-flex(xs12='', sm12='')
                             v-layout(wrap='')
                                 v-flex(xs9='', sm9='')
-                                    v-text-field.transparent(flat='', solo='', label='내용을 입력해주세요.', v-model='message', v-on:keyup.enter='send()')
+                                    v-text-field.transparent(flat='', solo='', label='내용을 입력해주세요.', v-model='chatManager.data.message', v-on:keyup.enter='chatManager.send(), chatManager.scrollToEnd()')
                                 v-flex(xs2='', sm2='', offset-sm1='', style='padding-top: 2px;')
-                                    v-btn.success(round='', v-on:click='send', style='min-width: 5%;') 전송
+                                    v-btn.success(round='', v-on:click='chatManager.send , chatManager.scrollToEnd', style='min-width: 5%; margin-left: 0;') 전송

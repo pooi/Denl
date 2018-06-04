@@ -20,6 +20,8 @@ function init(init_data, init_category) {
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            viewer: null,
+            isHit: false,
             bottomTab: "find",
             todayDate: null,
             itemData: null,
@@ -104,6 +106,7 @@ function init(init_data, init_category) {
                 return list;
             },
             shareTo: function (title) {
+
                 var url = window.location.href;
                 var origin = window.location.origin;
 
@@ -120,6 +123,10 @@ function init(init_data, init_category) {
                     }
                     if(tagList.length > 5)
                         tags += "...";
+
+                    // alert(tags);
+
+                    // alert(Kakao.Link.sendDefault);
 
                     Kakao.Link.sendDefault({
                         objectType: 'feed',
@@ -387,7 +394,7 @@ function init(init_data, init_category) {
                         alert(error);
                     });
             },
-            contactUser: function (id) {
+            contactUser: function (id) { //check_chat
                 if(this.loginData.user === null){
                     this.loginErrorDialog = true;
                     return;
@@ -435,6 +442,23 @@ function init(init_data, init_category) {
                     .catch(function (error) {
                         alert(error);
                     });
+            },
+            viewedImage: function () {
+                if(!this.isHit) {
+                    var data = {
+                        id: this.itemData.id
+                    };
+                    axios.post(
+                        '/items/hit',
+                        data
+                    ).then(function (response) {
+                        vue.isHit = true;
+                        // console.log(response);
+                    }).catch(function (error) {
+                        // alert(error);
+                    });
+                    this.isHit = true;
+                }
             }
         },
         mounted: [
@@ -462,6 +486,9 @@ function init(init_data, init_category) {
             },
             function () {
                 this.getRequestUser();
+            },
+            function () {
+
             }
         ]
     });
@@ -469,5 +496,7 @@ function init(init_data, init_category) {
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+
+    vue.supporter.data.isShowBackBtn = true;
     return vue;
 }

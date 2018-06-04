@@ -7,7 +7,8 @@ v-card.dal-card-scale.text-xs-left(flat='', tile='', hover, raised, :class="$vue
     v-card-text.py-0.subheading.grey--text.text--lighten-1.text-xs-left {{ categoryManager.getCategoryStringFromResult(item.subcategory) }}
 
     //v-card-text.py-3.grey--text.text--darken-2(v-if="item.description.length > 0") {{ supporter.reduceString(item.description, 100) }}
-    v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ supporter.msToDateKo(item.dcv_date) }}
+    v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ "습득 : " + supporter.msToDateKo(item.dcv_date) }}
+    v-card-text.py-0.text-xs-left.caption.grey--text.text--lighten-1 {{ "등록 : " + supporter.msToDateKo(item.rgt_date) }}
     v-card-text.py-0.text-xs-left(v-if="item.tags.length > 0 || item.recognition_tags.length > 0")
         span.caption.brown--text {{ supporter.hashTagsToString(item) }}
     v-card-actions

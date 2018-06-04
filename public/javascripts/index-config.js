@@ -17,7 +17,8 @@ function init(init_category) {
                 scrollT: 0,
                 delta: 200,
                 isShowFabTop: true,
-                transition: 'slide-y-reverse-transition'
+                transition: 'slide-y-reverse-transition',
+                statusBar: true
             },
             loginData:{
 
@@ -64,7 +65,11 @@ function init(init_category) {
                     colors: null
                 }
 
-            }
+            },
+
+            infoFind: false,
+            infoLost: false,
+            infoManage: false
 
         },
         methods:{
@@ -87,11 +92,32 @@ function init(init_category) {
                     this.scrollData.scrollT = 0;
                     this.scrollData.offsetTop = 0;
                 }
+
+                if(!this.scrollData.statusBar && this.scrollData.offsetTop < 50){
+                    this.scrollData.statusBar = !this.scrollData.statusBar;
+                    this.changeStatusBarColorOnNativeApp("orange");
+                }else if(this.scrollData.statusBar & this.scrollData.offsetTop >= 50){
+                    this.scrollData.statusBar = !this.scrollData.statusBar;
+                    this.changeStatusBarColorOnNativeApp("white");
+                }
+            },
+            changeStatusBarColorOnNativeApp(color){
+                try {
+                    console.log(color);
+                    webkit.messageHandlers.changeStatusBarBGColor.postMessage(color);
+                } catch (error) {
+
+                }
+                try{
+                    window.Denl.changeStatusBarBGColor(color);
+                }catch (e){
+
+                }
             },
             goRecent: function () {
                 var offset = 40;
                 if(this.__proto__.$vuetify.breakpoint.smAndDown)
-                    offset = 0;
+                    offset = -26;
 
                 $('html, body').animate({
                     scrollTop: $('#recent').offset().top - offset
@@ -311,5 +337,6 @@ function init(init_category) {
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+    vue.changeStatusBarColorOnNativeApp("orange");
     return vue;
 }
