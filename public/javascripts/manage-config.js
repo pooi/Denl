@@ -1,6 +1,7 @@
 
-function init(WFA, WFRQ, init_category, WFL) {
-
+function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
+    console.log(init_category);
+    console.log(init_subcategory);
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
 
@@ -51,22 +52,25 @@ function init(WFA, WFRQ, init_category, WFL) {
             WFAs : null,
             WFRQs : null,
             WFLs : null,
+            Lost : null,
+            WFA_id_list : [],
+            WFA_request_list : [],
             //필터데이터
             filter_keyword: false,
             filter_text: '전체 유실물 리스트',
             dialog_filter: false,
-            a1: null,
+            id: null,
             //필터목록데이터
             lost_filter_num: [],
             /*######## Lost 탭_ 필터 _ 상위 카테고리 ########*/
-            b1: null,
+            category: null,
             lost_filter_category_parent: [],
             /*######## Lost 탭_ 필터 _ 상세 카테고리 ########*/
-            c1: null,
+            subcategory: null,
             lost_filter_category_child: [],
             filter_child_item: [], // 세부 카테고리 초기화 데이터
             /*######## Lost 탭_ 필터 _ 유실물 상태 ########*/
-            d1: null,
+            status: null,
             lost_filter_state: [
                 { name: '수거전', code:"WFA" },
                 { name: '수거 완료', code:"WFF" },
@@ -108,51 +112,50 @@ function init(WFA, WFRQ, init_category, WFL) {
                         labels: [],
                         data: []
                     }
-                },
-
+                }
             }
         },
         methods: {
-            // hashTagsToString: function (itemData) {
-            //     var list = [];
-            //     for(var i=0; i<itemData.tags.length; i++){
-            //         list.push(itemData.tags[i]);
-            //     }
-            //     for(var i=0; i<itemData.recognition_tags.length; i++){
-            //         list.push(itemData.recognition_tags[i]);
-            //     }
-            //
-            //     var tags = "";
-            //     for(var i=0; i<Math.min(list.length, 5); i++){
-            //         var tag = list[i];
-            //         if(tag !== ""){
-            //             tags += "#" + tag + " ";
-            //         }
-            //     }
-            //     if(list.length > 5)
-            //         tags += "...";
-            //
-            //     return tags;
-            // },
-            // reduceString: function (str, len) {
-            //     var newStr = str.substring(0, len);
-            //     if(str.length > 100){
-            //         newStr += "...";
-            //     }
-            //     return newStr;
-            // },
-            // vueMsToDate: function (date) {
-            //     return msToDate(date);
-            // },
-            // vueMsToDateKo: function (date) {
-            //     return msToDateKo(date);
-            // },
-            // convertStatus: function (status) {
-            //     if(status === "WFA"){
-            //         return "수거전"
-            //     }
-            //     return ""
-            // },
+            hashTagsToString: function (itemData) {
+                var list = [];
+                for(var i=0; i<itemData.tags.length; i++){
+                    list.push(itemData.tags[i]);
+                }
+                for(var i=0; i<itemData.recognition_tags.length; i++){
+                    list.push(itemData.recognition_tags[i]);
+                }
+
+                var tags = "";
+                for(var i=0; i<Math.min(list.length, 5); i++){
+                    var tag = list[i];
+                    if(tag !== ""){
+                        tags += "#" + tag + " ";
+                    }
+                }
+                if(list.length > 5)
+                    tags += "...";
+
+                return tags;
+            },
+            reduceString: function (str, len) {
+                var newStr = str.substring(0, len);
+                if(str.length > 100){
+                    newStr += "...";
+                }
+                return newStr;
+            },
+            vueMsToDate: function (date) {
+                return msToDate(date);
+            },
+            vueMsToDateKo: function (date) {
+                return msToDateKo(date);
+            },
+            convertStatus: function (status) {
+                if(status === "WFA"){
+                    return "수거전"
+                }
+                return ""
+            },
             getCategoryStringFromResult: function (title) {
                 title = title.replace(" ", "_");
                 var keys = Object.keys(this.categoryData);
@@ -172,32 +175,32 @@ function init(WFA, WFRQ, init_category, WFL) {
                 }
                 return title;
             },
-            getBreadCrumbsList : function () {
+            getBreadCrumbsList: function () {
                 var list = [];
-                if(this.a1 !== null){
+                if(this.id !== null){
                     this.filter_keyword = true;
-                    list.push(this.a1);
+                    list.push(this.id);
                 }
-                if(this.b1 !== null){
+                if(this.category !== null){
                     this.filter_keyword = true;
-                    list.push(this.b1);
+                    list.push(this.category);
                 }
-                if(this.c1 !== null){
+                if(this.subcategory !== null){
                     this.filter_keyword = true;
-                    list.push(this.c1);
+                    list.push(this.subcategory);
                 }
-                if(this.d1 !== null){
+                if(this.status !== null){
                     this.filter_keyword = true;
-                    list.push(this.d1);
+                    list.push(this.status);
                 }
                 return list;
             },
             /*초기화 버튼 눌렀을 때*/
             resetFilterItem: function () {
-                this.a1 = null;
-                this.b1 = null;
-                this.c1 = null;
-                this.d1 = null;
+                this.id = null;
+                this.category = null;
+                this.subcategory = null;
+                this.status = null;
                 this.filter_keyword = false;
             },
             onScroll (e) {
@@ -220,14 +223,76 @@ function init(WFA, WFRQ, init_category, WFL) {
                     this.scrollData.offsetTop = 0;
                 }
             },
-            // getMsg:function () {
-            //     getMsg();
-            // },
-            // setMsgRead: function (msg) {
-            //     setMsgRead(msg);
-            // },
+            getMsg:function () {
+                getMsg();
+            },
+            setMsgRead: function (msg) {
+                setMsgRead(msg);
+            },
+            splitArray: function (array) {
+                var chunk = 1;
+                var breakpoint = this.__proto__.$vuetify.breakpoint;
+                if(breakpoint.xs || breakpoint.xl)
+                    chunk = 1;
+                else if(breakpoint.sm)
+                    chunk = 2;
+                else if(breakpoint.md)
+                    chunk = 3;
+                else
+                    chunk = 4;
+                // console.log(this.__proto__.$vuetify.breakpoint);
+                // console.log("chunk", chunk);
 
-            // Statistics
+                var i,j,temparray;
+                var newArray = [];
+                for (i=0,j=array.length; i<j; i+=chunk) {
+                    temparray = array.slice(i,i+chunk);
+
+                    while(temparray.length < chunk){
+                        temparray.push(null);
+                    }
+
+                    newArray.push(temparray);
+                }
+                // console.log(newArray);
+                return newArray;
+            },
+            postFilterData : function () {
+                var filterdata = {
+                    id: this.id === null ? null : parseInt(this.id.name),
+                    category: this.category === null ? null : this.category,
+                    subcategory: this.subcategory === null ? null : this.subcategory,
+                    // building: this.selectedBuilding === null ? "" : this.selectedBuilding,
+                    // room: this.selectedRoom === null ? "" : this.selectedRoom,
+                    // tags: this.searchTags,
+                    status: this.status === null ? null : this.status.code
+                }
+                console.log(filterdata);
+                axios({
+                    method: 'post',
+                    url: '/manage/filter',
+                    data : filterdata
+                }).then(function(response){
+                    var result_data = response.data;
+                    console.log(result_data);
+                    if(result_data.length > 0){
+                        vue.WFAs = null;
+                        vue.WFAs = result_data;
+                    }else{
+                        vue.WFAs = [];
+                    }
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
+            },
             getWeekData: function () {
                 var data = {};
 
@@ -381,20 +446,47 @@ function init(WFA, WFRQ, init_category, WFL) {
                     }
                 });
             },
+            change_wfa_wfrq: function(){
+                var wfa_wfrq_data = "(";
+                for(item in this.WFA_request_list){
+                    wfa_wfrq_data += this.WFA_request_list[item]
+                    if(item != this.WFA_request_list.length-1) {
+                        wfa_wfrq_data += ","
+                    }
+                }
+                wfa_wfrq_data += ")"
+                console.log(wfa_wfrq_data);
+                axios({
+                    method: 'post',
+                    url: '/manage/wfa_wfrq',
+                    data : wfa_wfrq_data
+                }).then(function(response){
+                    console.log(response);
+                    alert("success");
+                }).catch(function (err){
+                    if(err.response){
+                        console.log(err.response);
+                    }
+                    else if(err.request){
+                        console.log(err.request);
+                    }
+                    else{
+                        console.log(err.message);
+                    }
+                })
+            }
         },
         created : function(){
             this.WFAs = JSON.parse(WFA);
+            this.Lost = this.WFAs;
             this.WFRQs = JSON.parse(WFRQ);
-            // this.WFLs = JSON.parse(WFL);
-            // wfas.forEach(function (lost){
-            //     this.WFAs.push(lost)
-            // })
-            // var wfrqs = JSON.parse(WFRQ);
-            // wfrqs.forEach(function (lost){
-            //     this.WFRQs.push(lost)
-            // })
         },
         mounted: [
+            function() {
+                for(item in this.WFAs){
+                    this.WFA_id_list.push(this.WFAs[item].id);
+                }
+            },
             function () {
                 var today = new Date();
                 var dd = today.getDate();
@@ -416,57 +508,37 @@ function init(WFA, WFRQ, init_category, WFL) {
             //     console.log(this.itemData);
             // },
             function () {
-                this.categoryData = JSON.parse(init_category);
-                //console.log("category: ", this.categoryData);
-                //필터 값 초기화 부분
-                for(item in this.categoryData){
-                    var obj = {"name":item};
-                    this.lost_filter_category_parent.push(obj);
-                    for(sub_item in this.categoryData[item].subcategory){
-                        var sub_obj = {"name" : this.categoryData[item].subcategory[sub_item].name}
-                        this.filter_child_item.push(sub_obj);
-                    }
+                var subcategory = JSON.parse(init_subcategory);
+                this.subcategory = [];
+                for(item in subcategory){
+                    this.lost_filter_category_child.push(subcategory[item].name);
                 }
-                this.lost_filter_category_child = this.filter_child_item;
                 for(item in this.WFAs){
-                    var obj = {"name":"유실물"+this.WFAs[item].id}
+                    var obj = {"name": this.WFAs[item].id}
                     this.lost_filter_num.push(obj)
                 }
             },
-            function () {
-                var title = document.createElement('meta');
-                title.name = "og:title";
-                title.content = this.itemData.id;
-                document.getElementsByTagName('head')[0].appendChild(title);
-
-                var origin = window.location.origin;
-                var image = document.createElement('meta');
-                image.name = "og:image";
-                image.content = origin + "/" + this.itemData.photos;
-                document.getElementsByTagName('head')[0].appendChild(image);
-
-                console.log(document.getElementsByTagName('head')[0]);
-            },
-
-            // Statistics
-
+            // function () {
+            //     var title = document.createElement('meta');
+            //     title.name = "og:title";
+            //     title.content = this.itemData.id;
+            //     document.getElementsByTagName('head')[0].appendChild(title);
+            //
+            //     var origin = window.location.origin;
+            //     var image = document.createElement('meta');
+            //     image.name = "og:image";
+            //     image.content = origin + "/" + this.itemData.photos;
+            //     document.getElementsByTagName('head')[0].appendChild(image);
+            //
+            //     console.log(document.getElementsByTagName('head')[0]);
+            // }
         ],
-        // 대분류 카테고리 선정 완료시 소분류 카테고리 자동 변형
-        watch:{
-            b1: function(val){
-                //세부카테고리 초기화
-                this.c1 = null;
-                //세부카테고리 선택창 초기화
-                if(this.b1 === null){
-                    this.lost_filter_category_child = this.filter_child_item
-                }
-                //큰 카테고리 선택시 목록 렌더링
-                else {
-                    this.lost_filter_category_child = [];
-                    for (item in this.categoryData[val.name].subcategory) {
-                        var obj = {"name": this.categoryData[val.name].subcategory[item].name}
-                        this.lost_filter_category_child.push(obj);
-                    }
+        watch: {
+            category : function(val) {
+                this.lost_filter_category_child = [];
+                var sub = this.categoryManager.categoryData[val].subcategory;
+                for(item in sub){
+                    this.lost_filter_category_child.push(sub[item].name);
                 }
             }
         }

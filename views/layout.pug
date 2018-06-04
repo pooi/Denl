@@ -19,7 +19,7 @@ html(lang='en')
     link(rel='stylesheet', href='http://fonts.googleapis.com/earlyaccess/notosanskr.css')
 
 
-
+    script(src='/javascripts/chat-func.js')
     script(src='/javascripts/additional-func.js')
     link(href='/stylesheets/style.css', rel='stylesheet')
 
@@ -51,7 +51,9 @@ html(lang='en')
         // 사용할 앱의 JavaScript 키를 설정해 주세요.
         Kakao.init('d3e2ef60efcb6f73aad9244a187a0902');
         //]]>
-
+    script(src='socket.io/socket.io.js')
+    script.
+        var chat = io('http://localhost:30000/chat');
 
   body
     #app

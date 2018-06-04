@@ -394,14 +394,32 @@ function init(init_data, init_category) {
                         alert(error);
                     });
             },
-            contactUser: function (id) {
-
+            contactUser: function (id) { //check_chat
                 if(this.loginData.user === null){
                     this.loginErrorDialog = true;
                     return;
                 }
-
-                alert("TODO");
+                else {
+                    var server_obj = {};
+                    if (this.itemData.rgt_user.id > this.loginData.user.id){
+                        server_obj.makeroomport = "'" + this.loginData.user.id + "," + this.itemData.rgt_user.id + "'";
+                        server_obj.user1 = this.loginData.user.id;
+                        server_obj.user2 = this.itemData.rgt_user.id;
+                    }
+                    else{
+                        server_obj.makeroomport = "'" + this.itemData.rgt_user.id + "," + this.loginData.user.id + "'";
+                        server_obj.user2 = this.loginData.user.id;
+                        server_obj.user1 = this.itemData.rgt_user.id;
+                    }
+                    axios({
+                        method: "post",
+                        url: '/chat/make',
+                        data: server_obj
+                    }).then(function (response) {
+                        var result_data = response.data;
+                        console.log(result_data);
+                    });
+                }
             },
             acceptItem: function () {
                 var data = {

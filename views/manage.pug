@@ -10,21 +10,18 @@ block content
                     v-card(:class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'elevation-0 my-2' : 'elevation-10 my-5'")
                         v-layout(wrap='')
                             v-flex(xs12='', sm12='')
-                                v-tabs(icons-and-text='', centered='', dark='', color='deep-orange darken-1', height='125')
+                                v-tabs(icons-and-text='', centered='', dark='', color='deep-orange darken-1', height='60')
                                     v-tabs-slider(color='yellow')
                                     v-layout(column='')
-                                        v-flex(xs12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-1' : 'pa-2'")
-                                            v-text-field.mx-8(append-icon='search', label='search', solo-inverted='', flat='')
-                                        v-flex(xs12='', justify-center='', align-center='', text-xs-center='')
+                                        //v-flex(xs12='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-1' : 'pa-2'")
+                                        //    //v-text-field.mx-8(append-icon='search', label='search', solo-inverted='', flat='')
+                                        v-flex(xs12='', justify-center='', align-center='', text-xs-center='', :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'pa-3' : 'pa-3'")
                                             v-tab.subheading(href='#tab-1')
-                                                | HOME
                                                 v-icon home
                                                 // <v-icon>account_box</v-icon>
                                             v-tab.subheading(href='#tab-2')
-                                                | Lost
                                                 v-icon view_comfy
                                             v-tab.subheading(href='#tab-3')
-                                                | Statistics
                                                 v-icon poll
                                     // ######## Home 탭 컨텐츠 ########
                                     v-tabs-items(:touchless='true')
@@ -44,4 +41,4 @@ block content
 
     script(type="text/javascript" src='/javascripts/manage-config.js')
     script.
-        const vue = init('!{WFA}','!{WFRQ}','!{category}', '!{WFL}');
+        const vue = init('!{WFA}','!{WFRQ}','!{category}', '!{WFL}', '!{subcategory}');

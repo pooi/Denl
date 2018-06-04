@@ -164,8 +164,9 @@ block content
                                                             .subheading.pa-0.pt-2.grey--text {{ itemData.rgt_user.name }}
                                                             .subheading.pa-0.pt-1.grey--text {{ itemData.rgt_user.studentID }}
                                                 v-layout
-                                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && (loginData.user === null || loginData.user.id !== itemData.rgt_user.id)", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="contactUser(itemData.rgt_user.id)") 연락하기
-
+                                                    v-btn.elevation-0.my-0(v-if="itemData.status === 'P2P' && (loginData.user === null || loginData.user.id !== itemData.rgt_user.id)", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="contactUser(itemData.rgt_user.id)", href="/chat") 연락하기
+                                                    v-btn.elevation-0.my-0(v-if="(loginData.user === null) || (loginData.user.id !== itemData.rgt_user.id) && itemData.status !== 'P2P'", block, dark, small, color='cyan darken-1', style="border-radius: 0px 0px 20px 20px;", @click="itemData.status = 'P2P'") 개별연락전환
+                                                    //check_chat
 
 
                                     v-flex(sm2, xs12)
