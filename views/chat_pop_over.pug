@@ -1,6 +1,6 @@
 v-fab-transition
     v-menu(:close-on-content-click='false', :nudge-width='300', v-model='chatManager.data.menu', offset-x='', left='', v-if="loginData.user !== null")
-        v-btn(slot='activator', medium='', dark='', fab='', right='', top='', fixed='', color='deep-orange darken-3', style='margin-top: 60px;')
+        v-btn(slot='activator', medium='', dark='', fab='', right='', top='', fixed='', color='deep-orange darken-3', style='margin-top: 60px;', v-show="chatManager.data.dialog")
             v-icon(medium='', style='height: auto; width: auto;') chat
         //채팅 목록
         v-card(v-if='chatManager.data.chat_list == true', style='height: fit-content;')
@@ -11,7 +11,11 @@ v-fab-transition
                         v-icon account_circle
                     v-list-tile-content
                         v-list-tile-title(v-text='item.name2')
-                    v-list-tile-action(v-if='item.roomport == chatManager.data.chat_clicked')
+                    v-list-tile-action(v-if="item.unreadcount > 0")
+                        v-btn(icon, ripple, small, color="red darken-1", dark)
+                            | {{ item.unreadcount }}
+                        //v-icon( color="grey lighten-1") info
+                    //v-list-tile-action(v-if='item.roomport == chatManager.data.chat_clicked')
                         // <v-icon color="teal">chat_bubble</v-icon>
             v-card-actions
                 v-spacer

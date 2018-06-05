@@ -72,15 +72,17 @@ function init(init_data, init_category) {
         methods: {
             onScroll (e) {
                 var scroll = window.pageYOffset || document.documentElement.scrollTop;
-                this.scrollData.offsetTop = scroll;
 
                 this.scrollData.scrollT += (scroll-this.scrollData.offsetTop);
+                this.scrollData.offsetTop = scroll;
 
                 if(this.scrollData.scrollT > this.scrollData.delta){
                     this.scrollData.isShowFabTop = true;
+                    this.chatManager.hide();
                     this.scrollData.scrollT = 0;
                 }else if (this.scrollData.scrollT < -this.scrollData.delta) {
                     this.scrollData.isShowFabTop = false;
+                    this.chatManager.show();
                     this.scrollData.scrollT = 0;
                 }
 
@@ -419,6 +421,7 @@ function init(init_data, init_category) {
                     }).then(function (response) {
                         var result_data = response.data;
                         console.log(result_data);
+                        vue.chatManager.show();
                         vue.chatManager.data.menu = true;
                     });
                 }

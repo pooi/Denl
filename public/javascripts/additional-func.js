@@ -1107,7 +1107,7 @@ class ChatManager {
         console.log("ChatManager constructor");
         this.vue = vue;
         this.data = {
-            dialog: false,
+            dialog: true,
             message: "",
             sender: "", //check 나중에 로그인 정보 이름으로 수정
             roomnum: "",
@@ -1212,6 +1212,13 @@ class ChatManager {
         });
     }
 
+    hide(){
+        this.data.dialog = false;
+    }
+    show(){
+        this.data.dialog = true;
+    }
+
     beforeDestroy() {
         if (this.data.interval) {
             clearInterval(this.data.interval);
@@ -1220,6 +1227,9 @@ class ChatManager {
     }
 
     scrollToEnd() {
+        if(this.data.chat_lists === null ||this.data.chat_lists.length < 7){
+            return;
+        }
         try{
             $('#scrollList').animate({
                 scrollTop: $('#myList')[0].scrollHeight + 100
@@ -1239,6 +1249,9 @@ class ChatManager {
     }
 
     scrollToEndNoDelay() {
+        if(this.data.chat_lists === null ||this.data.chat_lists.length < 7){
+            return;
+        }
         try{
             $('#scrollList').animate({
                 scrollTop: $('#myList')[0].scrollHeight + 100
