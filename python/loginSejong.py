@@ -35,7 +35,7 @@ if __name__ == "__main__":
         data['name'] = "홍길동"
         data['type'] = "학부생"
         data['studentID'] = "12345678"
-        data['major'] = "전자정보공학대학/디지탈콘텐츠학과"
+        data['major'] = "전자정보공학대학/디지털콘텐츠학과"
         data['contact'] = "01011111111"
         data['email'] = "admin@denl.xyz"
         data['status'] = 'success'

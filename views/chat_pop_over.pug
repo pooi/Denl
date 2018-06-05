@@ -1,6 +1,6 @@
 v-fab-transition
-    v-menu(:close-on-content-click='false', :nudge-width='300', v-model='chatManager.data.menu', offset-x='', left='')
-        v-btn(slot='activator', medium='', dark='', fab='', right='', top='', fixed='', color='blue darken-2', style='margin-top: 60px;')
+    v-menu(:close-on-content-click='false', :nudge-width='300', v-model='chatManager.data.menu', offset-x='', left='', v-if="loginData.user !== null")
+        v-btn(slot='activator', medium='', dark='', fab='', right='', top='', fixed='', color='deep-orange darken-3', style='margin-top: 60px;')
             v-icon(medium='', style='height: auto; width: auto;') chat
         //채팅 목록
         v-card(v-if='chatManager.data.chat_list == true', style='height: fit-content;')
@@ -37,10 +37,10 @@ v-fab-transition
             // 채팅창
             v-flex(xs12='', sm12='', mt-0='')
                 v-container
-                    v-card.scroll-y.elevation-0(id='container', style='height: 50vh; overflow-y: auto; border-bottom: 1px solid #e7e7e7; margin-left: 3%; margin-right: 2%;')
+                    v-card.scroll-y.elevation-0(id='popScrollList', style='height: 50vh; overflow-y: auto; border-bottom: 1px solid #e7e7e7; margin-left: 3%; margin-right: 2%;')
                         v-layout(wrap='')
                             v-flex(xs12='', sm12='', px-0='', text-xs-right='', style='height: 71vh;')
-                                v-list(subheader='', v-for='item in chatManager.data.chat_lists', :key='item.roomport', v-if='item.roomport == chatManager.data.chat_clicked', dense='')
+                                v-list#popChatList(subheader='', v-for='item in chatManager.data.chat_lists', :key='item.roomport', v-if='item.roomport == chatManager.data.chat_clicked', dense='')
                                     v-list-tile(avatar='', v-for='msg in item.msg')
                                         // <v-list-tile-avatar><img :src="item.avatar"/></v-list-tile-avatar>
                                         v-list-tile-content(v-if="msg.sender == chatManager.data.sender")
@@ -49,7 +49,7 @@ v-fab-transition
                                             v-chip(text-color='black') {{ msg.message }}
                                         v-list-tile-action(v-if="msg.sender == chatManager.data.sender")
                                             v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
-                                v-chip(v-if="chatManager.data.message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
+                                //v-chip(v-if="chatManager.data.message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
                     // ver.2 채팅 입력란
                     v-layout(wrap='', mt-2)
                         //style='border-top: 1px solid #e7e7e7;' :class="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.smOnly  ? 'px-0' : 'px-3'"

@@ -1,7 +1,7 @@
-function init(chatData) {
+function init(chatData,) {
+    // let userData_out = JSON.parse(userData); //chat check
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
-    console.log(chatData);
     var vue = new Vue({
         el: '#app',
         data: {
@@ -20,6 +20,7 @@ function init(chatData) {
             },
             oneClick: null,
             dalMessage: null,
+            chatManager: null,
             itemData: null,
             requestList: [],
             recognitionDataHeaders: [
@@ -47,183 +48,13 @@ function init(chatData) {
             requestCancelErrorDialog: false,
             msgData:{},
             supporter: null,
-            todayDate: null,
-            dialog: false,
-            message: "",
-            sender: "", //check 나중에 로그인 정보 이름으로 수정
-            roomnum: "",
-            out_roomnum: "",
-            chat_lists : null,
-            /*대화 창에서 상대방 메시지 데이터*/
-            chat_clicked : null,
-            my_name : "",
-            menu: false,
-            chat_list: true,
-            interval: undefined,
-            check_chat_lists: null,
-            receiver: null,
-        },
-        created() {
-            this.interval = setInterval(this.get_chat, 3000);
-            chat.on("chat message", function (data) {
-                console.log(data);
-                for(item in vue.chat_lists) {
-                    if (vue.chat_lists[item].roomport == data.roomport) {
-                        if (vue.chat_lists[item].msg == null) {
-                            vue.chat_lists[item].msg = [];
-                            vue.chat_lists[item].msg.push({
-                                message: data.message,
-                                sender: data.sender,
-                                sendtime: data.sendtime,
-                                chread: data.chread
-                            });
-                            vue.scrollToEnd();
-                        }
-                        else {
-                            vue.chat_lists[item].msg.push({
-                                message: data.message,
-                                sender: data.sender,
-                                sendtime: data.sendtime,
-                                chread: data.chread
-                            });
-                            vue.scrollToEnd();
-                        }
-
-                    }
-                }
-                if(vue.loginData.user.id == data.sender){
-                    axios({
-                        method: 'post',
-                        url: '/chat/send',
-                        data: data
-                    }).then(function (response) {
-                        var result_data = response.data;
-                        console.log(result_data);
-                        if (vue.loginData.user.id == data.receiver) {
-                            console.log("check message");
-                        } else {
-                            console.log("i'm not receiver");
-                        }
-                    }).catch(function (err) {
-                        if (err.response) {
-                            console.log(err.response);
-                        }
-                        else if (err.request) {
-                            console.log(err.request);
-                        }
-                        else {
-                            console.log(err.message);
-                        }
-                    })
-                }
-                else {
-                    console.log("receive");
-                }
-            });
-
-            chat.on("chat connect", function (data) {
-                console.log(data);
-                var server_obj = {};
-                server_obj.roomport = data.room;
-                console.log(server_obj.roomport);
-                server_obj.sender =  data.name;
-                axios({
-                    method: 'post',
-                    url: '/chat/update',
-                    data: server_obj
-                }).then(function (response){
-                    let result_data = response.data;
-                    console.log(result_data.update_sign);
-                    for(var item in vue.chat_lists){
-                        if(vue.chat_lists[item].roomport == result_data.roomport){
-                            vue.chat_lists[item].msg = result_data.msg;
-                            // vue.chat_lists[item].unreadcount = result_data.unreadcount;
-                        }else{
-                            continue;
-                        }
-                    }
-                }).catch(function (err){
-                    if(err.response){
-                        console.log(err.response);
-                    }
-                    else if(err.request){
-                        console.log(err.request);
-                    }
-                    else{
-                        console.log(err.message);
-                    }
-                })
-            });
-
+            todayDate: null
         },
         methods: {
-            test: function() {
-                console.log("data");
-            },
             loginSejong: function () {
                 var id = document.getElementsByName('loginId');
                 var pw = document.getElementsByName('loginPw');
                 loginSejong(id, pw);
-            },
-            ChatSelect: function (item) {
-                this.chat_clicked = item.roomport;
-                this.out_roomnum = this.roomnum;
-                this.roomnum = item.roomport;
-                this.chat_list = false;
-                this.receiver = item.id2;
-                if(this.sender == item.name2){
-                    this.name = item.name1;
-                }
-                else{
-                    this.name = item.name2;
-                }
-            },
-            connect: function() {
-                this.sender = this.loginData.user.id;
-                chat.emit("chat connect", {
-                    name: this.sender,
-                    room: this.roomnum,
-                    out_room: this.out_roomnum
-                });
-            },
-            send: function () {
-                if(this.message == ""){
-                    alert("empty messaege");
-                }
-                else {
-                    chat.emit("chat message", {
-                        sender: this.sender,
-                        receiver: this.receiver,
-                        roomport: this.roomnum,
-                        message: this.message,
-                        chread: 1
-                    });
-                    this.message = "";
-                }
-            },
-            get_chat: function() {
-                axios({
-                    method: 'post',
-                    url: '/chat/period'
-                }).then(function (response){
-                    let result_data = response.data;
-                    console.log("period update");
-                    vue.chat_lists = result_data;
-                }).catch(function (err){
-                    if(err.response){
-                        console.log(err.response);
-                    }
-                    else if(err.request){
-                        console.log(err.request);
-                    }
-                    else{
-                        console.log(err.message);
-                    }
-                })
-            },
-            scrollToEnd: function() {
-                var container = this.$el.querySelector("#container");
-                container.scrollTop = container.scrollHeight*2;
             },
             // disconnect: function () {
             //     chat.emit("disconnect", {
@@ -285,9 +116,6 @@ function init(chatData) {
         },
         mounted: [
             function () {
-                this.chat_lists = JSON.parse(chatData);
-            },
-            function () {
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth() + 1; //January is 0!
@@ -303,15 +131,12 @@ function init(chatData) {
                 this.todayDate = today;
             },
             //송신자 이름 설정
-            function() {
-                this.my_name = this.loginData.user.name
-            }
+            function () {
+                this.chatManager.get_chat();
+            }//chat check
         ],
         beforeDestroy() {
-            if (this.interval) {
-                clearInterval(this.interval);
-                this.interval = undefined;
-            }
+            this.chatManager.beforeDestroy();
         }
     });
     vue.supporter = new DalSupporter(vue);

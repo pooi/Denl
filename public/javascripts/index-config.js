@@ -27,6 +27,7 @@ function init(init_category) {
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            chatManager: null,
             moreBtn: null,
             // categoryData: null,
             bottomTab: "home",
@@ -327,7 +328,10 @@ function init(init_category) {
                     // vue.isFilterProgress = false;
                 });
             }
-        ]
+        ],
+        beforeDestroy() {
+            this.chatManager.beforeDestroy();
+        }
         // beforeMount(){
         //     this.getWeekData();
         // }
@@ -337,6 +341,7 @@ function init(init_category) {
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+    vue.chatManager = new ChatManager(vue);
     vue.changeStatusBarColorOnNativeApp("orange");
     return vue;
 }

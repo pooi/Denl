@@ -19,6 +19,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            chatManager: null,
             bottomTab: "lost",
             imgSrc: '',
             domEleArray: null,
@@ -394,11 +395,15 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 var today = yyyy + "-" + mm + "-" + dd; //dd + '/' + mm + '/' + yyyy;
                 this.date = today;
             }
-        ]
+        ],
+        beforeDestroy() {
+            this.chatManager.beforeDestroy();
+        }
     });
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+    vue.chatManager = new ChatManager(vue);
     return vue;
 }

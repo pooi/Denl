@@ -19,6 +19,7 @@ function init(init_category) {
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            chatManager: null,
             bottomTab: "find",
             todayDate: null,
             // categoryData: null,
@@ -373,11 +374,15 @@ function init(init_category) {
             'isShowComplete' : function () {
                 vue.isShowComplete()
             }
+        },
+        beforeDestroy() {
+            this.chatManager.beforeDestroy();
         }
     });
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+    vue.chatManager = new ChatManager(vue);
     return vue;
 }

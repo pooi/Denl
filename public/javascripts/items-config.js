@@ -20,6 +20,7 @@ function init(init_data, init_category) {
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            chatManager: null,
             viewer: null,
             isHit: false,
             bottomTab: "find",
@@ -418,6 +419,7 @@ function init(init_data, init_category) {
                     }).then(function (response) {
                         var result_data = response.data;
                         console.log(result_data);
+                        vue.chatManager.data.menu = true;
                     });
                 }
             },
@@ -490,13 +492,16 @@ function init(init_data, init_category) {
             function () {
 
             }
-        ]
+        ],
+        beforeDestroy() {
+            this.chatManager.beforeDestroy();
+        }
     });
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
-
+    vue.chatManager = new ChatManager(vue);
     vue.supporter.data.isShowBackBtn = true;
     return vue;
 }

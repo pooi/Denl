@@ -23,6 +23,7 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
             oneClick: null,
             dalMessage: null,
             categoryManager: null,
+            chatManager: null,
             itemData: null,
             requestList: [],
             recognitionDataHeaders: [
@@ -541,11 +542,15 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     this.lost_filter_category_child.push(sub[item].name);
                 }
             }
+        },
+        beforeDestroy() {
+            this.chatManager.beforeDestroy();
         }
     });
     vue.supporter = new DalSupporter(vue);
     vue.oneClick = new OneClick(vue);
     vue.dalMessage = new DalMessage(vue);
     vue.categoryManager = new CategoryManager(vue, init_category);
+    vue.chatManager = new ChatManager(vue);
     return vue;
 }

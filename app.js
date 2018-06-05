@@ -39,6 +39,7 @@ app.use('/scripts', express.static(__dirname + '/node_modules/chart.js/dist'));
 app.use('/scripts', express.static(__dirname + '/node_modules/vue-observe-visibility/dist'));
 app.use('/scripts', express.static(__dirname + '/node_modules/viewerjs/dist'));
 app.use('/styles', express.static(__dirname + '/node_modules/viewerjs/dist'));
+app.use('/scripts', express.static(__dirname + '/node_modules/socket.io/lib'));
 
 app.use('/', index);
 app.use('/auth', auth);
