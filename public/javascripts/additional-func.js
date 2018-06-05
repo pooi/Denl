@@ -1227,9 +1227,6 @@ class ChatManager {
     }
 
     scrollToEnd() {
-        if(this.data.chat_lists === null ||this.data.chat_lists.length < 7){
-            return;
-        }
         try{
             $('#scrollList').animate({
                 scrollTop: $('#myList')[0].scrollHeight + 100
@@ -1249,9 +1246,6 @@ class ChatManager {
     }
 
     scrollToEndNoDelay() {
-        if(this.data.chat_lists === null ||this.data.chat_lists.length < 7){
-            return;
-        }
         try{
             $('#scrollList').animate({
                 scrollTop: $('#myList')[0].scrollHeight + 100
