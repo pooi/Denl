@@ -6,7 +6,7 @@ v-fab-transition
         v-card(v-if='chatManager.data.chat_list == true', style='height: fit-content;')
             v-list
                 v-subheader 채팅 목록
-                v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', v-on:click='chatManager.ChatSelect(item), chatManager.connect()')
+                v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.ChatSelect(item); chatManager.connect()')
                     v-list-tile-avatar
                         v-icon account_circle
                     v-list-tile-content
@@ -23,7 +23,7 @@ v-fab-transition
                     v-list(v-for='item in chatManager.data.chat_lists', :key='item.roomport')
                         v-list-tile(v-if='item.roomport == chatManager.data.chat_clicked', avatar='', ripple='', :key='item.roomport')
                             v-list-tile-action
-                                v-btn(small='', fab='', flat='', absolute='', v-on:click='chatManager.data.chat_list = true')
+                                v-btn(small='', fab='', flat='', absolute='', @click='chatManager.data.chat_list = true')
                                     v-icon(medium='', color='grey darken-3', style='weight: auto; height:auto;') arrow_back
                             v-list-tile-avatar(style='margin-left: -4%')
                                 v-icon(large='') account_circle
@@ -56,6 +56,6 @@ v-fab-transition
                         v-flex(xs12='', sm12='')
                             v-layout(wrap='')
                                 v-flex(xs9='', sm9='')
-                                    v-text-field.transparent(flat='', solo='', label='내용을 입력해주세요.', v-model='chatManager.data.message', v-on:keyup.enter='chatManager.send(), chatManager.scrollToEnd()')
+                                    v-text-field.transparent(flat='', solo='', label='내용을 입력해주세요.', v-model='chatManager.data.message', @keyup.enter='chatManager.send()')
                                 v-flex(xs2='', sm2='', offset-sm1='', style='padding-top: 2px;')
-                                    v-btn.success(round='', v-on:click='chatManager.send , chatManager.scrollToEnd', style='min-width: 5%; margin-left: 0;') 전송
+                                    v-btn.success(round='', @click='chatManager.send()', style='min-width: 5%; margin-left: 0;') 전송
