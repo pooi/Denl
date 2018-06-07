@@ -1,8 +1,8 @@
 v-container(fluid='')
     v-layout(row='', wrap='')
         v-flex(xs12='', sm4='')
-            v-subheader(v-text="'Multiple change WFA_WFRQ'")
+            v-subheader 수거 완료 일괄 처리
         v-flex(xs12='', sm6='')
             v-select(:items='WFA_id_list', v-model='WFA_request_list', label='Select', multiple='', max-height='400', hint='Pick item')
         v-flex(xs12='', sm2='')
-            v-btn(large="", color="orange darken-4", @click="change_wfa_wfrq") Process
+            v-btn(color="orange darken-4", @click="change_wfa_wfrq", dark) 변경

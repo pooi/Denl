@@ -113,6 +113,24 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                         labels: [],
                         data: []
                     }
+                },
+                interestChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    },
+                    colors: null
+                },
+                interestCategoryChartData: {
+                    ctx: null,
+                    chart: null,
+                    item: {
+                        labels: [],
+                        data: []
+                    },
+                    colors: null
                 }
             }
         },
@@ -449,6 +467,96 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     }
                 });
             },
+            getWeekData: function () {
+                var data = {};
+
+                axios.post(
+                    '/statistics/interestMasterCategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.interestChartData.item = data;
+                    vue.statisticsData.interestChartData.isDraw = false;
+                    vue.statisticsData.interestChartData.colors = shuffle(pastelColorsT);
+                    vue.drawInterestChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+
+                axios.post(
+                    '/statistics/interestSubcategory',
+                    data
+                ).then(function (response) {
+                    var res = response;
+                    var data = res.data;
+                    vue.statisticsData.interestCategoryChartData.item = data;
+                    vue.statisticsData.interestCategoryChartData.isDraw = false;
+                    vue.statisticsData.interestCategoryChartData.colors = shuffle(pastelColorsT);
+                    vue.drawInterestSubcategoryChart();
+                }).catch(function (error) {
+                    alert(error);
+                });
+            },
+            drawInterestChart: function () {
+                if(this.statisticsData.interestChartData.chart == null){
+                    this.statisticsData.interestChartData.ctx = document.getElementById("interestChart");
+                }else{
+                    this.statisticsData.interestChartData.chart.destroy();
+                }
+
+                this.statisticsData.interestChartData.chart = new Chart(this.statisticsData.interestChartData.ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: vue.statisticsData.interestChartData.item.labels,
+                        datasets: [{
+                            label: 'Weight',
+                            data: vue.statisticsData.interestChartData.item.data,
+                            backgroundColor: vue.statisticsData.interestChartData.colors,
+                            borderColor: vue.statisticsData.interestChartData.colors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            display: false
+                        }
+                    }
+                });
+
+            },
+            drawInterestSubcategoryChart: function () {
+                if(this.statisticsData.interestCategoryChartData.chart == null){
+                    this.statisticsData.interestCategoryChartData.ctx = document.getElementById("interestSubcategoryChart");
+                }else{
+                    this.statisticsData.interestCategoryChartData.chart.destroy();
+                }
+
+                this.statisticsData.interestCategoryChartData.chart = new Chart(this.statisticsData.interestCategoryChartData.ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: vue.statisticsData.interestCategoryChartData.item.labels,
+                        datasets: [{
+                            label: 'Weight',
+                            data: vue.statisticsData.interestCategoryChartData.item.data,
+                            backgroundColor: vue.statisticsData.interestCategoryChartData.colors,
+                            borderColor: vue.statisticsData.interestCategoryChartData.colors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            display: false
+                        }
+                    }
+                });
+
+            },
+
+
+
             change_wfa_wfrq: function(){
                 var wfa_wfrq_data = "(";
                 for(item in this.WFA_request_list){

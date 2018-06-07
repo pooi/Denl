@@ -31,9 +31,11 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
             v-layout.px-3(xs12, wrap, justify-center, align-center)
                 v-flex.pa-3.text-xs-center(xs12)
                     .subheading.my-3 세부카테고리별
+                    canvas(id="interestSubcategoryChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawInterestSubcategoryChart')
 
                 v-flex.pa-3.text-xs-center(xs12)
                     .subheading.my-3 카테고리별
+                    canvas(id="interestChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawInterestChart')
 
             v-card-text.title.pb-0.mt-5 유실물 추이
             v-layout.px-3(xs12, wrap, justify-center, align-center)

@@ -199,5 +199,93 @@ router.post('/dailyCategory', function (req, res) {
 
 });
 
+router.post('/interestMasterCategory', function (req, res) {
+
+    if(req.body){
+
+        var sql = "SELECT A.*, ( (( ((1/3) * (MC.hit/(MC.hit + MC.ca_sum))) + ((2/3) * (0/(MC.hit + MC.ca_sum))) + ((2/3) * (MC.ca_sum/(MC.hit + MC.ca_sum))) )) ) as weight " +
+            "FROM master_category as A " +
+            "LEFT OUTER JOIN ( " +
+            "select mc.*, IFNULL(sum(t.hit),0) as ca_sum " +
+            "from master_category mc " +
+            "left join lost t on t.category = mc.name " +
+            "group by mc.id " +
+            ") as MC on (A.name = MC.name) " +
+            "order by weight DESC;";
+
+
+        conn.query(sql, [], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+
+                var labels = [];
+                var data = [];
+                for(var i=0; i<results.length; i++){
+                    var result = results[i];
+                    labels.push(result.ko);
+                    data.push(result.weight);
+                }
+                var newData = {
+                    labels: labels,
+                    data: data
+                };
+
+                res.send(newData);
+            }
+        });
+
+
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+
+});
+
+router.post('/interestSubcategory', function (req, res) {
+
+    if(req.body){
+
+        var sql = "SELECT A.*, ( (( ((1/3) * (C.hit/(C.hit + C.sca_sum))) + ((2/3) * (0/(C.hit + C.sca_sum))) + ((2/3) * (C.sca_sum/(C.hit + C.sca_sum))) )) ) as weight " +
+            "FROM category as A " +
+            "LEFT OUTER JOIN ( " +
+            "select c.*, IFNULL(sum(t.hit),0) as sca_sum " +
+            "from category c " +
+            "left join lost t on t.subcategory = c.name " +
+            "group by c.name " +
+            ") as C on (A.name = C.name) " +
+            "order by weight DESC;";
+
+
+        conn.query(sql, [], function(err, results) {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+            } else {
+
+                var labels = [];
+                var data = [];
+                for(var i=0; i<results.length; i++){
+                    var result = results[i];
+                    labels.push(result.ko);
+                    data.push(result.weight);
+                }
+                var newData = {
+                    labels: labels,
+                    data: data
+                };
+
+                res.send(newData);
+            }
+        });
+
+
+    }else{
+        res.status(500).send("Internal Server Error");
+    }
+
+});
+
 
 module.exports = router;

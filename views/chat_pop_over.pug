@@ -12,7 +12,7 @@ v-fab-transition
                     v-list-tile-content
                         v-list-tile-title(v-text='item.name2')
                     v-list-tile-action(v-if="item.unreadcount > 0")
-                        v-btn(icon, ripple, small, color="red darken-1", dark)
+                        v-btn.mr-2(icon, ripple, small, color="red darken-1", dark)
                             | {{ item.unreadcount }}
                         //v-icon( color="grey lighten-1") info
                     //v-list-tile-action(v-if='item.roomport == chatManager.data.chat_clicked')
