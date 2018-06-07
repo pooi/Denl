@@ -119,6 +119,16 @@ v-dialog.md6(v-model='oneClick.data.dialog',  scrollable, max-width='600px', per
 
 
                 v-flex.text-xs-center.mt-3(xs12)
+                    .caption 색상
+                v-layout.mt-2.mx-3(xs12, align-center, justify-center)
+                    v-layout(sm10, xs12, align-center, justify-center, wrap)
+                        v-flex(v-for='color in oneClick.data.colors', d-inline-flex)
+                            v-card.ma-2.elevation-4.dal-small-card(hover, raised, :width="$vuetify.breakpoint.xsOnly ? '40' : '80' ", :height="$vuetify.breakpoint.xsOnly ? '30' : '40' ", :style="'background-color: rgba(' + color.red + ',' + color.green + ',' + color.blue + ',1);'")
+                v-flex.mt-3(xs12)
+                    v-divider
+
+
+                v-flex.text-xs-center.mt-3(xs12)
                     .caption 전달방식
                 v-layout.mt-2.mx-3(xs12, align-center, justify-center)
                     v-checkbox(label="직접 주인에게 전달하겠습니다.", v-model="oneClick.data.isDirect", color="orange darken-3")
