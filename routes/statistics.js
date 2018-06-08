@@ -60,7 +60,7 @@ router.post('/dailySubcategory', function (req, res) {
 
         var data = req.body;
 
-        var period = 7;
+        var period = 21;
         if(data.hasOwnProperty('period')){
             period = data.period;
         }
@@ -137,7 +137,7 @@ router.post('/dailyCategory', function (req, res) {
 
         var data = req.body;
 
-        var period = 7;
+        var period = 21;
         if(data.hasOwnProperty('period')){
             period = data.period;
         }
