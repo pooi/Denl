@@ -1120,7 +1120,8 @@ class ChatManager {
             chat_list: true,
             interval: undefined,
             chat_lists: null,
-            receiver: null
+            receiver: null,
+            selectedItem: null
         };
         this.created();
     }
@@ -1309,6 +1310,7 @@ class ChatManager {
     }
 
     ChatSelect(item) {
+        this.data.selectedItem = item;
         this.data.chat_clicked = item.roomport;
         this.data.out_roomnum = this.data.roomnum;
         this.data.roomnum = item.roomport;

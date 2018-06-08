@@ -1,7 +1,7 @@
 v-toolbar.safe-area-inset-padding(fixed, flat, dark,  dense, color='deep-orange darken-3')
     //v-toolbar-side-icon
     //v-toolbar-title(v-text='title', onclick="window.location.href='/'")
-    v-btn.white--text.mr-3.ml-2(icon, v-if="supporter.isHaveHistory() && supporter.data.isShowBackBtn", @click="supporter.goBack()")
+    v-btn.white--text.ml-2(icon, v-if="supporter.isHaveHistory() && supporter.data.isShowBackBtn", @click="supporter.goBack()")
         v-icon(size="30px") keyboard_arrow_left
     img(src='/images/logo/logo_white.svg', height='20px', onclick="window.location.href='/'")
     v-toolbar-title.ml-2(v-text='title', onclick="window.location.href='/'")
@@ -17,6 +17,7 @@ v-toolbar.safe-area-inset-padding(fixed, flat, dark,  dense, color='deep-orange 
     //    span(v-if='msgData.newMsgCount > 0')
     //        | {{msgData.newMsgCount}}
     include toolbar_msg_menu
+    include toolbar_chat
 
 
 include dialog_login
