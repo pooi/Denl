@@ -1,7 +1,7 @@
 
 function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
-    console.log(init_category);
-    console.log(init_subcategory);
+    // console.log(init_category);
+    // console.log(init_subcategory);
     Vue.use(VueObserveVisibility);
     Vue.directive('observe-visibility', VueObserveVisibility.ObserveVisibility);
 
@@ -96,7 +96,8 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     item: {
                         labels: [],
                         data: []
-                    }
+                    },
+                    colors: null
                 },
                 weekCategoryChartData: {
                     ctx: null,
@@ -104,7 +105,8 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     item: {
                         labels: [],
                         data: []
-                    }
+                    },
+                    colors: null
                 },
                 totalChartData: {
                     ctx: null,
@@ -112,7 +114,8 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     item: {
                         labels: [],
                         data: []
-                    }
+                    },
+                    colors: null
                 },
                 interestChartData: {
                     ctx: null,
@@ -314,7 +317,10 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     }
                 })
             },
+
+
             getWeekData: function () {
+                console.log("getWeekData");
                 var data = {};
 
                 axios.post(
@@ -325,6 +331,7 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     var data = res.data;
                     vue.statisticsData.weekChartData.item = data;
                     vue.statisticsData.weekChartData.isDraw = false;
+                    vue.statisticsData.weekChartData.colors = shuffle(pastelColorsT);
                     vue.drawWeekChart();
                 }).catch(function (error) {
                     alert(error);
@@ -336,8 +343,10 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                 ).then(function (response) {
                     var res = response;
                     var data = res.data;
+                    console.log("dailyCategory", data);
                     vue.statisticsData.weekCategoryChartData.item = data;
                     vue.statisticsData.weekCategoryChartData.isDraw = false;
+                    vue.statisticsData.weekCategoryChartData.colors = shuffle(pastelColorsT);
                     vue.drawWeekCategoryChart();
                 }).catch(function (error) {
                     alert(error);
@@ -357,15 +366,8 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                         datasets: [{
                             label: 'Subcategory',
                             data: vue.statisticsData.weekChartData.item.data,
-                            backgroundColor: pastelColors,
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            backgroundColor: vue.statisticsData.weekChartData.colors,
+                            borderColor: vue.statisticsData.weekChartData.colors,
                             borderWidth: 1
                         }]
                     },
@@ -390,15 +392,8 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                         datasets: [{
                             label: 'Category',
                             data: vue.statisticsData.weekCategoryChartData.item.data,
-                            backgroundColor: pastelColors,
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            backgroundColor: vue.statisticsData.weekCategoryChartData.colors,
+                            borderColor: vue.statisticsData.weekCategoryChartData.colors,
                             borderWidth: 1
                         }]
                     },
@@ -411,6 +406,7 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
             },
             getTotalData: function () {
                 var data = {};
+                console.log("getTotalData");
 
                 axios.post(
                     '/statistics/totalSubcategory',
@@ -420,6 +416,7 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     var data = res.data;
                     vue.statisticsData.totalChartData.item = data;
                     vue.statisticsData.totalChartData.isDraw = false;
+                    vue.statisticsData.totalChartData.colors = shuffle(pastelColorsT);
                     vue.drawTotalChart();
                 }).catch(function (error) {
                     alert(error);
@@ -439,15 +436,8 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                         datasets: [{
                             label: 'Subcategory',
                             data: vue.statisticsData.totalChartData.item.data,
-                            backgroundColor: pastelColors,
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            backgroundColor: vue.statisticsData.totalChartData.colors,
+                            borderColor: vue.statisticsData.totalChartData.colors,
                             borderWidth: 1
                         }]
                     },
@@ -467,7 +457,7 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                     }
                 });
             },
-            getWeekData: function () {
+            getinterestData: function () {
                 var data = {};
 
                 axios.post(

@@ -187,7 +187,7 @@ router.post('/dailyCategory', function (req, res) {
                     labels: labels,
                     data: data
                 };
-
+                console.log(newData);
                 res.send(newData);
             }
         });

@@ -17,10 +17,10 @@ v-flex.pb-4.pt-5(xs12='xs12', :class="$vuetify.breakpoint.xsOnly ? '' : 'px-4' "
                     .caption.text-xs-center(v-show="statisticsData.weekCategoryChartData.item.data.length <= 0") 최근 일주일 데이터가 없습니다.
                     canvas(id="weekCategoryChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ", v-observe-visibility='drawWeekCategoryChart')
 
-            v-card-text.title.pb-0.mt-5 월별 유실물 통계
-            v-layout.px-3(xs12, wrap, justify-center, align-center)
-                v-flex.pa-3(xs12)
-                    canvas(id="monthlyChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
+            //v-card-text.title.pb-0.mt-5 월별 유실물 통계
+            //v-layout.px-3(xs12, wrap, justify-center, align-center)
+            //    v-flex.pa-3(xs12)
+            //        canvas(id="monthlyChart", :width="$vuetify.breakpoint.xsOnly ? '' : '500px' ")
 
             v-card-text.title.pb-0.mt-5 전체 유실물 통계
             v-layout.px-3(xs12, wrap, justify-center, align-center)
@@ -47,6 +47,7 @@ script.
     $(document).ready(function () {
         vue.getWeekData();
         vue.getTotalData();
+        vue.getinterestData();
         drawMonthlyChart();
         drawtrendChart();
     });
