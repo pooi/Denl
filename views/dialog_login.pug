@@ -338,11 +338,39 @@ script.
             case 'email':
                 if(vue.loginData.tempEmail !== vue.loginData.user.email){
                     vue.loginData.user.email = vue.loginData.tempEmail;
+                    var data = {
+                        type: 'email',
+                        id: vue.loginData.user.id,
+                        value: vue.loginData.tempEmail
+                    };
+
+                    axios.post(
+                        '/auth/changeInfo',
+                        data
+                    ).then(function (response) {
+
+                    }).catch(function (error) {
+                        alert(error);
+                    });
                 }
                 break;
             case 'contact':
                 if (vue.loginData.tempContact !== vue.loginData.user.contact) {
                     vue.loginData.user.contact = vue.loginData.tempContact;
+                    var data = {
+                        type: 'contact',
+                        id: vue.loginData.user.id,
+                        value: vue.loginData.tempContact
+                    };
+
+                    axios.post(
+                        '/auth/changeInfo',
+                        data
+                    ).then(function (response) {
+
+                    }).catch(function (error) {
+                        alert(error);
+                    });
                 }
                 break;
         }

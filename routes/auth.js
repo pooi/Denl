@@ -177,6 +177,46 @@ module.exports = function (app) {
 
     });
 
+    router.post('/changeInfo', function (req, res, next) {
+
+        if(req.body){
+
+            try{
+                var type = req.body.type;
+
+                var sql = "UPDATE user ";
+                var params = [];
+
+                if(type === 'email'){
+                    var newEmail = req.body.value;
+                    sql += " SET email=?";
+                    params.push(newEmail);
+                }else if(type === 'contact'){
+                    var newContact = req.body.value;
+                    sql += " SET contact=?";
+                    params.push(newContact);
+                }
+
+                sql += " WHERE id=?";
+                params.push(req.body.id);
+
+                conn.query(sql, params, function(err, results) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(results);
+                    }
+                });
+            }catch (e){
+                console.log(e);
+            }
+
+
+
+        }
+
+    });
+
     // module.exports = router;
     return router;
 
