@@ -53,6 +53,7 @@ v-fab-transition
                                             v-chip(text-color='black') {{ msg.message }}
                                         v-list-tile-action(v-if="msg.sender == chatManager.data.sender")
                                             v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
+
                                 //v-chip(v-if="chatManager.data.message !==''", color='deep-orange darken-3', text-color='white') {{ message }}
                     // ver.2 채팅 입력란
                     v-layout(wrap='', mt-2)

@@ -255,6 +255,10 @@
     width: fit-content !important;;
 }
 
+.dal-small-caption {
+    font-size: 10px !important;
+}
+
 
 #bg {
     position: fixed;

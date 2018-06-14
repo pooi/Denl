@@ -804,6 +804,36 @@ class DalSupporter {
         return dateString;
     }
 
+    msToTime (ms) {
+        var date = new Date(ms);
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+
+
+        var timeString = (hh%12) + ":" + (mm < 10 ? "0" + mm : mm);
+        if(hh > 12){
+            timeString += " PM";
+        }else{
+            timeString += " AM";
+        }
+        return timeString;
+    }
+
+    static msToTime (ms) {
+        var date = new Date(ms);
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+
+
+        var timeString = (hh%12) + ":" + (mm < 10 ? "0" + mm : mm);
+        if(hh > 12){
+            timeString += " PM";
+        }else{
+            timeString += " AM";
+        }
+        return timeString;
+    }
+
     convertStatus(status) {
         if (status === "WFA") {
             return "수거전"

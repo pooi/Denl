@@ -63,9 +63,13 @@ v-fab-transition
                                 v-list-tile-content(v-if="msg.sender == chatManager.data.sender")
                                     //v-chip(color='deep-orange darken-3', text-color='white') {{ msg.sentence + " " + msg.stamp }}
                                 v-list-tile-content(v-else)
-                                    v-chip(text-color='black') {{ msg.message }}
+                                    v-flex(d-inline-flex)
+                                        v-chip(text-color='black') {{ msg.message }}
+                                        .dal-small-caption.grey--text.pb-1(style="margin-top:auto;") {{ supporter.msToTime(msg.sendtime) }}
                                 v-list-tile-action(v-if="msg.sender == chatManager.data.sender")
-                                    v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
+                                    v-flex(d-inline-flex)
+                                        .dal-small-caption.grey--text.pb-1(style="margin-top:auto;") {{ supporter.msToTime(msg.sendtime) }}
+                                        v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
 
 
             v-card-text.pt-0
