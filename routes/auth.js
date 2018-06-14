@@ -198,13 +198,26 @@ module.exports = function (app) {
                 }
 
                 sql += " WHERE id=?";
-                params.push(req.body.id);
+                var id = req.body.id;
+                params.push(id);
 
                 conn.query(sql, params, function(err, results) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log(results);
+                        var data = req.session.userData;
+                        if(type === 'email'){
+                            var newEmail = req.body.value;
+                            data.email = newEmail;
+                        }else if(type === 'contact'){
+                            var newContact = req.body.value;
+                            data.contact = newContact;
+                        }
+
+                        req.session.userData = data;
+                        req.session.save(function () {
+                            res.send(req.session.userData);
+                        });
                     }
                 });
             }catch (e){

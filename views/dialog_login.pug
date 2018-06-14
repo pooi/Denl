@@ -84,7 +84,7 @@ v-dialog(v-model='loginData.infoDialog', :fullscreen='$vuetify.breakpoint.xsOnly
                 v-list-tile-content
                     v-list-tile-sub-title E-mail
                     v-list-tile-title(v-if="!loginData.isEditEmail") {{ loginData.user.email }}
-                    v-text-field.pt-0(v-model="loginData.tempEmail", name='edit_email', :value='loginData.tempEmail', v-else)
+                    v-text-field.pt-0(v-model="loginData.tempEmail", name='edit_email', :value='loginData.tempEmail', v-else, @keyup.enter="changeInformation('email')")
 
                 v-list-tile-action
                     v-btn.mr-2(v-if="!loginData.isEditEmail", small, flat, icon, ripple='', color='info', @click="loginData.tempEmail = loginData.user.email; loginData.isEditEmail = true") 편집
@@ -96,7 +96,7 @@ v-dialog(v-model='loginData.infoDialog', :fullscreen='$vuetify.breakpoint.xsOnly
                 v-list-tile-content
                     v-list-tile-sub-title Contact
                     v-list-tile-title(v-if="!loginData.isEditContact") {{ loginData.user.contact }}
-                    v-text-field.pt-0(v-else, name='edit_contact', :value='loginData.tempContact', v-model="loginData.tempContact")
+                    v-text-field.pt-0(v-else, name='edit_contact', :value='loginData.tempContact', v-model="loginData.tempContact", @keyup.enter="changeInformation('contact')")
 
                 v-list-tile-action
                     v-btn.mr-2(v-if="!loginData.isEditContact", small, flat, icon, ripple='', color='info', @click="loginData.tempContact = loginData.user.contact; loginData.isEditContact = true") 편집
@@ -336,6 +336,7 @@ script.
     function changeInformation(type) {
         switch (type){
             case 'email':
+                vue.loginData.isEditEmail = false;
                 if(vue.loginData.tempEmail !== vue.loginData.user.email){
                     vue.loginData.user.email = vue.loginData.tempEmail;
                     var data = {
@@ -355,6 +356,7 @@ script.
                 }
                 break;
             case 'contact':
+                vue.loginData.isEditContact = false;
                 if (vue.loginData.tempContact !== vue.loginData.user.contact) {
                     vue.loginData.user.contact = vue.loginData.tempContact;
                     var data = {
