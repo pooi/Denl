@@ -34,13 +34,21 @@ block content
                                     v-layout(wrap='')
                                         v-flex(xs12='', sm12='', pr-4='', text-xs-right='', style='height: 71vh;')
                                             v-list#myList(subheader='', v-for='item in chatManager.data.chat_lists', :key='item.roomport', v-if='item.roomport == chatManager.data.chat_clicked')
-                                                v-list-tile(avatar='', v-for='msg in item.msg')
+                                                v-list-tile(avatar='', v-for='msg in item.msg', :key="msg.sendtime", v-if="msg.message !== null")
                                                     v-list-tile-content(v-if="msg.sender == chatManager.data.sender")
                                                         //v-chip(color='deep-orange darken-3', text-color='white') {{ msg.sentence + " " + msg.stamp }}
                                                     v-list-tile-content(v-else)
-                                                        v-chip(text-color='black') {{ msg.message }}
+                                                        v-flex(d-inline-flex)
+                                                            v-chip(text-color='black') {{ msg.message }}
+                                                            v-flex.pb-1.text-xs-left(style="margin-top:auto;")
+                                                                .dal-small-caption.orange--text(if="msg.chread === 1") 1
+                                                                .dal-small-caption.grey--text {{ supporter.msToTime(msg.sendtime) }}
                                                     v-list-tile-action(v-if="msg.sender == chatManager.data.sender")
-                                                        v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
+                                                        v-flex(d-inline-flex)
+                                                            v-flex.pb-1.text-xs-right(style="margin-top:auto;")
+                                                                .dal-small-caption.orange--text(if="msg.chread === 1") 1
+                                                                .dal-small-caption.grey--text {{ supporter.msToTime(msg.sendtime) }}
+                                                            v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
                                             //v-chip(v-if="chatManager.data.message !==''", color='deep-orange darken-3', text-color='white') {{ chatManager.data.message }}
                                 v-card.elevation-2(style='margin-top: 0.5px; border-top: 1px solid #e7e7e7;')
                                     v-layout(wrap='')

@@ -65,10 +65,14 @@ v-fab-transition
                                 v-list-tile-content(v-else)
                                     v-flex(d-inline-flex)
                                         v-chip(text-color='black') {{ msg.message }}
-                                        .dal-small-caption.grey--text.pb-1(style="margin-top:auto;") {{ supporter.msToTime(msg.sendtime) }}
+                                        v-flex.pb-1.text-xs-left(style="margin-top:auto;")
+                                            .dal-small-caption.orange--text(if="msg.chread === 1") 1
+                                            .dal-small-caption.grey--text {{ supporter.msToTime(msg.sendtime) }}
                                 v-list-tile-action(v-if="msg.sender == chatManager.data.sender")
                                     v-flex(d-inline-flex)
-                                        .dal-small-caption.grey--text.pb-1(style="margin-top:auto;") {{ supporter.msToTime(msg.sendtime) }}
+                                        v-flex.pb-1.text-xs-right(style="margin-top:auto;")
+                                            .dal-small-caption.orange--text(if="msg.chread === 1") 1
+                                            .dal-small-caption.grey--text {{ supporter.msToTime(msg.sendtime) }}
                                         v-chip(color='deep-orange darken-3', text-color='white') {{ msg.message }}
 
 
