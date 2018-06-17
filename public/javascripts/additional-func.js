@@ -1316,30 +1316,17 @@ class ChatManager {
         })
     }
 
-    myGetChat(){
-        var chatManager = this;
-        console.log(this);
-        axios({
-            method: 'post',
-            url: '/chat/period'
-        }).then(function (response){
-            var result_data = response.data;
-            console.log(chatManager.data);
-            chatManager.data.chat_lists = result_data;
-        }).catch(function (err){
-            if(err.response){
-                console.log(err.response);
+    getTotalUnReadCount(){
+        var count = 0;
+        if(this.data.chat_lists !== null){
+            for(var i=0; i<this.data.chat_lists.length; i++){
+                count += this.data.chat_lists[i].unreadcount;
             }
-            else if(err.request){
-                console.log(err.request);
-            }
-            else{
-                console.log(err.message);
-            }
-        })
+        }
+        return count;
     }
 
-    ChatSelect(item) {
+    chatSelect(item) {
         this.data.selectedItem = item;
         this.data.chat_clicked = item.roomport;
         this.data.out_roomnum = this.data.roomnum;

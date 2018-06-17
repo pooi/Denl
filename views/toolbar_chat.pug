@@ -3,13 +3,15 @@ v-fab-transition
         //v-btn(slot='activator', medium='', dark='', fab='', right='', top='', fixed='', color='deep-orange darken-3', style='margin-top: 60px;', v-show="chatManager.data.dialog")
         v-btn.ma-0.mr-2(flat, icon, :color="scrollData.offsetTop >= 50 && dalMessage.data.currentPath === '/' ? 'orange darken-3' : 'white' ", slot='activator')
             v-icon.subheading chat
+            span(v-if='chatManager.getTotalUnReadCount() > 0')
+                | {{chatManager.getTotalUnReadCount()}}
         //채팅 목록
         v-card(v-if='chatManager.data.chat_list == true')
             v-card-media.pa-0(height='380px')
                 v-flex(xs12='', sm12='')
                     v-list
                         v-subheader 채팅 목록
-                        v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.ChatSelect(item); chatManager.connect()')
+                        v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.chatSelect(item); chatManager.connect()')
                             v-list-tile-avatar
                                 v-icon account_circle
                             v-list-tile-content

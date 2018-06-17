@@ -9,7 +9,7 @@ block content
                 v-flex(xs3='', sm3='', style='height: 100vh;')
                     v-list
                         v-subheader 채팅 목록
-                        v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.ChatSelect(item); chatManager.connect();')
+                        v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.chatSelect(item); chatManager.connect();')
                             v-list-tile-avatar
                                 v-icon account_circle
                             v-list-tile-content

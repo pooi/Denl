@@ -6,7 +6,7 @@ v-fab-transition
         v-card(v-if='chatManager.data.chat_list == true', style='height: fit-content;')
             v-list
                 v-subheader 채팅 목록
-                v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.ChatSelect(item); chatManager.connect()')
+                v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.chatSelect(item); chatManager.connect()')
                     v-list-tile-avatar
                         v-icon account_circle
                     v-list-tile-content
