@@ -7,7 +7,7 @@ function init(chatData,) {
         data: {
             title_login: 'Login',
             dialog: false,
-            title: 'D&L chat',
+            title: 'D&L',
             scrollData: {
                 fab: false,
                 offsetTop: 0,
