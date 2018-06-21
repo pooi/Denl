@@ -4,22 +4,26 @@ var conn = require('../config/db')();
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    console.log("check", req);
+    // console.log("check", req);
+    if(!req.session.userData){
+        res.render('chat', {ChatData: "", userData: ""});
+        return;
+    }
     var login_user = req.session.userData.id;
     var sql = "SELECT c.name as sendername, c.sender, d.name as receivername, c.receiver, c.roomport, c.message, c.sendtime, c.chread"
-        +" FROM (SELECT a.name, b.sender, b.receiver, b.roomport, b.message, b.sendtime, b.chread"
-        +" FROM dal.user a, dal.chat b"
-        +" WHERE a.id = b.sender AND (b.sender = " + login_user + " OR b.receiver = " + login_user+ ")) c, dal.user d"
-        +" WHERE d.id = c.receiver;"
+        + " FROM (SELECT a.name, b.sender, b.receiver, b.roomport, b.message, b.sendtime, b.chread"
+        + " FROM dal.user a, dal.chat b"
+        + " WHERE a.id = b.sender AND (b.sender = " + login_user + " OR b.receiver = " + login_user + ")) c, dal.user d"
+        + " WHERE d.id = c.receiver;";
     let result_obj = {};
-    conn.query(sql, function(err, results) {
-        if(err) {
+    conn.query(sql, function (err, results) {
+        if (err) {
             console.log(err);
         }
         else {
-            for(var j=0; j<results.length; j++) {
+            for (var j = 0; j < results.length; j++) {
                 //결과 객체에 프로퍼티가 있는 경우
-                if(result_obj.hasOwnProperty(results[j].roomport)){
+                if (result_obj.hasOwnProperty(results[j].roomport)) {
                     result_obj[results[j].roomport].msg.push({
                         message: results[j].message,
                         sender: results[j].sender,
@@ -28,18 +32,18 @@ router.get('/', function (req, res) {
                     });
                 }
                 // 없는 경우 처음생성!!
-                else{
+                else {
                     let id1 = null;
                     let id2 = null;
                     let name1 = null;
                     let name2 = null;
-                    if(results[j].sender == login_user){
+                    if (results[j].sender == login_user) {
                         id1 = results[j].sender;
                         id2 = results[j].receiver;
                         name1 = results[j].sendername;
                         name2 = results[j].receivername;
                     }
-                    else{
+                    else {
                         id1 = results[j].receiver;
                         id2 = results[j].sender;
                         name1 = results[j].receivername;
@@ -64,12 +68,12 @@ router.get('/', function (req, res) {
             }
         }
         let result_arr = [];
-        for(item in result_obj){
+        for (item in result_obj) {
             let count = 0;
-            for(msg in result_obj[item].msg){
-                if(result_obj[item].msg[msg].sender != login_user && result_obj[item].msg[msg].chread == 1){
+            for (msg in result_obj[item].msg) {
+                if (result_obj[item].msg[msg].sender != login_user && result_obj[item].msg[msg].chread == 1) {
                     count++;
-                }else{
+                } else {
                     continue;
                 }
             }
@@ -81,45 +85,45 @@ router.get('/', function (req, res) {
         json = json.split(']"').join(']');
         json = json.split('"{').join('{');
         json = json.split('}"').join('}');
-        if(req.session){
-                res.render('chat', {ChatData: json, userData: JSON.stringify(req.session.userData)});
-        }else{
-                res.render('chat', {ChatData: json, userData: ""});
+        if (req.session) {
+            res.render('chat', {ChatData: json, userData: JSON.stringify(req.session.userData)});
+        } else {
+            res.render('chat', {ChatData: json, userData: ""});
         }
     });
 });
 
 router.post('/send', function (req, res) {
-   console.log("get", req.body);
-   var sql = "insert into chat (sender, receiver, roomport, message, sendtime, chread) VALUES "
-       + "(" + req.body.sender + ", " + req.body.receiver + ", '" + req.body.roomport + "', "
-       + "'" + req.body.message + "', " + req.body.sendtime + ", " + req.body.chread + ");";
-   conn.query(sql,function (err, result) {
-       if(err){
-           console.log(err);
-           res.send("fail");
-       }
-       else{
-           console.log(result);
-           res.send("success");
-       }
-   })
+    // console.log("get", req.body);
+    var sql = "insert into chat (sender, receiver, roomport, message, sendtime, chread) VALUES "
+        + "(" + req.body.sender + ", " + req.body.receiver + ", '" + req.body.roomport + "', "
+        + "'" + req.body.message + "', " + req.body.sendtime + ", " + req.body.chread + ");";
+    conn.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send("fail");
+        }
+        else {
+            // console.log(result);
+            res.send("success");
+        }
+    })
 });
 
 router.post('/update', function (req, res) {
     var login_user = req.session.userData.id;
-    console.log(req.body);
-    var sql = "update chat set chread = 0 where roomport = " + "'" + req.body.roomport + "'" + "AND receiver = " + "'" + login_user + "'" +"; "
-        +"select message, sender, sendtime, chread from chat where roomport = " + "'" + req.body.roomport + "'" + ";"
-    conn.query(sql, function(err, results){
-        if(err){
+    // console.log(req.body);
+    var sql = "update chat set chread = 0 where roomport = " + "'" + req.body.roomport + "'" + "AND receiver = " + "'" + login_user + "'" + "; "
+        + "select message, sender, sendtime, chread from chat where roomport = " + "'" + req.body.roomport + "'" + ";"
+    conn.query(sql, function (err, results) {
+        if (err) {
             console.log(err);
-        }else{
+        } else {
             let count = 0;
-            for(item in results[1]){
-                if(results[1][item].chread == 1){
+            for (item in results[1]) {
+                if (results[1][item].chread == 1) {
                     count++;
-                }else{
+                } else {
                     continue;
                 }
             }
@@ -135,24 +139,24 @@ router.post('/update', function (req, res) {
 });
 
 router.post('/make', function (req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     var sql = "select message from chat where roomport = " + req.body.makeroomport + ";";
-    var sentence = "(" + req.body.user2 + ", " + req.body.user1 + ", " + req.body.makeroomport + ", " + Date.now() + ", "+ 1 + ");"
-    conn.query(sql, function(err, results){
-        if(err){
+    var sentence = "(" + req.body.user2 + ", " + req.body.user1 + ", " + req.body.makeroomport + ", " + Date.now() + ", " + 1 + ");"
+    conn.query(sql, function (err, results) {
+        if (err) {
             console.log(err);
-        }else{
-            if(results.length > 0){
+        } else {
+            if (results.length > 0) {
                 var fail = "exist";
                 res.send(fail);
-            }else{
+            } else {
                 var sql2 = "insert into chat (sender, receiver, roomport, sendtime, chread) values " + sentence;
-                conn.query(sql2, function(err, results){
-                    if(err){
+                conn.query(sql2, function (err, results) {
+                    if (err) {
                         console.log(err);
                     }
-                    else{
-                        console.log(results);
+                    else {
+                        // console.log(results);
                         var success = "makenewroom"
                         res.send(success);
                     }
@@ -165,19 +169,19 @@ router.post('/make', function (req, res) {
 router.post('/period', function (req, res) {
     var login_user = req.session.userData.id;
     var sql = "SELECT c.name as sendername, c.sender, d.name as receivername, c.receiver, c.roomport, c.message, c.sendtime, c.chread"
-        +" FROM (SELECT a.name, b.sender, b.receiver, b.roomport, b.message, b.sendtime, b.chread"
-        +" FROM dal.user a, dal.chat b"
-        +" WHERE a.id = b.sender AND (b.sender = " + login_user + " OR b.receiver = " + login_user+ ")) c, dal.user d"
-        +" WHERE d.id = c.receiver;"
+        + " FROM (SELECT a.name, b.sender, b.receiver, b.roomport, b.message, b.sendtime, b.chread"
+        + " FROM dal.user a, dal.chat b"
+        + " WHERE a.id = b.sender AND (b.sender = " + login_user + " OR b.receiver = " + login_user + ")) c, dal.user d"
+        + " WHERE d.id = c.receiver;"
     let result_obj = {};
-    conn.query(sql, function(err, results) {
-        if(err) {
+    conn.query(sql, function (err, results) {
+        if (err) {
             console.log(err);
         }
         else {
-            for(var j=0; j<results.length; j++) {
+            for (var j = 0; j < results.length; j++) {
                 //결과 객체에 프로퍼티가 있는 경우
-                if(result_obj.hasOwnProperty(results[j].roomport)){
+                if (result_obj.hasOwnProperty(results[j].roomport)) {
                     result_obj[results[j].roomport].msg.push({
                         message: results[j].message,
                         sender: results[j].sender,
@@ -186,18 +190,18 @@ router.post('/period', function (req, res) {
                     });
                 }
                 // 없는 경우 처음생성!!
-                else{
+                else {
                     let id1 = null;
                     let id2 = null;
                     let name1 = null;
                     let name2 = null;
-                    if(results[j].sender == login_user){
+                    if (results[j].sender == login_user) {
                         id1 = results[j].sender;
                         id2 = results[j].receiver;
                         name1 = results[j].sendername;
                         name2 = results[j].receivername;
                     }
-                    else{
+                    else {
                         id1 = results[j].receiver;
                         id2 = results[j].sender;
                         name1 = results[j].receivername;
@@ -222,12 +226,12 @@ router.post('/period', function (req, res) {
             }
         }
         let result_arr = [];
-        for(item in result_obj){
+        for (item in result_obj) {
             let count = 0;
-            for(msg in result_obj[item].msg){
-                if(result_obj[item].msg[msg].sender != login_user && result_obj[item].msg[msg].chread == 1){
+            for (msg in result_obj[item].msg) {
+                if (result_obj[item].msg[msg].sender != login_user && result_obj[item].msg[msg].chread == 1) {
                     count++;
-                }else{
+                } else {
                     continue;
                 }
             }
@@ -239,9 +243,9 @@ router.post('/period', function (req, res) {
         json = json.split(']"').join(']');
         json = json.split('"{').join('{');
         json = json.split('}"').join('}');
-        if(req.session){
+        if (req.session) {
             res.send(result_arr);
-        }else{
+        } else {
             res.send("none");
         }
     });

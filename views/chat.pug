@@ -69,7 +69,8 @@ block content
 
                     v-layout.text-xs-center.py-5(v-else)
                         v-card.dal-card.py-2.px-4(style="margin:auto;")
-                            v-card-text 대화 상대를 선택해주세요.
+                            v-card-text(v-if="loginData.user === null") 로그인이 필요합니다.
+                            v-card-text(v-else) 대화 상대를 선택해주세요.
 
                 //include chat_pop_over
         include footer
