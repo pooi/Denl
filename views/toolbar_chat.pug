@@ -10,7 +10,11 @@ v-fab-transition
             v-card-media.pa-0(height='380px')
                 v-flex(xs12='', sm12='')
                     v-list
-                        v-subheader 채팅 목록
+                        v-subheader.pr-1
+                            | 채팅 목록
+                            v-spacer
+                            v-btn.ma-0.mr-2(flat, icon, color="grey", href="/chat")
+                                v-icon.subheading open_in_new
                         v-list-tile(v-for='item in chatManager.data.chat_lists', :key='item.name', avatar='', @click='chatManager.chatSelect(item); chatManager.connect()')
                             v-list-tile-avatar
                                 v-icon account_circle
