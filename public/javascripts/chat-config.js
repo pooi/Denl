@@ -16,6 +16,7 @@ function init(chatData,) {
                 isShowFabTop: true,
                 transition: 'slide-y-reverse-transition'
             },
+            statusColor: "#d84315",
             loginData:{
             },
             oneClick: null,

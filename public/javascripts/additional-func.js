@@ -665,6 +665,10 @@ class DalSupporter {
         }
     }
 
+    getStatusLightOrange(){
+        return "#ffaf1d";
+    }
+
     goBack () {
         window.history.back();
     }

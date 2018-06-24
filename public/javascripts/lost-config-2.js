@@ -13,6 +13,7 @@ function init(init_image, init_labels, init_texts, init_logos, init_colors, init
                 isShowFabTop: true,
                 transition: 'slide-y-reverse-transition'
             },
+            statusColor: "#d84315",
             loginData:{
             },
             supporter: null,

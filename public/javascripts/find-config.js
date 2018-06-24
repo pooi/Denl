@@ -20,6 +20,7 @@ function init(init_category) {
             dalMessage: null,
             categoryManager: null,
             chatManager: null,
+            statusColor: "#d84315",
             bottomTab: "find",
             todayDate: null,
             // categoryData: null,

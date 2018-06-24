@@ -14,6 +14,7 @@ function init(init_data, init_category) {
                 isShowFabTop: true,
                 transition: 'slide-y-reverse-transition'
             },
+            statusColor: "#d84315",
             loginData:{
             },
             supporter: null,

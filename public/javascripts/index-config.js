@@ -20,6 +20,7 @@ function init(init_category) {
                 transition: 'slide-y-reverse-transition',
                 statusBar: true
             },
+            statusColor: "#ffaf1d",
             loginData:{
 
             },
@@ -99,9 +100,11 @@ function init(init_category) {
                 if(!this.scrollData.statusBar && this.scrollData.offsetTop < 50){
                     this.scrollData.statusBar = !this.scrollData.statusBar;
                     this.changeStatusBarColorOnNativeApp("orange");
+                    this.statusColor = this.supporter.getStatusLightOrange();
                 }else if(this.scrollData.statusBar & this.scrollData.offsetTop >= 50){
                     this.scrollData.statusBar = !this.scrollData.statusBar;
                     this.changeStatusBarColorOnNativeApp("white");
+                    this.statusColor = "#FFFFFF";
                 }
             },
             changeStatusBarColorOnNativeApp(color){

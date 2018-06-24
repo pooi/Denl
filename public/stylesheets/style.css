@@ -17,6 +17,10 @@
     src: url(/stylesheets/day.ttf);
 }
 
+[v-cloak] {
+    display: none;
+}
+
 /*등록 소개 섹션_ 폰트 설정*/
 .dal-header {
     font-family: 'day', sans-serif;

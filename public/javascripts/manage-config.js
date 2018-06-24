@@ -17,6 +17,7 @@ function init(WFA, WFRQ, init_category, WFL, init_subcategory) {
                 isShowFabTop: true,
                 transition: 'slide-y-reverse-transition'
             },
+            statusColor: "#d84315",
             loginData:{
             },
             supporter: null,
