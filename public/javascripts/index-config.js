@@ -314,25 +314,8 @@ function init(init_category) {
             }
         },
         mounted:[
-            function () {
-                var data = {};
 
-                axios.post(
-                    '/recent',
-                    data
-                ).then(function (response) {
-                    var res = response;
-                    var data = res.data;
-                    // console.log("data: ", data);
-                    vue.recentItems = [];
-                    vue.recentItems = vue.recentItems.concat(data);
-                    vue.recentModel = 0;//vue.recentItems[0].id;
-                }).catch(function (error) {
-                    alert(error);
-                    // vue.filterDialog = false;
-                    // vue.isFilterProgress = false;
-                });
-            }
+            
         ],
         beforeDestroy() {
             this.chatManager.beforeDestroy();
